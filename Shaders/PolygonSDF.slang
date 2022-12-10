@@ -1,13 +1,13 @@
 struct VsIn
 {
-    float3 vertexPos        : POS;
-    float2 texCoords        : TEX_COORDS;
-}
+    float3 vertexPos : POS;
+    float2 texCoords : TEX_COORDS;
+};
 
 struct VsOut
 {
-    float4 vertexPos        : SV_POSITION;
-    float2 texCoords        : TEX_COORDS;
+    float4 vertexPos : SV_POSITION;
+    float2 texCoords : TEX_COORDS;
 };
 
 VsOut vsMain(VsIn input)
@@ -20,5 +20,5 @@ VsOut vsMain(VsIn input)
 
 float4 psMain(VsOut vsOut, uint triangleIndex : SV_PrimitiveID) : SV_TARGET
 {
-    return float4(vsOut.texCoords.rg, vsOut.texCoords.r * vsOut.texCoords.g, 1);
+    return float4(vsOut.texCoords.rg, 0, 1);
 }

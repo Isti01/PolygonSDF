@@ -1,72 +1,70 @@
 #include "PolygonSDF.h"
 
+#include <memory>
+
 using namespace Falcor;
+using namespace psdf;
 
-namespace
-{
-const std::vector<psdf::PolygonSDF::FullScreenTriangleVertex> kFullScreenTriangleVertices{{
-    {{-1, -1, 0}, {0, 0}},
-    {{3, -1, 0}, {2, 0}},
-    {{-1, 3, 0}, {0, 2}},
-}};
-const std::vector<uint32_t> kFullScreenTriangleIndexes{{0, 1, 2}};
-} // namespace
-
-void psdf::PolygonSDF::onGuiRender(Gui *pGui)
+void PolygonSDF::onGuiRender(Gui *pGui)
 {
 }
 
-psdf::RenderObject::SharedPtr psdf::PolygonSDF::createTriangleObject() const
+void PolygonSDF::onLoad(RenderContext *pRenderContext)
 {
-    const auto pLayout = VertexLayout::create();
-    const auto pBufferLayout = VertexBufferLayout::create();
-    pBufferLayout->addElement("POS", 0, ResourceFormat::RGB32Float, 1, 0);
-    pBufferLayout->addElement("TEX_COORDS", 12, ResourceFormat::RG32Float, 1, 1);
-    pLayout->addBufferLayout(0, pBufferLayout);
+    mpPolygonRenderer = std::make_shared<PolygonOutlineRenderer>();
+    mpPolygonRenderer->setPolygon(Polygon::create({{{.5, 0}}, {{0, .5}}, {{-.5, 0}}, {{0, -.5}}}));
 
-    return RenderObject::create(kFullScreenTriangleVertices, kFullScreenTriangleIndexes, pLayout);
+    mpFullScreenTriangle = FullScreenTriangle::create(
+        Program::Desc().addShaderLibrary("PolygonSDF/Shaders/UVColor.slang").vsEntry("vsMain").psEntry("psMain"));
+    mpFullScreenTriangle->init();
 }
 
-void psdf::PolygonSDF::onLoad(RenderContext *pRenderContext)
-{
-    object = createTriangleObject();
-
-    Program::Desc desc;
-    desc.addShaderLibrary("PolygonSDF/Shaders/PolygonSDF.slang").vsEntry("vsMain").psEntry("psMain");
-
-    mpGraphicsState = GraphicsState::create();
-    mpGraphicsState->setDepthStencilState(DepthStencilState::create(DepthStencilState::Desc().setDepthEnabled(true)));
-    mpGraphicsState->setProgram(GraphicsProgram::create(desc));
-    mpGraphicsState->setVao(object->pVao);
-    mpProgramVars = GraphicsVars::create(mpGraphicsState->getProgram().get());
-}
-
-void psdf::PolygonSDF::onFrameRender(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo)
+void PolygonSDF::onFrameRender(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo)
 {
     constexpr float4 clearColor(0, 0, 0, 1);
     pRenderContext->clearFbo(pTargetFbo.get(), clearColor, 1.0f, 0, FboAttachmentType::All);
-    mpGraphicsState->setFbo(pTargetFbo);
-    pRenderContext->drawIndexed(mpGraphicsState.get(), mpProgramVars.get(), object->indexCount, 0, 0);
+
+    if (mShowPolygon)
+    {
+        mpPolygonRenderer->setFbo(pTargetFbo);
+        mpPolygonRenderer->render(pRenderContext);
+    }
+    else
+    {
+        mpFullScreenTriangle->setFbo(pTargetFbo);
+        mpFullScreenTriangle->render(pRenderContext);
+    }
 }
 
-void psdf::PolygonSDF::onShutdown()
+void PolygonSDF::onShutdown()
 {
 }
 
-bool psdf::PolygonSDF::onKeyEvent(const KeyboardEvent &keyEvent)
+bool PolygonSDF::onKeyEvent(const KeyboardEvent &keyEvent)
+{
+    if (keyEvent.type != Falcor::KeyboardEvent::Type::KeyPressed)
+    {
+        return false;
+    }
+
+    if (keyEvent.key == Falcor::Input::Key::Space)
+    {
+        mShowPolygon = !mShowPolygon;
+        return true;
+    }
+
+    return false;
+}
+
+bool PolygonSDF::onMouseEvent(const MouseEvent &mouseEvent)
 {
     return false;
 }
 
-bool psdf::PolygonSDF::onMouseEvent(const MouseEvent &mouseEvent)
-{
-    return false;
-}
-
-void psdf::PolygonSDF::onHotReload(HotReloadFlags reloaded)
+void PolygonSDF::onHotReload(HotReloadFlags reloaded)
 {
 }
 
-void psdf::PolygonSDF::onResizeSwapChain(uint32_t width, uint32_t height)
+void PolygonSDF::onResizeSwapChain(uint32_t width, uint32_t height)
 {
 }

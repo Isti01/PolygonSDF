@@ -1,5 +1,5 @@
-#include "Falcor.h"
 #include "PolygonSDF.h"
+#include <Falcor.h>
 
 FALCOR_EXPORT_D3D12_AGILITY_SDK
 

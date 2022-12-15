@@ -18,6 +18,8 @@ target_sources(PolygonSDF PRIVATE
         Source/PolygonRenderer/PolygonOutlineRenderer.cpp
         Source/PolygonRenderer/PolygonOutlineRenderer.h
 
+        Source/Rendering/RenderObject.h
+
         Source/Main.cpp
         Source/PolygonSDF.cpp
         Source/PolygonSDF.h

@@ -3,6 +3,8 @@
 
 FALCOR_EXPORT_D3D12_AGILITY_SDK
 
+using namespace Falcor;
+
 int main(int argc, char **argv)
 {
     psdf::PolygonSDF::UniquePtr pRenderer = std::make_unique<psdf::PolygonSDF>();

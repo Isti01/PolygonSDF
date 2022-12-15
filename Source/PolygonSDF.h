@@ -5,6 +5,9 @@
 
 using namespace Falcor;
 
+namespace psdf
+{
+
 class PolygonSDF : public IRenderer
 {
   public:
@@ -55,3 +58,5 @@ class PolygonSDF : public IRenderer
 
     ObjectData::SharedPtr object = nullptr;
 };
+
+} // namespace psdf

@@ -1,5 +1,8 @@
 #include "PolygonSDF.h"
 
+namespace psdf
+{
+
 namespace
 {
 constexpr std::array<PolygonSDF::FullScreenTriangleVertex, 3> kFullScreenTriangleVertices{{
@@ -85,3 +88,5 @@ void PolygonSDF::onHotReload(HotReloadFlags reloaded)
 void PolygonSDF::onResizeSwapChain(uint32_t width, uint32_t height)
 {
 }
+
+} // namespace psdf

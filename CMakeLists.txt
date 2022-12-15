@@ -15,10 +15,13 @@ target_sources(PolygonSDF PRIVATE
         Source/Polygon/Segment.cpp
         Source/Polygon/Segment.h
 
+        Source/PolygonRenderer/PolygonOutlineRenderer.cpp
+        Source/PolygonRenderer/PolygonOutlineRenderer.h
+
         Source/Main.cpp
         Source/PolygonSDF.cpp
         Source/PolygonSDF.h
-)
+        )
 
 target_copy_shaders(PolygonSDF PolygonSDF)
 

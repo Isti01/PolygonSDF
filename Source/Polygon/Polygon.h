@@ -1,7 +1,10 @@
 #pragma once
 
-#include <Falcor.h>
+namespace psdf
+{
 
 class Polygon
 {
 };
+
+}

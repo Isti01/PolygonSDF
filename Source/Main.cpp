@@ -5,7 +5,7 @@ FALCOR_EXPORT_D3D12_AGILITY_SDK
 
 int main(int argc, char **argv)
 {
-    PolygonSDF::UniquePtr pRenderer = std::make_unique<PolygonSDF>();
+    psdf::PolygonSDF::UniquePtr pRenderer = std::make_unique<psdf::PolygonSDF>();
 
     SampleConfig config;
     config.windowDesc.title = "Polygon SDF";

@@ -5,7 +5,7 @@ using namespace Falcor;
 using namespace psdf;
 
 PolygonOutlineRenderer::PolygonOutlineRenderer(GraphicsState::SharedPtr pGraphicsState, const float4 &color)
-    : mpGraphicsState(pGraphicsState), mColor(color)
+    : mpGraphicsState(std::move(pGraphicsState)), mColor(color)
 {
 }
 
@@ -57,16 +57,24 @@ void PolygonOutlineRenderer::renderImpl(RenderContext *context) const
     context->drawIndexed(mpGraphicsState.get(), mpProgramVars.get(), mpRenderObject->indexCount, 0, 0);
 }
 
+void PolygonOutlineRenderer::transformImpl()
+{
+    FALCOR_ASSERT(mpProgramVars);
+
+    const float4x4 baseTransform = rmcv::translate(float3{-1, -1, 0}) * rmcv::scale(float3{2, 2, 1});
+    const auto transform = baseTransform * mTransform;
+    mpProgramVars["Data"]["iTransform"] = transform;
+}
+
 void PolygonOutlineRenderer::setFbo(const Fbo::SharedPtr &pFbo) const
 {
     FALCOR_ASSERT(mpGraphicsState);
     mpGraphicsState->setFbo(pFbo);
 }
-
 void PolygonOutlineRenderer::uploadColor()
 {
     if (mpProgramVars)
     {
-        mpProgramVars["color"]["iColor"] = mColor;
+        mpProgramVars["Data"]["iColor"] = mColor;
     }
 }

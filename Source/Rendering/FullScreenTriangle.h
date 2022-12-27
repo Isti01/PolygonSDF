@@ -12,17 +12,17 @@ class FullScreenTriangle
   public:
     using SharedPtr = std::shared_ptr<FullScreenTriangle>;
 
-    FullScreenTriangle(Program::Desc programDesc);
+    FullScreenTriangle(GraphicsState::SharedPtr pGraphicsState);
 
-    static SharedPtr create(Program::Desc programDesc);
+    static SharedPtr create(GraphicsState::SharedPtr pGraphicsState);
 
     void init();
     void setFbo(const Fbo::SharedPtr &pFbo);
     void render(RenderContext *pRenderContext);
 
-  private:
-    Program::Desc mProgramDesc;
+    GraphicsVars::SharedPtr getGraphicsVars();
 
+  private:
     GraphicsVars::SharedPtr mpProgramVars = nullptr;
     GraphicsState::SharedPtr mpGraphicsState = nullptr;
     RenderObject::SharedPtr mpTriangle = nullptr;

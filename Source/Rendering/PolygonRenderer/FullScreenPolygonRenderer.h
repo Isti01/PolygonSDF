@@ -1,19 +1,18 @@
 #pragma once
 
+#include "../FullScreenTriangle.h"
 #include "PolygonRenderer.h"
 
 namespace psdf
 {
 using namespace Falcor;
 
-class CompositePolygonRenderer : public PolygonRenderer
+class FullScreenPolygonRenderer : public PolygonRenderer
 {
   public:
-    using SharedPtr = std::shared_ptr<CompositePolygonRenderer>;
+    using SharedPtr = std::shared_ptr<FullScreenPolygonRenderer>;
 
-    CompositePolygonRenderer(std::vector<PolygonRenderer::SharedPtr> renderers);
-
-    void setPolygon(const Polygon::SharedPtr &pPolygon) override;
+    FullScreenPolygonRenderer(GraphicsState::SharedPtr pGraphicsState);
     void setFbo(const Fbo::SharedPtr &pFbo) const override;
     void transformImpl() override;
 
@@ -23,7 +22,9 @@ class CompositePolygonRenderer : public PolygonRenderer
     void renderImpl(RenderContext *pRenderContext) const override;
 
   private:
-    std::vector<PolygonRenderer::SharedPtr> mRenderers;
+    GraphicsState::SharedPtr mpGraphicsState;
+    GraphicsVars::SharedPtr mpGraphicsVars;
+    FullScreenTriangle::SharedPtr mpFullscreenTriangle;
 };
 
 } // namespace psdf

@@ -25,6 +25,13 @@ void PolygonRenderer::render(RenderContext *context)
     renderImpl(context);
 }
 
+void PolygonRenderer::transform(const float4x4 &transform)
+{
+    ensureInitialized();
+    mTransform = transform;
+    transformImpl();
+}
+
 void PolygonRenderer::ensureInitialized()
 {
     if (mInitialized)
@@ -34,4 +41,5 @@ void PolygonRenderer::ensureInitialized()
 
     init();
     mInitialized = true;
+    transform(mTransform);
 }

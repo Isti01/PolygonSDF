@@ -1,5 +1,6 @@
-cbuffer color
+cbuffer Data
 {
+    float4x4 iTransform;
     float4 iColor;
 }
 
@@ -16,7 +17,7 @@ struct VsOut
 VsOut vsMain(VsIn input)
 {
     VsOut vsOut;
-	vsOut.vertexPos = float4(input.vertexPos, 0, 1);
+    vsOut.vertexPos = mul(iTransform, float4(input.vertexPos, 0, 1));
     return vsOut;
 }
 

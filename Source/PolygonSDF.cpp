@@ -1,4 +1,5 @@
 #include "PolygonSDF.h"
+#include "Rendering/PolygonRenderer/FullScreenPolygonRenderer.h"
 #include "Rendering/PolygonRenderer/PolygonOutlineRenderer.h"
 
 #include <memory>
@@ -10,27 +11,42 @@ void PolygonSDF::onGuiRender(Gui *pGui)
 {
 }
 
+GraphicsState::SharedPtr getFullscreenRendererGS()
+{
+    auto pGraphicsState = GraphicsState::create();
+
+    pGraphicsState->setDepthStencilState(DepthStencilState::create(DepthStencilState::Desc().setDepthEnabled(true)));
+    pGraphicsState->setProgram(
+        GraphicsProgram::create(Program::Desc()
+                                    .addShaderLibrary("PolygonSDF/Shaders/NaivePolygonDistance.3d.slang")
+                                    .vsEntry("vsMain")
+                                    .psEntry("psMain")));
+
+    return pGraphicsState;
+}
+
+GraphicsState::SharedPtr getOutlineRendererGS()
+{
+    auto pGraphicsState = GraphicsState::create();
+
+    pGraphicsState->setDepthStencilState(DepthStencilState::create(DepthStencilState::Desc().setDepthEnabled(true)));
+    pGraphicsState->setProgram(GraphicsProgram::create(Program::Desc()
+                                                           .addShaderLibrary("PolygonSDF/Shaders/SolidColor.3d.slang")
+                                                           .vsEntry("vsMain")
+                                                           .psEntry("psMain")));
+
+    return pGraphicsState;
+}
+
 void PolygonSDF::onLoad(RenderContext *pRenderContext)
 {
-    Program::Desc programDesc;
-    programDesc.addShaderLibrary("PolygonSDF/Shaders/SolidColor.3d.slang").vsEntry("vsMain").psEntry("psMain");
-
-    auto pGraphicsState = GraphicsState::create();
-    pGraphicsState->setDepthStencilState(DepthStencilState::create(DepthStencilState::Desc().setDepthEnabled(true)));
-    BlendState::Desc blendDesc;
-
-    pGraphicsState->setBlendState(BlendState::create(blendDesc));
-    pGraphicsState->setProgram(GraphicsProgram::create(programDesc));
-
     std::vector<PolygonRenderer::SharedPtr> renderers = {
-        std::shared_ptr<PolygonRenderer>(new PolygonOutlineRenderer(pGraphicsState, float4(1, 0, 0, .5))),
+        std::shared_ptr<PolygonRenderer>(new PolygonOutlineRenderer(getOutlineRendererGS(), float4(1, 0, 0, .5))),
+        std::shared_ptr<PolygonRenderer>(new FullScreenPolygonRenderer(getFullscreenRendererGS())),
     };
     mpPolygonRenderer = std::make_shared<CompositePolygonRenderer>(renderers);
+    mpPolygonRenderer->transform(rmcv::scale(float3{mScale, mScale, 1}) * rmcv::translate(float3{1, 1, 0}));
     mpPolygonRenderer->setPolygon(Polygon::create({{{.5, 0}}, {{0, .5}}, {{-.5, 0}}, {{0, -.5}}}));
-
-    mpFullScreenTriangle = FullScreenTriangle::create(
-        Program::Desc().addShaderLibrary("PolygonSDF/Shaders/UVColor.3d.slang").vsEntry("vsMain").psEntry("psMain"));
-    mpFullScreenTriangle->init();
 }
 
 void PolygonSDF::onFrameRender(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo)
@@ -38,16 +54,8 @@ void PolygonSDF::onFrameRender(RenderContext *pRenderContext, const Fbo::SharedP
     constexpr float4 clearColor(0, 0, 0, 1);
     pRenderContext->clearFbo(pTargetFbo.get(), clearColor, 1.0f, 0, FboAttachmentType::All);
 
-    if (mShowPolygon)
-    {
-        mpPolygonRenderer->setFbo(pTargetFbo);
-        mpPolygonRenderer->render(pRenderContext);
-    }
-    else
-    {
-        mpFullScreenTriangle->setFbo(pTargetFbo);
-        mpFullScreenTriangle->render(pRenderContext);
-    }
+    mpPolygonRenderer->setFbo(pTargetFbo);
+    mpPolygonRenderer->render(pRenderContext);
 }
 
 void PolygonSDF::onShutdown()
@@ -56,22 +64,17 @@ void PolygonSDF::onShutdown()
 
 bool PolygonSDF::onKeyEvent(const KeyboardEvent &keyEvent)
 {
-    if (keyEvent.type != Falcor::KeyboardEvent::Type::KeyPressed)
-    {
-        return false;
-    }
-
-    if (keyEvent.key == Falcor::Input::Key::Space)
-    {
-        mShowPolygon = !mShowPolygon;
-        return true;
-    }
-
     return false;
 }
 
 bool PolygonSDF::onMouseEvent(const MouseEvent &mouseEvent)
 {
+    if (mouseEvent.type == Falcor::MouseEvent::Type::Wheel)
+    {
+        mScale += mouseEvent.wheelDelta.y * mScaleSpeed;
+        mpPolygonRenderer->transform(rmcv ::scale(float3{mScale, mScale, 1}) * rmcv::translate(float3{1, 1, 0}));
+    }
+
     return false;
 }
 

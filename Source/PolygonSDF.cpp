@@ -13,7 +13,7 @@ void PolygonSDF::onGuiRender(Gui *pGui)
 void PolygonSDF::onLoad(RenderContext *pRenderContext)
 {
     Program::Desc programDesc;
-    programDesc.addShaderLibrary("PolygonSDF/Shaders/SolidColor.slang").vsEntry("vsMain").psEntry("psMain");
+    programDesc.addShaderLibrary("PolygonSDF/Shaders/SolidColor.3d.slang").vsEntry("vsMain").psEntry("psMain");
 
     auto pGraphicsState = GraphicsState::create();
     pGraphicsState->setDepthStencilState(DepthStencilState::create(DepthStencilState::Desc().setDepthEnabled(true)));
@@ -29,7 +29,7 @@ void PolygonSDF::onLoad(RenderContext *pRenderContext)
     mpPolygonRenderer->setPolygon(Polygon::create({{{.5, 0}}, {{0, .5}}, {{-.5, 0}}, {{0, -.5}}}));
 
     mpFullScreenTriangle = FullScreenTriangle::create(
-        Program::Desc().addShaderLibrary("PolygonSDF/Shaders/UVColor.slang").vsEntry("vsMain").psEntry("psMain"));
+        Program::Desc().addShaderLibrary("PolygonSDF/Shaders/UVColor.3d.slang").vsEntry("vsMain").psEntry("psMain"));
     mpFullScreenTriangle->init();
 }
 

@@ -17,6 +17,8 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Rendering/PolygonRenderer/PolygonOutlineRenderer.cpp
         Source/Rendering/PolygonRenderer/PolygonOutlineRenderer.h
+        Source/Rendering/PolygonRenderer/CompositePolygonRenderer.cpp
+        Source/Rendering/PolygonRenderer/CompositePolygonRenderer.h
         Source/Rendering/PolygonRenderer/PolygonRenderer.cpp
         Source/Rendering/PolygonRenderer/PolygonRenderer.h
 

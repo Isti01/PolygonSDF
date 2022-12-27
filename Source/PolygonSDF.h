@@ -5,7 +5,8 @@
 
 #include "./Rendering/RenderObject.h"
 #include "Rendering/FullScreenTriangle.h"
-#include "Rendering/PolygonRenderer/PolygonOutlineRenderer.h"
+#include "Rendering/PolygonRenderer/CompositePolygonRenderer.h"
+
 
 namespace psdf
 {
@@ -26,7 +27,7 @@ class PolygonSDF : public IRenderer
   private:
     bool mShowPolygon = true;
 
-    PolygonOutlineRenderer::SharedPtr mpPolygonRenderer = nullptr;
+    CompositePolygonRenderer::SharedPtr mpPolygonRenderer = nullptr;
     FullScreenTriangle::SharedPtr mpFullScreenTriangle = nullptr;
 };
 

@@ -1,4 +1,5 @@
 #include "PolygonSDF.h"
+#include "Rendering/PolygonRenderer/PolygonOutlineRenderer.h"
 
 #include <memory>
 
@@ -11,7 +12,20 @@ void PolygonSDF::onGuiRender(Gui *pGui)
 
 void PolygonSDF::onLoad(RenderContext *pRenderContext)
 {
-    mpPolygonRenderer = std::make_shared<PolygonOutlineRenderer>();
+    Program::Desc programDesc;
+    programDesc.addShaderLibrary("PolygonSDF/Shaders/SolidColor.slang").vsEntry("vsMain").psEntry("psMain");
+
+    auto pGraphicsState = GraphicsState::create();
+    pGraphicsState->setDepthStencilState(DepthStencilState::create(DepthStencilState::Desc().setDepthEnabled(true)));
+    BlendState::Desc blendDesc;
+
+    pGraphicsState->setBlendState(BlendState::create(blendDesc));
+    pGraphicsState->setProgram(GraphicsProgram::create(programDesc));
+
+    std::vector<PolygonRenderer::SharedPtr> renderers = {
+        std::shared_ptr<PolygonRenderer>(new PolygonOutlineRenderer(pGraphicsState, float4(1, 0, 0, .5))),
+    };
+    mpPolygonRenderer = std::make_shared<CompositePolygonRenderer>(renderers);
     mpPolygonRenderer->setPolygon(Polygon::create({{{.5, 0}}, {{0, .5}}, {{-.5, 0}}, {{0, -.5}}}));
 
     mpFullScreenTriangle = FullScreenTriangle::create(

@@ -14,7 +14,6 @@ void PolygonRenderer::setPolygon(const Polygon::SharedPtr &polygon)
     {
         uploadPolygonData();
     }
-    auto asd = std::make_shared<int>(1);
 }
 
 void PolygonRenderer::render(RenderContext *context)

@@ -1,8 +1,8 @@
 add_falcor_executable(PolygonSDF)
 
 target_sources(PolygonSDF PRIVATE
-        Shaders/SolidColor.slang
-        Shaders/UVColor.slang
+        Shaders/SolidColor.3d.slang
+        Shaders/UVColor.3d.slang
 
         Source/Polygon/Point.cpp
         Source/Polygon/Point.h

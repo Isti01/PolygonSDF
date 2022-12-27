@@ -25,10 +25,9 @@ class PolygonSDF : public IRenderer
     void onGuiRender(Gui *pGui) override;
 
   private:
-    bool mShowPolygon = true;
-
+    float mScale = .5f;
+    float mScaleSpeed = 0.1f;
     CompositePolygonRenderer::SharedPtr mpPolygonRenderer = nullptr;
-    FullScreenTriangle::SharedPtr mpFullScreenTriangle = nullptr;
 };
 
 } // namespace psdf

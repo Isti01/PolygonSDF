@@ -17,13 +17,14 @@ static const std::vector<FullScreenTriangleVertex> kFullScreenTriangleVertices{{
 }};
 static const std::vector<uint32_t> kFullScreenTriangleIndexes{{0, 1, 2}};
 
-FullScreenTriangle::FullScreenTriangle(Program::Desc programDesc) : mProgramDesc(std::move(programDesc))
+FullScreenTriangle::FullScreenTriangle(GraphicsState::SharedPtr pGraphicsState)
+    : mpGraphicsState(std::move(pGraphicsState))
 {
 }
 
-FullScreenTriangle::SharedPtr FullScreenTriangle::create(Program::Desc programDesc)
+FullScreenTriangle::SharedPtr FullScreenTriangle::create(GraphicsState::SharedPtr pGraphicsState)
 {
-    return std::make_shared<FullScreenTriangle>(std::move(programDesc));
+    return std::make_shared<FullScreenTriangle>(std::move(pGraphicsState));
 }
 
 RenderObject::SharedPtr createTriangleObject()
@@ -40,10 +41,6 @@ RenderObject::SharedPtr createTriangleObject()
 void FullScreenTriangle::init()
 {
     mpTriangle = createTriangleObject();
-
-    mpGraphicsState = GraphicsState::create();
-    mpGraphicsState->setDepthStencilState(DepthStencilState::create(DepthStencilState::Desc().setDepthEnabled(true)));
-    mpGraphicsState->setProgram(GraphicsProgram::create(mProgramDesc));
     mpGraphicsState->setVao(mpTriangle->pVao);
     mpProgramVars = GraphicsVars::create(mpGraphicsState->getProgram().get());
 }
@@ -60,4 +57,9 @@ void FullScreenTriangle::render(RenderContext *pRenderContext)
     FALCOR_ASSERT(mpTriangle);
 
     pRenderContext->drawIndexed(mpGraphicsState.get(), mpProgramVars.get(), mpTriangle->indexCount, 0, 0);
+}
+
+GraphicsVars::SharedPtr FullScreenTriangle::getGraphicsVars()
+{
+    return mpProgramVars;
 }

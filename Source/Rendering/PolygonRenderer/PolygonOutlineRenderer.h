@@ -16,6 +16,8 @@ class PolygonOutlineRenderer : public PolygonRenderer
     PolygonOutlineRenderer(GraphicsState::SharedPtr pGraphicsState, const float4 &color = float4(1));
 
     void setFbo(const Fbo::SharedPtr &pFbo) const override;
+    void transformImpl() override;
+
     void setColor(const float4 &color);
     float4 getColor() const;
 

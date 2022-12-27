@@ -4,15 +4,26 @@
 using namespace Falcor;
 using namespace psdf;
 
+PolygonOutlineRenderer::PolygonOutlineRenderer(GraphicsState::SharedPtr pGraphicsState, const float4 &color)
+    : mpGraphicsState(pGraphicsState), mColor(color)
+{
+}
+
 void PolygonOutlineRenderer::init()
 {
-    Program::Desc desc;
-    desc.addShaderLibrary("PolygonSDF/Shaders/SolidColor.slang").vsEntry("vsMain").psEntry("psMain");
-
-    mpGraphicsState = GraphicsState::create();
-    mpGraphicsState->setDepthStencilState(DepthStencilState::create(DepthStencilState::Desc().setDepthEnabled(true)));
-    mpGraphicsState->setProgram(GraphicsProgram::create(desc));
     mpProgramVars = GraphicsVars::create(mpGraphicsState->getProgram().get());
+    uploadColor();
+}
+
+float4 PolygonOutlineRenderer::getColor() const
+{
+    return mColor;
+}
+
+void PolygonOutlineRenderer::setColor(const float4 &color)
+{
+    this->mColor = color;
+    uploadColor();
 }
 
 VertexLayout::SharedPtr getVertexLayout()
@@ -46,8 +57,16 @@ void PolygonOutlineRenderer::renderImpl(RenderContext *context) const
     context->drawIndexed(mpGraphicsState.get(), mpProgramVars.get(), mpRenderObject->indexCount, 0, 0);
 }
 
-void PolygonOutlineRenderer::setFbo(const Fbo::SharedPtr &pFbo)
+void PolygonOutlineRenderer::setFbo(const Fbo::SharedPtr &pFbo) const
 {
     FALCOR_ASSERT(mpGraphicsState);
     mpGraphicsState->setFbo(pFbo);
+}
+
+void PolygonOutlineRenderer::uploadColor()
+{
+    if (mpProgramVars)
+    {
+        mpProgramVars["color"]["iColor"] = mColor;
+    }
 }

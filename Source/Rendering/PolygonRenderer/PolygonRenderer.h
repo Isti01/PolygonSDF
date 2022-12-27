@@ -11,13 +11,15 @@ class PolygonRenderer
 {
   public:
     using SharedPtr = std::shared_ptr<PolygonRenderer>;
-    void render(RenderContext *context);
-    void setPolygon(const Polygon::SharedPtr &polygon);
+
+    void render(RenderContext *pRenderContext);
+    virtual void setPolygon(const Polygon::SharedPtr &pPolygon);
+    virtual void setFbo(const Fbo::SharedPtr &pFbo) const = 0;
 
   protected:
     virtual void init() = 0;
     virtual void uploadPolygonData() = 0;
-    virtual void renderImpl(RenderContext *context) const = 0;
+    virtual void renderImpl(RenderContext *pRenderContext) const = 0;
 
   private:
     void ensureInitialized();

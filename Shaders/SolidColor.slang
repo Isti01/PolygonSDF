@@ -1,3 +1,8 @@
+cbuffer color
+{
+    float4 iColor;
+}
+
 struct VsIn
 {
     float2 vertexPos : POS;
@@ -17,5 +22,5 @@ VsOut vsMain(VsIn input)
 
 float4 psMain(VsOut vsOut, uint triangleIndex : SV_PrimitiveID) : SV_TARGET
 {
-    return float4(1);
+    return iColor;
 }

@@ -27,6 +27,12 @@ void FullScreenPolygonRenderer::uploadPolygonData()
                                                  mpPolygon->getPoints()->data(), false);
 
     mpGraphicsVars->setBuffer("points", pPointBuffer);
+
+    auto pSegmentBuffer = Buffer::createStructured(mpGraphicsVars["segments"], mpPolygon->getSegments()->size(),
+                                                   Resource::BindFlags::ShaderResource, Buffer::CpuAccess::None,
+                                                   mpPolygon->getSegments()->data(), false);
+
+    mpGraphicsVars->setBuffer("segments", pSegmentBuffer);
 }
 
 void FullScreenPolygonRenderer::renderImpl(RenderContext *pRenderContext) const
@@ -36,5 +42,6 @@ void FullScreenPolygonRenderer::renderImpl(RenderContext *pRenderContext) const
 
 void FullScreenPolygonRenderer::transformImpl()
 {
+    // we need the inverse, because we are transforming the origin instead of the objects
     mpGraphicsVars["Data"]["iTransform"] = rmcv::inverse(mTransform);
 }

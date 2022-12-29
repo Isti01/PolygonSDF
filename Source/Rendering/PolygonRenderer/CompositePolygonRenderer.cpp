@@ -7,6 +7,11 @@ CompositePolygonRenderer::CompositePolygonRenderer(std::vector<PolygonRenderer::
 {
 }
 
+CompositePolygonRenderer::SharedPtr CompositePolygonRenderer::create(std::vector<PolygonRenderer::SharedPtr> renderers)
+{
+    return std::make_shared<CompositePolygonRenderer>(std::move(renderers));
+}
+
 void CompositePolygonRenderer::init()
 {
 }
@@ -15,7 +20,7 @@ void CompositePolygonRenderer::uploadPolygonData()
 {
 }
 
-void CompositePolygonRenderer::setFbo(const Fbo::SharedPtr &pFbo) const
+void CompositePolygonRenderer::setFbo(const Fbo::SharedPtr &pFbo)
 {
     for (const PolygonRenderer::SharedPtr &pRenderer : mRenderers)
     {
@@ -31,7 +36,7 @@ void CompositePolygonRenderer::transformImpl()
     }
 }
 
-void CompositePolygonRenderer::renderImpl(Falcor::RenderContext *pRenderContext) const
+void CompositePolygonRenderer::renderImpl(Falcor::RenderContext *pRenderContext)
 {
     for (const PolygonRenderer::SharedPtr &pRenderer : mRenderers)
     {

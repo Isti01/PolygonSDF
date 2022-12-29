@@ -9,7 +9,6 @@ struct Segment
 };
 
 StructuredBuffer<float2> points;
-StructuredBuffer<Segment> segments;
 
 struct VsIn
 {
@@ -31,51 +30,40 @@ VsOut vsMain(VsIn input)
     return vsOut;
 }
 
-void getMinDistanceToEdges(float2 coord, inout float minDistance)
+float getSignedSquaredDistance(float2 coord)
 {
+    float squaredDistance = dot(coord - points[0], coord - points[0]);
+    float distanceSign = 1;
+
     uint pointCount, _;
     points.GetDimensions(pointCount, _);
-    for (uint i = 0; i < pointCount; i++)
+
+    for (int i = 0, j = pointCount - 1; i < pointCount; j = i, i++)
     {
-        minDistance = min(minDistance, distance(coord, points[i]));
-
-    }
-}
-
-float segmentLengthSquared(float2 segment[2])
-{
-    float2 difference = segment[0] - segment[1];
-    return dot(difference, difference);
-}
-
-void getMinDistanceToSegments(float2 coord, inout float minDistance)
-{
-    uint segmentCount, _;
-    segments.GetDimensions(segmentCount, _);
-    for (uint i = 0; i < segmentCount; i++)
-    {
-        float2 segment[2] = segments[i].endpoints;
-
-        float lengthSquared = segmentLengthSquared(segment);
-        if (lengthSquared == 0.0)
+        float2 e = points[j] - points[i];
+        float2 w = coord - points[i];
+        float2 b = w - e * saturate(dot(w, e) / dot(e, e));
+        squaredDistance = min(squaredDistance, dot(b, b));
+        bool3 c = bool3(coord.y >= points[i].y, coord.y < points[j].y, e.x * w.y > e.y * w.x);
+        if (all(c) || all(!c))
         {
-            minDistance = min(minDistance, distance(coord, segment[0]));
-        }
-        else
-        {
-            const float t = max(0, min(1, dot(coord - segment[0], segment[1] - segment[0]) / lengthSquared));
-            const float2 projection = segment[0] + t * (segment[1] - segment[0]); // Projection falls on the segment
-            minDistance = min(minDistance, distance(coord, projection));
+            distanceSign *= -1.0;
         }
     }
+    return distanceSign * sqrt(squaredDistance);
+}
+
+float4 visualizeSignedDistance(float distance)
+{
+    float3 col = float3(1) - sign(distance) * float3(0.1, 0.4, 0.7);
+    col *= 1 - exp(-4 * abs(distance));
+    col *= 0.7 + 0.2 * cos(110 * distance);
+    col = lerp(col, float3(1), 1 - smoothstep(0, 0.015, abs(distance)));
+    return float4(col, 1);
 }
 
 float4 psMain(VsOut vsOut, uint triangleIndex : SV_PrimitiveID) : SV_TARGET
 {
-    float minDistance = 999999999;
-
-    getMinDistanceToEdges(vsOut.texCoords, minDistance);
-    getMinDistanceToSegments(vsOut.texCoords, minDistance);
-
-    return float4(float3(sqrt(minDistance)), 1);
+    float distance = getSignedSquaredDistance(vsOut.texCoords);
+    return visualizeSignedDistance(distance);
 }

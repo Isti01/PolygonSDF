@@ -15,12 +15,12 @@ class PolygonRenderer
     void render(RenderContext *pRenderContext);
     void transform(const float4x4 &transform);
     virtual void setPolygon(const Polygon::SharedPtr &pPolygon);
-    virtual void setFbo(const Fbo::SharedPtr &pFbo) const = 0;
+    virtual void setFbo(const Fbo::SharedPtr &pFbo) = 0;
 
   protected:
     virtual void init() = 0;
     virtual void uploadPolygonData() = 0;
-    virtual void renderImpl(RenderContext *pRenderContext) const = 0;
+    virtual void renderImpl(RenderContext *pRenderContext) = 0;
     virtual void transformImpl() = 0;
 
   private:

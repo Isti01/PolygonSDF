@@ -16,6 +16,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Rendering/FullScreenTriangle.h
         Source/Rendering/RenderObject.h
 
+        Source/Rendering/PolygonRenderer/AspectRatioIndependentPolygonRenderer.cpp
+        Source/Rendering/PolygonRenderer/AspectRatioIndependentPolygonRenderer.h
         Source/Rendering/PolygonRenderer/CompositePolygonRenderer.cpp
         Source/Rendering/PolygonRenderer/CompositePolygonRenderer.h
         Source/Rendering/PolygonRenderer/FullScreenPolygonRenderer.cpp
@@ -24,6 +26,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Rendering/PolygonRenderer/PolygonOutlineRenderer.h
         Source/Rendering/PolygonRenderer/PolygonRenderer.cpp
         Source/Rendering/PolygonRenderer/PolygonRenderer.h
+        Source/Rendering/PolygonRenderer/ProxyPolygonRenderer.cpp
+        Source/Rendering/PolygonRenderer/ProxyPolygonRenderer.h
 
         Source/Util/RangeGenerator.cpp
         Source/Util/RangeGenerator.h

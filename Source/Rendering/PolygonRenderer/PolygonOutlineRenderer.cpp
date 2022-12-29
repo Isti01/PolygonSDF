@@ -9,6 +9,12 @@ PolygonOutlineRenderer::PolygonOutlineRenderer(GraphicsState::SharedPtr pGraphic
 {
 }
 
+PolygonOutlineRenderer::SharedPtr PolygonOutlineRenderer::create(GraphicsState::SharedPtr pGraphicsState,
+                                                                 const float4 &color)
+{
+    return std::make_shared<PolygonOutlineRenderer>(std::move(pGraphicsState), color);
+}
+
 void PolygonOutlineRenderer::init()
 {
     mpProgramVars = GraphicsVars::create(mpGraphicsState->getProgram().get());
@@ -45,7 +51,7 @@ void PolygonOutlineRenderer::uploadPolygonData()
     mpRenderObject = RenderObject::create(*segments, indices, getVertexLayout(), Vao::Topology::LineList);
 }
 
-void PolygonOutlineRenderer::renderImpl(RenderContext *context) const
+void PolygonOutlineRenderer::renderImpl(RenderContext *context)
 {
     FALCOR_ASSERT(context);
 
@@ -66,11 +72,12 @@ void PolygonOutlineRenderer::transformImpl()
     mpProgramVars["Data"]["iTransform"] = transform;
 }
 
-void PolygonOutlineRenderer::setFbo(const Fbo::SharedPtr &pFbo) const
+void PolygonOutlineRenderer::setFbo(const Fbo::SharedPtr &pFbo)
 {
     FALCOR_ASSERT(mpGraphicsState);
     mpGraphicsState->setFbo(pFbo);
 }
+
 void PolygonOutlineRenderer::uploadColor()
 {
     if (mpProgramVars)

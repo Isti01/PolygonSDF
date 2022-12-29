@@ -27,7 +27,7 @@ class PolygonSDF : public IRenderer
   private:
     float mScale = .5f;
     float mScaleSpeed = 0.1f;
-    CompositePolygonRenderer::SharedPtr mpPolygonRenderer = nullptr;
+    PolygonRenderer::SharedPtr mpPolygonRenderer = nullptr;
 };
 
 } // namespace psdf

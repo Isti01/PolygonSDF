@@ -12,9 +12,8 @@ class FullScreenTriangle
   public:
     using SharedPtr = std::shared_ptr<FullScreenTriangle>;
 
-    FullScreenTriangle(GraphicsState::SharedPtr pGraphicsState);
-
     static SharedPtr create(GraphicsState::SharedPtr pGraphicsState);
+    FullScreenTriangle(GraphicsState::SharedPtr pGraphicsState);
 
     void init();
     void setFbo(const Fbo::SharedPtr &pFbo);

@@ -1,4 +1,5 @@
 #include "PolygonSDF.h"
+#include "Rendering/PolygonRenderer/AspectRatioIndependentPolygonRenderer.h"
 #include "Rendering/PolygonRenderer/FullScreenPolygonRenderer.h"
 #include "Rendering/PolygonRenderer/PolygonOutlineRenderer.h"
 
@@ -9,13 +10,15 @@ using namespace psdf;
 
 void PolygonSDF::onGuiRender(Gui *pGui)
 {
+    Gui::Window w(pGui, "PolygonSDF", {250, 200});
+    w.text("Hello from PolygonSDF");
 }
 
 GraphicsState::SharedPtr getFullscreenRendererGS()
 {
     auto pGraphicsState = GraphicsState::create();
 
-    pGraphicsState->setDepthStencilState(DepthStencilState::create(DepthStencilState::Desc().setDepthEnabled(true)));
+    pGraphicsState->setDepthStencilState(DepthStencilState::create(DepthStencilState::Desc().setDepthEnabled(false)));
     pGraphicsState->setProgram(
         GraphicsProgram::create(Program::Desc()
                                     .addShaderLibrary("PolygonSDF/Shaders/NaivePolygonDistance.3d.slang")
@@ -29,7 +32,11 @@ GraphicsState::SharedPtr getOutlineRendererGS()
 {
     auto pGraphicsState = GraphicsState::create();
 
-    pGraphicsState->setDepthStencilState(DepthStencilState::create(DepthStencilState::Desc().setDepthEnabled(true)));
+    pGraphicsState->setDepthStencilState(DepthStencilState::create(DepthStencilState::Desc().setDepthEnabled(false)));
+    auto pBlendState = BlendState::create(BlendState::Desc().setRtBlend(0, true).setRtParams(
+        0, BlendState::BlendOp::Add, BlendState::BlendOp::Add, BlendState::BlendFunc::SrcAlpha,
+        BlendState::BlendFunc::OneMinusSrcAlpha, BlendState::BlendFunc::One, BlendState::BlendFunc::One));
+    pGraphicsState->setBlendState(pBlendState);
     pGraphicsState->setProgram(GraphicsProgram::create(Program::Desc()
                                                            .addShaderLibrary("PolygonSDF/Shaders/SolidColor.3d.slang")
                                                            .vsEntry("vsMain")
@@ -38,15 +45,23 @@ GraphicsState::SharedPtr getOutlineRendererGS()
     return pGraphicsState;
 }
 
+PolygonRenderer::SharedPtr createPolygonRenderer()
+{
+    auto combinedRenderers = CompositePolygonRenderer::create(std::vector<PolygonRenderer::SharedPtr>{
+        std::static_pointer_cast<PolygonRenderer>(FullScreenPolygonRenderer::create(getFullscreenRendererGS())),
+        std::static_pointer_cast<PolygonRenderer>(
+            PolygonOutlineRenderer::create(getOutlineRendererGS(), float4(1, 0, 0, 1))),
+    });
+    return std::static_pointer_cast<PolygonRenderer>(AspectRatioIndependentPolygonRenderer::create(combinedRenderers));
+}
+
 void PolygonSDF::onLoad(RenderContext *pRenderContext)
 {
-    std::vector<PolygonRenderer::SharedPtr> renderers = {
-        std::shared_ptr<PolygonRenderer>(new PolygonOutlineRenderer(getOutlineRendererGS(), float4(1, 0, 0, .5))),
-        std::shared_ptr<PolygonRenderer>(new FullScreenPolygonRenderer(getFullscreenRendererGS())),
-    };
-    mpPolygonRenderer = std::make_shared<CompositePolygonRenderer>(renderers);
-    mpPolygonRenderer->transform(rmcv::scale(float3{mScale, mScale, 1}) * rmcv::translate(float3{1, 1, 0}));
-    mpPolygonRenderer->setPolygon(Polygon::create({{{.5, 0}}, {{0, .5}}, {{-.5, 0}}, {{0, -.5}}}));
+    mpPolygonRenderer = createPolygonRenderer();
+    mpPolygonRenderer->transform(rmcv::scale(float3{mScale, mScale, 1}));
+
+    auto polygon = Polygon::create({{{.5, 0}}, {{0, .5}}, {{-.5, 0}}, {{0, -.5}}});
+    mpPolygonRenderer->setPolygon(polygon);
 }
 
 void PolygonSDF::onFrameRender(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo)
@@ -72,7 +87,7 @@ bool PolygonSDF::onMouseEvent(const MouseEvent &mouseEvent)
     if (mouseEvent.type == Falcor::MouseEvent::Type::Wheel)
     {
         mScale += mouseEvent.wheelDelta.y * mScaleSpeed;
-        mpPolygonRenderer->transform(rmcv ::scale(float3{mScale, mScale, 1}) * rmcv::translate(float3{1, 1, 0}));
+        mpPolygonRenderer->transform(rmcv ::scale(float3{mScale, mScale, 1}));
     }
 
     return false;

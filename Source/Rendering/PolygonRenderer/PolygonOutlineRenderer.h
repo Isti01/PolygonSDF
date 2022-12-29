@@ -13,9 +13,10 @@ class PolygonOutlineRenderer : public PolygonRenderer
   public:
     using SharedPtr = std::shared_ptr<PolygonOutlineRenderer>;
 
+    static SharedPtr create(GraphicsState::SharedPtr pGraphicsState, const float4 &color = float4(1));
     PolygonOutlineRenderer(GraphicsState::SharedPtr pGraphicsState, const float4 &color = float4(1));
 
-    void setFbo(const Fbo::SharedPtr &pFbo) const override;
+    void setFbo(const Fbo::SharedPtr &pFbo) override;
     void transformImpl() override;
 
     void setColor(const float4 &color);
@@ -24,7 +25,7 @@ class PolygonOutlineRenderer : public PolygonRenderer
   protected:
     void init() override;
     void uploadPolygonData() override;
-    void renderImpl(RenderContext *pRenderContext) const override;
+    void renderImpl(RenderContext *pRenderContext) override;
 
   private:
     void uploadColor();

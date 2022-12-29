@@ -8,7 +8,12 @@ FullScreenPolygonRenderer::FullScreenPolygonRenderer(GraphicsState::SharedPtr pG
 {
 }
 
-void FullScreenPolygonRenderer::setFbo(const Fbo::SharedPtr &pFbo) const
+FullScreenPolygonRenderer::SharedPtr FullScreenPolygonRenderer::create(GraphicsState::SharedPtr pGraphicsState)
+{
+    return std::make_shared<FullScreenPolygonRenderer>(std::move(pGraphicsState));
+}
+
+void FullScreenPolygonRenderer::setFbo(const Fbo::SharedPtr &pFbo)
 {
     mpFullscreenTriangle->setFbo(pFbo);
 }
@@ -27,15 +32,9 @@ void FullScreenPolygonRenderer::uploadPolygonData()
                                                  mpPolygon->getPoints()->data(), false);
 
     mpGraphicsVars->setBuffer("points", pPointBuffer);
-
-    auto pSegmentBuffer = Buffer::createStructured(mpGraphicsVars["segments"], mpPolygon->getSegments()->size(),
-                                                   Resource::BindFlags::ShaderResource, Buffer::CpuAccess::None,
-                                                   mpPolygon->getSegments()->data(), false);
-
-    mpGraphicsVars->setBuffer("segments", pSegmentBuffer);
 }
 
-void FullScreenPolygonRenderer::renderImpl(RenderContext *pRenderContext) const
+void FullScreenPolygonRenderer::renderImpl(RenderContext *pRenderContext)
 {
     mpFullscreenTriangle->render(pRenderContext);
 }

@@ -55,10 +55,19 @@ PolygonRenderer::SharedPtr createPolygonRenderer()
     return std::static_pointer_cast<PolygonRenderer>(AspectRatioIndependentPolygonRenderer::create(combinedRenderers));
 }
 
+void transformPolygonRenderer(PolygonRenderer::SharedPtr &pRenderer, float scale)
+{
+    auto translation = rmcv::translate(float3(.5, .5, 0));
+
+    float mappedScale = glm::pow(1.8, scale);
+    auto scaling = rmcv::scale(float3{mappedScale, mappedScale, 1});
+    pRenderer->transform(translation * scaling);
+}
+
 void PolygonSDF::onLoad(RenderContext *pRenderContext)
 {
     mpPolygonRenderer = createPolygonRenderer();
-    mpPolygonRenderer->transform(rmcv::scale(float3{mScale, mScale, 1}));
+    transformPolygonRenderer(mpPolygonRenderer, mScale);
 
     auto polygon = Polygon::create({{{.5, 0}}, {{0, .5}}, {{-.5, 0}}, {{0, -.5}}});
     mpPolygonRenderer->setPolygon(polygon);
@@ -87,7 +96,7 @@ bool PolygonSDF::onMouseEvent(const MouseEvent &mouseEvent)
     if (mouseEvent.type == Falcor::MouseEvent::Type::Wheel)
     {
         mScale += mouseEvent.wheelDelta.y * mScaleSpeed;
-        mpPolygonRenderer->transform(rmcv ::scale(float3{mScale, mScale, 1}));
+        transformPolygonRenderer(mpPolygonRenderer, mScale);
     }
 
     return false;

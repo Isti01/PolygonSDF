@@ -14,6 +14,7 @@ int main(int argc, char **argv)
     config.windowDesc.resizableWindow = true;
     config.windowDesc.width = 1280;
     config.windowDesc.height = 720;
+    config.deviceDesc.enableVsync = true;
 
     Sample::run(config, pRenderer);
 

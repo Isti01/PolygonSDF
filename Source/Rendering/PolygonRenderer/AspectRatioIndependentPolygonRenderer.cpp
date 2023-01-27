@@ -6,12 +6,12 @@ using namespace psdf;
 AspectRatioIndependentPolygonRenderer::SharedPtr AspectRatioIndependentPolygonRenderer::create(
     PolygonRenderer::SharedPtr pPolygonRenderer)
 {
-    return std::make_shared<AspectRatioIndependentPolygonRenderer>(std::move(pPolygonRenderer));
+    return SharedPtr(new AspectRatioIndependentPolygonRenderer(std::move(pPolygonRenderer)));
 }
 
 AspectRatioIndependentPolygonRenderer::AspectRatioIndependentPolygonRenderer(
     PolygonRenderer::SharedPtr pPolygonRenderer)
-    : ProxyPolygonRenderer(pPolygonRenderer)
+    : ProxyPolygonRenderer(std::move(pPolygonRenderer))
 {
 }
 
@@ -19,7 +19,8 @@ void AspectRatioIndependentPolygonRenderer::setFbo(const Fbo::SharedPtr &pFbo)
 {
     updateAspectRatio();
 
-    mAspectRatio = pFbo->getHeight() != 0 && pFbo->getWidth() != 0 ? (pFbo->getWidth() / (float)pFbo->getHeight()) : 1;
+    mAspectRatio =
+        pFbo->getHeight() != 0 && pFbo->getWidth() != 0 ? ((float)pFbo->getWidth() / (float)pFbo->getHeight()) : 1;
     mpPolygonRenderer->setFbo(pFbo);
 }
 

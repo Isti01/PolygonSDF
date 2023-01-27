@@ -9,7 +9,7 @@ CompositePolygonRenderer::CompositePolygonRenderer(std::vector<PolygonRenderer::
 
 CompositePolygonRenderer::SharedPtr CompositePolygonRenderer::create(std::vector<PolygonRenderer::SharedPtr> renderers)
 {
-    return std::make_shared<CompositePolygonRenderer>(std::move(renderers));
+    return SharedPtr(new CompositePolygonRenderer(std::move(renderers)));
 }
 
 void CompositePolygonRenderer::init()

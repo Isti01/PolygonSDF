@@ -12,13 +12,13 @@ class CompositePolygonRenderer : public PolygonRenderer
     using SharedPtr = std::shared_ptr<CompositePolygonRenderer>;
 
     static SharedPtr create(std::vector<PolygonRenderer::SharedPtr> renderers);
-    CompositePolygonRenderer(std::vector<PolygonRenderer::SharedPtr> renderers);
 
     void setPolygon(const Polygon::SharedPtr &pPolygon) override;
     void setFbo(const Fbo::SharedPtr &pFbo) override;
     void transformImpl() override;
 
   protected:
+    CompositePolygonRenderer(std::vector<PolygonRenderer::SharedPtr> renderers);
     void init() override;
     void uploadPolygonData() override;
     void renderImpl(RenderContext *pRenderContext) override;

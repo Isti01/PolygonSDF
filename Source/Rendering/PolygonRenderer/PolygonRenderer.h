@@ -17,6 +17,8 @@ class PolygonRenderer
     virtual void setPolygon(const Polygon::SharedPtr &pPolygon);
     virtual void setFbo(const Fbo::SharedPtr &pFbo) = 0;
 
+    virtual ~PolygonRenderer() = default;
+
   protected:
     virtual void init() = 0;
     virtual void uploadPolygonData() = 0;

@@ -13,12 +13,12 @@ class FullScreenPolygonRenderer : public PolygonRenderer
     using SharedPtr = std::shared_ptr<FullScreenPolygonRenderer>;
 
     static SharedPtr create(GraphicsState::SharedPtr pGraphicsState);
-    FullScreenPolygonRenderer(GraphicsState::SharedPtr pGraphicsState);
 
     void setFbo(const Fbo::SharedPtr &pFbo)  override;
     void transformImpl() override;
 
   protected:
+    FullScreenPolygonRenderer(GraphicsState::SharedPtr pGraphicsState);
     void init() override;
     void uploadPolygonData() override;
     void renderImpl(RenderContext *pRenderContext)  override;

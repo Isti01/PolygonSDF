@@ -12,7 +12,7 @@ PolygonOutlineRenderer::PolygonOutlineRenderer(GraphicsState::SharedPtr pGraphic
 PolygonOutlineRenderer::SharedPtr PolygonOutlineRenderer::create(GraphicsState::SharedPtr pGraphicsState,
                                                                  const float4 &color)
 {
-    return std::make_shared<PolygonOutlineRenderer>(std::move(pGraphicsState), color);
+    return SharedPtr(new PolygonOutlineRenderer(std::move(pGraphicsState), color));
 }
 
 void PolygonOutlineRenderer::init()

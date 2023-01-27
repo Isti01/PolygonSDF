@@ -1,4 +1,4 @@
-#include "PolygonSDF.h"
+#include "PolygonSDFApplication.h"
 #include <Falcor.h>
 
 FALCOR_EXPORT_D3D12_AGILITY_SDK
@@ -7,7 +7,7 @@ using namespace Falcor;
 
 int main(int argc, char **argv)
 {
-    psdf::PolygonSDF::UniquePtr pRenderer = std::make_unique<psdf::PolygonSDF>();
+    psdf::PolygonSDFApplication::UniquePtr pRenderer = std::make_unique<psdf::PolygonSDFApplication>();
 
     SampleConfig config;
     config.windowDesc.title = "Polygon SDF";

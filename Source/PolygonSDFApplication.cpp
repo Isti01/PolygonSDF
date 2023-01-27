@@ -1,4 +1,5 @@
-#include "PolygonSDF.h"
+#include "PolygonSDFApplication.h"
+#include "Editor/Command/AddPointCommand.h"
 #include "Rendering/PolygonRenderer/AspectRatioIndependentPolygonRenderer.h"
 #include "Rendering/PolygonRenderer/FullScreenPolygonRenderer.h"
 #include "Rendering/PolygonRenderer/PolygonOutlineRenderer.h"
@@ -8,10 +9,9 @@
 using namespace Falcor;
 using namespace psdf;
 
-void PolygonSDF::onGuiRender(Gui *pGui)
+void PolygonSDFApplication::onGuiRender(Gui *pGui)
 {
-    Gui::Window w(pGui, "PolygonSDF", {250, 200});
-    w.text("Hello from PolygonSDF");
+    mpGuiEditorInterface->render(pGui);
 }
 
 GraphicsState::SharedPtr getFullscreenRendererGS()
@@ -64,8 +64,10 @@ void transformPolygonRenderer(PolygonRenderer::SharedPtr &pRenderer, float scale
     pRenderer->transform(translation * scaling);
 }
 
-void PolygonSDF::onLoad(RenderContext *pRenderContext)
+void PolygonSDFApplication::onLoad(RenderContext *pRenderContext)
 {
+    mpEditor = Editor::create(EditorStack::create({AddPointCommand::create({-.5,0})}));
+    mpGuiEditorInterface = GuiEditorInterface::create(mpEditor);
     mpPolygonRenderer = createPolygonRenderer();
     transformPolygonRenderer(mpPolygonRenderer, mScale);
 
@@ -73,7 +75,7 @@ void PolygonSDF::onLoad(RenderContext *pRenderContext)
     mpPolygonRenderer->setPolygon(polygon);
 }
 
-void PolygonSDF::onFrameRender(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo)
+void PolygonSDFApplication::onFrameRender(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo)
 {
     constexpr float4 clearColor(0, 0, 0, 1);
     pRenderContext->clearFbo(pTargetFbo.get(), clearColor, 1.0f, 0, FboAttachmentType::All);
@@ -82,16 +84,16 @@ void PolygonSDF::onFrameRender(RenderContext *pRenderContext, const Fbo::SharedP
     mpPolygonRenderer->render(pRenderContext);
 }
 
-void PolygonSDF::onShutdown()
+void PolygonSDFApplication::onShutdown()
 {
 }
 
-bool PolygonSDF::onKeyEvent(const KeyboardEvent &keyEvent)
+bool PolygonSDFApplication::onKeyEvent(const KeyboardEvent &keyEvent)
 {
     return false;
 }
 
-bool PolygonSDF::onMouseEvent(const MouseEvent &mouseEvent)
+bool PolygonSDFApplication::onMouseEvent(const MouseEvent &mouseEvent)
 {
     if (mouseEvent.type == Falcor::MouseEvent::Type::Wheel)
     {
@@ -102,10 +104,10 @@ bool PolygonSDF::onMouseEvent(const MouseEvent &mouseEvent)
     return false;
 }
 
-void PolygonSDF::onHotReload(HotReloadFlags reloaded)
+void PolygonSDFApplication::onHotReload(HotReloadFlags reloaded)
 {
 }
 
-void PolygonSDF::onResizeSwapChain(uint32_t width, uint32_t height)
+void PolygonSDFApplication::onResizeSwapChain(uint32_t width, uint32_t height)
 {
 }

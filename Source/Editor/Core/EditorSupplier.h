@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Editor.h"
 #include "EditorCommand.h"
 #include <memory>
 
@@ -11,7 +12,17 @@ class EditorSupplier
   public:
     using SharedPtr = std::shared_ptr<EditorSupplier>;
 
-    virtual EditorCommand::SharedPtr get() = 0;
+    static SharedPtr create(Editor::SharedPtr pEditor);
+
+    void dispatchCommand(EditorCommand::SharedPtr &pCommand);
+
+    virtual ~EditorSupplier() = default;
+
+  protected:
+    EditorSupplier(Editor::SharedPtr pEditor);
+
+  public:
+    Editor::SharedPtr mpEditor;
 };
 
 } // namespace psdf

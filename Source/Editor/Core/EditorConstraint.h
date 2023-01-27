@@ -13,8 +13,7 @@ class EditorConstraint
 
     virtual bool evaluate(const EditorStack::SharedPtr &pStack, const EditorCommand::SharedPtr &pCommand) = 0;
 
-  protected:
-    EditorConstraint() = default;
+    virtual ~EditorConstraint() = default;
 };
 
 } // namespace psdf

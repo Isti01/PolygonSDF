@@ -13,10 +13,14 @@ class EditorStack
   public:
     using SharedPtr = std::shared_ptr<EditorStack>;
 
-    void push(const EditorCommand::SharedPtr &pCommand)
-    {
-        mStack.push_back(pCommand);
-    }
+    static SharedPtr create();
+    static SharedPtr create(std::vector<EditorCommand::SharedPtr> stack);
+
+    void push(EditorCommand::SharedPtr pCommand);
+
+  protected:
+    EditorStack() = default;
+    EditorStack(std::vector<EditorCommand::SharedPtr> stack);
 
   private:
     std::vector<EditorCommand::SharedPtr> mStack;

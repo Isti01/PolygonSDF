@@ -13,6 +13,7 @@ class EditorTransformation
     using SharedPtr = std::shared_ptr<EditorTransformation>;
 
     virtual void transform(EditorStack::SharedPtr &pEditorStack) = 0;
+    virtual ~EditorTransformation() = default;
 };
 
 } // namespace psdf

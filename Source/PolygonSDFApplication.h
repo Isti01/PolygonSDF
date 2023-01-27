@@ -4,15 +4,16 @@
 #include <utility>
 
 #include "./Rendering/RenderObject.h"
+#include "Editor/Core/Editor.h"
+#include "Editor/GuiInterface/GuiEditorInterface.h"
 #include "Rendering/FullScreenTriangle.h"
 #include "Rendering/PolygonRenderer/CompositePolygonRenderer.h"
-
 
 namespace psdf
 {
 using namespace Falcor;
 
-class PolygonSDF : public IRenderer
+class PolygonSDFApplication : public IRenderer
 {
   public:
     void onLoad(RenderContext *pRenderContext) override;
@@ -28,6 +29,8 @@ class PolygonSDF : public IRenderer
     float mScale = .5f;
     float mScaleSpeed = 0.1f;
     PolygonRenderer::SharedPtr mpPolygonRenderer = nullptr;
+    Editor::SharedPtr mpEditor = nullptr;
+    GuiEditorInterface::SharedPtr mpGuiEditorInterface = nullptr;
 };
 
 } // namespace psdf

@@ -51,8 +51,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Util/RangeGenerator.h
 
         Source/Main.cpp
-        Source/PolygonSDF.cpp
-        Source/PolygonSDF.h
+        Source/PolygonSDFApplication.cpp
+        Source/PolygonSDFApplication.h
         )
 
 target_copy_shaders(PolygonSDF PolygonSDF)

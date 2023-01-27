@@ -17,11 +17,16 @@ class Editor : public std::enable_shared_from_this<Editor>
   public:
     using SharedPtr = std::shared_ptr<Editor>;
 
-    static SharedPtr create();
+    static SharedPtr create(EditorStack::SharedPtr pStack);
 
-    void addCommand(EditorCommand::SharedPtr &pCommand);
-    void addConsumer(EditorConsumer::SharedPtr &pConsumer);
-    void addConstraint(EditorConstraint::SharedPtr &pConstraint);
+    void addCommand(EditorCommand::SharedPtr pCommand);
+
+    void addConsumer(EditorConsumer::SharedPtr pConsumer);
+    void removeConsumer(const EditorConsumer::SharedPtr &pConsumer);
+
+    void addConstraint(EditorConstraint::SharedPtr pConstraint);
+    void removeConstraint(const EditorConstraint::SharedPtr &pConstraint);
+
     void transform(EditorTransformation::SharedPtr &pTransformation);
     [[nodiscard]] EditorAggregationResult::SharedPtr reduce(const EditorAggregation::SharedPtr &pAggregation) const;
 
@@ -29,10 +34,10 @@ class Editor : public std::enable_shared_from_this<Editor>
     void notifyConsumers(const EditorEvent::SharedPtr &pEvent);
 
   protected:
-    Editor() = default;
+    Editor(EditorStack::SharedPtr pStack);
 
   private:
-    EditorStack::SharedPtr mpStack = std::make_shared<EditorStack>();
+    EditorStack::SharedPtr mpStack;
     std::vector<EditorConstraint::SharedPtr> mConstraints;
     std::vector<EditorConsumer::SharedPtr> mConsumers;
 };

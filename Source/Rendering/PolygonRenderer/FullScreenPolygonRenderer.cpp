@@ -10,7 +10,7 @@ FullScreenPolygonRenderer::FullScreenPolygonRenderer(GraphicsState::SharedPtr pG
 
 FullScreenPolygonRenderer::SharedPtr FullScreenPolygonRenderer::create(GraphicsState::SharedPtr pGraphicsState)
 {
-    return std::make_shared<FullScreenPolygonRenderer>(std::move(pGraphicsState));
+    return SharedPtr(new FullScreenPolygonRenderer(std::move(pGraphicsState)));
 }
 
 void FullScreenPolygonRenderer::setFbo(const Fbo::SharedPtr &pFbo)

@@ -5,6 +5,9 @@ target_sources(PolygonSDF PRIVATE
         Shaders/SolidColor.3d.slang
         Shaders/UVColor.3d.slang
 
+        Source/Editor/Aggregator/PolygonPeekingEditorAggregator.cpp
+        Source/Editor/Aggregator/PolygonPeekingEditorAggregator.h
+
         Source/Editor/Command/AddPointStackCommand.cpp
         Source/Editor/Command/AddPointStackCommand.h
         Source/Editor/Command/SetPolygonStackCommand.cpp
@@ -13,7 +16,7 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Editor/Core/Editor.cpp
         Source/Editor/Core/Editor.h
-        Source/Editor/Core/EditorAggregation.h
+        Source/Editor/Core/EditorAggregator.h
         Source/Editor/Core/EditorCommand.h
         Source/Editor/Core/EditorConstraint.h
         Source/Editor/Core/EditorConsumer.h

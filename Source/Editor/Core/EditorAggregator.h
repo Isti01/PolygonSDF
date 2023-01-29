@@ -17,14 +17,14 @@ class EditorAggregationResult
     EditorAggregationResult() = default;
 };
 
-class EditorAggregation
+class EditorAggregator
 {
   public:
-    using SharedPtr = std::shared_ptr<EditorAggregation>;
+    using SharedPtr = std::shared_ptr<EditorAggregator>;
 
     virtual EditorAggregationResult::SharedPtr reduce(const EditorStack::SharedPtr &pEditorStack) = 0;
 
-    virtual ~EditorAggregation() = default;
+    virtual ~EditorAggregator() = default;
 };
 
 } // namespace psdf

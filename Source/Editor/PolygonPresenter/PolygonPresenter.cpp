@@ -1,24 +1,22 @@
 #include "PolygonPresenter.h"
-#include "../Event/NewStackCommandEvent.h"
+#include "../Aggregator/PolygonPeekingEditorAggregator.h"
 
 using namespace Falcor;
 using namespace psdf;
 
-PolygonPresenter::SharedPtr PolygonPresenter::create()
+PolygonPresenter::SharedPtr PolygonPresenter::create(Editor::SharedPtr pEditor)
 {
-    return SharedPtr(new PolygonPresenter());
+    return SharedPtr(new PolygonPresenter(std::move(pEditor)));
 }
 
-void psdf::PolygonPresenter::accept(const psdf::EditorEvent::SharedPtr &pEvent)
+PolygonPresenter::PolygonPresenter(Editor::SharedPtr pEditor)
+    : mpEditor(std::move(pEditor)), mpPolygonPeekingAggregator(PolygonPeekingEditorAggregator::create())
 {
-    if (auto newCommandEvent = std::dynamic_pointer_cast<NewStackCommandEvent>(pEvent))
-    {
-        updatePolygon(newCommandEvent->getEditor()->getEditorStack()->peekPolygon());
-    }
 }
 
 void PolygonPresenter::render(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo)
 {
+    updatePolygon();
     if (!mpPolygon)
     {
         return;
@@ -33,8 +31,17 @@ void PolygonPresenter::setRenderer(const PolygonRenderer::SharedPtr &pRenderer)
     mpRenderer = pRenderer;
 }
 
-void PolygonPresenter::updatePolygon(const Polygon::SharedPtr &pPolygon)
+void PolygonPresenter::updatePolygon()
 {
+    auto pResult = mpPolygonPeekingAggregator->peekEditor(mpEditor);
+    FALCOR_ASSERT(pResult);
+
+    auto pPolygon = pResult->getPolygon();
+    if (mpPolygon.get() == pPolygon.get())
+    {
+        return;
+    }
+
     mpPolygon = pPolygon;
     mpRenderer->setPolygon(pPolygon);
 }

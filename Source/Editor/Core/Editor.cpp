@@ -17,7 +17,7 @@ Editor::SharedPtr Editor::create(EditorStack::SharedPtr pStack)
     return SharedPtr(new Editor(std::move(pStack)));
 }
 
-void Editor::addCommand(EditorCommand::SharedPtr pCommand)
+void Editor::addCommand(const EditorCommand::SharedPtr& pCommand)
 {
     if (auto pStackCommand = std::dynamic_pointer_cast<StackCommand>(pCommand))
     {
@@ -51,8 +51,8 @@ void Editor::addConsumer(EditorConsumer::SharedPtr pConsumer)
 void Editor::removeConsumer(const EditorConsumer::SharedPtr &pConsumer)
 {
     std::vector<EditorConsumer::SharedPtr> newVec;
-    std::copy_if(mConsumers.begin(), mConsumers.end(), std::back_inserter(newVec),
-                 [&pConsumer](auto &element) { return element.get() != pConsumer.get(); });
+    auto notIdentical = [&pConsumer](auto &element) { return element.get() != pConsumer.get(); };
+    std::copy_if(mConsumers.begin(), mConsumers.end(), std::back_inserter(newVec), notIdentical);
     mConsumers = std::move(newVec);
 }
 
@@ -64,19 +64,22 @@ void Editor::addConstraint(EditorConstraint::SharedPtr pConstraint)
 void Editor::removeConstraint(const EditorConstraint::SharedPtr &pConstraint)
 {
     std::vector<EditorConstraint::SharedPtr> newVec;
-    std::copy_if(mConstraints.begin(), mConstraints.end(), std::back_inserter(newVec),
-                 [&pConstraint](auto &element) { return element.get() != pConstraint.get(); });
+    auto notIdentical = [&pConstraint](auto &element) { return element.get() != pConstraint.get(); };
+    std::copy_if(mConstraints.begin(), mConstraints.end(), std::back_inserter(newVec), notIdentical);
     mConstraints = std::move(newVec);
 }
+
 void Editor::transform(EditorTransformation::SharedPtr &pTransformation)
 {
     pTransformation->transform(mpStack);
     notifyConsumers(StackTransformedEvent::create(this->shared_from_this(), pTransformation));
 }
-EditorAggregationResult::SharedPtr Editor::reduce(const EditorAggregation::SharedPtr &pAggregation) const
+
+EditorAggregationResult::SharedPtr Editor::reduce(const EditorAggregator::SharedPtr &pAggregation) const
 {
     return pAggregation->reduce(mpStack);
 }
+
 void Editor::notifyConsumers(const EditorEvent::SharedPtr &pEvent)
 {
     for (auto &pConsumer : this->mConsumers)
@@ -85,7 +88,7 @@ void Editor::notifyConsumers(const EditorEvent::SharedPtr &pEvent)
     }
 }
 
-const EditorStack::SharedPtr Editor::getEditorStack() const
+EditorStack::SharedPtr Editor::getEditorStack() const
 {
     return mpStack;
 }

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../Polygon/Polygon.h"
-#include "../RenderObject.h"
-#include "./PolygonRenderer.h"
+#include "../../../Polygon/Polygon.h"
+#include "../../RenderObject.h"
+#include "../PolygonRenderer.h"
 
 namespace psdf
 {

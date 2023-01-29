@@ -1,4 +1,4 @@
-#include "PolygonRenderer.h"
+#include "../PolygonRenderer.h"
 
 namespace psdf
 {

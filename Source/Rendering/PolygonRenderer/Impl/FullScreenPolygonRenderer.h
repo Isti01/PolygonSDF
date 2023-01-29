@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../FullScreenTriangle.h"
-#include "PolygonRenderer.h"
+#include "../../FullScreenTriangle.h"
+#include "../PolygonRenderer.h"
 
 namespace psdf
 {

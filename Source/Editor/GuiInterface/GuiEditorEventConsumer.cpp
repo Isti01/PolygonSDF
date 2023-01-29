@@ -1,5 +1,5 @@
 #include "GuiEditorEventConsumer.h"
-#include "../Event/NewCommandEvent.h"
+#include "../Event/NewStackCommandEvent.h"
 
 using namespace psdf;
 
@@ -10,6 +10,6 @@ GuiEditorEventConsumer::SharedPtr GuiEditorEventConsumer::create()
 
 void GuiEditorEventConsumer::accept(const EditorEvent::SharedPtr &pEvent)
 {
-    if (auto newCommandEvent = std::dynamic_pointer_cast<NewCommandEvent>(pEvent)) {
+    if (auto newCommandEvent = std::dynamic_pointer_cast<NewStackCommandEvent>(pEvent)) {
     }
 }

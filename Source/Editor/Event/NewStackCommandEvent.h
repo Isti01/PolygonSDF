@@ -6,15 +6,16 @@
 namespace psdf
 {
 
-class NewCommandEvent : public EditorEvent
+class NewStackCommandEvent : public EditorEvent
 {
   public:
     static SharedPtr create(const Editor::SharedPtr &pEditor, const EditorCommand::SharedPtr &pCommand);
 
     [[nodiscard]] EditorCommand::SharedPtr getCommand() const;
+    [[nodiscard]] Editor::SharedPtr getEditor() const;
 
   protected:
-    NewCommandEvent(Editor::SharedPtr pEditor, EditorCommand::SharedPtr pCommand);
+    NewStackCommandEvent(Editor::SharedPtr pEditor, EditorCommand::SharedPtr pCommand);
 
   private:
     Editor::SharedPtr mpEditor;

@@ -24,7 +24,7 @@ FullScreenTriangle::FullScreenTriangle(GraphicsState::SharedPtr pGraphicsState)
 
 FullScreenTriangle::SharedPtr FullScreenTriangle::create(GraphicsState::SharedPtr pGraphicsState)
 {
-    return std::make_shared<FullScreenTriangle>(std::move(pGraphicsState));
+    return SharedPtr(new FullScreenTriangle(std::move(pGraphicsState)));
 }
 
 RenderObject::SharedPtr createTriangleObject()

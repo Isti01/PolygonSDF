@@ -45,10 +45,10 @@ void PolygonOutlineRenderer::uploadPolygonData()
 {
     auto segments = mpPolygon->getSegments();
 
-    std::vector<uint32_t> indices(segments->size() * 2);
+    std::vector<uint32_t> indices(segments.size() * 2);
     std::generate(indices.begin(), indices.end(), RangeGenerator());
 
-    mpRenderObject = RenderObject::create(*segments, indices, getVertexLayout(), Vao::Topology::LineList);
+    mpRenderObject = RenderObject::create(segments, indices, getVertexLayout(), Vao::Topology::LineList);
 }
 
 void PolygonOutlineRenderer::renderImpl(RenderContext *context)

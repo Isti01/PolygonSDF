@@ -2,6 +2,7 @@
 #include "../Event/ConstraintViolationEvent.h"
 #include "../Event/NewCommandEvent.h"
 #include "../Event/StackTransformedEvent.h"
+#include "../Event/UnknownCommandEvent.h"
 #include <algorithm>
 #include <iterator>
 
@@ -18,17 +19,28 @@ Editor::SharedPtr Editor::create(EditorStack::SharedPtr pStack)
 
 void Editor::addCommand(EditorCommand::SharedPtr pCommand)
 {
+    if (auto pStackCommand = std::dynamic_pointer_cast<StackCommand>(pCommand))
+    {
+        addStackCommand(pStackCommand);
+        return;
+    }
+
+    this->notifyConsumers(UnknownCommandEvent::create(pCommand));
+}
+
+void Editor::addStackCommand(const StackCommand::SharedPtr &pStackCommand)
+{
     for (auto &constraint : this->mConstraints)
     {
-        if (!constraint->evaluate(this->mpStack, pCommand))
+        if (!constraint->evaluate(this->mpStack, pStackCommand))
         {
-            notifyConsumers(ConstraintViolationEvent::create(this->shared_from_this(), constraint, pCommand));
+            notifyConsumers(ConstraintViolationEvent::create(this->shared_from_this(), constraint, pStackCommand));
             return;
         }
     }
 
-    mpStack->push(pCommand);
-    notifyConsumers(NewCommandEvent::create(this->shared_from_this(), pCommand));
+    mpStack->push(pStackCommand);
+    notifyConsumers(NewCommandEvent::create(this->shared_from_this(), pStackCommand));
 }
 
 void Editor::addConsumer(EditorConsumer::SharedPtr pConsumer)
@@ -56,7 +68,6 @@ void Editor::removeConstraint(const EditorConstraint::SharedPtr &pConstraint)
                  [&pConstraint](auto &element) { return element.get() != pConstraint.get(); });
     mConstraints = std::move(newVec);
 }
-
 void Editor::transform(EditorTransformation::SharedPtr &pTransformation)
 {
     pTransformation->transform(mpStack);

@@ -11,9 +11,10 @@ class StackTransformedEvent : public EditorEvent
   public:
     static SharedPtr create(const Editor::SharedPtr &pEditor, const EditorTransformation::SharedPtr &pTransformation);
 
-    StackTransformedEvent(Editor::SharedPtr pEditor, EditorTransformation::SharedPtr pTransformation);
-
     [[nodiscard]] EditorTransformation::SharedPtr getTransformation() const;
+
+  protected:
+    StackTransformedEvent(Editor::SharedPtr pEditor, EditorTransformation::SharedPtr pTransformation);
 
   private:
     Editor::SharedPtr mpEditor;

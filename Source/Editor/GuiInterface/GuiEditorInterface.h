@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Aggregator/PolygonPeekingEditorAggregator.h"
 #include "../Core/EditorSupplier.h"
 #include "GuiEditorEventConsumer.h"
 #include <Falcor.h>
@@ -22,12 +23,15 @@ class GuiEditorInterface
     }
 
     ~GuiEditorInterface();
+
   protected:
     GuiEditorInterface(Editor::SharedPtr pEditor);
+
 
   private:
     Editor::SharedPtr mpEditor;
     EditorSupplier::SharedPtr mpCommandSupplier;
+    PolygonPeekingEditorAggregator::SharedPtr mpPolygonPeekingAggregator;
     GuiEditorEventConsumer::SharedPtr mpEventConsumer;
 };
 

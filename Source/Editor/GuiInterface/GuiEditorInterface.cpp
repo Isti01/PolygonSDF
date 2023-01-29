@@ -9,7 +9,8 @@ GuiEditorInterface::SharedPtr GuiEditorInterface::create(Editor::SharedPtr pEdit
 
 GuiEditorInterface::GuiEditorInterface(Editor::SharedPtr pEditor)
     : mpEditor(std::move(pEditor)), mpCommandSupplier(EditorSupplier::create(mpEditor)),
-      mpEventConsumer(GuiEditorEventConsumer::create())
+      mpEventConsumer(GuiEditorEventConsumer::create()),
+      mpPolygonPeekingAggregator(PolygonPeekingEditorAggregator::create())
 {
     mpEditor->addConsumer(std::static_pointer_cast<EditorConsumer>(mpEventConsumer));
 }

@@ -27,9 +27,8 @@ void PolygonSDFApplication::onLoad(RenderContext *pRenderContext)
     mpEditor = Editor::create(EditorStack::create());
     mpGuiEditorInterface = GuiEditorInterface::create(mpEditor);
     mpPolygonRenderer = PolygonRendererFactory::getPolygonRenderer();
-    mpPolygonPresenter = PolygonPresenter::create();
+    mpPolygonPresenter = PolygonPresenter::create(mpEditor);
     mpPolygonPresenter->setRenderer(mpPolygonRenderer);
-    mpEditor->addConsumer(mpPolygonPresenter);
     transformPolygonRenderer(mpPolygonRenderer, mScale);
     mpEditor->addCommand(SetPolygonStackCommand::create(polygon));
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EditorAggregation.h"
+#include "EditorAggregator.h"
 #include "EditorConstraint.h"
 #include "EditorConsumer.h"
 #include "EditorStack.h"
@@ -19,7 +19,7 @@ class Editor : public std::enable_shared_from_this<Editor>
 
     static SharedPtr create(EditorStack::SharedPtr pStack);
 
-    void addCommand(EditorCommand::SharedPtr pCommand);
+    void addCommand(const EditorCommand::SharedPtr &pCommand);
 
     void addConsumer(EditorConsumer::SharedPtr pConsumer);
     void removeConsumer(const EditorConsumer::SharedPtr &pConsumer);
@@ -28,16 +28,16 @@ class Editor : public std::enable_shared_from_this<Editor>
     void removeConstraint(const EditorConstraint::SharedPtr &pConstraint);
 
     void transform(EditorTransformation::SharedPtr &pTransformation);
-    [[nodiscard]] EditorAggregationResult::SharedPtr reduce(const EditorAggregation::SharedPtr &pAggregation) const;
+    [[nodiscard]] EditorAggregationResult::SharedPtr reduce(const EditorAggregator::SharedPtr &pAggregation) const;
 
-    [[nodiscard]] const EditorStack::SharedPtr getEditorStack() const;
-
-  private:
-    void addStackCommand(const StackCommand::SharedPtr& pStackCommand);
-    void notifyConsumers(const EditorEvent::SharedPtr &pEvent);
+    [[nodiscard]] EditorStack::SharedPtr getEditorStack() const;
 
   protected:
     Editor(EditorStack::SharedPtr pStack);
+
+  private:
+    void addStackCommand(const StackCommand::SharedPtr &pStackCommand);
+    void notifyConsumers(const EditorEvent::SharedPtr &pEvent);
 
   private:
     EditorStack::SharedPtr mpStack;

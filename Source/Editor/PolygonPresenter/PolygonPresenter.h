@@ -1,31 +1,34 @@
 #pragma once
 
 #include "../../Rendering/PolygonRenderer/PolygonRenderer.h"
-#include "../Core/EditorConsumer.h"
+#include "../Aggregator/PolygonPeekingEditorAggregator.h"
+#include "../Core/Editor.h"
+
 #include <Falcor.h>
 
 namespace psdf
 {
 using namespace Falcor;
 
-class PolygonPresenter : public EditorConsumer
+class PolygonPresenter
 {
   public:
     using SharedPtr = std::shared_ptr<PolygonPresenter>;
 
-    static SharedPtr create();
+    static SharedPtr create(Editor::SharedPtr pEditor);
 
-    void accept(const EditorEvent::SharedPtr &pEvent) override;
     void render(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo);
 
     void setRenderer(const PolygonRenderer::SharedPtr &pRenderer);
 
-protected:
-    PolygonPresenter() = default;
+  protected:
+    PolygonPresenter(Editor::SharedPtr pEditor);
 
-    void updatePolygon(const Polygon::SharedPtr& pPolygon);
+    void updatePolygon();
 
   private:
+    Editor::SharedPtr mpEditor;
+    PolygonPeekingEditorAggregator::SharedPtr mpPolygonPeekingAggregator;
     PolygonRenderer::SharedPtr mpRenderer;
     Polygon::SharedPtr mpPolygon;
 };

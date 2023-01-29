@@ -16,17 +16,10 @@ struct RenderObject
     uint32_t vertexCount;
     uint32_t indexCount;
 
-    RenderObject(Buffer::SharedPtr pVertexBuffer, Buffer::SharedPtr pIndexBuffer, Vao::SharedPtr pVao,
-                 uint32_t vertexCount, uint32_t indexCount)
-        : pVertexBuffer(std::move(pVertexBuffer)), pIndexBuffer(std::move(pIndexBuffer)), pVao(std::move(pVao)),
-          vertexCount(vertexCount), indexCount(indexCount)
-    {
-    }
-
     static SharedPtr create(const Buffer::SharedPtr &pVertexBuffer, const Buffer::SharedPtr &pIndexBuffer,
                             const Vao::SharedPtr &pVao, uint32_t vertexCount, uint32_t indexCount)
     {
-        return std::make_shared<RenderObject>(pVertexBuffer, pIndexBuffer, pVao, vertexCount, indexCount);
+        return SharedPtr(new RenderObject(pVertexBuffer, pIndexBuffer, pVao, vertexCount, indexCount));
     }
 
     template <typename VertexT>
@@ -48,7 +41,15 @@ struct RenderObject
         Vao::SharedPtr pVao = Vao::create(topology, layout, {pVb}, pIb, ResourceFormat::R32Uint);
         FALCOR_ASSERT(pVao)
 
-        return std::make_shared<psdf::RenderObject>(pVb, pIb, pVao, vertexCount, indexCount);
+        return SharedPtr(new RenderObject(pVb, pIb, pVao, vertexCount, indexCount));
+    }
+
+  protected:
+    RenderObject(Buffer::SharedPtr pVertexBuffer, Buffer::SharedPtr pIndexBuffer, Vao::SharedPtr pVao,
+                 uint32_t vertexCount, uint32_t indexCount)
+        : pVertexBuffer(std::move(pVertexBuffer)), pIndexBuffer(std::move(pIndexBuffer)), pVao(std::move(pVao)),
+          vertexCount(vertexCount), indexCount(indexCount)
+    {
     }
 };
 

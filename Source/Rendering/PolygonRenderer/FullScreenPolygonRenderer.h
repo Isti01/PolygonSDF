@@ -19,6 +19,7 @@ class FullScreenPolygonRenderer : public PolygonRenderer
 
   protected:
     FullScreenPolygonRenderer(GraphicsState::SharedPtr pGraphicsState);
+
     void init() override;
     void uploadPolygonData() override;
     void renderImpl(RenderContext *pRenderContext)  override;

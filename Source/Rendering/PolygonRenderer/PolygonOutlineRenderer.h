@@ -23,6 +23,7 @@ class PolygonOutlineRenderer : public PolygonRenderer
 
   protected:
     PolygonOutlineRenderer(GraphicsState::SharedPtr pGraphicsState, const float4 &color = float4(1));
+
     void init() override;
     void uploadPolygonData() override;
     void renderImpl(RenderContext *pRenderContext) override;

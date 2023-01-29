@@ -1,5 +1,5 @@
 #include "PolygonSDFApplication.h"
-#include "Editor/Command/AddPointCommand.h"
+#include "Editor/Command/SetPolygonStackCommand.h"
 #include "Rendering/PolygonRenderer/AspectRatioIndependentPolygonRenderer.h"
 #include "Rendering/PolygonRenderer/FullScreenPolygonRenderer.h"
 #include "Rendering/PolygonRenderer/PolygonOutlineRenderer.h"
@@ -59,19 +59,19 @@ void transformPolygonRenderer(PolygonRenderer::SharedPtr &pRenderer, float scale
 {
     auto translation = rmcv::translate(float3(.5, .5, 0));
 
-    float mappedScale = glm::pow(1.8, scale);
+    float mappedScale = glm::pow(1.8f, scale);
     auto scaling = rmcv::scale(float3{mappedScale, mappedScale, 1});
     pRenderer->transform(translation * scaling);
 }
 
 void PolygonSDFApplication::onLoad(RenderContext *pRenderContext)
 {
-    mpEditor = Editor::create(EditorStack::create({AddPointCommand::create({-.5,0})}));
+    auto polygon = Polygon::create({{{.5, 0}}, {{0, .5}}, {{-.5, 0}}, {{0, -.5}}});
+    mpEditor = Editor::create(EditorStack::create({StackEntry{SetPolygonStackCommand::create(polygon), polygon}}));
     mpGuiEditorInterface = GuiEditorInterface::create(mpEditor);
     mpPolygonRenderer = createPolygonRenderer();
     transformPolygonRenderer(mpPolygonRenderer, mScale);
 
-    auto polygon = Polygon::create({{{.5, 0}}, {{0, .5}}, {{-.5, 0}}, {{0, -.5}}});
     mpPolygonRenderer->setPolygon(polygon);
 }
 

@@ -5,8 +5,11 @@ target_sources(PolygonSDF PRIVATE
         Shaders/SolidColor.3d.slang
         Shaders/UVColor.3d.slang
 
-        Source/Editor/Command/AddPointCommand.cpp
-        Source/Editor/Command/AddPointCommand.h
+        Source/Editor/Command/AddPointStackCommand.cpp
+        Source/Editor/Command/AddPointStackCommand.h
+        Source/Editor/Command/SetPolygonStackCommand.cpp
+        Source/Editor/Command/SetPolygonStackCommand.h
+        Source/Editor/Command/StackCommand.h
 
         Source/Editor/Core/Editor.cpp
         Source/Editor/Core/Editor.h
@@ -20,6 +23,7 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Core/EditorSupplier.h
         Source/Editor/Core/EditorSupplier.cpp
         Source/Editor/Core/EditorTransformation.h
+        Source/Editor/Core/StackEntry.h
 
         Source/Editor/Event/ConstraintViolationEvent.cpp
         Source/Editor/Event/ConstraintViolationEvent.h
@@ -27,6 +31,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Event/NewCommandEvent.h
         Source/Editor/Event/StackTransformedEvent.cpp
         Source/Editor/Event/StackTransformedEvent.h
+        Source/Editor/Event/UnknownCommandEvent.cpp
+        Source/Editor/Event/UnknownCommandEvent.h
 
         Source/Editor/GuiInterface/GuiEditorEventConsumer.cpp
         Source/Editor/GuiInterface/GuiEditorEventConsumer.h

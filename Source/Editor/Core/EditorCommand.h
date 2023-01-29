@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 namespace psdf
 {
@@ -10,10 +11,9 @@ class EditorCommand
   public:
     using SharedPtr = std::shared_ptr<EditorCommand>;
 
-    virtual ~EditorCommand() = default;
+    [[nodiscard]] virtual std::string getName() const = 0;
 
-  protected:
-    EditorCommand() = default;
+    virtual ~EditorCommand() = default;
 };
 
 } // namespace psdf

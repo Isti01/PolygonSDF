@@ -19,6 +19,7 @@ class CompositePolygonRenderer : public PolygonRenderer
 
   protected:
     CompositePolygonRenderer(std::vector<PolygonRenderer::SharedPtr> renderers);
+
     void init() override;
     void uploadPolygonData() override;
     void renderImpl(RenderContext *pRenderContext) override;

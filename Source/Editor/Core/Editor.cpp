@@ -1,6 +1,6 @@
 #include "Editor.h"
 #include "../Event/ConstraintViolationEvent.h"
-#include "../Event/NewCommandEvent.h"
+#include "../Event/NewStackCommandEvent.h"
 #include "../Event/StackTransformedEvent.h"
 #include "../Event/UnknownCommandEvent.h"
 #include <algorithm>
@@ -40,7 +40,7 @@ void Editor::addStackCommand(const StackCommand::SharedPtr &pStackCommand)
     }
 
     mpStack->push(pStackCommand);
-    notifyConsumers(NewCommandEvent::create(this->shared_from_this(), pStackCommand));
+    notifyConsumers(NewStackCommandEvent::create(this->shared_from_this(), pStackCommand));
 }
 
 void Editor::addConsumer(EditorConsumer::SharedPtr pConsumer)
@@ -83,4 +83,9 @@ void Editor::notifyConsumers(const EditorEvent::SharedPtr &pEvent)
     {
         pConsumer->accept(pEvent);
     }
+}
+
+const EditorStack::SharedPtr Editor::getEditorStack() const
+{
+    return mpStack;
 }

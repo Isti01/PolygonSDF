@@ -5,9 +5,11 @@
 
 #include "./Rendering/RenderObject.h"
 #include "Editor/Core/Editor.h"
+#include "Editor/Core/EditorConsumer.h"
 #include "Editor/GuiInterface/GuiEditorInterface.h"
+#include "Editor/PolygonPresenter/PolygonPresenter.h"
 #include "Rendering/FullScreenTriangle.h"
-#include "Rendering/PolygonRenderer/CompositePolygonRenderer.h"
+#include "Rendering/PolygonRenderer/Impl/CompositePolygonRenderer.h"
 
 namespace psdf
 {
@@ -28,6 +30,8 @@ class PolygonSDFApplication : public IRenderer
   private:
     float mScale = .5f;
     float mScaleSpeed = 0.1f;
+
+    PolygonPresenter::SharedPtr mpPolygonPresenter = nullptr;
     PolygonRenderer::SharedPtr mpPolygonRenderer = nullptr;
     Editor::SharedPtr mpEditor = nullptr;
     GuiEditorInterface::SharedPtr mpGuiEditorInterface = nullptr;

@@ -27,8 +27,8 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Editor/Event/ConstraintViolationEvent.cpp
         Source/Editor/Event/ConstraintViolationEvent.h
-        Source/Editor/Event/NewCommandEvent.cpp
-        Source/Editor/Event/NewCommandEvent.h
+        Source/Editor/Event/NewStackCommandEvent.cpp
+        Source/Editor/Event/NewStackCommandEvent.h
         Source/Editor/Event/StackTransformedEvent.cpp
         Source/Editor/Event/StackTransformedEvent.h
         Source/Editor/Event/UnknownCommandEvent.cpp
@@ -38,6 +38,9 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/GuiInterface/GuiEditorEventConsumer.h
         Source/Editor/GuiInterface/GuiEditorInterface.cpp
         Source/Editor/GuiInterface/GuiEditorInterface.h
+
+        Source/Editor/PolygonPresenter/PolygonPresenter.cpp
+        Source/Editor/PolygonPresenter/PolygonPresenter.h
 
         Source/Polygon/Point.cpp
         Source/Polygon/Point.h
@@ -50,18 +53,20 @@ target_sources(PolygonSDF PRIVATE
         Source/Rendering/FullScreenTriangle.h
         Source/Rendering/RenderObject.h
 
-        Source/Rendering/PolygonRenderer/AspectRatioIndependentPolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/AspectRatioIndependentPolygonRenderer.h
-        Source/Rendering/PolygonRenderer/CompositePolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/CompositePolygonRenderer.h
-        Source/Rendering/PolygonRenderer/FullScreenPolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/FullScreenPolygonRenderer.h
-        Source/Rendering/PolygonRenderer/PolygonOutlineRenderer.cpp
-        Source/Rendering/PolygonRenderer/PolygonOutlineRenderer.h
+        Source/Rendering/PolygonRenderer/Impl/AspectRatioIndependentPolygonRenderer.cpp
+        Source/Rendering/PolygonRenderer/Impl/AspectRatioIndependentPolygonRenderer.h
+        Source/Rendering/PolygonRenderer/Impl/CompositePolygonRenderer.cpp
+        Source/Rendering/PolygonRenderer/Impl/CompositePolygonRenderer.h
+        Source/Rendering/PolygonRenderer/Impl/FullScreenPolygonRenderer.cpp
+        Source/Rendering/PolygonRenderer/Impl/FullScreenPolygonRenderer.h
+        Source/Rendering/PolygonRenderer/Impl/PolygonOutlineRenderer.cpp
+        Source/Rendering/PolygonRenderer/Impl/PolygonOutlineRenderer.h
+        Source/Rendering/PolygonRenderer/Impl/ProxyPolygonRenderer.cpp
+        Source/Rendering/PolygonRenderer/Impl/ProxyPolygonRenderer.h
         Source/Rendering/PolygonRenderer/PolygonRenderer.cpp
         Source/Rendering/PolygonRenderer/PolygonRenderer.h
-        Source/Rendering/PolygonRenderer/ProxyPolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/ProxyPolygonRenderer.h
+        Source/Rendering/PolygonRenderer/PolygonRendererFactory.cpp
+        Source/Rendering/PolygonRenderer/PolygonRendererFactory.h
 
         Source/Util/RangeGenerator.cpp
         Source/Util/RangeGenerator.h

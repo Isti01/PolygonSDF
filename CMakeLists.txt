@@ -10,9 +10,13 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Editor/Command/AddPointStackCommand.cpp
         Source/Editor/Command/AddPointStackCommand.h
+        Source/Editor/Command/DeletePointStackCommand.cpp
+        Source/Editor/Command/DeletePointStackCommand.h
         Source/Editor/Command/SetPolygonStackCommand.cpp
         Source/Editor/Command/SetPolygonStackCommand.h
         Source/Editor/Command/StackCommand.h
+        Source/Editor/Command/UpdatePointStackCommand.cpp
+        Source/Editor/Command/UpdatePointStackCommand.h
 
         Source/Editor/Core/Editor.cpp
         Source/Editor/Core/Editor.h
@@ -37,10 +41,10 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Event/UnknownCommandEvent.cpp
         Source/Editor/Event/UnknownCommandEvent.h
 
-        Source/Editor/GuiInterface/GuiEditorEventConsumer.cpp
-        Source/Editor/GuiInterface/GuiEditorEventConsumer.h
-        Source/Editor/GuiInterface/GuiEditorInterface.cpp
-        Source/Editor/GuiInterface/GuiEditorInterface.h
+        Source/Editor/GuiEditor/GuiEditor.cpp
+        Source/Editor/GuiEditor/GuiEditor.h
+        Source/Editor/GuiEditor/GuiEditorEventConsumer.cpp
+        Source/Editor/GuiEditor/GuiEditorEventConsumer.h
 
         Source/Editor/PolygonPresenter/PolygonPresenter.cpp
         Source/Editor/PolygonPresenter/PolygonPresenter.h
@@ -73,6 +77,8 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Util/RangeGenerator.cpp
         Source/Util/RangeGenerator.h
+        Source/Util/WithImGuiId.cpp
+        Source/Util/WithImGuiId.h
 
         Source/Main.cpp
         Source/PolygonSDFApplication.cpp

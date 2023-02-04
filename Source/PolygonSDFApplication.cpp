@@ -9,7 +9,7 @@ using namespace psdf;
 
 void PolygonSDFApplication::onGuiRender(Gui *pGui)
 {
-    mpGuiEditorInterface->render(pGui);
+    mpGuiEditor->render(pGui);
 }
 
 void transformPolygonRenderer(PolygonRenderer::SharedPtr &pRenderer, float scale)
@@ -25,7 +25,7 @@ void PolygonSDFApplication::onLoad(RenderContext *pRenderContext)
 {
     auto polygon = Polygon::create({{{.5, 0}}, {{0, .5}}, {{-.5, 0}}, {{0, -.5}}});
     mpEditor = Editor::create(EditorStack::create());
-    mpGuiEditorInterface = GuiEditorInterface::create(mpEditor);
+    mpGuiEditor = GuiEditor::create(mpEditor);
     mpPolygonRenderer = PolygonRendererFactory::getPolygonRenderer();
     mpPolygonPresenter = PolygonPresenter::create(mpEditor);
     mpPolygonPresenter->setRenderer(mpPolygonRenderer);

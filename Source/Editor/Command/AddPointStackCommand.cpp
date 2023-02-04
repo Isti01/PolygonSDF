@@ -2,12 +2,12 @@
 
 using namespace psdf;
 
-StackCommand::SharedPtr AddPointStackCommand::create(const float2 &point)
+StackCommand::SharedPtr AddPointStackCommand::create(const Point &point)
 {
     return SharedPtr(new AddPointStackCommand(point));
 }
 
-AddPointStackCommand::AddPointStackCommand(const float2 &point) : mPoint(point)
+AddPointStackCommand::AddPointStackCommand(const Point &point) : mPoint(point)
 {
 }
 
@@ -23,7 +23,7 @@ std::string AddPointStackCommand::getName() const
     return "AddPointStackCommand";
 }
 
-float2 AddPointStackCommand::getPoint()
+Point AddPointStackCommand::getPoint()
 {
     return mPoint;
 }

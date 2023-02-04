@@ -1,8 +1,7 @@
 #pragma once
 
 #include "../Aggregator/PolygonPeekingEditorAggregator.h"
-#include "../Core/EditorSupplier.h"
-#include "GuiEditorEventConsumer.h"
+#include "../Aggregator/StackSizeEditorAggregator.h"
 #include <Falcor.h>
 #include <memory>
 
@@ -19,12 +18,11 @@ class GuiEditor
 
     void render(Gui *pGui);
 
-    ~GuiEditor();
-
   protected:
     GuiEditor(Editor::SharedPtr pEditor);
 
   private:
+    void showControlButtons(Gui::Window& window);
     void showVertexList(Gui::Window &window);
     void showVertexInput(Gui::Window &window);
 
@@ -32,9 +30,8 @@ class GuiEditor
     float2 mNewPoint{0};
     Polygon::SharedPtr mpCurrentPolygon;
     Editor::SharedPtr mpEditor;
-    EditorSupplier::SharedPtr mpCommandSupplier;
     PolygonPeekingEditorAggregator::SharedPtr mpPolygonPeekingAggregator;
-    GuiEditorEventConsumer::SharedPtr mpEventConsumer;
+    StackSizeEditorAggregator::SharedPtr mpStackSizeAggregator;
 };
 
 } // namespace psdf

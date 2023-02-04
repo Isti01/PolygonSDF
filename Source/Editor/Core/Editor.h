@@ -27,7 +27,7 @@ class Editor : public std::enable_shared_from_this<Editor>
     void addConstraint(EditorConstraint::SharedPtr pConstraint);
     void removeConstraint(const EditorConstraint::SharedPtr &pConstraint);
 
-    void transform(EditorTransformation::SharedPtr &pTransformation);
+    void transform(const EditorTransformation::SharedPtr &pTransformation);
     [[nodiscard]] EditorAggregationResult::SharedPtr reduce(const EditorAggregator::SharedPtr &pAggregation) const;
 
     [[nodiscard]] EditorStack::SharedPtr getEditorStack() const;

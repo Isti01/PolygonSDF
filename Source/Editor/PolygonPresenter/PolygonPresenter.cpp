@@ -43,5 +43,9 @@ void PolygonPresenter::updatePolygon()
     }
 
     mpPolygon = pPolygon;
-    mpRenderer->setPolygon(pPolygon);
+
+    if (mpPolygon != nullptr)
+    {
+        mpRenderer->setPolygon(pPolygon);
+    }
 }

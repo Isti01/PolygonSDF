@@ -23,14 +23,13 @@ void transformPolygonRenderer(PolygonRenderer::SharedPtr &pRenderer, float scale
 
 void PolygonSDFApplication::onLoad(RenderContext *pRenderContext)
 {
-    auto polygon = Polygon::create({{{.5, 0}}, {{0, .5}}, {{-.5, 0}}, {{0, -.5}}});
     mpEditor = Editor::create(EditorStack::create());
     mpGuiEditor = GuiEditor::create(mpEditor);
     mpPolygonRenderer = PolygonRendererFactory::getPolygonRenderer();
     mpPolygonPresenter = PolygonPresenter::create(mpEditor);
     mpPolygonPresenter->setRenderer(mpPolygonRenderer);
     transformPolygonRenderer(mpPolygonRenderer, mScale);
-    mpEditor->addCommand(SetPolygonStackCommand::create(polygon));
+    mpEditor->addCommand(SetPolygonStackCommand::create(Polygon::kExamplePolygon));
 }
 
 void PolygonSDFApplication::onFrameRender(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo)

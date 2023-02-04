@@ -2,7 +2,10 @@
 #include "../../Util/WithImGuiId.h"
 #include "../Command/AddPointStackCommand.h"
 #include "../Command/DeletePointStackCommand.h"
+#include "../Command/SetPolygonStackCommand.h"
 #include "../Command/UpdatePointStackCommand.h"
+#include "../Transformation/ClearHistoryEditorTransformation.h"
+#include "../Transformation/UndoEditorTransformation.h"
 
 #include <imgui.h>
 
@@ -14,11 +17,9 @@ GuiEditor::SharedPtr GuiEditor::create(Editor::SharedPtr pEditor)
 }
 
 GuiEditor::GuiEditor(Editor::SharedPtr pEditor)
-    : mpEditor(std::move(pEditor)), mpCommandSupplier(EditorSupplier::create(mpEditor)),
-      mpEventConsumer(GuiEditorEventConsumer::create()),
+    : mpEditor(std::move(pEditor)), mpStackSizeAggregator(StackSizeEditorAggregator::create()),
       mpPolygonPeekingAggregator(PolygonPeekingEditorAggregator::create())
 {
-    mpEditor->addConsumer(std::static_pointer_cast<EditorConsumer>(mpEventConsumer));
 }
 
 void GuiEditor::render(Gui *pGui)
@@ -28,9 +29,39 @@ void GuiEditor::render(Gui *pGui)
     mpCurrentPolygon = pPeekResult->getPolygon();
     Gui::Window window(pGui, "GUI Polygon Editor");
 
-    showVertexList(window);
+    showControlButtons(window);
+    ImGui::Spacing();
     window.separator();
+    ImGui::Spacing();
+    showVertexList(window);
+    ImGui::Spacing();
+    window.separator();
+    ImGui::Spacing();
     showVertexInput(window);
+}
+
+void GuiEditor::showControlButtons(Gui::Window &window)
+{
+    WithImGuiId id("ControlButtons");
+
+    size_t stackSize = mpStackSizeAggregator->getEditorStackSize(mpEditor)->getSize();
+    std::stringstream ss;
+    ss << "Commands in the editor stack: " << stackSize;
+    window.text(ss.str());
+    if (window.button("New Polygon"))
+    {
+        mpEditor->addCommand(SetPolygonStackCommand::create(Polygon::kExamplePolygon));
+    }
+
+    if (window.button("Undo", true))
+    {
+        mpEditor->transform(UndoEditorTransformation::create());
+    }
+
+    if (window.button("Clear History", true))
+    {
+        mpEditor->transform(ClearHistoryEditorTransformation::create());
+    }
 }
 
 bool pointEntry(Gui::Window &window, float2 &point, size_t index)
@@ -52,6 +83,9 @@ void GuiEditor::showVertexList(Gui::Window &window)
         return;
     }
 
+    bool showDeleteButtons = mpCurrentPolygon->getPoints().size() > 3;
+
+    window.text("Vertex Editor");
     std::vector<Point> points = mpCurrentPolygon->getPoints();
     for (size_t i = 0; i < points.size(); i++)
     {
@@ -59,28 +93,28 @@ void GuiEditor::showVertexList(Gui::Window &window)
         auto point = points[i].getCoordinates();
         if (pointEntry(window, point, i))
         {
-            mpCommandSupplier->dispatchCommand(UpdatePointStackCommand::create(i, point));
+            mpEditor->addCommand(UpdatePointStackCommand::create(i, point));
         }
-        if (window.button("Delete Vertex", true))
+        if (showDeleteButtons && window.button("Delete Vertex", true))
         {
-            mpCommandSupplier->dispatchCommand(DeletePointStackCommand::create(i));
+            mpEditor->addCommand(DeletePointStackCommand::create(i));
         }
     }
 }
 
 void GuiEditor::showVertexInput(Gui::Window &window)
 {
-    WithImGuiId id("VertexInputSection");
+    if (!mpCurrentPolygon)
+    {
+        return;
+    }
 
+    WithImGuiId id("VertexInputSection");
+    window.text("Add New Vertex");
     window.var("", mNewPoint);
     if (window.button("Add Point", true))
     {
-        mpCommandSupplier->dispatchCommand(AddPointStackCommand::create(mNewPoint));
+        mpEditor->addCommand(AddPointStackCommand::create(mNewPoint));
         mNewPoint = float2{0};
     }
-}
-
-GuiEditor::~GuiEditor()
-{
-    mpEditor->removeConsumer(std::static_pointer_cast<EditorConsumer>(mpEventConsumer));
 }

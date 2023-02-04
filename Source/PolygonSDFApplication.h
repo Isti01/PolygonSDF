@@ -6,7 +6,7 @@
 #include "./Rendering/RenderObject.h"
 #include "Editor/Core/Editor.h"
 #include "Editor/Core/EditorConsumer.h"
-#include "Editor/GuiInterface/GuiEditorInterface.h"
+#include "Editor/GuiEditor/GuiEditor.h"
 #include "Editor/PolygonPresenter/PolygonPresenter.h"
 #include "Rendering/FullScreenTriangle.h"
 #include "Rendering/PolygonRenderer/Impl/CompositePolygonRenderer.h"
@@ -34,7 +34,7 @@ class PolygonSDFApplication : public IRenderer
     PolygonPresenter::SharedPtr mpPolygonPresenter = nullptr;
     PolygonRenderer::SharedPtr mpPolygonRenderer = nullptr;
     Editor::SharedPtr mpEditor = nullptr;
-    GuiEditorInterface::SharedPtr mpGuiEditorInterface = nullptr;
+    GuiEditor::SharedPtr mpGuiEditor = nullptr;
 };
 
 } // namespace psdf

@@ -11,7 +11,7 @@ EditorSupplier::EditorSupplier(Editor::SharedPtr pEditor) : mpEditor(std::move(p
 {
 }
 
-void EditorSupplier::dispatchCommand(EditorCommand::SharedPtr &pCommand)
+void EditorSupplier::dispatchCommand(const EditorCommand::SharedPtr &pCommand)
 {
     mpEditor->addCommand(pCommand);
 }

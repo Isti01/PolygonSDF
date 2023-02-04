@@ -11,19 +11,19 @@ using namespace Falcor;
 class AddPointStackCommand : public StackCommand
 {
   public:
-    static StackCommand::SharedPtr create(const float2 &point);
+    static StackCommand::SharedPtr create(const Point &point);
 
     Polygon::SharedPtr perform(const Polygon::SharedPtr &polygon) const override;
 
     std::string getName() const override;
 
-    [[nodiscard]] float2 getPoint();
+    [[nodiscard]] Point getPoint();
 
   protected:
-    AddPointStackCommand(const float2 &point);
+    AddPointStackCommand(const Point &point);
 
   private:
-    float2 mPoint;
+    Point mPoint;
 };
 
 }; // namespace psdf

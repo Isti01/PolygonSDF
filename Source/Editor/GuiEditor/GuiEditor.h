@@ -10,25 +10,27 @@ namespace psdf
 {
 using namespace Falcor;
 
-class GuiEditorInterface
+class GuiEditor
 {
   public:
-    using SharedPtr = std::shared_ptr<GuiEditorInterface>;
+    using SharedPtr = std::shared_ptr<GuiEditor>;
 
     static SharedPtr create(Editor::SharedPtr pEditor);
 
-    void render(Gui *pGui)
-    {
-        Gui::Window window(pGui, "GUI Polygon Editor");
-    }
+    void render(Gui *pGui);
 
-    ~GuiEditorInterface();
+    ~GuiEditor();
 
   protected:
-    GuiEditorInterface(Editor::SharedPtr pEditor);
-
+    GuiEditor(Editor::SharedPtr pEditor);
 
   private:
+    void showVertexList(Gui::Window &window);
+    void showVertexInput(Gui::Window &window);
+
+  private:
+    float2 mNewPoint{0};
+    Polygon::SharedPtr mpCurrentPolygon;
     Editor::SharedPtr mpEditor;
     EditorSupplier::SharedPtr mpCommandSupplier;
     PolygonPeekingEditorAggregator::SharedPtr mpPolygonPeekingAggregator;

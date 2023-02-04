@@ -14,7 +14,7 @@ class EditorSupplier
 
     static SharedPtr create(Editor::SharedPtr pEditor);
 
-    void dispatchCommand(EditorCommand::SharedPtr &pCommand);
+    void dispatchCommand(const EditorCommand::SharedPtr &pCommand);
 
     virtual ~EditorSupplier() = default;
 

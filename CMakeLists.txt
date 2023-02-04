@@ -7,6 +7,8 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Editor/Aggregator/PolygonPeekingEditorAggregator.cpp
         Source/Editor/Aggregator/PolygonPeekingEditorAggregator.h
+        Source/Editor/Aggregator/StackSizeEditorAggregator.cpp
+        Source/Editor/Aggregator/StackSizeEditorAggregator.h
 
         Source/Editor/Command/AddPointStackCommand.cpp
         Source/Editor/Command/AddPointStackCommand.h
@@ -27,8 +29,6 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Core/EditorEvent.h
         Source/Editor/Core/EditorStack.cpp
         Source/Editor/Core/EditorStack.h
-        Source/Editor/Core/EditorSupplier.h
-        Source/Editor/Core/EditorSupplier.cpp
         Source/Editor/Core/EditorTransformation.h
         Source/Editor/Core/StackEntry.h
 
@@ -43,11 +43,14 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Editor/GuiEditor/GuiEditor.cpp
         Source/Editor/GuiEditor/GuiEditor.h
-        Source/Editor/GuiEditor/GuiEditorEventConsumer.cpp
-        Source/Editor/GuiEditor/GuiEditorEventConsumer.h
 
         Source/Editor/PolygonPresenter/PolygonPresenter.cpp
         Source/Editor/PolygonPresenter/PolygonPresenter.h
+
+        Source/Editor/Transformation/ClearHistoryEditorTransformation.cpp
+        Source/Editor/Transformation/ClearHistoryEditorTransformation.h
+        Source/Editor/Transformation/UndoEditorTransformation.cpp
+        Source/Editor/Transformation/UndoEditorTransformation.h
 
         Source/Polygon/Point.cpp
         Source/Polygon/Point.h

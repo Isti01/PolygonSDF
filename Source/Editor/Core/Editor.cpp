@@ -69,7 +69,7 @@ void Editor::removeConstraint(const EditorConstraint::SharedPtr &pConstraint)
     mConstraints = std::move(newVec);
 }
 
-void Editor::transform(EditorTransformation::SharedPtr &pTransformation)
+void Editor::transform(const EditorTransformation::SharedPtr &pTransformation)
 {
     pTransformation->transform(mpStack);
     notifyConsumers(StackTransformedEvent::create(this->shared_from_this(), pTransformation));

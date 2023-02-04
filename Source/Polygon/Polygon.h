@@ -25,6 +25,9 @@ class Polygon
 
     static Segments connectOrderedPoints(const std::vector<Point> &points);
 
+  public:
+    static Polygon::SharedPtr kExamplePolygon;
+
   private:
     Points mPoints;
     Segments mSegments;

@@ -4,6 +4,8 @@
 
 using namespace psdf;
 
+Polygon::SharedPtr Polygon::kExamplePolygon = Polygon::create({{{.5, 0}}, {{0, .5}}, {{-.5, 0}}, {{0, -.5}}});
+
 Polygon::Polygon(Polygon::Points points, Polygon::Segments segments)
     : mPoints(std::move(points)), mSegments(std::move(segments))
 {

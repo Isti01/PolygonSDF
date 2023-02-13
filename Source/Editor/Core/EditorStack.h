@@ -18,10 +18,11 @@ class EditorStack
     static SharedPtr create();
     static SharedPtr create(std::vector<StackEntry> stack);
 
-    Polygon::SharedPtr peekPolygon() const;
+    std::optional<StackEntry> peek() const;
     size_t getSize() const;
 
     void push(const StackCommand::SharedPtr &pCommand);
+    void pushReplacement(const StackCommand::SharedPtr &pCommand);
     void clear();
     std::optional<StackEntry> pop();
 

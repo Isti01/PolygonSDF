@@ -16,13 +16,13 @@ EditorStack::SharedPtr EditorStack::create(std::vector<StackEntry> stack)
     return SharedPtr(new EditorStack(std::move(stack)));
 }
 
-Polygon::SharedPtr EditorStack::peekPolygon() const
+std::optional<StackEntry> EditorStack::peek() const
 {
     if (mStack.empty())
     {
-        return nullptr;
+        return std::nullopt;
     }
-    return mStack.back().polygon;
+    return mStack.back();
 }
 
 size_t EditorStack::getSize() const
@@ -32,7 +32,13 @@ size_t EditorStack::getSize() const
 
 void EditorStack::push(const StackCommand::SharedPtr &pCommand)
 {
-    auto topPolygon = peekPolygon();
+    auto topPolygon = peek().value_or(StackEntry::kEmptyStackEntry).polygon;
+    mStack.push_back(StackEntry{pCommand, pCommand->perform(topPolygon)});
+}
+
+void EditorStack::pushReplacement(const StackCommand::SharedPtr &pCommand)
+{
+    auto topPolygon = pop().value_or(StackEntry::kEmptyStackEntry).polygon;
     mStack.push_back(StackEntry{pCommand, pCommand->perform(topPolygon)});
 }
 

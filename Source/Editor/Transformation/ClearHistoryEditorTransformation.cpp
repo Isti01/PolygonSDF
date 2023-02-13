@@ -10,10 +10,9 @@ EditorTransformation::SharedPtr ClearHistoryEditorTransformation::create()
 
 void ClearHistoryEditorTransformation::transform(EditorStack::SharedPtr &pEditorStack)
 {
-    auto polygon = pEditorStack->peekPolygon();
-    pEditorStack->clear();
-    if (polygon != nullptr)
+    if (auto top = pEditorStack->peek())
     {
-        pEditorStack->push(SetPolygonStackCommand::create(polygon));
+        pEditorStack->clear();
+        pEditorStack->push(SetPolygonStackCommand::create(top->polygon));
     }
 }

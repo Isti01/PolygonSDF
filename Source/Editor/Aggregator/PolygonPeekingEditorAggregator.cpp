@@ -32,5 +32,6 @@ PolygonPeekingEditorAggregationResult::SharedPtr PolygonPeekingEditorAggregator:
 
 EditorAggregationResult::SharedPtr PolygonPeekingEditorAggregator::reduce(const EditorStack::SharedPtr &pEditorStack)
 {
-    return PolygonPeekingEditorAggregationResult::create(pEditorStack->peekPolygon());
+    auto topPolygon = pEditorStack->peek().value_or(StackEntry::kEmptyStackEntry).polygon;
+    return PolygonPeekingEditorAggregationResult::create(topPolygon);
 }

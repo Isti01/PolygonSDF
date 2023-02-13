@@ -11,11 +11,22 @@ UpdatePointStackCommand::UpdatePointStackCommand(size_t index, const Point &poin
 {
 }
 
-Polygon::SharedPtr UpdatePointStackCommand::perform(const Polygon::SharedPtr &polygon) const
+Polygon::SharedPtr UpdatePointStackCommand::perform(const Polygon::SharedPtr &pPolygon) const
 {
-    auto pointsCopy = polygon->getPoints();
+    auto pointsCopy = pPolygon->getPoints();
     pointsCopy[mIndex] = mPoint;
     return Polygon::create(pointsCopy);
+}
+
+bool UpdatePointStackCommand::canMerge(const StackCommand::SharedPtr &pCommand) const
+{
+    auto updateCommand = std::dynamic_pointer_cast<UpdatePointStackCommand>(pCommand);
+    if (updateCommand == nullptr)
+    {
+        return false;
+    }
+
+    return updateCommand->getIndex() == getIndex();
 }
 
 std::string UpdatePointStackCommand::getName() const

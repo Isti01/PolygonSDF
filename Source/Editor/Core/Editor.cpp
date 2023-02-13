@@ -17,7 +17,7 @@ Editor::SharedPtr Editor::create(EditorStack::SharedPtr pStack)
     return SharedPtr(new Editor(std::move(pStack)));
 }
 
-void Editor::addCommand(const EditorCommand::SharedPtr& pCommand)
+void Editor::addCommand(const EditorCommand::SharedPtr &pCommand)
 {
     if (auto pStackCommand = std::dynamic_pointer_cast<StackCommand>(pCommand))
     {
@@ -39,7 +39,15 @@ void Editor::addStackCommand(const StackCommand::SharedPtr &pStackCommand)
         }
     }
 
-    mpStack->push(pStackCommand);
+    auto stackTop = mpStack->peek();
+    if (stackTop && pStackCommand->canMerge(stackTop->command))
+    {
+        mpStack->pushReplacement(pStackCommand->merge(stackTop->command));
+    }
+    else
+    {
+        mpStack->push(pStackCommand);
+    }
     notifyConsumers(NewStackCommandEvent::create(this->shared_from_this(), pStackCommand));
 }
 

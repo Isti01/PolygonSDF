@@ -1,14 +1,16 @@
 #pragma once
 
 #include "../../Polygon/Polygon.h"
-#include "EditorCommand.h"
+#include "../Command/StackCommand.h"
 
 namespace psdf
 {
 
 struct StackEntry
 {
-    EditorCommand::SharedPtr command;
+    static const StackEntry kEmptyStackEntry;
+
+    StackCommand::SharedPtr command;
     Polygon::SharedPtr polygon;
 };
 

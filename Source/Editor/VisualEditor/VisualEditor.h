@@ -1,0 +1,40 @@
+#pragma once
+
+#include "../../Rendering/PolygonRenderer/PolygonRenderer.h"
+#include "../Core/Editor.h"
+#include "./PolygonPresenter/PolygonPresenter.h"
+#include "Input/VertexMoveInputHandler.h"
+
+#include <Falcor.h>
+#include <memory>
+
+namespace psdf
+{
+using namespace Falcor;
+
+class VisualEditor
+{
+  public:
+    using SharedPtr = std::shared_ptr<VisualEditor>;
+    static SharedPtr create(Editor::SharedPtr pEditor);
+
+    void render(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo);
+
+    bool onKeyEvent(const KeyboardEvent &keyEvent);
+    bool onMouseEvent(const MouseEvent &mouseEvent);
+
+  protected:
+    VisualEditor(Editor::SharedPtr pEditor);
+
+  private:
+    void setActiveInputHandler(const MouseInputHandler::SharedPtr &pInputHandler);
+
+  private:
+    Editor::SharedPtr mpEditor = nullptr;
+    PolygonPresenter::SharedPtr mpPolygonPresenter = nullptr;
+    PolygonRenderer::SharedPtr mpPolygonRenderer = nullptr;
+    MouseInputHandler::SharedPtr mpActiveInputHandler = nullptr;
+    VertexMoveInputHandler::SharedPtr mpVertexMover = nullptr;
+};
+
+} // namespace psdf

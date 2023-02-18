@@ -32,7 +32,7 @@ bool VisualEditor::onKeyEvent(const KeyboardEvent &keyEvent)
     {
         setActiveInputHandler(mpVertexMover);
     }
-    else if (keyEvent.key == Input::Key::P)
+    else if (keyEvent.key == Input::Key::V)
     {
         setActiveInputHandler(mpPolygonPresenter);
     }

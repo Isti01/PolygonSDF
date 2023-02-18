@@ -46,13 +46,22 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/GuiEditor/GuiEditor.cpp
         Source/Editor/GuiEditor/GuiEditor.h
 
-        Source/Editor/PolygonPresenter/PolygonPresenter.cpp
-        Source/Editor/PolygonPresenter/PolygonPresenter.h
-
         Source/Editor/Transformation/ClearHistoryEditorTransformation.cpp
         Source/Editor/Transformation/ClearHistoryEditorTransformation.h
         Source/Editor/Transformation/UndoEditorTransformation.cpp
         Source/Editor/Transformation/UndoEditorTransformation.h
+
+        Source/Editor/VisualEditor/Input/DragMouseInputHandler.cpp
+        Source/Editor/VisualEditor/Input/DragMouseInputHandler.h
+        Source/Editor/VisualEditor/Input/MouseInputHandler.h
+        Source/Editor/VisualEditor/Input/VertexMoveInputHandler.cpp
+        Source/Editor/VisualEditor/Input/VertexMoveInputHandler.h
+
+        Source/Editor/VisualEditor/PolygonPresenter/PolygonPresenter.cpp
+        Source/Editor/VisualEditor/PolygonPresenter/PolygonPresenter.h
+
+        Source/Editor/VisualEditor/VisualEditor.cpp
+        Source/Editor/VisualEditor/VisualEditor.h
 
         Source/Polygon/Point.cpp
         Source/Polygon/Point.h
@@ -80,6 +89,7 @@ target_sources(PolygonSDF PRIVATE
         Source/Rendering/PolygonRenderer/PolygonRendererFactory.cpp
         Source/Rendering/PolygonRenderer/PolygonRendererFactory.h
 
+        Source/Util/Deferred.h
         Source/Util/RangeGenerator.cpp
         Source/Util/RangeGenerator.h
         Source/Util/WithImGuiId.cpp

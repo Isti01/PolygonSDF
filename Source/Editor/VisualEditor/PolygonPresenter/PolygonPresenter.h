@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../../Rendering/PolygonRenderer/PolygonRenderer.h"
-#include "../../Aggregator/PolygonPeekingEditorAggregator.h"
+#include "../../Aggregator/StackPeekingEditorAggregator.h"
 #include "../../Core/Editor.h"
 #include "../Input/DragMouseInputHandler.h"
 #include "../Input/MouseInputHandler.h"
@@ -41,7 +41,7 @@ class PolygonPresenter : public MouseInputHandler
     float2 mTranslationSpeed{1.0f, -1.0f};
 
     Editor::SharedPtr mpEditor;
-    PolygonPeekingEditorAggregator::SharedPtr mpPolygonPeekingAggregator;
+    StackPeekingEditorAggregator::SharedPtr mpPolygonPeekingAggregator;
     PolygonRenderer::SharedPtr mpRenderer;
     Polygon::SharedPtr mpPolygon;
     DragMouseInputHandler::SharedPtr mpDragHandler;

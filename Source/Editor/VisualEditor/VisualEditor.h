@@ -31,8 +31,8 @@ class VisualEditor
 
   private:
     Editor::SharedPtr mpEditor = nullptr;
-    PolygonPresenter::SharedPtr mpPolygonPresenter = nullptr;
     PolygonRenderer::SharedPtr mpPolygonRenderer = nullptr;
+    PolygonPresenter::SharedPtr mpPolygonPresenter = nullptr;
     MouseInputHandler::SharedPtr mpActiveInputHandler = nullptr;
     VertexMoveInputHandler::SharedPtr mpVertexMover = nullptr;
 };

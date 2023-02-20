@@ -16,6 +16,7 @@ class DragMouseInputHandler : public MouseInputHandler
     void resetInputState() override;
 
     bool isDragging() const;
+    bool isDragStarted() const;
     float2 getDragDelta() const;
 
   protected:
@@ -23,6 +24,7 @@ class DragMouseInputHandler : public MouseInputHandler
 
   private:
     bool mIsDragging{false};
+    bool mIsDragStarted{false};
 
     float2 mLastMousePosition{0};
     float2 mDragDelta{0};

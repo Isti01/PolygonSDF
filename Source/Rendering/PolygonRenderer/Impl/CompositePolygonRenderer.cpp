@@ -20,6 +20,11 @@ void CompositePolygonRenderer::uploadPolygonData()
 {
 }
 
+float4x4 CompositePolygonRenderer::getTransform() const
+{
+    return mTransform;
+}
+
 void CompositePolygonRenderer::setFbo(const Fbo::SharedPtr &pFbo)
 {
     for (const PolygonRenderer::SharedPtr &pRenderer : mRenderers)
@@ -35,7 +40,6 @@ void CompositePolygonRenderer::transformImpl()
         pRenderer->transform(mTransform);
     }
 }
-
 void CompositePolygonRenderer::renderImpl(Falcor::RenderContext *pRenderContext)
 {
     for (const PolygonRenderer::SharedPtr &pRenderer : mRenderers)

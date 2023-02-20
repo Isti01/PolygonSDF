@@ -13,6 +13,8 @@ class CompositePolygonRenderer : public PolygonRenderer
 
     static SharedPtr create(std::vector<PolygonRenderer::SharedPtr> renderers);
 
+    float4x4 getTransform() const override;
+
     void setPolygon(const Polygon::SharedPtr &pPolygon) override;
     void setFbo(const Fbo::SharedPtr &pFbo) override;
     void transformImpl() override;

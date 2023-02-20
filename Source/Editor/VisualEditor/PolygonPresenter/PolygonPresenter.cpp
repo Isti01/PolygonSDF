@@ -11,7 +11,7 @@ PolygonPresenter::SharedPtr PolygonPresenter::create(Editor::SharedPtr pEditor, 
 
 PolygonPresenter::PolygonPresenter(Editor::SharedPtr pEditor, PolygonRenderer::SharedPtr pRenderer)
     : mpEditor(std::move(pEditor)), mpRenderer(std::move(pRenderer)),
-      mpPolygonPeekingAggregator(PolygonPeekingEditorAggregator::create()),
+      mpPolygonPeekingAggregator(StackPeekingEditorAggregator::create()),
       mpDragHandler(DragMouseInputHandler::create())
 {
     transformPolygonRenderer();
@@ -58,7 +58,7 @@ void PolygonPresenter::updatePolygon()
     auto pResult = mpPolygonPeekingAggregator->peekEditor(mpEditor);
     FALCOR_ASSERT(pResult);
 
-    auto pPolygon = pResult->getPolygon();
+    auto pPolygon = pResult->getEntry().polygon;
     if (mpPolygon.get() == pPolygon.get())
     {
         return;

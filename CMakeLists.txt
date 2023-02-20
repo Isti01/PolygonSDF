@@ -5,8 +5,8 @@ target_sources(PolygonSDF PRIVATE
         Shaders/SolidColor.3d.slang
         Shaders/UVColor.3d.slang
 
-        Source/Editor/Aggregator/PolygonPeekingEditorAggregator.cpp
-        Source/Editor/Aggregator/PolygonPeekingEditorAggregator.h
+        Source/Editor/Aggregator/StackPeekingEditorAggregator.cpp
+        Source/Editor/Aggregator/StackPeekingEditorAggregator.h
         Source/Editor/Aggregator/StackSizeEditorAggregator.cpp
         Source/Editor/Aggregator/StackSizeEditorAggregator.h
 
@@ -89,6 +89,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Rendering/PolygonRenderer/PolygonRendererFactory.cpp
         Source/Rendering/PolygonRenderer/PolygonRendererFactory.h
 
+        Source/Util/CoordinateUtil.cpp
+        Source/Util/CoordinateUtil.h
         Source/Util/Deferred.h
         Source/Util/RangeGenerator.cpp
         Source/Util/RangeGenerator.h

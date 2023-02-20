@@ -8,6 +8,11 @@ ProxyPolygonRenderer::ProxyPolygonRenderer(PolygonRenderer::SharedPtr pPolygonRe
 {
 }
 
+float4x4 ProxyPolygonRenderer::getTransform() const
+{
+    return mpPolygonRenderer->getTransform();
+}
+
 void ProxyPolygonRenderer::setFbo(const Fbo::SharedPtr &pFbo)
 {
     mpPolygonRenderer->setFbo(pFbo);
@@ -31,7 +36,6 @@ void ProxyPolygonRenderer::renderImpl(RenderContext *pRenderContext)
 {
     mpPolygonRenderer->render(pRenderContext);
 }
-
 void ProxyPolygonRenderer::transformImpl()
 {
     mpPolygonRenderer->transform(mTransform);

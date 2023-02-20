@@ -18,7 +18,7 @@ GuiEditor::SharedPtr GuiEditor::create(Editor::SharedPtr pEditor)
 
 GuiEditor::GuiEditor(Editor::SharedPtr pEditor)
     : mpEditor(std::move(pEditor)), mpStackSizeAggregator(StackSizeEditorAggregator::create()),
-      mpPolygonPeekingAggregator(PolygonPeekingEditorAggregator::create())
+      mpPolygonPeekingAggregator(StackPeekingEditorAggregator::create())
 {
 }
 
@@ -26,7 +26,7 @@ void GuiEditor::render(Gui *pGui)
 {
     auto pPeekResult = mpPolygonPeekingAggregator->peekEditor(mpEditor);
     FALCOR_ASSERT(pPeekResult);
-    mpCurrentPolygon = pPeekResult->getPolygon();
+    mpCurrentPolygon = pPeekResult->getEntry().polygon;
     Gui::Window window(pGui, "GUI Polygon Editor");
 
     showControlButtons(window);

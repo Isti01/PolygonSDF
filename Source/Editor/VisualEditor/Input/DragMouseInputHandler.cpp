@@ -12,6 +12,7 @@ bool DragMouseInputHandler::onMouseEvent(const MouseEvent &mouseEvent)
 {
     float2 mousePos = mouseEvent.pos;
     Deferred _([&](...) { this->mLastMousePosition = mousePos; });
+    mIsDragStarted = false;
 
     if (mouseEvent.type == MouseEvent::Type::Move && mIsDragging)
     {
@@ -23,6 +24,7 @@ bool DragMouseInputHandler::onMouseEvent(const MouseEvent &mouseEvent)
     {
         resetInputState();
         mIsDragging = true;
+        mIsDragStarted = true;
         return true;
     }
 
@@ -32,18 +34,25 @@ bool DragMouseInputHandler::onMouseEvent(const MouseEvent &mouseEvent)
         mIsDragging = false;
         return true;
     }
+
     return false;
 }
 
 void DragMouseInputHandler::resetInputState()
 {
     mIsDragging = false;
+    mIsDragStarted = false;
     mDragDelta = float2{0};
 }
 
 bool DragMouseInputHandler::isDragging() const
 {
     return mIsDragging;
+}
+
+bool DragMouseInputHandler::isDragStarted() const
+{
+    return mIsDragStarted;
 }
 
 float2 DragMouseInputHandler::getDragDelta() const

@@ -10,9 +10,10 @@ VisualEditor::SharedPtr VisualEditor::create(Editor::SharedPtr pEditor)
 }
 
 VisualEditor::VisualEditor(Editor::SharedPtr pEditor)
-    : mpEditor(std::move(pEditor)),
-      mpPolygonPresenter(PolygonPresenter::create(mpEditor, PolygonRendererFactory::getPolygonRenderer())),
-      mpVertexMover(VertexMoveInputHandler::create(mpEditor)), mpActiveInputHandler(mpPolygonPresenter)
+    : mpEditor(std::move(pEditor)), mpPolygonRenderer(PolygonRendererFactory::getPolygonRenderer()),
+      mpPolygonPresenter(PolygonPresenter::create(mpEditor, mpPolygonRenderer)),
+      mpVertexMover(VertexMoveInputHandler::create(mpEditor, mpPolygonRenderer)),
+      mpActiveInputHandler(mpPolygonPresenter)
 {
 }
 

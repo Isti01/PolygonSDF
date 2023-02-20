@@ -21,6 +21,11 @@ void PolygonOutlineRenderer::init()
     uploadColor();
 }
 
+float4x4 PolygonOutlineRenderer::getTransform() const
+{
+    return mTransform;
+}
+
 float4 PolygonOutlineRenderer::getColor() const
 {
     return mColor;
@@ -67,8 +72,8 @@ void PolygonOutlineRenderer::transformImpl()
 {
     FALCOR_ASSERT(mpProgramVars);
 
-    const float4x4 baseTransform = rmcv::translate(float3{-1, -1, 0}) * rmcv::scale(float3{2, 2, 1});
-    const auto transform = baseTransform * mTransform;
+    const float4x4 correction = rmcv::translate(float3{-1, -1, 0}) * rmcv::scale(float3{2, 2, 1});
+    const auto transform = correction * mTransform;
     mpProgramVars["Data"]["iTransform"] = transform;
 }
 

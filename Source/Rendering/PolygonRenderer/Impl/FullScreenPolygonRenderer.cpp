@@ -13,6 +13,11 @@ FullScreenPolygonRenderer::SharedPtr FullScreenPolygonRenderer::create(GraphicsS
     return SharedPtr(new FullScreenPolygonRenderer(std::move(pGraphicsState)));
 }
 
+float4x4 FullScreenPolygonRenderer::getTransform() const
+{
+    return mTransform;
+}
+
 void FullScreenPolygonRenderer::setFbo(const Fbo::SharedPtr &pFbo)
 {
     mpFullscreenTriangle->setFbo(pFbo);

@@ -14,6 +14,8 @@ class FullScreenPolygonRenderer : public PolygonRenderer
 
     static SharedPtr create(GraphicsState::SharedPtr pGraphicsState);
 
+    float4x4 getTransform() const override;
+
     void setFbo(const Fbo::SharedPtr &pFbo)  override;
     void transformImpl() override;
 

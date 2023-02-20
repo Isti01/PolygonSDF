@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Aggregator/PolygonPeekingEditorAggregator.h"
+#include "../Aggregator/StackPeekingEditorAggregator.h"
 #include "../Aggregator/StackSizeEditorAggregator.h"
 #include <Falcor.h>
 #include <memory>
@@ -30,7 +30,7 @@ class GuiEditor
     float2 mNewPoint{0};
     Polygon::SharedPtr mpCurrentPolygon;
     Editor::SharedPtr mpEditor;
-    PolygonPeekingEditorAggregator::SharedPtr mpPolygonPeekingAggregator;
+    StackPeekingEditorAggregator::SharedPtr mpPolygonPeekingAggregator;
     StackSizeEditorAggregator::SharedPtr mpStackSizeAggregator;
 };
 

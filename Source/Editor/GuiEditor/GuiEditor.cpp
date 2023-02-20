@@ -33,11 +33,11 @@ void GuiEditor::render(Gui *pGui)
     ImGui::Spacing();
     window.separator();
     ImGui::Spacing();
-    showVertexList(window);
+    showVertexInput(window);
     ImGui::Spacing();
     window.separator();
     ImGui::Spacing();
-    showVertexInput(window);
+    showVertexList(window);
 }
 
 void GuiEditor::showControlButtons(Gui::Window &window)

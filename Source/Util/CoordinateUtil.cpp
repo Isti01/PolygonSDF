@@ -14,3 +14,8 @@ float2 CoordinateUtil::sceneToScreenSpaceCoordinate(const float4x4 &transform, f
     auto transformed = (transform * float4(coords, 0, 1));
     return {transformed.x, 1 - transformed.y};
 }
+
+float2 CoordinateUtil::screenToSceneSpaceVector(const float4x4 &transform, float2 vector)
+{
+    return (transpose(inverse(transform)) * float4(vector, 0, 1)).xy;
+}

@@ -1,4 +1,5 @@
 #include "PolygonPresenter.h"
+#include "../../../Util/CoordinateUtil.h"
 #include "../../../Util/Deferred.h"
 
 using namespace Falcor;
@@ -11,8 +12,7 @@ PolygonPresenter::SharedPtr PolygonPresenter::create(Editor::SharedPtr pEditor, 
 
 PolygonPresenter::PolygonPresenter(Editor::SharedPtr pEditor, PolygonRenderer::SharedPtr pRenderer)
     : mpEditor(std::move(pEditor)), mpRenderer(std::move(pRenderer)),
-      mpPolygonPeekingAggregator(StackPeekingEditorAggregator::create()),
-      mpDragHandler(DragMouseInputHandler::create())
+      mpPolygonPeekingAggregator(StackPeekingEditorAggregator::create()), mpDragHandler(DragMouseInputHandler::create())
 {
     transformPolygonRenderer();
 }
@@ -40,7 +40,9 @@ bool PolygonPresenter::onMouseEvent(const MouseEvent &mouseEvent)
 
     if (mpDragHandler->onMouseEvent(mouseEvent))
     {
-        mTranslation += (mpDragHandler->getDragDelta() * mTranslationSpeed) * getMappedScale();
+        auto transform = mpRenderer->getTransform();
+        auto delta = (mpDragHandler->getDragDelta() * mTranslationSpeed) * getMappedScale();
+        mTranslation += CoordinateUtil::screenToSceneSpaceVector(transform, delta);
         transformPolygonRenderer();
         return true;
     }
@@ -76,6 +78,7 @@ float PolygonPresenter::getMappedScale() const
 {
     return glm::pow(2.0f, mScale);
 }
+
 void PolygonPresenter::transformPolygonRenderer()
 {
     auto translation = rmcv::translate(float3(mTranslation, 0));

@@ -14,6 +14,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Command/AddPointStackCommand.h
         Source/Editor/Command/DeletePointStackCommand.cpp
         Source/Editor/Command/DeletePointStackCommand.h
+        Source/Editor/Command/InsertPointStackCommand.cpp
+        Source/Editor/Command/InsertPointStackCommand.h
         Source/Editor/Command/SetPolygonStackCommand.cpp
         Source/Editor/Command/SetPolygonStackCommand.h
         Source/Editor/Command/StackCommand.cpp
@@ -53,6 +55,8 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Editor/VisualEditor/Input/DragMouseInputHandler.cpp
         Source/Editor/VisualEditor/Input/DragMouseInputHandler.h
+        Source/Editor/VisualEditor/Input/InsertVertexInputHandler.cpp
+        Source/Editor/VisualEditor/Input/InsertVertexInputHandler.h
         Source/Editor/VisualEditor/Input/MouseInputHandler.h
         Source/Editor/VisualEditor/Input/VertexMoveInputHandler.cpp
         Source/Editor/VisualEditor/Input/VertexMoveInputHandler.h

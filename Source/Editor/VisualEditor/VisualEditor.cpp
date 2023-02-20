@@ -13,6 +13,7 @@ VisualEditor::VisualEditor(Editor::SharedPtr pEditor)
     : mpEditor(std::move(pEditor)), mpPolygonRenderer(PolygonRendererFactory::getPolygonRenderer()),
       mpPolygonPresenter(PolygonPresenter::create(mpEditor, mpPolygonRenderer)),
       mpVertexMover(VertexMoveInputHandler::create(mpEditor, mpPolygonRenderer)),
+      mpVertexInserter(InsertVertexInputHandler::create(mpEditor, mpPolygonRenderer)),
       mpActiveInputHandler(mpPolygonPresenter)
 {
 }
@@ -32,10 +33,19 @@ bool VisualEditor::onKeyEvent(const KeyboardEvent &keyEvent)
     if (keyEvent.key == Input::Key::M)
     {
         setActiveInputHandler(mpVertexMover);
+        return true;
     }
-    else if (keyEvent.key == Input::Key::V)
+
+    if (keyEvent.key == Input::Key::V)
     {
         setActiveInputHandler(mpPolygonPresenter);
+        return true;
+    }
+
+    if (keyEvent.key == Input::Key::I)
+    {
+        setActiveInputHandler(mpVertexInserter);
+        return true;
     }
 
     return false;

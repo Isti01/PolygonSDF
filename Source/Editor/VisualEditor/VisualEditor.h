@@ -3,6 +3,7 @@
 #include "../../Rendering/PolygonRenderer/PolygonRenderer.h"
 #include "../Core/Editor.h"
 #include "./PolygonPresenter/PolygonPresenter.h"
+#include "Input/InsertVertexInputHandler.h"
 #include "Input/VertexMoveInputHandler.h"
 
 #include <Falcor.h>
@@ -33,8 +34,9 @@ class VisualEditor
     Editor::SharedPtr mpEditor = nullptr;
     PolygonRenderer::SharedPtr mpPolygonRenderer = nullptr;
     PolygonPresenter::SharedPtr mpPolygonPresenter = nullptr;
-    MouseInputHandler::SharedPtr mpActiveInputHandler = nullptr;
     VertexMoveInputHandler::SharedPtr mpVertexMover = nullptr;
+    InsertVertexInputHandler::SharedPtr mpVertexInserter = nullptr;
+    MouseInputHandler::SharedPtr mpActiveInputHandler = nullptr;
 };
 
 } // namespace psdf

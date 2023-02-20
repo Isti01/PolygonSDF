@@ -51,25 +51,22 @@ bool VertexMoveInputHandler::onMouseEvent(const Falcor::MouseEvent &mouseEvent)
 
 void VertexMoveInputHandler::selectClosestVertex(float2 mousePos)
 {
-    auto points = mpActivePolygon->getPoints();
     float4x4 transform = mpPolygonRenderer->getTransform();
-    auto iterator = std::min_element(points.begin(), points.end(), [mousePos, &transform](Point p1, Point p2) {
-        auto d1 = glm::distance(mousePos, CoordinateUtil::sceneToScreenSpaceCoordinate(transform, p1.getCoordinates()));
-        auto d2 = glm::distance(mousePos, CoordinateUtil::sceneToScreenSpaceCoordinate(transform, p2.getCoordinates()));
-        return d1 < d2;
-    });
-    if (iterator == points.end())
+    auto mappedMousePos = CoordinateUtil::screenToSceneSpaceCoordinate(transform, mousePos);
+    auto closestScenePoint = CoordinateUtil::findClosestPointIndexInPolygon(mpActivePolygon, mappedMousePos);
+    if (!closestScenePoint)
     {
         return;
     }
 
-    auto closestPoint = CoordinateUtil::sceneToScreenSpaceCoordinate(transform, iterator->getCoordinates());
-    if (glm::distance(mousePos, closestPoint) > kSelectionDistanceThreshold)
+    auto closestPoint = mpActivePolygon->getPoints().at(*closestScenePoint).getCoordinates();
+    auto distance = glm::distance(mousePos, CoordinateUtil::sceneToScreenSpaceCoordinate(transform, closestPoint));
+    if (distance > kSelectionDistanceThreshold)
     {
         return;
     }
 
-    mSelectedVertexIndex = iterator - points.begin();
+    mSelectedVertexIndex = *closestScenePoint;
 }
 
 void VertexMoveInputHandler::moveSelectedVertex(float2 mousePos)

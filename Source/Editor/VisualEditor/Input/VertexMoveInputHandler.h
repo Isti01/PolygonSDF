@@ -27,7 +27,6 @@ class VertexMoveInputHandler : public MouseInputHandler
     void moveSelectedVertex(float2 mousePos);
 
   private:
-    static constexpr float kSelectionDistanceThreshold = 0.01f;
     std::optional<size_t> mSelectedVertexIndex = std::nullopt;
 
     Editor::SharedPtr mpEditor = nullptr;

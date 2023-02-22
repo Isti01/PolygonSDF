@@ -13,7 +13,7 @@ VisualEditor::VisualEditor(Editor::SharedPtr pEditor)
     : mpEditor(std::move(pEditor)), mpPolygonRenderer(PolygonRendererFactory::getPolygonRenderer()),
       mpPolygonPresenter(PolygonPresenter::create(mpEditor, mpPolygonRenderer)),
       mpVertexMover(VertexMoveInputHandler::create(mpEditor, mpPolygonRenderer)),
-      mpVertexInserter(InsertVertexInputHandler::create(mpEditor, mpPolygonRenderer)),
+      mpVertexInserter(InsertRemoveVertexInputHandler::create(mpEditor, mpPolygonRenderer)),
       mpActiveInputHandler(mpPolygonPresenter)
 {
 }

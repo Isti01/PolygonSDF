@@ -24,6 +24,7 @@ class InsertVertexInputHandler : public MouseInputHandler
 
   private:
     void insertNextToClosest(float2 position);
+    size_t findIndexToInsert(float2 vertexPosition, size_t closestVertexIndex, const Polygon::Points &points);
 
   private:
     Editor::SharedPtr mpEditor;

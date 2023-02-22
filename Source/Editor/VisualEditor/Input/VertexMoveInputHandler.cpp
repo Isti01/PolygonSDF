@@ -53,13 +53,14 @@ void VertexMoveInputHandler::selectClosestVertex(float2 mousePos)
 {
     float4x4 transform = mpPolygonRenderer->getTransform();
     auto mappedMousePos = CoordinateUtil::screenToSceneSpaceCoordinate(transform, mousePos);
-    auto closestScenePoint = CoordinateUtil::findClosestPointIndexInPolygon(mpActivePolygon, mappedMousePos);
+    auto points = mpActivePolygon->getPoints();
+    auto closestScenePoint = CoordinateUtil::findClosestPointIndex(points, mappedMousePos);
     if (!closestScenePoint)
     {
         return;
     }
 
-    auto closestPoint = mpActivePolygon->getPoints().at(*closestScenePoint).getCoordinates();
+    auto closestPoint = points.at(*closestScenePoint).getCoordinates();
     auto distance = glm::distance(mousePos, CoordinateUtil::sceneToScreenSpaceCoordinate(transform, closestPoint));
     if (distance > kSelectionDistanceThreshold)
     {

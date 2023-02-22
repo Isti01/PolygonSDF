@@ -96,6 +96,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Util/CoordinateUtil.cpp
         Source/Util/CoordinateUtil.h
         Source/Util/Deferred.h
+        Source/Util/IndexUtil.cpp
+        Source/Util/IndexUtil.h
         Source/Util/RangeGenerator.cpp
         Source/Util/RangeGenerator.h
         Source/Util/WithImGuiId.cpp

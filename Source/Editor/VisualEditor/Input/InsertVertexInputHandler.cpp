@@ -1,5 +1,6 @@
 #include "InsertVertexInputHandler.h"
 #include "../../../Util/CoordinateUtil.h"
+#include "../../../Util/IndexUtil.h"
 #include "../../Command/InsertPointStackCommand.h"
 
 using namespace psdf;
@@ -28,6 +29,10 @@ bool InsertVertexInputHandler::onMouseEvent(const MouseEvent &mouseEvent)
     return false;
 }
 
+void InsertVertexInputHandler::resetInputState()
+{
+}
+
 void InsertVertexInputHandler::insertNextToClosest(float2 position)
 {
     auto polygon = mpAggregator->peekEditor(mpEditor)->getEntry().polygon;
@@ -35,17 +40,29 @@ void InsertVertexInputHandler::insertNextToClosest(float2 position)
     {
         return;
     }
-
-    auto newPosition = CoordinateUtil::screenToSceneSpaceCoordinate(mpRenderer->getTransform(), position);
-    std::optional<size_t> index = CoordinateUtil::findClosestPointIndexInPolygon(polygon, newPosition);
-    if (!index)
+    auto points = polygon->getPoints();
+    auto vertexPosition = CoordinateUtil::screenToSceneSpaceCoordinate(mpRenderer->getTransform(), position);
+    std::optional<size_t> closestIndex = CoordinateUtil::findClosestPointIndex(points, vertexPosition);
+    if (!closestIndex)
     {
         return;
     }
 
-    mpEditor->addCommand(InsertPointStackCommand::create(*index, newPosition));
+    size_t insertionIndex = findIndexToInsert(vertexPosition, *closestIndex, points);
+    mpEditor->addCommand(InsertPointStackCommand::create(insertionIndex, vertexPosition));
 }
 
-void InsertVertexInputHandler::resetInputState()
+size_t InsertVertexInputHandler::findIndexToInsert(float2 vertexPosition, size_t closestVertexIndex,
+                                                   const Polygon::Points &points)
 {
+    size_t prevIndex = IndexUtil::prevIndex(points.size(), closestVertexIndex);
+    float2 prevPoint = points.at(prevIndex).getCoordinates();
+    size_t nextIndex = IndexUtil::nextIndex(points.size(), closestVertexIndex);
+    float2 nextPoint = points.at(nextIndex).getCoordinates();
+
+    if (glm::distance(vertexPosition, prevPoint) > glm::distance(vertexPosition, nextPoint))
+    {
+        return nextIndex;
+    }
+    return closestVertexIndex;
 }

@@ -34,10 +34,10 @@ class PolygonPresenter : public MouseInputHandler
     float getMappedScale() const;
 
   private:
-    float mScale = .5f;
+    float mScale = -.3f;
     float mScaleSpeed = .1f;
 
-    float2 mTranslation{.0f};
+    float2 mTranslation{1.0f, .5f};
     float2 mTranslationSpeed{1.0f, -1.0f};
 
     Editor::SharedPtr mpEditor;

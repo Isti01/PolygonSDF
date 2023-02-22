@@ -3,7 +3,7 @@
 #include "../../Rendering/PolygonRenderer/PolygonRenderer.h"
 #include "../Core/Editor.h"
 #include "./PolygonPresenter/PolygonPresenter.h"
-#include "Input/InsertVertexInputHandler.h"
+#include "Input/InsertRemoveVertexInputHandler.h"
 #include "Input/VertexMoveInputHandler.h"
 
 #include <Falcor.h>
@@ -35,7 +35,7 @@ class VisualEditor
     PolygonRenderer::SharedPtr mpPolygonRenderer = nullptr;
     PolygonPresenter::SharedPtr mpPolygonPresenter = nullptr;
     VertexMoveInputHandler::SharedPtr mpVertexMover = nullptr;
-    InsertVertexInputHandler::SharedPtr mpVertexInserter = nullptr;
+    InsertRemoveVertexInputHandler::SharedPtr mpVertexInserter = nullptr;
     MouseInputHandler::SharedPtr mpActiveInputHandler = nullptr;
 };
 

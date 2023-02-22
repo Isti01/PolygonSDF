@@ -2,6 +2,7 @@
 #include "../../../Util/CoordinateUtil.h"
 #include "../../../Util/Deferred.h"
 #include "../../Command/UpdatePointStackCommand.h"
+#include "../VisualEditorConstants.h"
 
 using namespace psdf;
 
@@ -62,7 +63,7 @@ void VertexMoveInputHandler::selectClosestVertex(float2 mousePos)
 
     auto closestPoint = points.at(*closestScenePoint).getCoordinates();
     auto distance = glm::distance(mousePos, CoordinateUtil::sceneToScreenSpaceCoordinate(transform, closestPoint));
-    if (distance > kSelectionDistanceThreshold)
+    if (distance > VisualEditorConstants::kSelectionDistanceThreshold)
     {
         return;
     }

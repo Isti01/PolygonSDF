@@ -55,8 +55,8 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Editor/VisualEditor/Input/DragMouseInputHandler.cpp
         Source/Editor/VisualEditor/Input/DragMouseInputHandler.h
-        Source/Editor/VisualEditor/Input/InsertVertexInputHandler.cpp
-        Source/Editor/VisualEditor/Input/InsertVertexInputHandler.h
+        Source/Editor/VisualEditor/Input/InsertRemoveVertexInputHandler.cpp
+        Source/Editor/VisualEditor/Input/InsertRemoveVertexInputHandler.h
         Source/Editor/VisualEditor/Input/MouseInputHandler.h
         Source/Editor/VisualEditor/Input/VertexMoveInputHandler.cpp
         Source/Editor/VisualEditor/Input/VertexMoveInputHandler.h
@@ -66,6 +66,7 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Editor/VisualEditor/VisualEditor.cpp
         Source/Editor/VisualEditor/VisualEditor.h
+        Source/Editor/VisualEditor/VisualEditorConstants.h
 
         Source/Polygon/Point.cpp
         Source/Polygon/Point.h

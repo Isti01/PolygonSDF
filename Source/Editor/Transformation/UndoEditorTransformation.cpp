@@ -14,3 +14,8 @@ void UndoEditorTransformation::transform(EditorStack::SharedPtr &pEditorStack)
         pEditorStack->pop();
     }
 }
+
+std::string UndoEditorTransformation::getName() const
+{
+    return "UndoEditorTransformation";
+}

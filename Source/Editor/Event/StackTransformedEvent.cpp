@@ -21,5 +21,7 @@ EditorTransformation::SharedPtr StackTransformedEvent::getTransformation() const
 
 std::string StackTransformedEvent::getName() const
 {
-    return "StackTransformedEvent";
+    std::stringstream ss;
+    ss << "StackTransformedEvent(" << mpTransformation->getName() << ')';
+    return ss.str();
 }

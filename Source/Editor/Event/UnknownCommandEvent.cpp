@@ -1,4 +1,5 @@
 #include "UnknownCommandEvent.h"
+#include <sstream>
 
 using namespace psdf;
 
@@ -18,5 +19,7 @@ EditorCommand::SharedPtr UnknownCommandEvent::getEditorCommand() const
 
 std::string UnknownCommandEvent::getName() const
 {
-    return "UnknownCommandEvent";
+    std::stringstream ss;
+    ss << "UnknownCommandEvent(" << mpCommand->getName() << ')';
+    return ss.str();
 }

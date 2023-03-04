@@ -28,5 +28,7 @@ EditorCommand::SharedPtr ConstraintViolationEvent::getCommand() const
 
 std::string ConstraintViolationEvent::getName() const
 {
-    return "ConstraintViolationEvent";
+    std::stringstream ss;
+    ss << "ConstraintViolationEvent(" << mpConstraint->getName() << ')';
+    return ss.str();
 }

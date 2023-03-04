@@ -16,3 +16,8 @@ void ClearHistoryEditorTransformation::transform(EditorStack::SharedPtr &pEditor
         pEditorStack->push(SetPolygonStackCommand::create(top->polygon));
     }
 }
+
+std::string ClearHistoryEditorTransformation::getName() const
+{
+    return "ClearHistoryEditorTransformation";
+}

@@ -5,8 +5,8 @@ using namespace Falcor;
 
 float2 CoordinateUtil::screenToSceneSpaceCoordinate(const float4x4 &transform, float2 coords)
 {
-    float2 mapped = {coords.x, 1 - coords.y};
-    return (inverse(transform) * float4(mapped, 0, 1)).xy;
+    float4 mapped = float4(coords.x, 1 - coords.y, 0, 1);
+    return (inverse(transform) * mapped).xy;
 }
 
 float2 CoordinateUtil::sceneToScreenSpaceCoordinate(const float4x4 &transform, float2 coords)
@@ -17,7 +17,7 @@ float2 CoordinateUtil::sceneToScreenSpaceCoordinate(const float4x4 &transform, f
 
 float2 CoordinateUtil::screenToSceneSpaceVector(const float4x4 &transform, float2 vector)
 {
-    return (transpose(inverse(transform)) * float4(vector, 0, 1)).xy;
+    return (transpose(inverse(transform)) * float4(vector, 0, 0)).xy;
 }
 
 std::optional<size_t> CoordinateUtil::findClosestPointIndex(const Polygon::Points &points, float2 point)

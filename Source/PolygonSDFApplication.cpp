@@ -12,11 +12,13 @@ void PolygonSDFApplication::onLoad(RenderContext *pRenderContext)
     mpGuiEditor = GuiEditor::create(mpEditor);
     mpVisualEditor = VisualEditor::create(mpEditor);
     mpEditor->addCommand(SetPolygonStackCommand::create(Polygon::kExamplePolygon));
+    mpEventMenu = EventMenu::create(mpEditor);
 }
 
 void PolygonSDFApplication::onGuiRender(Gui *pGui)
 {
     mpGuiEditor->render(pGui);
+    mpEventMenu->renderGui(pGui);
 }
 
 void PolygonSDFApplication::onFrameRender(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo)

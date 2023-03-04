@@ -18,3 +18,8 @@ EditorTransformation::SharedPtr StackTransformedEvent::getTransformation() const
 {
     return mpTransformation;
 }
+
+std::string StackTransformedEvent::getName() const
+{
+    return "StackTransformedEvent";
+}

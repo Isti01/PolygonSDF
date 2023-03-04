@@ -22,3 +22,8 @@ Editor::SharedPtr NewStackCommandEvent::getEditor() const
 {
     return mpEditor;
 }
+
+std::string NewStackCommandEvent::getName() const
+{
+    return "NewStackCommandEvent";
+}

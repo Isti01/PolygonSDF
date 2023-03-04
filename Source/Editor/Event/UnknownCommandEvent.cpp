@@ -15,3 +15,8 @@ EditorCommand::SharedPtr UnknownCommandEvent::getEditorCommand() const
 {
     return mpCommand;
 }
+
+std::string UnknownCommandEvent::getName() const
+{
+    return "UnknownCommandEvent";
+}

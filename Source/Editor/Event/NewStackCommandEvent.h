@@ -11,6 +11,7 @@ class NewStackCommandEvent : public EditorEvent
   public:
     static SharedPtr create(const Editor::SharedPtr &pEditor, const EditorCommand::SharedPtr &pCommand);
 
+    std::string getName() const override;
     [[nodiscard]] EditorCommand::SharedPtr getCommand() const;
     [[nodiscard]] Editor::SharedPtr getEditor() const;
 

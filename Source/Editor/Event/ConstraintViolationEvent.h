@@ -13,6 +13,7 @@ class ConstraintViolationEvent : public EditorEvent
     static SharedPtr create(const Editor::SharedPtr &pEditor, const EditorConstraint::SharedPtr &pConstraint,
                             const EditorCommand::SharedPtr &pCommand);
 
+    std::string getName() const override;
     [[nodiscard]] EditorConstraint::SharedPtr getConstraint() const;
     [[nodiscard]] EditorCommand::SharedPtr getCommand() const;
 

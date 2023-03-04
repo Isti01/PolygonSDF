@@ -11,6 +11,8 @@ class UnknownCommandEvent : public EditorEvent
   public:
     static SharedPtr create(EditorCommand::SharedPtr pCommand);
 
+    std::string getName() const override;
+
     [[nodiscard]] EditorCommand::SharedPtr getEditorCommand() const;
 
   protected:

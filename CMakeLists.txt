@@ -36,6 +36,13 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Core/StackEntry.cpp
         Source/Editor/Core/StackEntry.h
 
+        Source/Editor/Event/Menu/EventMenu.cpp
+        Source/Editor/Event/Menu/EventMenu.h
+        Source/Editor/Event/Menu/EventMenuGui.cpp
+        Source/Editor/Event/Menu/EventMenuGui.h
+        Source/Editor/Event/Menu/EventMenuEditorConsumer.cpp
+        Source/Editor/Event/Menu/EventMenuEditorConsumer.h
+
         Source/Editor/Event/ConstraintViolationEvent.cpp
         Source/Editor/Event/ConstraintViolationEvent.h
         Source/Editor/Event/NewStackCommandEvent.cpp

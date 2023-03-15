@@ -67,9 +67,9 @@ size_t InsertRemoveVertexInputHandler::findIndexToInsert(float2 vertexPosition, 
                                                          const Polygon::Points &points)
 {
     size_t prevIndex = IndexUtil::prevIndex(points.size(), closestVertexIndex);
-    float2 prevPoint = points.at(prevIndex).getCoordinates();
+    float2 prevPoint = points.at(prevIndex);
     size_t nextIndex = IndexUtil::nextIndex(points.size(), closestVertexIndex);
-    float2 nextPoint = points.at(nextIndex).getCoordinates();
+    float2 nextPoint = points.at(nextIndex);
 
     if (glm::distance(vertexPosition, prevPoint) > glm::distance(vertexPosition, nextPoint))
     {
@@ -92,7 +92,7 @@ bool InsertRemoveVertexInputHandler::removeVertexIfCloseEnough(float2 position)
     {
         return false;
     }
-    float closestPointDistance = glm::distance(mousePosition, points.at(*closestIndex).getCoordinates());
+    float closestPointDistance = glm::distance(mousePosition, points.at(*closestIndex));
     if (closestPointDistance > VisualEditorConstants::kSelectionDistanceThreshold)
     {
         return false;

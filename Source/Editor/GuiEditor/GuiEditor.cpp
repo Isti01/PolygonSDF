@@ -90,7 +90,7 @@ void GuiEditor::showVertexList(Gui::Window &window)
     for (size_t i = 0; i < points.size(); i++)
     {
         WithImGuiId vertexId(static_cast<int>(i));
-        auto point = points[i].getCoordinates();
+        auto point = points[i];
         if (pointEntry(window, point, i))
         {
             mpEditor->addCommand(UpdatePointStackCommand::create(i, point));

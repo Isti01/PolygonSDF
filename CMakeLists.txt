@@ -5,6 +5,16 @@ target_sources(PolygonSDF PRIVATE
         Shaders/SolidColor.3d.slang
         Shaders/UVColor.3d.slang
 
+        Source/Algorithm/Region/LineRegion.cpp
+        Source/Algorithm/Region/LineRegion.h
+        Source/Algorithm/Region/PointRegion.cpp
+        Source/Algorithm/Region/PointRegion.h
+        Source/Algorithm/Region/Region.cpp
+        Source/Algorithm/Region/Region.h
+
+        Source/Algorithm/SdfPlaneAlgorithm.cpp
+        Source/Algorithm/SdfPlaneAlgorithm.h
+
         Source/Editor/Aggregator/StackPeekingEditorAggregator.cpp
         Source/Editor/Aggregator/StackPeekingEditorAggregator.h
         Source/Editor/Aggregator/StackSizeEditorAggregator.cpp

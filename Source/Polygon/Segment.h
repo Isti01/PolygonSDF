@@ -16,6 +16,11 @@ class Segment
 
     Endpoints getEndpoints() const;
 
+    Point getPoint1() const;
+    Point getPoint2() const;
+
+    float2 getEdgeVector() const;
+
   private:
     Endpoints mEndpoints;
 };

@@ -75,7 +75,6 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/VisualEditor/VisualEditor.h
         Source/Editor/VisualEditor/VisualEditorConstants.h
 
-        Source/Polygon/Point.cpp
         Source/Polygon/Point.h
         Source/Polygon/Polygon.cpp
         Source/Polygon/Polygon.h

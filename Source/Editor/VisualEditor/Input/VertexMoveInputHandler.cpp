@@ -61,7 +61,7 @@ void VertexMoveInputHandler::selectClosestVertex(float2 mousePos)
         return;
     }
 
-    auto closestPoint = points.at(*closestScenePoint).getCoordinates();
+    auto closestPoint = points.at(*closestScenePoint);
     auto distance = glm::distance(mousePos, CoordinateUtil::sceneToScreenSpaceCoordinate(transform, closestPoint));
     if (distance > VisualEditorConstants::kSelectionDistanceThreshold)
     {

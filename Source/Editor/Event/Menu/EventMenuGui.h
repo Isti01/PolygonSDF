@@ -20,6 +20,10 @@ class EventMenuGui
     EventMenuGui() = default;
 
   private:
+    void renderCumulatedEvents(Gui::Window& window) const;
+    std::string EventMenuGui::getCumulatedText(size_t repeats, const std::string &text) const;
+
+  private:
     std::vector<EditorEvent::SharedPtr> mEvents;
 };
 

@@ -17,6 +17,12 @@ struct VsOut
     float2 texCoords : TEX_COORDS;
 };
 
+struct DistanceResult
+{
+    float distance;
+    bool closerToVertex;
+};
+
 VsOut vsMain(VsIn input)
 {
     VsOut vsOut;
@@ -25,8 +31,9 @@ VsOut vsMain(VsIn input)
     return vsOut;
 }
 
-float getSignedSquaredDistance(float2 coord)
+DistanceResult getSignedSquaredDistance(float2 coord)
 {
+    bool closerToVertex = false;
     float squaredDistance = dot(coord - points[0], coord - points[0]);
     float distanceSign = 1;
 
@@ -37,28 +44,43 @@ float getSignedSquaredDistance(float2 coord)
     {
         float2 e = points[j] - points[i];
         float2 w = coord - points[i];
-        float2 b = w - e * saturate(dot(w, e) / dot(e, e));
-        squaredDistance = min(squaredDistance, dot(b, b));
+        float p = dot(w, e) / dot(e, e);
+        float2 b = w - e * saturate(p);
+        float distance = dot(b, b);
+        if (distance < squaredDistance)
+        {
+            squaredDistance = distance;
+            closerToVertex = p >= 0 && p <= 1;
+        }
         bool3 winding = bool3(coord.y >= points[i].y, coord.y < points[j].y, e.x * w.y > e.y * w.x);
         if (all(winding) || all(!winding))
         {
             distanceSign *= -1.0;
         }
     }
-    return distanceSign * sqrt(squaredDistance);
+
+    DistanceResult result;
+    result.distance = distanceSign * sqrt(squaredDistance);
+    result.closerToVertex = closerToVertex;
+    return result;
 }
 
-float4 signedDistanceToColor(float distance)
+float4 signedDistanceToColor(DistanceResult result)
 {
+    float distance = result.distance;
     float3 col = float3(1) - sign(distance) * float3(0.1, 0.4, 0.7);
     col *= 1 - exp(-4 * abs(distance));
     col *= 0.7 + 0.2 * cos(110 * distance);
     col = lerp(col, float3(1), 1 - smoothstep(0, 0.015, abs(distance)));
+    if (result.closerToVertex)
+    {
+        col *= .7;
+    }
     return float4(col, 1);
 }
 
 float4 psMain(VsOut vsOut, uint triangleIndex : SV_PrimitiveID) : SV_TARGET
 {
-    float distance = getSignedSquaredDistance(vsOut.texCoords);
-    return signedDistanceToColor(distance);
+    DistanceResult result = getSignedSquaredDistance(vsOut.texCoords);
+    return signedDistanceToColor(result);
 }

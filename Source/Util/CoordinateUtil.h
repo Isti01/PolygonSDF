@@ -14,7 +14,7 @@ class CoordinateUtil
     static float2 screenToSceneSpaceCoordinate(const float4x4 &transform, float2 coords);
     static float2 sceneToScreenSpaceCoordinate(const float4x4 &transform, float2 coords);
     static float2 screenToSceneSpaceVector(const float4x4 &transform, float2 vector);
-    static std::optional<size_t> findClosestPointIndex(const Polygon::Points &points, float2 point);
+    static std::optional<size_t> findClosestPointIndex(const Polygon::Points &points, Point point);
 
   private:
     CoordinateUtil() = default;

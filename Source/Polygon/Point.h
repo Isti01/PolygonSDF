@@ -5,6 +5,6 @@
 namespace psdf
 {
 
-using Point = Falcor::float2;
+using Point = glm::dvec2;
 
 } // namespace psdf

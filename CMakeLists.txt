@@ -255,9 +255,17 @@ target_sources(PolygonSDFTest PRIVATE
         Source/PolygonSDFApplication.cpp
         Source/PolygonSDFApplication.h
 
+        Tests/Algorithm/Region/TestPolyCut.h
+
         Tests/External/catch.hpp
+
+        Tests/Util/TestUtils.cpp
+        Tests/Util/TestUtils.h
 
         Tests/Main.cpp
         )
+
+target_copy_shaders(PolygonSDFTest PolygonSDF)
+target_copy_data_folder(PolygonSDFTest)
 
 target_source_group(PolygonSDFTest Samples)

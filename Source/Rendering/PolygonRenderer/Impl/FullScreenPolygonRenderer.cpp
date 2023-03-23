@@ -34,7 +34,7 @@ void FullScreenPolygonRenderer::uploadPolygonData()
 {
     auto pPointBuffer = Buffer::createStructured(mpGraphicsVars["points"], mpPolygon->getPoints().size(),
                                                  Resource::BindFlags::ShaderResource, Buffer::CpuAccess::None,
-                                                 mpPolygon->getPoints().data(), false);
+                                                 mpPolygon->getFloatPoints().data(), false);
 
     mpGraphicsVars->setBuffer("points", pPointBuffer);
 }

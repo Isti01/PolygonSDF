@@ -10,7 +10,16 @@ Region::Region()
 {
 }
 
-void Region::polyCut(const std::array<Point, 2> &points, const std::array<float2, 2> &edgeVectors)
+Region::Region(std::vector<glm::dvec2> bounds) : mBounds(std::move(bounds))
+{
+}
+
+std::vector<glm::dvec2> Region::getBounds() const
+{
+    return mBounds;
+}
+
+void Region::polyCut(const std::vector<Point> &points, const std::vector<glm::dvec2> &edgeVectors)
 {
     if (mBounds.empty())
     {
@@ -18,10 +27,10 @@ void Region::polyCut(const std::array<Point, 2> &points, const std::array<float2
     }
     for (size_t i = 0; i < points.size(); i++)
     {
-        float d = glm::dot(points[i], edgeVectors[i]);
-        std::vector<float> vnd = calculateVnd(edgeVectors[i], d);
+        double d = glm::dot(points[i], edgeVectors[i]);
+        std::vector<double> vnd = calculateVnd(edgeVectors[i], d);
         std::vector<bool> b(vnd.size());
-        std::transform(vnd.cbegin(), vnd.cend(), b.begin(), [](float v) { return v > 0; });
+        std::transform(vnd.cbegin(), vnd.cend(), b.begin(), [](double v) { return v <= 0; });
         if (std::all_of(b.cbegin(), b.cend(), [](bool p) { return p; }))
         {
             continue;
@@ -35,9 +44,9 @@ void Region::polyCut(const std::array<Point, 2> &points, const std::array<float2
     }
 }
 
-std::vector<float> Region::calculateVnd(float2 edgeVector, float d)
+std::vector<double> Region::calculateVnd(glm::dvec2 edgeVector, double d)
 {
-    std::vector<float> vnd(mBounds.size());
+    std::vector<double> vnd(mBounds.size());
     for (size_t i = 0; i < vnd.size(); ++i)
     {
         vnd[i] = glm::dot(mBounds[i], edgeVector) - d;
@@ -45,7 +54,7 @@ std::vector<float> Region::calculateVnd(float2 edgeVector, float d)
     return vnd;
 }
 
-void Region::calculateNewBounds(const std::vector<float> &vnd, std::vector<bool> &b)
+void Region::calculateNewBounds(const std::vector<double> &vnd, std::vector<bool> &b)
 {
     std::vector<int> ind = getNeighborDifference(b);
     int64_t m1 = std::distance(ind.cbegin(), std::find(ind.cbegin(), ind.cend(), -1));
@@ -54,12 +63,12 @@ void Region::calculateNewBounds(const std::vector<float> &vnd, std::vector<bool>
     int64_t p1 = std::distance(ind.cbegin(), std::find(ind.cbegin(), ind.cend(), 1));
     size_t p0 = (p1 + (ind.size() - 1)) % ind.size();
 
-    float2 vndSlice0{vnd[m0], vnd[p0]};
-    float2 vndSlice1{vnd[m1], vnd[p1]};
-    float2 tt = 1.0f - vndSlice1 / (vndSlice1 - vndSlice0);
+    glm::dvec2 vndSlice0{vnd[m0], vnd[p0]};
+    glm::dvec2 vndSlice1{vnd[m1], vnd[p1]};
+    glm::dvec2 tt = 1.0 - vndSlice1 / (vndSlice1 - vndSlice0);
 
-    std::vector<float2> w{mBounds[m0] * (1.0f - tt[0]) + mBounds[p0] * tt[0],
-                          mBounds[m1] * (1.0f - tt[1]) + mBounds[p1] * tt[1]};
+    std::vector<glm::dvec2> w{mBounds[m0] * (1.0f - tt[0]) + mBounds[m1] * tt[0],
+                          mBounds[p0] * (1.0f - tt[1]) + mBounds[p1] * tt[1]};
     applyNewBounds(b, w, m0, p1);
 }
 
@@ -75,13 +84,13 @@ std::vector<int> Region::getNeighborDifference(const std::vector<bool> &b)
     return ind;
 }
 
-void Region::applyNewBounds(std::vector<bool> &b, const std::vector<float2> &w, size_t m0, size_t p1)
+void Region::applyNewBounds(std::vector<bool> &b, const std::vector<glm::dvec2> &w, size_t m0, size_t p1)
 {
     if (m0 == p1)
     {
         FALCOR_ASSERT(m0 >= 0);
         mBounds.emplace_back(0.0f); // in this case we extend the bounding polygon by one vertex
-        for (size_t i = m0 + 2; i < mBounds.size(); i++)
+        for (size_t i = mBounds.size() - 1; i >= m0 + 2; i--)
         {
             mBounds[i] = mBounds[i - 1];
         }
@@ -94,14 +103,15 @@ void Region::applyNewBounds(std::vector<bool> &b, const std::vector<float2> &w, 
         mBounds[p1] = w[1];
         b[m0] = true;
         b[p1] = true;
-        std::vector<float2> newBounds;
+        std::vector<glm::dvec2> newBounds;
         newBounds.reserve(mBounds.size());
         for (size_t i = 0; i < b.size(); i++)
         {
             if (b[i])
             {
-                newBounds.push_back(mBounds[i]);
+                newBounds.emplace_back(mBounds[i]);
             }
         }
+        mBounds = newBounds;
     }
 }

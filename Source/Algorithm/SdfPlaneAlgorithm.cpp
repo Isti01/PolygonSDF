@@ -22,8 +22,9 @@ void SdfPlaneAlgorithm::getResult(const Polygon::SharedPtr &pPolygon)
         float2 edgeVector2 = segment2.getEdgeVector();
         float cornerSign = glm::dot(float2{-edgeVector1.y, edgeVector1.x}, edgeVector2);
 
-        lineRegions.emplace_back(segment1); // todo cut bounds
-        pointRegions.emplace_back(segment1.getPoint2(), cornerSign); // todo cut bounds
-
+        lineRegions.emplace_back(segment1);
+        lineRegions[i].polyCut(segment1.getEndpoints(), {edgeVector1, -edgeVector1});
+        pointRegions.emplace_back(segment1.getPoint2(), cornerSign);
+        lineRegions[i].polyCut({segment1.getPoint2(), segment1.getPoint2()}, {edgeVector2, -edgeVector1});
     }
 }

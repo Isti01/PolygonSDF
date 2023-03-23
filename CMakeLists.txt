@@ -3,7 +3,6 @@ add_falcor_executable(PolygonSDF)
 target_sources(PolygonSDF PRIVATE
         Shaders/NaivePolygonDistance.3d.slang
         Shaders/SolidColor.3d.slang
-        Shaders/UVColor.3d.slang
 
         Source/Algorithm/Region/LineRegion.cpp
         Source/Algorithm/Region/LineRegion.h

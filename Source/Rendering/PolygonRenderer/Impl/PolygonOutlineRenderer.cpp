@@ -39,7 +39,7 @@ void PolygonOutlineRenderer::setColor(const float4 &color)
 
 VertexLayout::SharedPtr getVertexLayout()
 {
-    const auto pLayout = VertexLayout::create();
+    auto pLayout = VertexLayout::create();
     const auto pBufferLayout = VertexBufferLayout::create();
     pBufferLayout->addElement("POS", 0, ResourceFormat::RG32Float, 1, 0);
     pLayout->addBufferLayout(0, pBufferLayout);
@@ -48,7 +48,7 @@ VertexLayout::SharedPtr getVertexLayout()
 
 void PolygonOutlineRenderer::uploadPolygonData()
 {
-    auto segments = mpPolygon->getSegments();
+    auto segments = mpPolygon->getFloatSegments();
 
     std::vector<uint32_t> indices(segments.size() * 2);
     std::generate(indices.begin(), indices.end(), RangeGenerator());

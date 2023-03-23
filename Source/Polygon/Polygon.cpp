@@ -41,3 +41,21 @@ Polygon::Segments Polygon::getSegments() const
 {
     return mSegments;
 }
+
+Polygon::FloatPoints psdf::Polygon::getFloatPoints() const
+{
+    FloatPoints points;
+    points.reserve(mPoints.size());
+    std::copy(mPoints.cbegin(), mPoints.cend(), std::back_inserter(points));
+    return points;
+}
+
+Polygon::FloatSegments psdf::Polygon::getFloatSegments() const
+{
+    FloatSegments segments;
+    segments.reserve(mSegments.size());
+    std::transform(mSegments.cbegin(), mSegments.cend(), std::back_inserter(segments), [](const Segment& segment) {
+        return std::array<float2, 2>{{segment.getPoint1(), segment.getPoint2()}};
+    });
+    return segments;
+}

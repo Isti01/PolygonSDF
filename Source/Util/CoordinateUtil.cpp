@@ -20,7 +20,7 @@ float2 CoordinateUtil::screenToSceneSpaceVector(const float4x4 &transform, float
     return (transpose(inverse(transform)) * float4(vector, 0, 0)).xy;
 }
 
-std::optional<size_t> CoordinateUtil::findClosestPointIndex(const Polygon::Points &points, float2 point)
+std::optional<size_t> CoordinateUtil::findClosestPointIndex(const Polygon::Points &points, Point point)
 {
     auto isPointCloser = [point](const Point &p1, const Point &p2) {
         return glm::distance(point, p1) < glm::distance(point, p2);

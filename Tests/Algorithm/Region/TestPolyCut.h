@@ -39,7 +39,7 @@ RegionTestcase readTestCase(const std::string &line)
     return testCase;
 }
 
-TEST_CASE("Test PolyCut")
+TEST_CASE("Test Region::polyCut")
 {
     std::ifstream f("Data/Tests/polycut_data.csv");
     for (std::string line; std::getline(f, line);)

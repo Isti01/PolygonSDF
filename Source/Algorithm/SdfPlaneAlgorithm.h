@@ -9,7 +9,6 @@ namespace psdf
 
 class SdfPlaneAlgorithm
 {
-
   public:
     static void getResult(const Polygon::SharedPtr &pPolygon);
 

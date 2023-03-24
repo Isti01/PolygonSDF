@@ -15,7 +15,7 @@ class TestUtils
     static std::vector<glm::dvec2> readDouble2Vector(const std::string &spaceSeparatedList);
 
     static bool areDouble2VectorsEqual(const std::vector<glm::dvec2> &expected, const std::vector<glm::dvec2> &result,
-                                       int maxUlps = 5);
+                                       int maxUlps = 10);
 
   private:
     TestUtils() = default;

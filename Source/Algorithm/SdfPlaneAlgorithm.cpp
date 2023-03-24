@@ -27,4 +27,7 @@ void SdfPlaneAlgorithm::getResult(const Polygon::SharedPtr &pPolygon)
         pointRegions.emplace_back(segment1.getPoint2(), cornerSign);
         lineRegions[i].polyCut({segment1.getPoint2(), segment1.getPoint2()}, {edgeVector2, -edgeVector1});
     }
+
+    PointRegion::cutWithPoints(pointRegions);
+    PointRegion::cutWithLines(pointRegions, lineRegions);
 }

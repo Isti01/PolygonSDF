@@ -3,10 +3,10 @@
 using namespace psdf;
 
 Region::Region()
-    : mBounds({{-InitialBoundScale, -InitialBoundScale},
-               {InitialBoundScale, -InitialBoundScale},
-               {InitialBoundScale, InitialBoundScale},
-               {-InitialBoundScale, InitialBoundScale}})
+    : mBounds({{-kInitialBoundScale, -kInitialBoundScale},
+               {kInitialBoundScale, -kInitialBoundScale},
+               {kInitialBoundScale, kInitialBoundScale},
+               {-kInitialBoundScale, kInitialBoundScale}})
 {
 }
 

@@ -10,8 +10,8 @@ using namespace Falcor;
 class Region
 {
   public:
-    static constexpr double Epsilon = 1e-13;
-    static constexpr double InitialBoundScale = 1e7f;
+    static constexpr double kEpsilon = 1e-13;
+    static constexpr double kInitialBoundScale = 1e7f;
 
     void polyCut(const std::vector<Point> &points, const std::vector<glm::dvec2> &edgeVectors);
 

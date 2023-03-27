@@ -5,7 +5,7 @@
 
 namespace psdf
 {
-
+class PointRegion;
 class LineRegion : public Region
 {
   public:
@@ -13,6 +13,8 @@ class LineRegion : public Region
     LineRegion(std::vector<glm::dvec2> bounds, const Segment &segment);
 
     Segment getSegment() const;
+
+    static void cutWithPoints(std::vector<LineRegion> &lineRegions, const std::vector<PointRegion> &pointRegions);
 
   private:
     Segment mSegment;

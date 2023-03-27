@@ -255,6 +255,8 @@ target_sources(PolygonSDFTest PRIVATE
         Source/PolygonSDFApplication.cpp
         Source/PolygonSDFApplication.h
 
+        Tests/Algorithm/Region/TestLineRegionCutWithPoints.h
+        Tests/Algorithm/Region/TestPointRegionCutWithLines.h
         Tests/Algorithm/Region/TestPointRegionCutWithPoints.h
         Tests/Algorithm/Region/TestPolyCut.h
 

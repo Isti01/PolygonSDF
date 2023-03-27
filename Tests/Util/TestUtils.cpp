@@ -77,7 +77,7 @@ std::vector<psdf::LineRegion> TestUtils::readLineRegionList(const std::string &p
 }
 
 bool TestUtils::areDouble2VectorsEqual(const std::vector<glm::dvec2> &expected, const std::vector<glm::dvec2> &result,
-                                       int maxUlps)
+                                       double epsilon)
 {
 
     if (expected.size() != result.size())
@@ -87,7 +87,7 @@ bool TestUtils::areDouble2VectorsEqual(const std::vector<glm::dvec2> &expected, 
 
     for (size_t i = 0; i < expected.size(); i++)
     {
-        if (!glm::all(glm::equal(expected[i], result[i], maxUlps)))
+        if (!glm::all(glm::epsilonEqual(expected[i], result[i], epsilon)))
         {
             return false;
         }
@@ -96,7 +96,7 @@ bool TestUtils::areDouble2VectorsEqual(const std::vector<glm::dvec2> &expected, 
 }
 
 bool TestUtils::arePointRegionsEqual(const std::vector<PointRegion> &expected, const std::vector<PointRegion> &actual,
-                                     int maxUlps)
+                                     double epsilon)
 {
     if (expected.size() != actual.size())
     {
@@ -105,15 +105,44 @@ bool TestUtils::arePointRegionsEqual(const std::vector<PointRegion> &expected, c
 
     for (size_t i = 0; i < expected.size(); i++)
     {
-        if (!areDouble2VectorsEqual(expected[i].getBounds(), actual[i].getBounds()))
+        if (!areDouble2VectorsEqual(expected[i].getBounds(), actual[i].getBounds(), epsilon))
         {
             return false;
         }
-        if (expected[i].getCornerSign() != actual[i].getCornerSign())
+        if (glm::abs(expected[i].getCornerSign() - actual[i].getCornerSign()) < epsilon)
         {
             return false;
         }
-        if (!glm::all(glm::equal(expected[i].getPoint(), actual[i].getPoint(), maxUlps)))
+        if (!glm::all(glm::epsilonEqual(expected[i].getPoint(), actual[i].getPoint(), epsilon)))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool TestUtils::areLineRegionsEqual(const std::vector<LineRegion> &expected, const std::vector<LineRegion> &actual,
+                                    double epsilon)
+{
+    if (expected.size() != actual.size())
+    {
+        return false;
+    }
+
+    for (size_t i = 0; i < expected.size(); i++)
+    {
+        if (!areDouble2VectorsEqual(expected[i].getBounds(), actual[i].getBounds(), epsilon))
+        {
+            return false;
+        }
+        auto expectedSegment = expected[i].getSegment();
+        auto actualSegment = actual[i].getSegment();
+        if (!glm::all(glm::epsilonEqual(expectedSegment.getPoint1(), actualSegment.getPoint1(), epsilon)))
+        {
+            return false;
+        }
+        if (!glm::all(glm::epsilonEqual(expectedSegment.getPoint2(), actualSegment.getPoint2(), epsilon)))
         {
             return false;
         }

@@ -30,4 +30,7 @@ void SdfPlaneAlgorithm::getResult(const Polygon::SharedPtr &pPolygon)
 
     PointRegion::cutWithPoints(pointRegions);
     PointRegion::cutWithLines(pointRegions, lineRegions);
+
+    LineRegion::cutWithPoints(lineRegions, pointRegions);
+    LineRegion::cutWithLines(lineRegions);
 }

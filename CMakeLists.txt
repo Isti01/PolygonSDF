@@ -114,6 +114,7 @@ target_sources(PolygonSDF PRIVATE
         Source/Util/Deferred.h
         Source/Util/IndexUtil.cpp
         Source/Util/IndexUtil.h
+        Source/Util/MathUtil.h
         Source/Util/RangeGenerator.cpp
         Source/Util/RangeGenerator.h
         Source/Util/WithImGuiId.cpp
@@ -247,6 +248,7 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Util/Deferred.h
         Source/Util/IndexUtil.cpp
         Source/Util/IndexUtil.h
+        Source/Util/MathUtil.h
         Source/Util/RangeGenerator.cpp
         Source/Util/RangeGenerator.h
         Source/Util/WithImGuiId.cpp
@@ -255,6 +257,7 @@ target_sources(PolygonSDFTest PRIVATE
         Source/PolygonSDFApplication.cpp
         Source/PolygonSDFApplication.h
 
+        Tests/Algorithm/Region/TestLineRegionCutWithLines.h
         Tests/Algorithm/Region/TestLineRegionCutWithPoints.h
         Tests/Algorithm/Region/TestPointRegionCutWithLines.h
         Tests/Algorithm/Region/TestPointRegionCutWithPoints.h

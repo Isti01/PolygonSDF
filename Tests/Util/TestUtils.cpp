@@ -109,7 +109,7 @@ bool TestUtils::arePointRegionsEqual(const std::vector<PointRegion> &expected, c
         {
             return false;
         }
-        if (glm::abs(expected[i].getCornerSign() - actual[i].getCornerSign()) < epsilon)
+        if (glm::abs(expected[i].getCornerSign() - actual[i].getCornerSign()) > epsilon)
         {
             return false;
         }

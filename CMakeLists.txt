@@ -32,6 +32,9 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Command/UpdatePointStackCommand.cpp
         Source/Editor/Command/UpdatePointStackCommand.h
 
+        Source/Editor/Constraint/DeletePointEditorConstraint.cpp
+        Source/Editor/Constraint/DeletePointEditorConstraint.h
+
         Source/Editor/Core/Editor.cpp
         Source/Editor/Core/Editor.h
         Source/Editor/Core/EditorAggregator.h
@@ -165,6 +168,9 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/Command/StackCommand.h
         Source/Editor/Command/UpdatePointStackCommand.cpp
         Source/Editor/Command/UpdatePointStackCommand.h
+
+        Source/Editor/Constraint/DeletePointEditorConstraint.cpp
+        Source/Editor/Constraint/DeletePointEditorConstraint.h
 
         Source/Editor/Core/Editor.cpp
         Source/Editor/Core/Editor.h

@@ -9,7 +9,7 @@ EditorTransformation::SharedPtr UndoEditorTransformation::create()
 
 void UndoEditorTransformation::transform(EditorStack::SharedPtr &pEditorStack)
 {
-    if (pEditorStack->getSize() > 0)
+    if (pEditorStack->getSize() > 1)
     {
         pEditorStack->pop();
     }

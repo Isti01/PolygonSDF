@@ -19,8 +19,9 @@ void PolygonSDFApplication::onLoad(RenderContext *pRenderContext)
 
 void PolygonSDFApplication::onGuiRender(Gui *pGui)
 {
-    mpGuiEditor->render(pGui);
-    mpEventMenu->renderGui(pGui);
+    Gui::Window window(pGui, "PolygonSDF");
+    mpGuiEditor->render(window);
+    mpEventMenu->renderGui(window);
 }
 
 void PolygonSDFApplication::onFrameRender(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo)

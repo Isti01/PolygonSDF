@@ -15,7 +15,7 @@ class EventMenu
     using SharedPtr = std::shared_ptr<EventMenu>;
     static SharedPtr create(Editor::SharedPtr pEditor);
 
-    void renderGui(Gui *pGui);
+    void renderGui(Gui::Window& window);
 
     ~EventMenu();
 

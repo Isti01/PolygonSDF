@@ -8,17 +8,16 @@ EventMenuGui::SharedPtr EventMenuGui::create()
     return SharedPtr(new EventMenuGui());
 }
 
-void EventMenuGui::renderGui(Gui *pGui)
+void EventMenuGui::renderGui(Gui::Window &window)
 {
+    Gui::Group group = window.group("Editor Events", false);
 
-    Gui::Window window(pGui, "Event Menu");
-
-    if (window.button("Clear event history"))
+    if (group.button("Clear event history"))
     {
         mEvents.clear();
     }
 
-    renderCumulatedEvents(window);
+    renderCumulatedEvents(group);
 }
 
 void EventMenuGui::addNewEvent(EditorEvent::SharedPtr pEvent)
@@ -26,7 +25,7 @@ void EventMenuGui::addNewEvent(EditorEvent::SharedPtr pEvent)
     mEvents.emplace(mEvents.begin(), std::move(pEvent));
 }
 
-void EventMenuGui::renderCumulatedEvents(Gui::Window &window) const
+void EventMenuGui::renderCumulatedEvents(Gui::Group &group) const
 {
     if (mEvents.empty())
     {
@@ -45,12 +44,12 @@ void EventMenuGui::renderCumulatedEvents(Gui::Window &window) const
         }
         else
         {
-            window.text(getCumulatedText(groupCount, groupText));
+            group.text(getCumulatedText(groupCount, groupText));
             groupCount = 1;
             groupText = currentText;
         }
     }
-    window.text(getCumulatedText(groupCount, groupText));
+    group.text(getCumulatedText(groupCount, groupText));
 }
 
 std::string EventMenuGui::getCumulatedText(size_t repeats, const std::string &text) const

@@ -13,14 +13,14 @@ class EventMenuGui
     using SharedPtr = std::shared_ptr<EventMenuGui>;
     static SharedPtr create();
 
-    void renderGui(Gui *pGui);
+    void renderGui(Gui::Window &window);
     void addNewEvent(EditorEvent::SharedPtr pEvent);
 
   protected:
     EventMenuGui() = default;
 
   private:
-    void renderCumulatedEvents(Gui::Window& window) const;
+    void renderCumulatedEvents(Gui::Group &group) const;
     std::string EventMenuGui::getCumulatedText(size_t repeats, const std::string &text) const;
 
   private:

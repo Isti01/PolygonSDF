@@ -22,25 +22,24 @@ GuiEditor::GuiEditor(Editor::SharedPtr pEditor)
 {
 }
 
-void GuiEditor::render(Gui *pGui)
+void GuiEditor::render(Gui::Window& window)
 {
     auto pPeekResult = mpPolygonPeekingAggregator->peekEditor(mpEditor);
     FALCOR_ASSERT(pPeekResult);
     mpCurrentPolygon = pPeekResult->getEntry().polygon;
-    Gui::Window window(pGui, "GUI Polygon Editor");
-
-    showControlButtons(window);
+    Gui::Group group = window.group("GUI Polygon Editor", true);
+    showControlButtons(group);
     ImGui::Spacing();
     window.separator();
     ImGui::Spacing();
-    showVertexInput(window);
+    showVertexInput(group);
     ImGui::Spacing();
     window.separator();
     ImGui::Spacing();
-    showVertexList(window);
+    showVertexList(group);
 }
 
-void GuiEditor::showControlButtons(Gui::Window &window)
+void GuiEditor::showControlButtons(Gui::Group &window)
 {
     WithImGuiId id("ControlButtons");
 
@@ -64,7 +63,7 @@ void GuiEditor::showControlButtons(Gui::Window &window)
     }
 }
 
-bool pointEntry(Gui::Window &window, float2 &point, size_t index)
+bool pointEntry(Gui::Group &window, float2 &point, size_t index)
 {
     std::stringstream ss;
     ss << "[Vertex " << index << "]: \t";
@@ -73,7 +72,7 @@ bool pointEntry(Gui::Window &window, float2 &point, size_t index)
     return window.var("", point);
 }
 
-void GuiEditor::showVertexList(Gui::Window &window)
+void GuiEditor::showVertexList(Gui::Group &window)
 {
     WithImGuiId id("VertexList");
 
@@ -102,7 +101,7 @@ void GuiEditor::showVertexList(Gui::Window &window)
     }
 }
 
-void GuiEditor::showVertexInput(Gui::Window &window)
+void GuiEditor::showVertexInput(Gui::Group &window)
 {
     if (!mpCurrentPolygon)
     {

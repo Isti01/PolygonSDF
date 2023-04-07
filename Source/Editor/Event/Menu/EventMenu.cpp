@@ -14,9 +14,9 @@ EventMenu::EventMenu(Editor::SharedPtr pEditor)
     mpEditor->addConsumer(mpConsumer);
 }
 
-void EventMenu::renderGui(Gui *pGui)
+void EventMenu::renderGui(Gui::Window& window)
 {
-    mpGui->renderGui(pGui);
+    mpGui->renderGui(window);
 }
 
 EventMenu::~EventMenu()

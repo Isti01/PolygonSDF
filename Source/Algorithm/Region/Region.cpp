@@ -68,7 +68,7 @@ void Region::calculateNewBounds(const std::vector<double> &vnd, std::vector<bool
     glm::dvec2 tt = 1.0 - vndSlice1 / (vndSlice1 - vndSlice0);
 
     std::vector<glm::dvec2> w{mBounds[m0] * (1.0f - tt[0]) + mBounds[m1] * tt[0],
-                          mBounds[p0] * (1.0f - tt[1]) + mBounds[p1] * tt[1]};
+                              mBounds[p0] * (1.0f - tt[1]) + mBounds[p1] * tt[1]};
     applyNewBounds(b, w, m0, p1);
 }
 
@@ -86,6 +86,8 @@ std::vector<int> Region::getNeighborDifference(const std::vector<bool> &b)
 
 void Region::applyNewBounds(std::vector<bool> &b, const std::vector<glm::dvec2> &w, size_t m0, size_t p1)
 {
+    std::vector<glm::dvec2> newBounds;
+    newBounds.reserve(mBounds.size());
     if (m0 == p1)
     {
         FALCOR_ASSERT(m0 >= 0);

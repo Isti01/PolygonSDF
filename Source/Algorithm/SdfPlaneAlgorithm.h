@@ -11,7 +11,7 @@ namespace psdf
 class SdfPlaneAlgorithm
 {
   public:
-    static SdfPlaneAlgorithmOutput calculateForPolygon(const Polygon::SharedPtr &pPolygon);
+    static SdfPlaneAlgorithmOutput::SharedPtr calculateForPolygon(const Polygon::SharedPtr &pPolygon);
 
   private:
     SdfPlaneAlgorithm() = default;

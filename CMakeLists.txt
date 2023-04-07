@@ -13,6 +13,7 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Algorithm/SdfPlaneAlgorithm.cpp
         Source/Algorithm/SdfPlaneAlgorithm.h
+        Source/Algorithm/SdfPlaneAlgorithmOutput.cpp
         Source/Algorithm/SdfPlaneAlgorithmOutput.h
 
         Source/Editor/Aggregator/StackPeekingEditorAggregator.cpp
@@ -46,6 +47,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Core/EditorStack.cpp
         Source/Editor/Core/EditorStack.h
         Source/Editor/Core/EditorTransformation.h
+        Source/Editor/Core/PublishedEvent.cpp
+        Source/Editor/Core/PublishedEvent.h
         Source/Editor/Core/StackEntry.cpp
         Source/Editor/Core/StackEntry.h
 
@@ -151,6 +154,7 @@ target_sources(PolygonSDFTest PRIVATE
 
         Source/Algorithm/SdfPlaneAlgorithm.cpp
         Source/Algorithm/SdfPlaneAlgorithm.h
+        Source/Algorithm/SdfPlaneAlgorithmOutput.cpp
         Source/Algorithm/SdfPlaneAlgorithmOutput.h
 
         Source/Editor/Aggregator/StackPeekingEditorAggregator.cpp
@@ -184,6 +188,8 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/Core/EditorStack.cpp
         Source/Editor/Core/EditorStack.h
         Source/Editor/Core/EditorTransformation.h
+        Source/Editor/Core/PublishedEvent.cpp
+        Source/Editor/Core/PublishedEvent.h
         Source/Editor/Core/StackEntry.cpp
         Source/Editor/Core/StackEntry.h
 

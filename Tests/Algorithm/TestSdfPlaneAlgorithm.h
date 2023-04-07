@@ -18,8 +18,8 @@ TEST_CASE("Test SdfPlaneAlgorithm::calculateForPolygon")
     auto result = psdf::SdfPlaneAlgorithm::calculateForPolygon(input);
 
     auto expectedPoints = psdf::TestUtils::readPointRegionList("Data/Tests/sdf_algorithm_point_region_output.csv");
-    CHECK(psdf::TestUtils::arePointRegionsEqual(expectedPoints, result.pointRegions));
+    CHECK(psdf::TestUtils::arePointRegionsEqual(expectedPoints, result->getPointRegions()));
 
     auto expectedLines = psdf::TestUtils::readLineRegionList("Data/Tests/sdf_algorithm_line_region_output.csv");
-    CHECK(psdf::TestUtils::areLineRegionsEqual(expectedLines, result.lineRegions));
+    CHECK(psdf::TestUtils::areLineRegionsEqual(expectedLines, result->getLineRegions()));
 }

@@ -2,7 +2,7 @@
 
 using namespace psdf;
 
-SdfPlaneAlgorithmOutput SdfPlaneAlgorithm::calculateForPolygon(const Polygon::SharedPtr &pPolygon)
+SdfPlaneAlgorithmOutput::SharedPtr SdfPlaneAlgorithm::calculateForPolygon(const Polygon::SharedPtr &pPolygon)
 {
     std::vector<Segment> segments = pPolygon->getSegments();
 
@@ -34,5 +34,5 @@ SdfPlaneAlgorithmOutput SdfPlaneAlgorithm::calculateForPolygon(const Polygon::Sh
     LineRegion::cutWithPoints(lineRegions, pointRegions);
     LineRegion::cutWithLines(lineRegions);
 
-    return {pointRegions, lineRegions};
+    return SdfPlaneAlgorithmOutput::create(pointRegions, lineRegions);
 }

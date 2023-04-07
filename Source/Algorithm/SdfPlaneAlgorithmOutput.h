@@ -3,15 +3,27 @@
 #include "Region/LineRegion.h"
 #include "Region/PointRegion.h"
 
-#include <vector>
+#include <Falcor.h>
 
 namespace psdf
 {
 
-struct SdfPlaneAlgorithmOutput
+class SdfPlaneAlgorithmOutput
 {
-    std::vector<PointRegion> pointRegions;
-    std::vector<LineRegion> lineRegions;
+  public:
+    using SharedPtr = std::shared_ptr<SdfPlaneAlgorithmOutput>;
+    static SharedPtr create(std::vector<PointRegion> pointRegions, std::vector<LineRegion> lineRegions);
+
+    std::vector<PointRegion> getPointRegions() const;
+
+    std::vector<LineRegion> getLineRegions() const;
+
+  protected:
+    SdfPlaneAlgorithmOutput(std::vector<PointRegion> pointRegions, std::vector<LineRegion> lineRegions);
+
+  private:
+    std::vector<PointRegion> mPointRegions;
+    std::vector<LineRegion> mLineRegions;
 };
 
 } // namespace psdf

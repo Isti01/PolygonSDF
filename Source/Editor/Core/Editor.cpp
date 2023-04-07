@@ -17,6 +17,11 @@ Editor::SharedPtr Editor::create(EditorStack::SharedPtr pStack)
     return SharedPtr(new Editor(std::move(pStack)));
 }
 
+void Editor::publishEvent(const PublishedEvent::SharedPtr &pPublishedEvent, const void *publisher)
+{
+    notifyConsumers(EditorPublishedEvent::create(pPublishedEvent,publisher));
+}
+
 void Editor::addCommand(const EditorCommand::SharedPtr &pCommand)
 {
     if (auto pStackCommand = std::dynamic_pointer_cast<StackCommand>(pCommand))

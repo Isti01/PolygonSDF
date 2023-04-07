@@ -38,6 +38,7 @@ class Polygon
   private:
     Points mPoints;
     Segments mSegments;
+
 };
 
 } // namespace psdf

@@ -5,6 +5,7 @@
 #include "EditorConsumer.h"
 #include "EditorStack.h"
 #include "EditorTransformation.h"
+#include "PublishedEvent.h"
 
 #include <memory>
 #include <vector>
@@ -18,6 +19,8 @@ class Editor : public std::enable_shared_from_this<Editor>
     using SharedPtr = std::shared_ptr<Editor>;
 
     static SharedPtr create(EditorStack::SharedPtr pStack);
+
+    void publishEvent(const PublishedEvent::SharedPtr &pPublishedEvent, const void *publisher);
 
     void addCommand(const EditorCommand::SharedPtr &pCommand);
 

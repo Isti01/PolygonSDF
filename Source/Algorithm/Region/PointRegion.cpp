@@ -2,7 +2,7 @@
 
 using namespace psdf;
 
-PointRegion::PointRegion(Point point, double cornerSign) : mPoint(point), mCornerSign(cornerSign)
+PointRegion::PointRegion(Point point, double cornerSign) : Region(), mPoint(point), mCornerSign(cornerSign)
 {
 }
 

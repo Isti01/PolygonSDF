@@ -3,7 +3,7 @@
 using namespace psdf;
 
 Region::Region()
-    : mBounds({{-kInitialBoundScale, -kInitialBoundScale},
+    : Region({{-kInitialBoundScale, -kInitialBoundScale},
                {kInitialBoundScale, -kInitialBoundScale},
                {kInitialBoundScale, kInitialBoundScale},
                {-kInitialBoundScale, kInitialBoundScale}})
@@ -86,8 +86,6 @@ std::vector<int> Region::getNeighborDifference(const std::vector<bool> &b)
 
 void Region::applyNewBounds(std::vector<bool> &b, const std::vector<glm::dvec2> &w, size_t m0, size_t p1)
 {
-    std::vector<glm::dvec2> newBounds;
-    newBounds.reserve(mBounds.size());
     if (m0 == p1)
     {
         FALCOR_ASSERT(m0 >= 0);

@@ -54,6 +54,19 @@ std::vector<glm::dvec2> TestUtils::readDouble2Vector(const std::string &spaceSep
     return result;
 }
 
+Polygon::SharedPtr TestUtils::readPolygon(const std::string &path)
+{
+    std::vector<Point> points;
+    std::ifstream f(path);
+    Point current;
+    while (f >> current.x >> current.y)
+    {
+        points.push_back(current);
+    }
+
+    return Polygon::create(points);
+}
+
 std::vector<psdf::PointRegion> TestUtils::readPointRegionList(const std::string &path)
 {
     std::vector<psdf::PointRegion> pointRegions;

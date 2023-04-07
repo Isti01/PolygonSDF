@@ -7,3 +7,4 @@
 #include "Algorithm/Region/TestPointRegionCutWithLines.h"
 #include "Algorithm/Region/TestPointRegionCutWithPoints.h"
 #include "Algorithm/Region/TestPolyCut.h"
+#include "Algorithm/TestSdfPlaneAlgorithm.h"

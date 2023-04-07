@@ -4,7 +4,7 @@
 
 using namespace psdf;
 
-LineRegion::LineRegion(const Segment &segment) : mSegment(segment)
+LineRegion::LineRegion(const Segment &segment) : Region(), mSegment(segment)
 {
 }
 

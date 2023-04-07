@@ -13,6 +13,7 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Algorithm/SdfPlaneAlgorithm.cpp
         Source/Algorithm/SdfPlaneAlgorithm.h
+        Source/Algorithm/SdfPlaneAlgorithmOutput.h
 
         Source/Editor/Aggregator/StackPeekingEditorAggregator.cpp
         Source/Editor/Aggregator/StackPeekingEditorAggregator.h
@@ -150,6 +151,7 @@ target_sources(PolygonSDFTest PRIVATE
 
         Source/Algorithm/SdfPlaneAlgorithm.cpp
         Source/Algorithm/SdfPlaneAlgorithm.h
+        Source/Algorithm/SdfPlaneAlgorithmOutput.h
 
         Source/Editor/Aggregator/StackPeekingEditorAggregator.cpp
         Source/Editor/Aggregator/StackPeekingEditorAggregator.h
@@ -268,6 +270,8 @@ target_sources(PolygonSDFTest PRIVATE
         Tests/Algorithm/Region/TestPointRegionCutWithLines.h
         Tests/Algorithm/Region/TestPointRegionCutWithPoints.h
         Tests/Algorithm/Region/TestPolyCut.h
+
+        Tests/Algorithm/TestSdfPlaneAlgorithm.h
 
         Tests/External/catch.hpp
 

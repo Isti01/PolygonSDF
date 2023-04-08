@@ -50,8 +50,8 @@ void LineRegion::cutWithPoints(std::vector<LineRegion> &lineRegions, const std::
             glm::dvec2 ba1 = pointRegions[j].getPoint() - point1;
             glm::dvec2 ba2 = pointRegions[j].getPoint() - point2;
 
-            if (glm::dot(ba1, ba1) < kEpsilon || glm::dot(ba2, ba2) < kEpsilon ||
-                glm::abs(glm::dot(normal, ba1)) < kEpsilon || glm::abs(glm::dot(normal, ba2)) < kEpsilon)
+            if (glm::dot(ba1, ba1) < CommonConstants::kEpsilon || glm::dot(ba2, ba2) < CommonConstants::kEpsilon ||
+                glm::abs(glm::dot(normal, ba1)) < CommonConstants::kEpsilon || glm::abs(glm::dot(normal, ba2)) < CommonConstants::kEpsilon)
             {
                 continue;
             }
@@ -77,7 +77,7 @@ void LineRegion::cutWithPoints(std::vector<LineRegion> &lineRegions, const std::
 glm::dvec2 LineRegion::computeParabolics(const glm::dvec2 &point, const glm::dvec2 &normal, const glm::dvec2 &bPoint)
 {
     glm::dvec2 d = bPoint - point;
-    if (glm::abs(glm::dot(-d, -d)) < kEpsilon)
+    if (glm::abs(glm::dot(-d, -d)) < CommonConstants::kEpsilon)
     {
         return (point + bPoint) / 2.0;
     }
@@ -137,8 +137,8 @@ void LineRegion::cutWithLines(std::vector<LineRegion> &lineRegions)
                 continue;
             }
             glm::dvec2 bNormal{-bDir.y, bDir.x};
-            bool isParallel = glm::abs(glm::dot(dir, bNormal)) <= kEpsilon;
-            if (isParallel && glm::abs(glm::dot(bPoint1 - point1, normal)) < kEpsilon)
+            bool isParallel = glm::abs(glm::dot(dir, bNormal)) <= CommonConstants::kEpsilon;
+            if (isParallel && glm::abs(glm::dot(bPoint1 - point1, normal)) < CommonConstants::kEpsilon)
             {
                 continue;
             }
@@ -158,14 +158,14 @@ void LineRegion::cutWithLines(std::vector<LineRegion> &lineRegions)
             double gb1 = glm::dot(g - bPoint1, bDir);
             double gb2 = glm::dot(g - bPoint2, bDir);
 
-            if (MathUtil::isMonotonic<double, 4>({ga1, ga2, gb1, gb2}, kEpsilon) ||
-                MathUtil::isMonotonic<double, 4>({gb1, gb2, ga1, ga2}, kEpsilon))
+            if (MathUtil::isMonotonic<double, 4>({ga1, ga2, gb1, gb2}, CommonConstants::kEpsilon) ||
+                MathUtil::isMonotonic<double, 4>({gb1, gb2, ga1, ga2}, CommonConstants::kEpsilon))
             {
                 continue;
             }
 
             glm::dvec2 x, y;
-            if (MathUtil::isMonotonic<double, 3>({ga1, gb1, ga2}, kEpsilon))
+            if (MathUtil::isMonotonic<double, 3>({ga1, gb1, ga2}, CommonConstants::kEpsilon))
             {
                 x = LineRegion::computeParabolics(point1, normal, bPoint1);
             }
@@ -173,7 +173,7 @@ void LineRegion::cutWithLines(std::vector<LineRegion> &lineRegions)
             {
                 x = LineRegion::computeBisectorIntersection(point1, normal, bPoint1, bNormal, g, isParallel);
             }
-            if (MathUtil::isMonotonic<double, 3>({ga1, gb2, ga2}, kEpsilon))
+            if (MathUtil::isMonotonic<double, 3>({ga1, gb2, ga2}, CommonConstants::kEpsilon))
             {
                 y = LineRegion::computeParabolics(point2, normal, bPoint2);
             }

@@ -23,6 +23,8 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Editor/Command/AddPointStackCommand.cpp
         Source/Editor/Command/AddPointStackCommand.h
+        Source/Editor/Command/CalculateSdfPlaneAlgorithmCommand.cpp
+        Source/Editor/Command/CalculateSdfPlaneAlgorithmCommand.h
         Source/Editor/Command/DeletePointStackCommand.cpp
         Source/Editor/Command/DeletePointStackCommand.h
         Source/Editor/Command/InsertPointStackCommand.cpp
@@ -36,6 +38,8 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Editor/Constraint/DeletePointEditorConstraint.cpp
         Source/Editor/Constraint/DeletePointEditorConstraint.h
+        Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.cpp
+        Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.h
 
         Source/Editor/Core/Editor.cpp
         Source/Editor/Core/Editor.h
@@ -127,6 +131,7 @@ target_sources(PolygonSDF PRIVATE
         Source/Util/WithImGuiId.cpp
         Source/Util/WithImGuiId.h
 
+        Source/CommonConstants.h
         Source/Main.cpp
         Source/PolygonSDFApplication.cpp
         Source/PolygonSDFApplication.h
@@ -164,6 +169,8 @@ target_sources(PolygonSDFTest PRIVATE
 
         Source/Editor/Command/AddPointStackCommand.cpp
         Source/Editor/Command/AddPointStackCommand.h
+        Source/Editor/Command/CalculateSdfPlaneAlgorithmCommand.cpp
+        Source/Editor/Command/CalculateSdfPlaneAlgorithmCommand.h
         Source/Editor/Command/DeletePointStackCommand.cpp
         Source/Editor/Command/DeletePointStackCommand.h
         Source/Editor/Command/InsertPointStackCommand.cpp
@@ -177,6 +184,8 @@ target_sources(PolygonSDFTest PRIVATE
 
         Source/Editor/Constraint/DeletePointEditorConstraint.cpp
         Source/Editor/Constraint/DeletePointEditorConstraint.h
+        Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.cpp
+        Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.h
 
         Source/Editor/Core/Editor.cpp
         Source/Editor/Core/Editor.h
@@ -268,6 +277,7 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Util/WithImGuiId.cpp
         Source/Util/WithImGuiId.h
 
+        Source/CommonConstants.h
         Source/PolygonSDFApplication.cpp
         Source/PolygonSDFApplication.h
 

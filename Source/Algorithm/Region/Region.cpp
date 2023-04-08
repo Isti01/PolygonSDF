@@ -3,10 +3,10 @@
 using namespace psdf;
 
 Region::Region()
-    : Region({{-kInitialBoundScale, -kInitialBoundScale},
-               {kInitialBoundScale, -kInitialBoundScale},
-               {kInitialBoundScale, kInitialBoundScale},
-               {-kInitialBoundScale, kInitialBoundScale}})
+    : Region({{-CommonConstants::kInitialBoundScale, -CommonConstants::kInitialBoundScale},
+              {CommonConstants::kInitialBoundScale, -CommonConstants::kInitialBoundScale},
+              {CommonConstants::kInitialBoundScale, CommonConstants::kInitialBoundScale},
+              {-CommonConstants::kInitialBoundScale, CommonConstants::kInitialBoundScale}})
 {
 }
 

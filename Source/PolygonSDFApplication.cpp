@@ -1,6 +1,7 @@
 #include "PolygonSDFApplication.h"
 #include "Editor/Command/SetPolygonStackCommand.h"
 #include "Editor/Constraint/DeletePointEditorConstraint.h"
+#include "Editor/Constraint/SdfPlaneAlgorithmConstraint.h"
 
 #include <memory>
 
@@ -14,6 +15,7 @@ void PolygonSDFApplication::onLoad(RenderContext *pRenderContext)
     mpVisualEditor = VisualEditor::create(mpEditor);
     mpEditor->addCommand(SetPolygonStackCommand::create(Polygon::kExamplePolygon));
     mpEditor->addConstraint(DeletePointEditorConstraint::create());
+    mpEditor->addConstraint(SdfPlaneAlgorithmConstraint::create());
     mpEventMenu = EventMenu::create(mpEditor);
 }
 

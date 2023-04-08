@@ -31,7 +31,7 @@ void PointRegion::cutWithPoints(std::vector<PointRegion> &pointRegions)
             }
 
             glm::dvec2 edgeVector = pointRegions[j].mPoint - region.mPoint;
-            if (glm::dot(edgeVector, edgeVector) < Region::kEpsilon)
+            if (glm::dot(edgeVector, edgeVector) < CommonConstants::kEpsilon)
             {
                 continue;
             }
@@ -67,8 +67,8 @@ void PointRegion::cutWithLines(std::vector<PointRegion> &pointRegions, const std
 
             glm::dvec2 edgeVector1 = segmentPoint1 - point;
             glm::dvec2 edgeVector2 = segmentPoint2 - point;
-            if (glm::dot(edgeVector1, edgeVector1) < Region::kEpsilon ||
-                glm::dot(edgeVector2, edgeVector2) < Region::kEpsilon)
+            if (glm::dot(edgeVector1, edgeVector1) < CommonConstants::kEpsilon ||
+                glm::dot(edgeVector2, edgeVector2) < CommonConstants::kEpsilon)
             {
                 continue;
             }

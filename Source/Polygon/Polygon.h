@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Algorithm/SdfPlaneAlgorithmOutput.h"
 #include "Point.h"
 #include "Segment.h"
 #include <Falcor.h>
@@ -8,7 +9,7 @@ namespace psdf
 {
 using namespace Falcor;
 
-class Polygon
+class Polygon : public std::enable_shared_from_this<Polygon>
 {
   public:
     using Points = std::vector<Point>;
@@ -27,6 +28,9 @@ class Polygon
     FloatPoints getFloatPoints() const;
     FloatSegments getFloatSegments() const;
 
+    SdfPlaneAlgorithmOutput::SharedPtr getAlgorithmOutput() const;
+    void runAlgorithm();
+
   private:
     Polygon(Points points, Segments segments);
 
@@ -36,9 +40,9 @@ class Polygon
     static Polygon::SharedPtr kExamplePolygon;
 
   private:
+    SdfPlaneAlgorithmOutput::SharedPtr mpSdfPlaneAlgorithmOutput = nullptr;
     Points mPoints;
     Segments mSegments;
-
 };
 
 } // namespace psdf

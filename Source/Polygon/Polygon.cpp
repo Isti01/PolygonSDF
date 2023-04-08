@@ -1,4 +1,5 @@
 #include "Polygon.h"
+#include "../Algorithm/SdfPlaneAlgorithm.h"
 
 #include <utility>
 
@@ -54,8 +55,18 @@ Polygon::FloatSegments psdf::Polygon::getFloatSegments() const
 {
     FloatSegments segments;
     segments.reserve(mSegments.size());
-    std::transform(mSegments.cbegin(), mSegments.cend(), std::back_inserter(segments), [](const Segment& segment) {
+    std::transform(mSegments.cbegin(), mSegments.cend(), std::back_inserter(segments), [](const Segment &segment) {
         return std::array<float2, 2>{{segment.getPoint1(), segment.getPoint2()}};
     });
     return segments;
+}
+
+SdfPlaneAlgorithmOutput::SharedPtr psdf::Polygon::getAlgorithmOutput() const
+{
+    return mpSdfPlaneAlgorithmOutput;
+}
+
+void psdf::Polygon::runAlgorithm()
+{
+    mpSdfPlaneAlgorithmOutput = SdfPlaneAlgorithm::calculateForPolygon(this->shared_from_this());
 }

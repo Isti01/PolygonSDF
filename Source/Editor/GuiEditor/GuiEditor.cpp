@@ -1,6 +1,7 @@
 #include "GuiEditor.h"
 #include "../../Util/WithImGuiId.h"
 #include "../Command/AddPointStackCommand.h"
+#include "../Command/CalculateSdfPlaneAlgorithmCommand.h"
 #include "../Command/DeletePointStackCommand.h"
 #include "../Command/SetPolygonStackCommand.h"
 #include "../Command/UpdatePointStackCommand.h"
@@ -22,7 +23,7 @@ GuiEditor::GuiEditor(Editor::SharedPtr pEditor)
 {
 }
 
-void GuiEditor::render(Gui::Window& window)
+void GuiEditor::render(Gui::Window &window)
 {
     auto pPeekResult = mpPolygonPeekingAggregator->peekEditor(mpEditor);
     FALCOR_ASSERT(pPeekResult);
@@ -60,6 +61,11 @@ void GuiEditor::showControlButtons(Gui::Group &window)
     if (window.button("Clear History", true))
     {
         mpEditor->transform(ClearHistoryEditorTransformation::create());
+    }
+
+    if (window.button("Run Plane Slicing Algorithm", true))
+    {
+        mpEditor->addCommand(CalculateSdfPlaneAlgorithmCommand::create());
     }
 }
 

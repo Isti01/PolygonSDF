@@ -37,7 +37,7 @@ void PolygonOutlineRenderer::setColor(const float4 &color)
     uploadColor();
 }
 
-VertexLayout::SharedPtr getVertexLayout()
+static VertexLayout::SharedPtr getVertexLayout()
 {
     auto pLayout = VertexLayout::create();
     const auto pBufferLayout = VertexBufferLayout::create();

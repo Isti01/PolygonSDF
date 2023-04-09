@@ -47,3 +47,21 @@ PolygonRenderer::SharedPtr PolygonRendererFactory::getPolygonRenderer()
     });
     return std::static_pointer_cast<PolygonRenderer>(AspectRatioIndependentPolygonRenderer::create(combinedRenderers));
 }
+
+SdfAlgorithmOutputRenderer::SharedPtr PolygonRendererFactory::getAlgorithmOutputRenderer()
+{
+    auto pGraphicsState = GraphicsState::create();
+    auto pRasterizerState =
+        RasterizerState::create(RasterizerState::Desc().setCullMode(Falcor::RasterizerState::CullMode::None));
+    pGraphicsState->setRasterizerState(pRasterizerState);
+
+    pGraphicsState->setDepthStencilState(DepthStencilState::create(DepthStencilState::Desc().setDepthEnabled(true)));
+
+    auto pProgram = GraphicsProgram::create(Program::Desc()
+                                                .addShaderLibrary("PolygonSDF/Shaders/AlgorithmOutput.3d.slang")
+                                                .vsEntry("vsMain")
+                                                .psEntry("psMain"));
+    pGraphicsState->setProgram(pProgram);
+
+    return SdfAlgorithmOutputRenderer::create(pGraphicsState);
+}

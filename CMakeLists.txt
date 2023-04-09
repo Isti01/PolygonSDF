@@ -1,6 +1,7 @@
 add_falcor_executable(PolygonSDF)
 
 target_sources(PolygonSDF PRIVATE
+        Shaders/AlgorithmOutput.3d.slang
         Shaders/NaivePolygonDistance.3d.slang
         Shaders/SolidColor.3d.slang
 
@@ -10,6 +11,7 @@ target_sources(PolygonSDF PRIVATE
         Source/Algorithm/Region/PointRegion.h
         Source/Algorithm/Region/Region.cpp
         Source/Algorithm/Region/Region.h
+        Source/Algorithm/Region/RegionBoundVertex.h
 
         Source/Algorithm/SdfPlaneAlgorithm.cpp
         Source/Algorithm/SdfPlaneAlgorithm.h
@@ -88,8 +90,11 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/VisualEditor/Input/VertexMoveInputHandler.cpp
         Source/Editor/VisualEditor/Input/VertexMoveInputHandler.h
 
-        Source/Editor/VisualEditor/PolygonPresenter/PolygonPresenter.cpp
-        Source/Editor/VisualEditor/PolygonPresenter/PolygonPresenter.h
+        Source/Editor/VisualEditor/Presenter/PolygonPresenter.cpp
+        Source/Editor/VisualEditor/Presenter/PolygonPresenter.h
+        Source/Editor/VisualEditor/Presenter/Presenter.h
+        Source/Editor/VisualEditor/Presenter/SdfAlgorithmOutputPresenter.cpp
+        Source/Editor/VisualEditor/Presenter/SdfAlgorithmOutputPresenter.h
 
         Source/Editor/VisualEditor/VisualEditor.cpp
         Source/Editor/VisualEditor/VisualEditor.h
@@ -119,6 +124,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Rendering/PolygonRenderer/PolygonRenderer.h
         Source/Rendering/PolygonRenderer/PolygonRendererFactory.cpp
         Source/Rendering/PolygonRenderer/PolygonRendererFactory.h
+        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.cpp
+        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.h
 
         Source/Util/CoordinateUtil.cpp
         Source/Util/CoordinateUtil.h
@@ -147,6 +154,7 @@ target_source_group(PolygonSDF Samples)
 add_falcor_executable(PolygonSDFTest)
 
 target_sources(PolygonSDFTest PRIVATE
+        Shaders/AlgorithmOutput.3d.slang
         Shaders/NaivePolygonDistance.3d.slang
         Shaders/SolidColor.3d.slang
 
@@ -156,6 +164,7 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Algorithm/Region/PointRegion.h
         Source/Algorithm/Region/Region.cpp
         Source/Algorithm/Region/Region.h
+        Source/Algorithm/Region/RegionBoundVertex.h
 
         Source/Algorithm/SdfPlaneAlgorithm.cpp
         Source/Algorithm/SdfPlaneAlgorithm.h
@@ -234,8 +243,11 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/VisualEditor/Input/VertexMoveInputHandler.cpp
         Source/Editor/VisualEditor/Input/VertexMoveInputHandler.h
 
-        Source/Editor/VisualEditor/PolygonPresenter/PolygonPresenter.cpp
-        Source/Editor/VisualEditor/PolygonPresenter/PolygonPresenter.h
+        Source/Editor/VisualEditor/Presenter/PolygonPresenter.cpp
+        Source/Editor/VisualEditor/Presenter/PolygonPresenter.h
+        Source/Editor/VisualEditor/Presenter/Presenter.h
+        Source/Editor/VisualEditor/Presenter/SdfAlgorithmOutputPresenter.cpp
+        Source/Editor/VisualEditor/Presenter/SdfAlgorithmOutputPresenter.h
 
         Source/Editor/VisualEditor/VisualEditor.cpp
         Source/Editor/VisualEditor/VisualEditor.h
@@ -265,6 +277,8 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Rendering/PolygonRenderer/PolygonRenderer.h
         Source/Rendering/PolygonRenderer/PolygonRendererFactory.cpp
         Source/Rendering/PolygonRenderer/PolygonRendererFactory.h
+        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.cpp
+        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.h
 
         Source/Util/CoordinateUtil.cpp
         Source/Util/CoordinateUtil.h

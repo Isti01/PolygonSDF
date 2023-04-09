@@ -94,3 +94,8 @@ double PointRegion::getCornerSign() const
 {
     return mCornerSign;
 }
+
+double PointRegion::getDistanceToPointInsideBounds(Point point) const
+{
+    return glm::distance(point, mPoint) * mCornerSign;
+}

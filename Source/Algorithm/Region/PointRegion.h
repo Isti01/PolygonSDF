@@ -19,6 +19,7 @@ class PointRegion : public Region
 
     Point getPoint() const;
     double getCornerSign() const;
+    double getDistanceToPointInsideBounds(Point point) const override;
 
   private:
     Point mPoint;

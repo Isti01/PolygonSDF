@@ -195,3 +195,10 @@ void LineRegion::cutWithLines(std::vector<LineRegion> &lineRegions)
         region.polyCut(points, edgeVectors);
     }
 }
+
+double LineRegion::getDistanceToPointInsideBounds(Point point) const
+{
+    glm::dvec2 dir = getDir();
+    glm::dvec2 normal{-dir.y, dir.x};
+    return -glm::dot(point - getSegment().getPoint1(), normal);
+}

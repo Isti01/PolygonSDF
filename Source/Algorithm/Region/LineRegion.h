@@ -14,6 +14,7 @@ class LineRegion : public Region
 
     Segment getSegment() const;
     glm::dvec2 getDir() const;
+    double getDistanceToPointInsideBounds(Point point) const override;
 
     static void cutWithPoints(std::vector<LineRegion> &lineRegions, const std::vector<PointRegion> &pointRegions);
     static void cutWithLines(std::vector<LineRegion> &lineRegions);

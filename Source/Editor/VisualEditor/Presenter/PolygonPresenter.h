@@ -4,7 +4,7 @@
 #include "../../Aggregator/StackPeekingEditorAggregator.h"
 #include "../../Core/Editor.h"
 #include "../Input/DragMouseInputHandler.h"
-#include "../Input/MouseInputHandler.h"
+#include "Presenter.h"
 
 #include <Falcor.h>
 
@@ -12,7 +12,7 @@ namespace psdf
 {
 using namespace Falcor;
 
-class PolygonPresenter : public MouseInputHandler
+class PolygonPresenter : public Presenter
 {
   public:
     using SharedPtr = std::shared_ptr<PolygonPresenter>;

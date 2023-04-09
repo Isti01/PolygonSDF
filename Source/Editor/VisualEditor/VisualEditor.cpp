@@ -14,13 +14,21 @@ VisualEditor::VisualEditor(Editor::SharedPtr pEditor)
       mpPolygonPresenter(PolygonPresenter::create(mpEditor, mpPolygonRenderer)),
       mpVertexMover(VertexMoveInputHandler::create(mpEditor, mpPolygonRenderer)),
       mpVertexInserter(InsertRemoveVertexInputHandler::create(mpEditor, mpPolygonRenderer)),
-      mpActiveInputHandler(mpPolygonPresenter)
+      mpActiveInputHandler(mpPolygonPresenter), mpAlgorithmOutputPresenter(SdfAlgorithmOutputPresenter::create(
+                                                    mpEditor, PolygonRendererFactory::getAlgorithmOutputRenderer()))
 {
 }
 
 void VisualEditor::render(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo)
 {
-    mpPolygonPresenter->render(pRenderContext, pTargetFbo);
+    if (mpActiveInputHandler == mpAlgorithmOutputPresenter)
+    {
+        mpAlgorithmOutputPresenter->render(pRenderContext, pTargetFbo);
+    }
+    else
+    {
+        mpPolygonPresenter->render(pRenderContext, pTargetFbo);
+    }
 }
 
 bool VisualEditor::onKeyEvent(const KeyboardEvent &keyEvent)
@@ -45,6 +53,11 @@ bool VisualEditor::onKeyEvent(const KeyboardEvent &keyEvent)
     if (keyEvent.key == Input::Key::I)
     {
         setActiveInputHandler(mpVertexInserter);
+        return true;
+    }
+
+    if (keyEvent.key == Input::Key::D) {
+        setActiveInputHandler(mpAlgorithmOutputPresenter);
         return true;
     }
 

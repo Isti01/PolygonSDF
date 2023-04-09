@@ -2,7 +2,8 @@
 
 #include "../../Rendering/PolygonRenderer/PolygonRenderer.h"
 #include "../Core/Editor.h"
-#include "./PolygonPresenter/PolygonPresenter.h"
+#include "./Presenter/PolygonPresenter.h"
+#include "./Presenter/SdfAlgorithmOutputPresenter.h"
 #include "Input/InsertRemoveVertexInputHandler.h"
 #include "Input/VertexMoveInputHandler.h"
 
@@ -34,6 +35,7 @@ class VisualEditor
     Editor::SharedPtr mpEditor = nullptr;
     PolygonRenderer::SharedPtr mpPolygonRenderer = nullptr;
     PolygonPresenter::SharedPtr mpPolygonPresenter = nullptr;
+    SdfAlgorithmOutputPresenter::SharedPtr mpAlgorithmOutputPresenter = nullptr;
     VertexMoveInputHandler::SharedPtr mpVertexMover = nullptr;
     InsertRemoveVertexInputHandler::SharedPtr mpVertexInserter = nullptr;
     MouseInputHandler::SharedPtr mpActiveInputHandler = nullptr;

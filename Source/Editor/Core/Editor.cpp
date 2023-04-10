@@ -19,7 +19,7 @@ Editor::SharedPtr Editor::create(EditorStack::SharedPtr pStack)
 
 void Editor::publishEvent(const PublishedEvent::SharedPtr &pPublishedEvent, const void *publisher)
 {
-    notifyConsumers(EditorPublishedEvent::create(pPublishedEvent,publisher));
+    notifyConsumers(EditorPublishedEvent::create(pPublishedEvent, publisher));
 }
 
 void Editor::addCommand(const EditorCommand::SharedPtr &pCommand)

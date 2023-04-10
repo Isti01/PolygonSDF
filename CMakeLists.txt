@@ -43,6 +43,11 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.cpp
         Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.h
 
+        Source/Editor/Consumer/EventMenuEditorConsumer.cpp
+        Source/Editor/Consumer/EventMenuEditorConsumer.h
+        Source/Editor/Consumer/GuiStateEditorConsumer.cpp
+        Source/Editor/Consumer/GuiStateEditorConsumer.h
+
         Source/Editor/Core/Editor.cpp
         Source/Editor/Core/Editor.h
         Source/Editor/Core/EditorAggregator.h
@@ -62,8 +67,6 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Event/Menu/EventMenu.h
         Source/Editor/Event/Menu/EventMenuGui.cpp
         Source/Editor/Event/Menu/EventMenuGui.h
-        Source/Editor/Event/Menu/EventMenuEditorConsumer.cpp
-        Source/Editor/Event/Menu/EventMenuEditorConsumer.h
 
         Source/Editor/Event/ConstraintViolationEvent.cpp
         Source/Editor/Event/ConstraintViolationEvent.h
@@ -76,6 +79,11 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Editor/GuiEditor/GuiEditor.cpp
         Source/Editor/GuiEditor/GuiEditor.h
+
+        Source/Editor/PublishedEvent/HideGuiPublishedEvent.cpp
+        Source/Editor/PublishedEvent/HideGuiPublishedEvent.h
+        Source/Editor/PublishedEvent/ShowGuiPublishedEvent.cpp
+        Source/Editor/PublishedEvent/ShowGuiPublishedEvent.h
 
         Source/Editor/Transformation/ClearHistoryEditorTransformation.cpp
         Source/Editor/Transformation/ClearHistoryEditorTransformation.h
@@ -196,6 +204,11 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.cpp
         Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.h
 
+        Source/Editor/Consumer/EventMenuEditorConsumer.cpp
+        Source/Editor/Consumer/EventMenuEditorConsumer.h
+        Source/Editor/Consumer/GuiStateEditorConsumer.cpp
+        Source/Editor/Consumer/GuiStateEditorConsumer.h
+
         Source/Editor/Core/Editor.cpp
         Source/Editor/Core/Editor.h
         Source/Editor/Core/EditorAggregator.h
@@ -215,8 +228,6 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/Event/Menu/EventMenu.h
         Source/Editor/Event/Menu/EventMenuGui.cpp
         Source/Editor/Event/Menu/EventMenuGui.h
-        Source/Editor/Event/Menu/EventMenuEditorConsumer.cpp
-        Source/Editor/Event/Menu/EventMenuEditorConsumer.h
 
         Source/Editor/Event/ConstraintViolationEvent.cpp
         Source/Editor/Event/ConstraintViolationEvent.h
@@ -229,6 +240,11 @@ target_sources(PolygonSDFTest PRIVATE
 
         Source/Editor/GuiEditor/GuiEditor.cpp
         Source/Editor/GuiEditor/GuiEditor.h
+
+        Source/Editor/PublishedEvent/HideGuiPublishedEvent.cpp
+        Source/Editor/PublishedEvent/HideGuiPublishedEvent.h
+        Source/Editor/PublishedEvent/ShowGuiPublishedEvent.cpp
+        Source/Editor/PublishedEvent/ShowGuiPublishedEvent.h
 
         Source/Editor/Transformation/ClearHistoryEditorTransformation.cpp
         Source/Editor/Transformation/ClearHistoryEditorTransformation.h

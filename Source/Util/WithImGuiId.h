@@ -7,7 +7,7 @@ class WithImGuiId
 {
   public:
     WithImGuiId(int id);
-    WithImGuiId(const char* id);
+    WithImGuiId(const char *id);
 
     ~WithImGuiId();
 };

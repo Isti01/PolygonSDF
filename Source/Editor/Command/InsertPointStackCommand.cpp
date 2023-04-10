@@ -28,7 +28,7 @@ size_t InsertPointStackCommand::getIndex() const
     return mIndex;
 }
 
- Point InsertPointStackCommand::getPoint() const
+Point InsertPointStackCommand::getPoint() const
 {
     return mPoint;
 }

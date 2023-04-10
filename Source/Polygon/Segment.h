@@ -20,7 +20,7 @@ class Segment
     Point getPoint2() const;
 
     glm::dvec2 getEdgeVector() const;
-    bool isIntersecting(const Segment& other) const;
+    bool isIntersecting(const Segment &other) const;
 
   private:
     Endpoints mEndpoints;

@@ -17,10 +17,16 @@ void PolygonSDFApplication::onLoad(RenderContext *pRenderContext)
     mpEditor->addConstraint(DeletePointEditorConstraint::create());
     mpEditor->addConstraint(SdfPlaneAlgorithmConstraint::create());
     mpEventMenu = EventMenu::create(mpEditor);
+    mpGuiStateConsumer = GuiStateEditorConsumer::create();
+    mpEditor->addConsumer(mpGuiStateConsumer);
 }
 
 void PolygonSDFApplication::onGuiRender(Gui *pGui)
 {
+    if (!mpGuiStateConsumer->isGuiEnabled())
+    {
+        return;
+    }
     Gui::Window window(pGui, "PolygonSDF");
     mpGuiEditor->render(window);
     mpEventMenu->renderGui(window);
@@ -54,4 +60,5 @@ void PolygonSDFApplication::onResizeSwapChain(uint32_t width, uint32_t height)
 
 void PolygonSDFApplication::onShutdown()
 {
+    mpEditor->removeConsumer(mpGuiStateConsumer);
 }

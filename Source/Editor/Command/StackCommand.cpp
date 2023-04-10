@@ -9,7 +9,8 @@ bool StackCommand::canMerge(const StackCommand::SharedPtr &) const
 
 StackCommand::SharedPtr StackCommand::merge(const StackCommand::SharedPtr &pOther)
 {
-    if (canMerge(pOther)) {
+    if (canMerge(pOther))
+    {
         return shared_from_this();
     }
     return nullptr;

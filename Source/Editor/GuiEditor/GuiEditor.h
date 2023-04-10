@@ -16,13 +16,13 @@ class GuiEditor
 
     static SharedPtr create(Editor::SharedPtr pEditor);
 
-    void render(Gui::Window& window);
+    void render(Gui::Window &window);
 
   protected:
     GuiEditor(Editor::SharedPtr pEditor);
 
   private:
-    void showControlButtons(Gui::Group& window);
+    void showControlButtons(Gui::Group &window);
     void showVertexList(Gui::Group &window);
     void showVertexInput(Gui::Group &window);
 

@@ -8,7 +8,6 @@
 #include "Input/VertexMoveInputHandler.h"
 
 #include <Falcor.h>
-#include <memory>
 
 namespace psdf
 {
@@ -29,6 +28,8 @@ class VisualEditor
     VisualEditor(Editor::SharedPtr pEditor);
 
   private:
+    void showGui();
+    void hideGui();
     void setActiveInputHandler(const MouseInputHandler::SharedPtr &pInputHandler);
 
   private:

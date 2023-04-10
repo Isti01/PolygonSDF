@@ -3,6 +3,7 @@
 #include <Falcor.h>
 #include <utility>
 
+#include "Editor/Consumer/GuiStateEditorConsumer.h"
 #include "Editor/Core/Editor.h"
 #include "Editor/Event/Menu/EventMenu.h"
 #include "Editor/GuiEditor/GuiEditor.h"
@@ -29,6 +30,7 @@ class PolygonSDFApplication : public IRenderer
     GuiEditor::SharedPtr mpGuiEditor = nullptr;
     VisualEditor::SharedPtr mpVisualEditor = nullptr;
     EventMenu::SharedPtr mpEventMenu = nullptr;
+    GuiStateEditorConsumer::SharedPtr mpGuiStateConsumer = nullptr;
 };
 
 } // namespace psdf

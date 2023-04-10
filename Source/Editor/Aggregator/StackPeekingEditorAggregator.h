@@ -23,7 +23,7 @@ class StackPeekingEditorAggregationResult : public EditorAggregationResult
 };
 
 class StackPeekingEditorAggregator : public EditorAggregator,
-                                       public std::enable_shared_from_this<StackPeekingEditorAggregator>
+                                     public std::enable_shared_from_this<StackPeekingEditorAggregator>
 {
   public:
     using SharedPtr = std::shared_ptr<StackPeekingEditorAggregator>;

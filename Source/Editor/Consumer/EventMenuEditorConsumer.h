@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../Core/EditorConsumer.h"
-#include "EventMenuGui.h"
+#include "../Core/EditorConsumer.h"
+#include "../Event/Menu/EventMenuGui.h"
 
 namespace psdf
 {

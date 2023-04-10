@@ -16,7 +16,7 @@ class FullScreenPolygonRenderer : public PolygonRenderer
 
     float4x4 getTransform() const override;
 
-    void setFbo(const Fbo::SharedPtr &pFbo)  override;
+    void setFbo(const Fbo::SharedPtr &pFbo) override;
     void transformImpl() override;
 
   protected:
@@ -24,7 +24,7 @@ class FullScreenPolygonRenderer : public PolygonRenderer
 
     void init() override;
     void uploadPolygonData() override;
-    void renderImpl(RenderContext *pRenderContext)  override;
+    void renderImpl(RenderContext *pRenderContext) override;
 
   private:
     GraphicsState::SharedPtr mpGraphicsState;

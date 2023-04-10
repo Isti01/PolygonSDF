@@ -11,7 +11,7 @@ class PublishedEvent
 
     virtual std::string getName() = 0;
 
-    virtual ~PublishedEvent() = 0;
+    virtual ~PublishedEvent() = default;
 };
 
 class Editor;
@@ -20,6 +20,9 @@ class EditorPublishedEvent : public EditorEvent
 {
   public:
     using SharedPtr = std::shared_ptr<EditorPublishedEvent>;
+
+    PublishedEvent::SharedPtr getEvent() const;
+    const void *getPublisher() const;
 
     std::string getName() const override;
 

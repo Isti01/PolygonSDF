@@ -1,5 +1,7 @@
 #include "VisualEditor.h"
 #include "../../Rendering/PolygonRenderer/PolygonRendererFactory.h"
+#include "../PublishedEvent/HideGuiPublishedEvent.h"
+#include "../PublishedEvent/ShowGuiPublishedEvent.h"
 #include "Input/VertexMoveInputHandler.h"
 
 using namespace psdf;
@@ -40,23 +42,28 @@ bool VisualEditor::onKeyEvent(const KeyboardEvent &keyEvent)
 
     if (keyEvent.key == Input::Key::M)
     {
+        showGui();
         setActiveInputHandler(mpVertexMover);
         return true;
     }
 
     if (keyEvent.key == Input::Key::V)
     {
+        showGui();
         setActiveInputHandler(mpPolygonPresenter);
         return true;
     }
 
     if (keyEvent.key == Input::Key::I)
     {
+        showGui();
         setActiveInputHandler(mpVertexInserter);
         return true;
     }
 
-    if (keyEvent.key == Input::Key::D) {
+    if (keyEvent.key == Input::Key::D)
+    {
+        hideGui();
         setActiveInputHandler(mpAlgorithmOutputPresenter);
         return true;
     }
@@ -71,6 +78,16 @@ bool VisualEditor::onMouseEvent(const MouseEvent &mouseEvent)
         return mpActiveInputHandler->onMouseEvent(mouseEvent);
     }
     return false;
+}
+
+void VisualEditor::showGui()
+{
+    mpEditor->publishEvent(ShowGuiPublishedEvent::create(), this);
+}
+
+void VisualEditor::hideGui()
+{
+    mpEditor->publishEvent(HideGuiPublishedEvent::create(), this);
 }
 
 void VisualEditor::setActiveInputHandler(const MouseInputHandler::SharedPtr &pInputHandler)

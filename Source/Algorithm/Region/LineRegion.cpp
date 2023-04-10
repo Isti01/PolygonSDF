@@ -51,7 +51,8 @@ void LineRegion::cutWithPoints(std::vector<LineRegion> &lineRegions, const std::
             glm::dvec2 ba2 = pointRegions[j].getPoint() - point2;
 
             if (glm::dot(ba1, ba1) < CommonConstants::kEpsilon || glm::dot(ba2, ba2) < CommonConstants::kEpsilon ||
-                glm::abs(glm::dot(normal, ba1)) < CommonConstants::kEpsilon || glm::abs(glm::dot(normal, ba2)) < CommonConstants::kEpsilon)
+                glm::abs(glm::dot(normal, ba1)) < CommonConstants::kEpsilon ||
+                glm::abs(glm::dot(normal, ba2)) < CommonConstants::kEpsilon)
             {
                 continue;
             }
@@ -97,10 +98,7 @@ glm::dvec2 LineRegion::computeBisectorIntersection(const glm::dvec2 &point, cons
     }
     else
     {
-        auto a = dot(point - g, bNormal);
-        auto b = (1 - dot(normal, bNormal));
-        auto c = a / b * normal;
-        return c + point;
+        return dot(point - g, bNormal) / (1 - dot(normal, bNormal)) * normal + point;
     }
 }
 

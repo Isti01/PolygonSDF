@@ -36,7 +36,10 @@ static VertexLayout::SharedPtr getVertexLayout()
 
 void SdfAlgorithmOutputRenderer::uploadPolygonData()
 {
-    FALCOR_ASSERT(mpPolygon->getAlgorithmOutput());
+    if (!mpPolygon->getAlgorithmOutput())
+    {
+        return;
+    }
 
     std::vector<RegionBoundVertex> vertices;
     std::vector<uint32_t> indices;

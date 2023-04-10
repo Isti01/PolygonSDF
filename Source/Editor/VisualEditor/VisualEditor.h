@@ -40,6 +40,7 @@ class VisualEditor
     VertexMoveInputHandler::SharedPtr mpVertexMover = nullptr;
     InsertRemoveVertexInputHandler::SharedPtr mpVertexInserter = nullptr;
     MouseInputHandler::SharedPtr mpActiveInputHandler = nullptr;
+    StackPeekingEditorAggregator::SharedPtr mpStackPeekingAggregator = nullptr;
 };
 
 } // namespace psdf

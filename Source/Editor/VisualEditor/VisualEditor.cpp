@@ -16,8 +16,9 @@ VisualEditor::VisualEditor(Editor::SharedPtr pEditor)
       mpPolygonPresenter(PolygonPresenter::create(mpEditor, mpPolygonRenderer)),
       mpVertexMover(VertexMoveInputHandler::create(mpEditor, mpPolygonRenderer)),
       mpVertexInserter(InsertRemoveVertexInputHandler::create(mpEditor, mpPolygonRenderer)),
-      mpActiveInputHandler(mpPolygonPresenter), mpAlgorithmOutputPresenter(SdfAlgorithmOutputPresenter::create(
-                                                    mpEditor, PolygonRendererFactory::getAlgorithmOutputRenderer()))
+      mpActiveInputHandler(mpPolygonPresenter), mpStackPeekingAggregator(StackPeekingEditorAggregator::create()),
+      mpAlgorithmOutputPresenter(
+          SdfAlgorithmOutputPresenter::create(mpEditor, PolygonRendererFactory::getAlgorithmOutputRenderer()))
 {
 }
 
@@ -36,6 +37,10 @@ void VisualEditor::render(RenderContext *pRenderContext, const Fbo::SharedPtr &p
 bool VisualEditor::onKeyEvent(const KeyboardEvent &keyEvent)
 {
     if ((bool)keyEvent.mods) // we don't use modifiers
+    {
+        return false;
+    }
+    if (keyEvent.type != Falcor::KeyboardEvent::Type::KeyPressed) // we don't handle other scenarios
     {
         return false;
     }
@@ -63,8 +68,18 @@ bool VisualEditor::onKeyEvent(const KeyboardEvent &keyEvent)
 
     if (keyEvent.key == Input::Key::D)
     {
-        hideGui();
-        setActiveInputHandler(mpAlgorithmOutputPresenter);
+        auto pPolygon = mpStackPeekingAggregator->peekEditor(mpEditor)->getEntry().polygon;
+        if (pPolygon && pPolygon->getAlgorithmOutput())
+        {
+            hideGui();
+            setActiveInputHandler(mpAlgorithmOutputPresenter);
+        }
+        else
+        {
+            msgBox("There is nothing to display!\nTry running the algorithm on the polygon!", MsgBoxType::Ok,
+                   Falcor::MsgBoxIcon::Info);
+        }
+
         return true;
     }
 
@@ -89,7 +104,6 @@ void VisualEditor::hideGui()
 {
     mpEditor->publishEvent(HideGuiPublishedEvent::create(), this);
 }
-
 void VisualEditor::setActiveInputHandler(const MouseInputHandler::SharedPtr &pInputHandler)
 {
     if (mpActiveInputHandler != pInputHandler)

@@ -21,7 +21,7 @@ VsOut vsMain(VsIn input)
     return vsOut;
 }
 
-float4 psMain(VsOut vsOut, uint triangleIndex : SV_PrimitiveID) : SV_TARGET
+float4 psMain(VsOut vsOut, uint triangleIndex: SV_PrimitiveID) : SV_TARGET
 {
     return iColor;
 }

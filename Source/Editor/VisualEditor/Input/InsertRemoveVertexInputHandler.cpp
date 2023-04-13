@@ -51,16 +51,18 @@ void InsertRemoveVertexInputHandler::insertNextToClosest(float2 position)
     {
         return;
     }
-    auto points = polygon->getPoints();
+    auto polygons = polygon->getPolygons();
     auto vertexPosition = CoordinateUtil::screenToSceneSpaceCoordinate(mpRenderer->getTransform(), position);
-    std::optional<size_t> closestIndex = CoordinateUtil::findClosestPointIndex(points, vertexPosition);
+    auto closestIndex = CoordinateUtil::findClosestPointIndex(polygons, vertexPosition);
     if (!closestIndex)
     {
         return;
     }
 
-    size_t insertionIndex = findIndexToInsert(vertexPosition, *closestIndex, points);
-    mpEditor->addCommand(InsertPointStackCommand::create(insertionIndex, vertexPosition));
+    size_t groupIndex = closestIndex->first;
+    size_t vertexIndex = closestIndex->second;
+    size_t insertionIndex = findIndexToInsert(vertexPosition, vertexIndex, polygons[groupIndex].getPoints());
+    mpEditor->addCommand(InsertPointStackCommand::create(groupIndex, insertionIndex, vertexPosition));
 }
 
 size_t InsertRemoveVertexInputHandler::findIndexToInsert(float2 vertexPosition, size_t closestVertexIndex,
@@ -85,19 +87,22 @@ bool InsertRemoveVertexInputHandler::removeVertexIfCloseEnough(float2 position)
     {
         return false;
     }
-    auto points = polygon->getPoints();
+
+    auto polygons = polygon->getPolygons();
     float2 mousePosition = CoordinateUtil::screenToSceneSpaceCoordinate(mpRenderer->getTransform(), position);
-    std::optional<size_t> closestIndex = CoordinateUtil::findClosestPointIndex(points, mousePosition);
+    auto closestIndex = CoordinateUtil::findClosestPointIndex(polygons, mousePosition);
     if (!closestIndex)
     {
         return false;
     }
-    float closestPointDistance = glm::distance(mousePosition, float2(points.at(*closestIndex)));
+    size_t vertexIndex = closestIndex->first;
+    size_t groupIndex = closestIndex->second;
+    float closestPointDistance = glm::distance(mousePosition, float2(polygons.at(groupIndex).getPoints()[vertexIndex]));
     if (closestPointDistance > VisualEditorConstants::kSelectionDistanceThreshold)
     {
         return false;
     }
 
-    mpEditor->addCommand(DeletePointStackCommand::create(*closestIndex));
+    mpEditor->addCommand(DeletePointStackCommand::create(groupIndex, vertexIndex));
     return true;
 }

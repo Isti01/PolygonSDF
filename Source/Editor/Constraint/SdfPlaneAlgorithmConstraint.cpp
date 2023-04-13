@@ -8,17 +8,46 @@ SdfPlaneAlgorithmConstraint::SharedPtr SdfPlaneAlgorithmConstraint::create()
     return SharedPtr(new SdfPlaneAlgorithmConstraint());
 }
 
-bool isPolygonEligibleForAlgorithm(const Polygon::SharedPtr &pPolygon)
+static bool isSegmentIntersectingPolygonOutline(const Segment &segment, const SubPolygon &subPolygon)
 {
-    const auto &segments = pPolygon->getSegments();
-    const size_t segmentCount = segments.size();
-    for (size_t i = 0; i < segmentCount; i++)
+    for (const auto &otherSegment : subPolygon.getSegments())
     {
-        const auto &segment = segments[i];
-        for (size_t j = 2; j < segmentCount - 1; j++) // we don't need to check neighboring segments
+        if (segment.isIntersecting(otherSegment))
         {
-            const size_t indexToCheck = (i + j) % segmentCount;
-            if (segment.isIntersecting(segments[indexToCheck]))
+            return true;
+        }
+    }
+
+    return false;
+}
+
+static bool isPolygonEligibleForAlgorithm(const Polygon::SharedPtr &pPolygon)
+{
+    const auto &polygons = pPolygon->getPolygons();
+    const size_t polygonCount = polygons.size();
+    for (size_t i = 0; i < polygonCount; i++)
+    {
+        const auto &polygon = polygons[i];
+        const auto &currentSegments = polygon.getSegments();
+        const auto currentSegmentCount = currentSegments.size();
+        const auto &segment = currentSegments[i];
+
+        for (size_t sInd = 2; sInd < currentSegmentCount - 1; sInd++) // we don't need to check neighboring segments
+        {
+            const size_t indexToCheck = (i + sInd) % currentSegmentCount;
+            if (segment.isIntersecting(currentSegments[indexToCheck]))
+            {
+                return false;
+            }
+        }
+
+        for (size_t j = 0; j < polygons.size(); j++)
+        {
+            if (i == j)
+            {
+                continue;
+            }
+            if (isSegmentIntersectingPolygonOutline(segment, polygons[j]))
             {
                 return false;
             }

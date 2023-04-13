@@ -2,20 +2,23 @@
 
 using namespace psdf;
 
-StackCommand::SharedPtr AddPointStackCommand::create(const Point &point)
+StackCommand::SharedPtr AddPointStackCommand::create(size_t groupIndex, const Point &point)
 {
-    return SharedPtr(new AddPointStackCommand(point));
+    return SharedPtr(new AddPointStackCommand(groupIndex, point));
 }
 
-AddPointStackCommand::AddPointStackCommand(const Point &point) : mPoint(point)
+AddPointStackCommand::AddPointStackCommand(size_t groupIndex, const Point &point)
+    : mGroupIndex(groupIndex), mPoint(point)
 {
 }
 
-Polygon::SharedPtr AddPointStackCommand::perform(const Polygon::SharedPtr &polygon) const
+Polygon::SharedPtr AddPointStackCommand::perform(const Polygon::SharedPtr &pPolygon) const
 {
-    auto pointsCopy = polygon->getPoints();
-    pointsCopy.emplace_back(mPoint);
-    return Polygon::create(pointsCopy);
+    auto polygonsCopy = pPolygon->getPolygons();
+    auto groupPointsCopy = polygonsCopy[mGroupIndex].getPoints();
+    groupPointsCopy.emplace_back(mPoint);
+    polygonsCopy[mGroupIndex] = SubPolygon(groupPointsCopy);
+    return Polygon::create(polygonsCopy);
 }
 
 std::string AddPointStackCommand::getName() const

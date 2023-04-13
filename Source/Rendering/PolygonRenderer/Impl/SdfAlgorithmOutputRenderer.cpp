@@ -86,7 +86,7 @@ void SdfAlgorithmOutputRenderer::transformImpl()
     float4x4 projection{1};
     if (mFboWidth != 0)
     {
-        projection = rmcv::perspective(70, float(mFboWidth) / float(mFboHeight), 0.1f, 250.0f);
+        projection = rmcv::perspective(glm::pi<float>() / 2, float(mFboWidth) / float(mFboHeight), 0.1f, 250.0f);
     }
     auto view = rmcv::lookAt(float3(0, 0, -10), float3(0, 0, 0), float3(0, 1, 0));
     mpProgramVars["Data"]["iTransform"] = projection * view * transform;

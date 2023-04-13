@@ -20,7 +20,7 @@ float2 CoordinateUtil::screenToSceneSpaceVector(const float4x4 &transform, float
     return (transpose(inverse(transform)) * float4(vector, 0, 0)).xy;
 }
 
-std::optional<size_t> CoordinateUtil::findClosestPointIndex(const Polygon::Points &points, Point point)
+std::optional<size_t> CoordinateUtil::findClosestInSubPolygon(const Polygon::Points &points, Point point)
 {
     auto isPointCloser = [point](const Point &p1, const Point &p2) {
         return glm::distance(point, p1) < glm::distance(point, p2);
@@ -32,4 +32,25 @@ std::optional<size_t> CoordinateUtil::findClosestPointIndex(const Polygon::Point
     }
 
     return iterator - points.begin();
+}
+
+std::optional<std::pair<size_t, size_t>> CoordinateUtil::findClosestPointIndex(const std::vector<SubPolygon> &polygons,
+                                                                               Point point)
+{
+    std::optional<std::pair<size_t, size_t>> result = std::nullopt;
+    for (size_t i = 0; i < polygons.size(); i++)
+    {
+        const auto &polygon = polygons[i];
+        auto closest = findClosestInSubPolygon(polygon.getPoints(), point);
+        if (!closest)
+        {
+            continue;
+        }
+        if (!result || glm::distance(polygons[i].getPoints()[*closest], point) <
+                           glm::distance(polygons[result->first].getPoints()[result->second], point))
+        {
+            result = {i, *closest};
+        }
+    }
+    return result;
 }

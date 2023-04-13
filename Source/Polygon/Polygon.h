@@ -3,6 +3,7 @@
 #include "../Algorithm/SdfPlaneAlgorithmOutput.h"
 #include "Point.h"
 #include "Segment.h"
+#include "SubPolygon.h"
 #include <Falcor.h>
 
 namespace psdf
@@ -12,37 +13,32 @@ using namespace Falcor;
 class Polygon : public std::enable_shared_from_this<Polygon>
 {
   public:
-    using Points = std::vector<Point>;
-    using Segments = std::vector<Segment>;
+    using Points = SubPolygon::Points;
+    using Segments = SubPolygon::Segments;
 
-    using FloatPoints = std::vector<float2>;
-    using FloatSegments = std::vector<std::array<float2, 2>>;
+    using FloatPoints = SubPolygon::FloatPoints;
+    using FloatSegments = SubPolygon::FloatSegments;
 
     using SharedPtr = std::shared_ptr<Polygon>;
+    static Polygon::SharedPtr kExamplePolygon;
 
-    static SharedPtr create(const std::vector<Point> &points);
+    static SharedPtr create(std::vector<SubPolygon> polygons);
 
-    Points getPoints() const;
-    Segments getSegments() const;
+    std::vector<SubPolygon> getPolygons() const;
+    Segments getAllSegments() const;
 
+    FloatSegments getAllFloatSegments() const;
     FloatPoints getFloatPoints() const;
-    FloatSegments getFloatSegments() const;
 
     SdfPlaneAlgorithmOutput::SharedPtr getAlgorithmOutput() const;
     void runAlgorithm();
 
   private:
-    Polygon(Points points, Segments segments);
-
-    static Segments connectOrderedPoints(const std::vector<Point> &points);
-
-  public:
-    static Polygon::SharedPtr kExamplePolygon;
+    Polygon(std::vector<SubPolygon> polygons);
 
   private:
     SdfPlaneAlgorithmOutput::SharedPtr mpSdfPlaneAlgorithmOutput = nullptr;
-    Points mPoints;
-    Segments mSegments;
+    std::vector<SubPolygon> mPolygons;
 };
 
 } // namespace psdf

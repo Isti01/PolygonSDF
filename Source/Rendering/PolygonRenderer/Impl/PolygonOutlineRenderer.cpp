@@ -48,7 +48,7 @@ static VertexLayout::SharedPtr getVertexLayout()
 
 void PolygonOutlineRenderer::uploadPolygonData()
 {
-    auto segments = mpPolygon->getFloatSegments();
+    auto segments = mpPolygon->getAllFloatSegments();
 
     std::vector<uint32_t> indices(segments.size() * 2);
     std::generate(indices.begin(), indices.end(), RangeGenerator());

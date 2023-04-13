@@ -2,20 +2,23 @@
 
 using namespace psdf;
 
-StackCommand::SharedPtr UpdatePointStackCommand::create(size_t index, const Point &point)
+StackCommand::SharedPtr UpdatePointStackCommand::create(size_t groupIndex, size_t vertexIndex, const Point &point)
 {
-    return StackCommand::SharedPtr(new UpdatePointStackCommand(index, point));
+    return StackCommand::SharedPtr(new UpdatePointStackCommand(groupIndex, vertexIndex, point));
 }
 
-UpdatePointStackCommand::UpdatePointStackCommand(size_t index, const Point &point) : mIndex(index), mPoint(point)
+UpdatePointStackCommand::UpdatePointStackCommand(size_t groupIndex, size_t vertexIndex, const Point &point)
+    : mGroupIndex(groupIndex), mVertexIndex(vertexIndex), mPoint(point)
 {
 }
 
 Polygon::SharedPtr UpdatePointStackCommand::perform(const Polygon::SharedPtr &pPolygon) const
 {
-    auto pointsCopy = pPolygon->getPoints();
-    pointsCopy[mIndex] = mPoint;
-    return Polygon::create(pointsCopy);
+    auto polygonsCopy = pPolygon->getPolygons();
+    auto groupPointsCopy = polygonsCopy[mGroupIndex].getPoints();
+    groupPointsCopy[mVertexIndex] = mPoint;
+    polygonsCopy[mGroupIndex] = SubPolygon(groupPointsCopy);
+    return Polygon::create(polygonsCopy);
 }
 
 bool UpdatePointStackCommand::canMerge(const StackCommand::SharedPtr &pCommand) const
@@ -36,7 +39,7 @@ std::string UpdatePointStackCommand::getName() const
 
 size_t UpdatePointStackCommand::getIndex() const
 {
-    return mIndex;
+    return mVertexIndex;
 }
 
 Point UpdatePointStackCommand::getPoint() const

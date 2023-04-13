@@ -129,7 +129,7 @@ void Region::createMesh(std::vector<RegionBoundVertex> &vertices, std::vector<ui
     {
         vertices.push_back({float2(boundVertex), static_cast<float>(getDistanceToPointInsideBounds(boundVertex))});
     }
-    std::optional<size_t> centerIndexOptional = CoordinateUtil::findClosestPointIndex(mBounds, fanCenter);
+    std::optional<size_t> centerIndexOptional = CoordinateUtil::findClosestInSubPolygon(mBounds, fanCenter);
     FALCOR_ASSERT(centerIndexOptional);
     size_t centerIndex = *centerIndexOptional;
 

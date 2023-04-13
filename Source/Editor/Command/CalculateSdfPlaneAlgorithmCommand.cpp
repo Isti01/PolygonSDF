@@ -14,7 +14,7 @@ std::string CalculateSdfPlaneAlgorithmCommand::getName() const
 
 Polygon::SharedPtr CalculateSdfPlaneAlgorithmCommand::perform(const Polygon::SharedPtr &polygon) const
 {
-    auto newPolygon = Polygon::create(polygon->getPoints());
+    auto newPolygon = Polygon::create(polygon->getPolygons());
     newPolygon->runAlgorithm();
     return newPolygon;
 }

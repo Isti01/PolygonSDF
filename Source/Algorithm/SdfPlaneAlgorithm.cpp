@@ -4,7 +4,7 @@ using namespace psdf;
 
 SdfPlaneAlgorithmOutput::SharedPtr SdfPlaneAlgorithm::calculateForPolygon(const Polygon::SharedPtr &pPolygon)
 {
-    std::vector<Segment> segments = pPolygon->getSegments();
+    std::vector<Segment> segments = pPolygon->getAllSegments();
 
     std::vector<LineRegion> lineRegions;
     lineRegions.reserve(segments.size());

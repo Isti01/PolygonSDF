@@ -12,7 +12,7 @@ struct VsIn
 struct VsOut
 {
     float4 vertexPos : SV_POSITION;
-    float signedDistance: DST;
+    float signedDistance : DST;
 };
 
 struct PsOut
@@ -38,7 +38,7 @@ float4 signedDistanceToColor(float distance)
     return float4(col, 1);
 }
 
-PsOut psMain(VsOut vsOut, uint triangleIndex : SV_PrimitiveID) : SV_TARGET
+PsOut psMain(VsOut vsOut, uint triangleIndex: SV_PrimitiveID) : SV_TARGET
 {
     PsOut psOut;
     psOut.color = signedDistanceToColor(vsOut.signedDistance);

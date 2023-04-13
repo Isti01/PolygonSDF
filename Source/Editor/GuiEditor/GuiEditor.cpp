@@ -31,13 +31,19 @@ void GuiEditor::render(Gui::Window &window)
     Gui::Group group = window.group("GUI Polygon Editor", true);
     showControlButtons(group);
     ImGui::Spacing();
-    window.separator();
-    ImGui::Spacing();
-    showVertexInput(group);
-    ImGui::Spacing();
-    window.separator();
-    ImGui::Spacing();
-    showVertexList(group);
+
+    for (size_t i = 0; i < mpCurrentPolygon->getPolygons().size(); i++)
+    {
+        WithImGuiId id(static_cast<int>(i));
+
+        window.separator();
+        ImGui::Spacing();
+        showVertexInput(i, group);
+        ImGui::Spacing();
+        window.separator();
+        ImGui::Spacing();
+        showVertexList(i, group);
+    }
 }
 
 void GuiEditor::showControlButtons(Gui::Group &window)
@@ -78,7 +84,7 @@ bool pointEntry(Gui::Group &window, float2 &point, size_t index)
     return window.var("", point);
 }
 
-void GuiEditor::showVertexList(Gui::Group &window)
+void GuiEditor::showVertexList(size_t groupIndex, Gui::Group &window)
 {
     WithImGuiId id("VertexList");
 
@@ -88,26 +94,27 @@ void GuiEditor::showVertexList(Gui::Group &window)
         return;
     }
 
-    bool showDeleteButtons = mpCurrentPolygon->getPoints().size() > 3;
+    auto polygon = mpCurrentPolygon->getPolygons()[groupIndex];
+    std::vector<Point> points = polygon.getPoints();
 
     window.text("Vertex Editor");
-    std::vector<Point> points = mpCurrentPolygon->getPoints();
+    bool showDeleteButtons = points.size() > 3;
     for (size_t i = 0; i < points.size(); i++)
     {
         WithImGuiId vertexId(static_cast<int>(i));
         float2 point = points[i];
         if (pointEntry(window, point, i))
         {
-            mpEditor->addCommand(UpdatePointStackCommand::create(i, point));
+            mpEditor->addCommand(UpdatePointStackCommand::create(groupIndex, i, point));
         }
         if (showDeleteButtons && window.button("Delete Vertex", true))
         {
-            mpEditor->addCommand(DeletePointStackCommand::create(i));
+            mpEditor->addCommand(DeletePointStackCommand::create(groupIndex, i));
         }
     }
 }
 
-void GuiEditor::showVertexInput(Gui::Group &window)
+void GuiEditor::showVertexInput(size_t groupIndex, Gui::Group &window)
 {
     if (!mpCurrentPolygon)
     {
@@ -119,7 +126,7 @@ void GuiEditor::showVertexInput(Gui::Group &window)
     window.var("", mNewPoint);
     if (window.button("Add Point", true))
     {
-        mpEditor->addCommand(AddPointStackCommand::create(mNewPoint));
+        mpEditor->addCommand(AddPointStackCommand::create(groupIndex, mNewPoint));
         mNewPoint = float2{0};
     }
 }

@@ -42,6 +42,9 @@ void PolygonSDFApplication::onFrameRender(RenderContext *pRenderContext, const F
 
 bool PolygonSDFApplication::onKeyEvent(const KeyboardEvent &keyEvent)
 {
+    if (keyEvent.key == Input::Key::Escape) {
+        return true;
+    }
     return mpVisualEditor->onKeyEvent(keyEvent);
 }
 

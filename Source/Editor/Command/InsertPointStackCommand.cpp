@@ -2,20 +2,23 @@
 
 using namespace psdf;
 
-InsertPointStackCommand::SharedPtr InsertPointStackCommand::create(size_t index, Point point)
+InsertPointStackCommand::SharedPtr InsertPointStackCommand::create(size_t groupIndex, size_t vertexIndex, Point point)
 {
-    return SharedPtr(new InsertPointStackCommand(index, point));
+    return SharedPtr(new InsertPointStackCommand(groupIndex, vertexIndex, point));
 }
 
-InsertPointStackCommand::InsertPointStackCommand(size_t index, Point point) : mIndex(index), mPoint(point)
+InsertPointStackCommand::InsertPointStackCommand(size_t groupIndex, size_t vertexIndex, Point point)
+    : mGroupIndex(groupIndex), mVertexIndex(vertexIndex), mPoint(point)
 {
 }
 
-Polygon::SharedPtr InsertPointStackCommand::perform(const Polygon::SharedPtr &polygon) const
+Polygon::SharedPtr InsertPointStackCommand::perform(const Polygon::SharedPtr &pPolygon) const
 {
-    auto points = polygon->getPoints();
-    points.insert(points.begin() + mIndex, mPoint);
-    return Polygon::create(points);
+    auto polygonsCopy = pPolygon->getPolygons();
+    auto groupPointsCopy = polygonsCopy[mGroupIndex].getPoints();
+    groupPointsCopy.insert(groupPointsCopy.begin() + mVertexIndex, mPoint);
+    polygonsCopy[mGroupIndex] = SubPolygon(groupPointsCopy);
+    return Polygon::create(polygonsCopy);
 }
 
 std::string InsertPointStackCommand::getName() const
@@ -23,9 +26,14 @@ std::string InsertPointStackCommand::getName() const
     return "InsertPointStackCommand";
 }
 
+size_t InsertPointStackCommand::getGroupIndex() const
+{
+    return mGroupIndex;
+}
+
 size_t InsertPointStackCommand::getIndex() const
 {
-    return mIndex;
+    return mVertexIndex;
 }
 
 Point InsertPointStackCommand::getPoint() const

@@ -11,18 +11,19 @@ using namespace Falcor;
 class AddPointStackCommand : public StackCommand
 {
   public:
-    static StackCommand::SharedPtr create(const Point &point);
+    static StackCommand::SharedPtr create(size_t groupIndex, const Point &point);
 
-    Polygon::SharedPtr perform(const Polygon::SharedPtr &polygon) const override;
+    Polygon::SharedPtr perform(const Polygon::SharedPtr &pPolygon) const override;
 
     std::string getName() const override;
 
     [[nodiscard]] Point getPoint();
 
   protected:
-    AddPointStackCommand(const Point &point);
+    AddPointStackCommand(size_t groupIndex, const Point &point);
 
   private:
+    size_t mGroupIndex;
     Point mPoint;
 };
 

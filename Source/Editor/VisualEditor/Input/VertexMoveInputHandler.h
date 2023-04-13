@@ -27,7 +27,7 @@ class VertexMoveInputHandler : public MouseInputHandler
     void moveSelectedVertex(float2 mousePos);
 
   private:
-    std::optional<size_t> mSelectedVertexIndex = std::nullopt;
+    std::optional<std::pair<size_t, size_t>> mSelectedVertexIndex = std::nullopt;
 
     Editor::SharedPtr mpEditor = nullptr;
     DragMouseInputHandler::SharedPtr mpDragHandler = nullptr;

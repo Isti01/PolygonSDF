@@ -26,7 +26,7 @@ struct DistanceResult
 VsOut vsMain(VsIn input)
 {
     VsOut vsOut;
-	vsOut.vertexPos = float4(input.vertexPos, 1);
+    vsOut.vertexPos = float4(input.vertexPos, 1);
     vsOut.texCoords = mul(iTransform, float4(input.texCoords, 0, 1)).xy;
     return vsOut;
 }
@@ -79,7 +79,7 @@ float4 signedDistanceToColor(DistanceResult result)
     return float4(col, 1);
 }
 
-float4 psMain(VsOut vsOut, uint triangleIndex : SV_PrimitiveID) : SV_TARGET
+float4 psMain(VsOut vsOut, uint triangleIndex: SV_PrimitiveID) : SV_TARGET
 {
     DistanceResult result = getSignedSquaredDistance(vsOut.texCoords);
     return signedDistanceToColor(result);

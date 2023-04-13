@@ -113,6 +113,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Polygon/Polygon.h
         Source/Polygon/Segment.cpp
         Source/Polygon/Segment.h
+        Source/Polygon/SubPolygon.cpp
+        Source/Polygon/SubPolygon.h
 
         Source/Rendering/FullScreenTriangle.cpp
         Source/Rendering/FullScreenTriangle.h
@@ -274,6 +276,8 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Polygon/Polygon.h
         Source/Polygon/Segment.cpp
         Source/Polygon/Segment.h
+        Source/Polygon/SubPolygon.cpp
+        Source/Polygon/SubPolygon.h
 
         Source/Rendering/FullScreenTriangle.cpp
         Source/Rendering/FullScreenTriangle.h

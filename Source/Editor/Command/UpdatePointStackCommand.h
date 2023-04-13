@@ -7,7 +7,7 @@ namespace psdf
 class UpdatePointStackCommand : public StackCommand
 {
   public:
-    static StackCommand::SharedPtr create(size_t index, const Point &point);
+    static StackCommand::SharedPtr create(size_t groupIndex, size_t vertexIndex, const Point &point);
 
     Polygon::SharedPtr perform(const Polygon::SharedPtr &pPolygon) const override;
     bool canMerge(const StackCommand::SharedPtr &pCommand) const override;
@@ -17,10 +17,11 @@ class UpdatePointStackCommand : public StackCommand
     Point getPoint() const;
 
   protected:
-    UpdatePointStackCommand(size_t index, const Point &point);
+    UpdatePointStackCommand(size_t groupIndex, size_t vertexIndex, const Point &point);
 
   private:
-    size_t mIndex;
+    size_t mGroupIndex;
+    size_t mVertexIndex;
     Point mPoint;
 };
 

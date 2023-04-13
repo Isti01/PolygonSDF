@@ -5,68 +5,63 @@
 
 using namespace psdf;
 
-Polygon::SharedPtr Polygon::kExamplePolygon = Polygon::create({{.5, 0}, {0, .5}, {-.5, 0}, {0, -.5}});
+Polygon::SharedPtr Polygon::kExamplePolygon =
+    Polygon::create({Points{{.5, 0}, {0, .5}, {-.5, 0}, {0, -.5}}, Points{{.75, 0}, {0, .75}, {-.75, 0}, {0, -.75}}});
 
-Polygon::Polygon(Polygon::Points points, Polygon::Segments segments)
-    : mPoints(std::move(points)), mSegments(std::move(segments))
+Polygon::SharedPtr Polygon::create(std::vector<SubPolygon> polygons)
+{
+    return SharedPtr(new Polygon(std::move(polygons)));
+}
+
+Polygon::Polygon(std::vector<SubPolygon> polygons) : mPolygons(std::move(polygons))
 {
 }
 
-Polygon::SharedPtr Polygon::create(const std::vector<Point> &points)
+std::vector<SubPolygon> Polygon::getPolygons() const
 {
-    FALCOR_ASSERT(points.size() > 2);
-    auto segments = connectOrderedPoints(points);
-
-    return std::shared_ptr<Polygon>(new Polygon(points, segments));
+    return mPolygons;
 }
 
-Polygon::Segments Polygon::connectOrderedPoints(const std::vector<Point> &points)
+Polygon::FloatSegments psdf::Polygon::getAllFloatSegments() const
 {
-    std::vector<Segment> segments;
-    segments.reserve(points.size());
-
-    for (int32_t i = 0; i < points.size(); i++)
+    FloatSegments floatSegments;
+    for (const auto &mPolygon : mPolygons)
     {
-        segments.emplace_back(Segment{{points[i], points[(i + 1) % points.size()]}});
+        const auto &subSegments = mPolygon.getFloatSegments();
+        std::copy(subSegments.cbegin(), subSegments.cend(), std::back_inserter(floatSegments));
+    }
+    return floatSegments;
+}
+
+Polygon::FloatPoints Polygon::getFloatPoints() const
+{
+    FloatPoints floatPoints;
+
+    for (size_t i = 0; i < mPolygons.size(); i++)
+    {
+        const auto &subPolygonPoints = mPolygons[i].getFloatPoints();
+        std::copy(subPolygonPoints.cbegin(), subPolygonPoints.cend(), std::back_inserter(floatPoints));
+    }
+
+    return floatPoints;
+}
+
+Polygon::Segments Polygon::getAllSegments() const
+{
+    Segments segments;
+    for (const auto &mPolygon : mPolygons)
+    {
+        const auto &subSegments = mPolygon.getSegments();
+        std::copy(subSegments.cbegin(), subSegments.cend(), std::back_inserter(segments));
     }
 
     return segments;
 }
-
-Polygon::Points Polygon::getPoints() const
-{
-    return mPoints;
-}
-
-Polygon::Segments Polygon::getSegments() const
-{
-    return mSegments;
-}
-
-Polygon::FloatPoints psdf::Polygon::getFloatPoints() const
-{
-    FloatPoints points;
-    points.reserve(mPoints.size());
-    std::copy(mPoints.cbegin(), mPoints.cend(), std::back_inserter(points));
-    return points;
-}
-
-Polygon::FloatSegments psdf::Polygon::getFloatSegments() const
-{
-    FloatSegments segments;
-    segments.reserve(mSegments.size());
-    std::transform(mSegments.cbegin(), mSegments.cend(), std::back_inserter(segments), [](const Segment &segment) {
-        return std::array<float2, 2>{{segment.getPoint1(), segment.getPoint2()}};
-    });
-    return segments;
-}
-
-SdfPlaneAlgorithmOutput::SharedPtr psdf::Polygon::getAlgorithmOutput() const
+SdfPlaneAlgorithmOutput::SharedPtr Polygon::getAlgorithmOutput() const
 {
     return mpSdfPlaneAlgorithmOutput;
 }
-
-void psdf::Polygon::runAlgorithm()
+void Polygon::runAlgorithm()
 {
     mpSdfPlaneAlgorithmOutput = SdfPlaneAlgorithm::calculateForPolygon(this->shared_from_this());
 }

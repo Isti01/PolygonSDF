@@ -64,7 +64,7 @@ Polygon::SharedPtr TestUtils::readPolygon(const std::string &path)
         points.push_back(current);
     }
 
-    return Polygon::create(points);
+    return Polygon::create({points});
 }
 
 std::vector<psdf::PointRegion> TestUtils::readPointRegionList(const std::string &path)

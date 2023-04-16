@@ -39,7 +39,7 @@ RegionTestcase readTestCase(const std::string &line)
     return testCase;
 }
 
-TEST_CASE("Test Region::polyCut")
+TEST_CASE("Test 1 Region::polyCut")
 {
     std::ifstream f("Data/Tests/polycut_data.csv");
     for (std::string line; std::getline(f, line);)
@@ -50,3 +50,16 @@ TEST_CASE("Test Region::polyCut")
         CHECK(psdf::TestUtils::areDouble2VectorsEqual(testCase.expectedBounds, region.getBounds()));
     }
 }
+
+TEST_CASE("Test 2 Region::polyCut")
+{
+    std::ifstream f("Data/Tests/nested_polygon_polycut_data.csv");
+    for (std::string line; std::getline(f, line);)
+    {
+        RegionTestcase testCase = readTestCase(line);
+        psdf::PointRegion region(testCase.startBounds, {0, 0}, 0);
+        region.polyCut(testCase.points, testCase.edgeVectors);
+        CHECK(psdf::TestUtils::areDouble2VectorsEqual(testCase.expectedBounds, region.getBounds()));
+    }
+}
+

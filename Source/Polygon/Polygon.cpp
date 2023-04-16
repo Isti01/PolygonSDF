@@ -33,18 +33,6 @@ Polygon::FloatSegments psdf::Polygon::getAllFloatSegments() const
     return floatSegments;
 }
 
-Polygon::FloatPoints Polygon::getFloatPoints() const
-{
-    FloatPoints floatPoints;
-
-    for (size_t i = 0; i < mPolygons.size(); i++)
-    {
-        const auto &subPolygonPoints = mPolygons[i].getFloatPoints();
-        std::copy(subPolygonPoints.cbegin(), subPolygonPoints.cend(), std::back_inserter(floatPoints));
-    }
-
-    return floatPoints;
-}
 
 Polygon::Segments Polygon::getAllSegments() const
 {

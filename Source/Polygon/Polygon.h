@@ -28,7 +28,6 @@ class Polygon : public std::enable_shared_from_this<Polygon>
     Segments getAllSegments() const;
 
     FloatSegments getAllFloatSegments() const;
-    FloatPoints getFloatPoints() const;
 
     SdfPlaneAlgorithmOutput::SharedPtr getAlgorithmOutput() const;
     void runAlgorithm();

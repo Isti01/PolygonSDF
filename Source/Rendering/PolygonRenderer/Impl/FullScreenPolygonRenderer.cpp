@@ -32,12 +32,12 @@ void FullScreenPolygonRenderer::init()
 
 void FullScreenPolygonRenderer::uploadPolygonData()
 {
-    auto points = mpPolygon->getFloatPoints();
+    auto segments = mpPolygon->getAllFloatSegments();
     auto pPointBuffer =
-        Buffer::createStructured(mpGraphicsVars["points"], points.size(), Resource::BindFlags::ShaderResource,
-                                 Buffer::CpuAccess::None, points.data(), false);
+        Buffer::createStructured(mpGraphicsVars["segments"], segments.size(), Resource::BindFlags::ShaderResource,
+                                 Buffer::CpuAccess::None, segments.data(), false);
 
-    mpGraphicsVars->setBuffer("points", pPointBuffer);
+    mpGraphicsVars->setBuffer("segments", pPointBuffer);
 }
 
 void FullScreenPolygonRenderer::renderImpl(RenderContext *pRenderContext)

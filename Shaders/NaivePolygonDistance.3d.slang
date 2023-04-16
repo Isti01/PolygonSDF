@@ -3,7 +3,13 @@ cbuffer Data
     float4x4 iTransform;
 }
 
-StructuredBuffer<float2> points;
+struct Segment
+{
+    float2 point1;
+    float2 point2;
+};
+
+StructuredBuffer<Segment> segments;
 
 struct VsIn
 {
@@ -34,16 +40,16 @@ VsOut vsMain(VsIn input)
 DistanceResult getSignedSquaredDistance(float2 coord)
 {
     bool closerToVertex = false;
-    float squaredDistance = dot(coord - points[0], coord - points[0]);
+    float squaredDistance = dot(coord - segments[0].point1, coord - segments[0].point1);
     float distanceSign = 1;
 
-    uint pointCount, _;
-    points.GetDimensions(pointCount, _);
+    uint segmentCount, _;
+    segments.GetDimensions(segmentCount, _);
 
-    for (int i = 0, j = pointCount - 1; i < pointCount; j = i, i++)
+    for (int i = 0; i < segmentCount; i++)
     {
-        float2 e = points[j] - points[i];
-        float2 w = coord - points[i];
+        float2 e = segments[i].point1 - segments[i].point2;
+        float2 w = coord - segments[i].point2;
         float p = dot(w, e) / dot(e, e);
         float2 b = w - e * saturate(p);
         float distance = dot(b, b);
@@ -52,7 +58,7 @@ DistanceResult getSignedSquaredDistance(float2 coord)
             squaredDistance = distance;
             closerToVertex = p >= 0 && p <= 1;
         }
-        bool3 winding = bool3(coord.y >= points[i].y, coord.y < points[j].y, e.x * w.y > e.y * w.x);
+        bool3 winding = bool3(coord.y >= segments[i].point2.y, coord.y < segments[i].point1.y, e.x * w.y > e.y * w.x);
         if (all(winding) || all(!winding))
         {
             distanceSign *= -1.0;

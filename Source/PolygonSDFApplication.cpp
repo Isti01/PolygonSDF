@@ -1,5 +1,6 @@
 #include "PolygonSDFApplication.h"
 #include "Editor/Command/SetPolygonStackCommand.h"
+#include "Editor/Constraint/DeleteGroupEditorConstraint.h"
 #include "Editor/Constraint/DeletePointEditorConstraint.h"
 #include "Editor/Constraint/SdfPlaneAlgorithmConstraint.h"
 
@@ -14,6 +15,7 @@ void PolygonSDFApplication::onLoad(RenderContext *pRenderContext)
     mpGuiEditor = GuiEditor::create(mpEditor);
     mpVisualEditor = VisualEditor::create(mpEditor);
     mpEditor->addCommand(SetPolygonStackCommand::create(Polygon::kExamplePolygon));
+    mpEditor->addConstraint(DeleteGroupEditorConstraint::create());
     mpEditor->addConstraint(DeletePointEditorConstraint::create());
     mpEditor->addConstraint(SdfPlaneAlgorithmConstraint::create());
     mpEventMenu = EventMenu::create(mpEditor);
@@ -42,7 +44,8 @@ void PolygonSDFApplication::onFrameRender(RenderContext *pRenderContext, const F
 
 bool PolygonSDFApplication::onKeyEvent(const KeyboardEvent &keyEvent)
 {
-    if (keyEvent.key == Input::Key::Escape) {
+    if (keyEvent.key == Input::Key::Escape)
+    {
         return true;
     }
     return mpVisualEditor->onKeyEvent(keyEvent);

@@ -6,10 +6,13 @@
 using namespace psdf;
 
 Polygon::SharedPtr Polygon::kExamplePolygon = Polygon::create({
-    Points{{.5, 0}, {0, .5}, {0, -.5}, {-.5, 0}},
+    Points{{.5, 0}, {0, .5}, {-.5, 0}, {0, -.5}},
     Points{{.75, 0}, {0, -.75}, {-.75, 0}, {0, .75}},
-    Points{{1, 0}, {0, -1}, {-1, 0}, {0, 1}},
     Points{{1.25, 0}, {0, -1.25}, {-1.25, 0}, {0, 1.25}},
+});
+
+Polygon::SharedPtr Polygon::kSquarePolygon = Polygon::create({
+    Points{{1, 0}, {0, -1}, {-1, 0}, {0, 1}},
 });
 
 Polygon::SharedPtr Polygon::create(std::vector<SubPolygon> polygons)

@@ -24,7 +24,7 @@ class GuiEditor
   private:
     void showControlButtons(Gui::Group &window);
     void showVertexList(size_t groupIndex, Gui::Group &window);
-    void showVertexInput(size_t groupIndex, Gui::Group &window);
+    void showGroupControls(size_t groupIndex, Gui::Group &window);
 
   private:
     float2 mNewPoint{0};

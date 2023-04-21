@@ -95,8 +95,8 @@ bool InsertRemoveVertexInputHandler::removeVertexIfCloseEnough(float2 position)
     {
         return false;
     }
-    size_t vertexIndex = closestIndex->first;
-    size_t groupIndex = closestIndex->second;
+    size_t groupIndex = closestIndex->first;
+    size_t vertexIndex = closestIndex->second;
     float closestPointDistance = glm::distance(mousePosition, float2(polygons.at(groupIndex).getPoints()[vertexIndex]));
     if (closestPointDistance > VisualEditorConstants::kSelectionDistanceThreshold)
     {

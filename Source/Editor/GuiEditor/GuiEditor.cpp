@@ -1,7 +1,9 @@
 #include "GuiEditor.h"
 #include "../../Util/WithImGuiId.h"
+#include "../Command/AddNewGroupStackCommand.h"
 #include "../Command/AddPointStackCommand.h"
 #include "../Command/CalculateSdfPlaneAlgorithmCommand.h"
+#include "../Command/DeleteGroupStackCommand.h"
 #include "../Command/DeletePointStackCommand.h"
 #include "../Command/SetPolygonStackCommand.h"
 #include "../Command/UpdatePointStackCommand.h"
@@ -38,7 +40,7 @@ void GuiEditor::render(Gui::Window &window)
 
         window.separator();
         ImGui::Spacing();
-        showVertexInput(i, group);
+        showGroupControls(i, group);
         ImGui::Spacing();
         window.separator();
         ImGui::Spacing();
@@ -59,12 +61,17 @@ void GuiEditor::showControlButtons(Gui::Group &window)
         mpEditor->addCommand(SetPolygonStackCommand::create(Polygon::kExamplePolygon));
     }
 
+    if (window.button("New Group", true))
+    {
+        mpEditor->addCommand(AddNewGroupStackCommand::create(Polygon::kSquarePolygon->getPolygons()[0]));
+    }
+
     if (window.button("Undo", true))
     {
         mpEditor->transform(UndoEditorTransformation::create());
     }
 
-    if (window.button("Clear History", true))
+    if (window.button("Clear History"))
     {
         mpEditor->transform(ClearHistoryEditorTransformation::create());
     }
@@ -114,19 +121,19 @@ void GuiEditor::showVertexList(size_t groupIndex, Gui::Group &window)
     }
 }
 
-void GuiEditor::showVertexInput(size_t groupIndex, Gui::Group &window)
+void GuiEditor::showGroupControls(size_t groupIndex, Gui::Group &window)
 {
-    if (!mpCurrentPolygon)
-    {
-        return;
-    }
-
-    WithImGuiId id("VertexInputSection");
+    WithImGuiId id("GroupControlSection");
     window.text("Add New Vertex");
     window.var("", mNewPoint);
     if (window.button("Add Point", true))
     {
         mpEditor->addCommand(AddPointStackCommand::create(groupIndex, mNewPoint));
         mNewPoint = float2{0};
+    }
+
+    if (window.button("Delete Group"))
+    {
+        mpEditor->addCommand(DeleteGroupStackCommand::create(groupIndex));
     }
 }

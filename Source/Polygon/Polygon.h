@@ -21,6 +21,7 @@ class Polygon : public std::enable_shared_from_this<Polygon>
 
     using SharedPtr = std::shared_ptr<Polygon>;
     static Polygon::SharedPtr kExamplePolygon;
+    static Polygon::SharedPtr kSquarePolygon;
 
     static SharedPtr create(std::vector<SubPolygon> polygons);
 

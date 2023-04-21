@@ -23,10 +23,14 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Aggregator/StackSizeEditorAggregator.cpp
         Source/Editor/Aggregator/StackSizeEditorAggregator.h
 
+        Source/Editor/Command/AddNewGroupStackCommand.cpp
+        Source/Editor/Command/AddNewGroupStackCommand.h
         Source/Editor/Command/AddPointStackCommand.cpp
         Source/Editor/Command/AddPointStackCommand.h
         Source/Editor/Command/CalculateSdfPlaneAlgorithmCommand.cpp
         Source/Editor/Command/CalculateSdfPlaneAlgorithmCommand.h
+        Source/Editor/Command/DeleteGroupStackCommand.cpp
+        Source/Editor/Command/DeleteGroupStackCommand.h
         Source/Editor/Command/DeletePointStackCommand.cpp
         Source/Editor/Command/DeletePointStackCommand.h
         Source/Editor/Command/InsertPointStackCommand.cpp
@@ -38,6 +42,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Command/UpdatePointStackCommand.cpp
         Source/Editor/Command/UpdatePointStackCommand.h
 
+        Source/Editor/Constraint/DeleteGroupEditorConstraint.cpp
+        Source/Editor/Constraint/DeleteGroupEditorConstraint.h
         Source/Editor/Constraint/DeletePointEditorConstraint.cpp
         Source/Editor/Constraint/DeletePointEditorConstraint.h
         Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.cpp
@@ -186,10 +192,14 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/Aggregator/StackSizeEditorAggregator.cpp
         Source/Editor/Aggregator/StackSizeEditorAggregator.h
 
+        Source/Editor/Command/AddNewGroupStackCommand.cpp
+        Source/Editor/Command/AddNewGroupStackCommand.h
         Source/Editor/Command/AddPointStackCommand.cpp
         Source/Editor/Command/AddPointStackCommand.h
         Source/Editor/Command/CalculateSdfPlaneAlgorithmCommand.cpp
         Source/Editor/Command/CalculateSdfPlaneAlgorithmCommand.h
+        Source/Editor/Command/DeleteGroupStackCommand.cpp
+        Source/Editor/Command/DeleteGroupStackCommand.h
         Source/Editor/Command/DeletePointStackCommand.cpp
         Source/Editor/Command/DeletePointStackCommand.h
         Source/Editor/Command/InsertPointStackCommand.cpp
@@ -201,6 +211,8 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/Command/UpdatePointStackCommand.cpp
         Source/Editor/Command/UpdatePointStackCommand.h
 
+        Source/Editor/Constraint/DeleteGroupEditorConstraint.cpp
+        Source/Editor/Constraint/DeleteGroupEditorConstraint.h
         Source/Editor/Constraint/DeletePointEditorConstraint.cpp
         Source/Editor/Constraint/DeletePointEditorConstraint.h
         Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.cpp

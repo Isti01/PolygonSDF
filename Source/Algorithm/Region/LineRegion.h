@@ -17,7 +17,7 @@ class LineRegion : public Region
     double getDistanceToPointInsideBounds(Point point) const override;
 
     static void cutWithPoints(std::vector<LineRegion> &lineRegions, const std::vector<PointRegion> &pointRegions);
-    static void cutWithLines(std::vector<LineRegion> &lineRegions);
+    static void cutWithLines(std::vector<LineRegion> &lineRegions, const std::vector<LineRegion> &cuttingRegions);
 
   private:
     static glm::dvec2 computeParabolics(const glm::dvec2 &point, const glm::dvec2 &normal, const glm::dvec2 &bPoint);

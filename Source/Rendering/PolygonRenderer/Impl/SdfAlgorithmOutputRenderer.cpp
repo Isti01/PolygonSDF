@@ -34,6 +34,19 @@ static VertexLayout::SharedPtr getVertexLayout()
     return pLayout;
 }
 
+static double getMaxDistanceFromOriginInPolygon(const Polygon::SharedPtr &pPolygon)
+{
+    double maxDistance = glm::distance({0.0, 0.0}, pPolygon->getPolygons()[0].getPoints()[0]);
+    for (const auto &subPolygon : pPolygon->getPolygons())
+    {
+        for (const auto &point : subPolygon.getPoints())
+        {
+            maxDistance = glm::max(maxDistance, glm::distance({0.0, 0.0}, point));
+        }
+    }
+    return maxDistance;
+}
+
 void SdfAlgorithmOutputRenderer::uploadPolygonData()
 {
     if (!mpPolygon->getAlgorithmOutput())
@@ -41,9 +54,22 @@ void SdfAlgorithmOutputRenderer::uploadPolygonData()
         return;
     }
 
+    std::vector<PointRegion> pointRegions = mpPolygon->getAlgorithmOutput()->getPointRegions();
+    std::vector<LineRegion> lineRegions = mpPolygon->getAlgorithmOutput()->getLineRegions();
+
+    double circleRadius = glm::max(getMaxDistanceFromOriginInPolygon(mpPolygon) * 3, kMinCutDistanceFromOrigin);
+
+    for (size_t i = 0; i < kPointsToCutAround; i++)
+    {
+        double t = (double(i) / double(kPointsToCutAround)) * glm::pi<double>() * 2;
+        Point point{glm::cos(t), glm::sin(t)};
+        PointRegion::cutWithPoints(pointRegions, {PointRegion{point * circleRadius, 1}});
+        LineRegion::cutWithPoints(lineRegions, {PointRegion{point * circleRadius, 1}});
+    }
+
     std::vector<RegionBoundVertex> vertices;
     std::vector<uint32_t> indices;
-    for (const auto &region : mpPolygon->getAlgorithmOutput()->getPointRegions())
+    for (const auto &region : pointRegions)
     {
         region.createMesh(vertices, indices, region.getPoint());
     }
@@ -52,7 +78,7 @@ void SdfAlgorithmOutputRenderer::uploadPolygonData()
 
     vertices.clear();
     indices.clear();
-    for (const auto &region : mpPolygon->getAlgorithmOutput()->getLineRegions())
+    for (const auto &region : lineRegions)
     {
         region.createMesh(vertices, indices, region.getSegment().getPoint1());
     }

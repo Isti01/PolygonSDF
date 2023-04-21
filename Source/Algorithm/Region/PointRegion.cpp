@@ -11,7 +11,7 @@ PointRegion::PointRegion(std::vector<glm::dvec2> bounds, Point point, double cor
 {
 }
 
-void PointRegion::cutWithPoints(std::vector<PointRegion> &pointRegions)
+void PointRegion::cutWithPoints(std::vector<PointRegion> &pointRegions, const std::vector<PointRegion> &cuttingRegions)
 {
     std::vector<Point> points;
     points.reserve(pointRegions.size() - 1);
@@ -23,20 +23,20 @@ void PointRegion::cutWithPoints(std::vector<PointRegion> &pointRegions)
         edgeVectors.clear();
         PointRegion &region = pointRegions[i];
 
-        for (size_t j = 0; j < pointRegions.size(); j++)
+        for (size_t j = 0; j < cuttingRegions.size(); j++)
         {
             if (i == j)
             {
                 continue;
             }
 
-            glm::dvec2 edgeVector = pointRegions[j].mPoint - region.mPoint;
+            glm::dvec2 edgeVector = cuttingRegions[j].mPoint - region.mPoint;
             if (glm::dot(edgeVector, edgeVector) < CommonConstants::kEpsilon)
             {
                 continue;
             }
 
-            points.emplace_back((pointRegions[j].mPoint + region.mPoint) / 2.0);
+            points.emplace_back((cuttingRegions[j].mPoint + region.mPoint) / 2.0);
             edgeVectors.emplace_back(edgeVector);
         }
         region.polyCut(points, edgeVectors);

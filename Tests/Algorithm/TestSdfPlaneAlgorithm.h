@@ -15,7 +15,7 @@
 TEST_CASE("Test SdfPlaneAlgorithm::calculateForPolygon")
 {
     psdf::Polygon::SharedPtr input = psdf::TestUtils::readPolygon("Data/Tests/sdf_algorithm_polygon_input.csv");
-    auto result = psdf::SdfPlaneAlgorithm::calculateForPolygon(input);
+    auto result = psdf::SdfPlaneAlgorithm::calculateForPolygon(input, false);
 
     auto expectedPoints = psdf::TestUtils::readPointRegionList("Data/Tests/sdf_algorithm_point_region_output.csv");
     CHECK(psdf::TestUtils::arePointRegionsEqual(expectedPoints, result->getPointRegions()));

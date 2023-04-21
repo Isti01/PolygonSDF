@@ -14,7 +14,7 @@ class PointRegion : public Region
     PointRegion(Point point, double cornerSign);
     PointRegion(std::vector<glm::dvec2> bounds, Point point, double cornerSign);
 
-    static void cutWithPoints(std::vector<PointRegion> &pointRegions);
+    static void cutWithPoints(std::vector<PointRegion> &pointRegions, const std::vector<PointRegion> &cuttingRegions);
     static void cutWithLines(std::vector<PointRegion> &pointRegions, const std::vector<LineRegion> &lineRegions);
 
     Point getPoint() const;

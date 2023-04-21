@@ -82,6 +82,6 @@ void SdfAlgorithmOutputPresenter::transformPresenter()
     auto rotation = rmcv::rotate(mRotation.x, {0, 1, 0}) * rmcv::rotate(mRotation.y, {1, 0, 0});
 
     float mappedScale = getMappedScale();
-    auto scaling = rmcv::scale(float3{mappedScale, mappedScale, 1});
+    auto scaling = rmcv::scale(float3{-mappedScale, mappedScale, mappedScale});
     mpRenderer->transform(rotation * scaling);
 }

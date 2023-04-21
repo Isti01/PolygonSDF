@@ -64,14 +64,17 @@ static void reorderPointsForTheAlgorithm(std::vector<SubPolygon> &reorderedPolyg
     }
 }
 
-SdfPlaneAlgorithmOutput::SharedPtr SdfPlaneAlgorithm::calculateForPolygon(const Polygon::SharedPtr &pPolygon)
+SdfPlaneAlgorithmOutput::SharedPtr SdfPlaneAlgorithm::calculateForPolygon(const Polygon::SharedPtr &pPolygon,
+                                                                          bool reorderPoints)
 {
     std::vector<LineRegion> lineRegions;
     std::vector<PointRegion> pointRegions;
 
     std::vector<SubPolygon> reorderedPolygons = pPolygon->getPolygons();
-    reorderPointsForTheAlgorithm(reorderedPolygons);
-
+    if (reorderPoints)
+    {
+        reorderPointsForTheAlgorithm(reorderedPolygons);
+    }
     for (const auto &subPolygon : reorderedPolygons)
     {
         const std::vector<Segment> &segments = subPolygon.getSegments();
@@ -93,11 +96,11 @@ SdfPlaneAlgorithmOutput::SharedPtr SdfPlaneAlgorithm::calculateForPolygon(const 
         }
     }
 
-    PointRegion::cutWithPoints(pointRegions);
+    PointRegion::cutWithPoints(pointRegions, pointRegions);
     PointRegion::cutWithLines(pointRegions, lineRegions);
 
     LineRegion::cutWithPoints(lineRegions, pointRegions);
-    LineRegion::cutWithLines(lineRegions);
+    LineRegion::cutWithLines(lineRegions, lineRegions);
 
     return SdfPlaneAlgorithmOutput::create(pointRegions, lineRegions);
 }

@@ -1,4 +1,5 @@
 #include "PolygonSDFApplication.h"
+#include "../Tests/Util/TestUtils.h"
 #include "Editor/Command/SetPolygonStackCommand.h"
 #include "Editor/Constraint/DeleteGroupEditorConstraint.h"
 #include "Editor/Constraint/DeletePointEditorConstraint.h"

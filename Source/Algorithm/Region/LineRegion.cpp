@@ -40,7 +40,7 @@ void LineRegion::cutWithPoints(std::vector<LineRegion> &lineRegions, const std::
         glm::dvec2 dir = region.getDir();
         glm::dvec2 normal{dir.y, -dir.x};
 
-        for (size_t j = 0; j < lineRegions.size(); j++)
+        for (size_t j = 0; j < pointRegions.size(); j++)
         {
             if (i == j)
             {
@@ -102,7 +102,7 @@ glm::dvec2 LineRegion::computeBisectorIntersection(const glm::dvec2 &point, cons
     }
 }
 
-void LineRegion::cutWithLines(std::vector<LineRegion> &lineRegions)
+void LineRegion::cutWithLines(std::vector<LineRegion> &lineRegions, const std::vector<LineRegion> &cuttingRegions)
 {
     std::vector<Point> points;
     points.reserve(lineRegions.size() - 1);
@@ -118,13 +118,13 @@ void LineRegion::cutWithLines(std::vector<LineRegion> &lineRegions)
         glm::dvec2 dir = region.getDir();
         glm::dvec2 normal{dir.y, -dir.x};
 
-        for (size_t j = 0; j < lineRegions.size(); j++)
+        for (size_t j = 0; j < cuttingRegions.size(); j++)
         {
             if (i == j)
             {
                 continue;
             }
-            LineRegion &bRegion = lineRegions[j];
+            const LineRegion &bRegion = cuttingRegions[j];
             glm::dvec2 bPoint1 = bRegion.getSegment().getPoint2();
             glm::dvec2 bPoint2 = bRegion.getSegment().getPoint1(); // the points are flipped on purpose
             glm::dvec2 bDir = -bRegion.getDir();

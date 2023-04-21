@@ -33,6 +33,9 @@ class SdfAlgorithmOutputRenderer : public PolygonRenderer
     uint32_t mFboWidth = 0;
     uint32_t mFboHeight = 0;
 
+    static constexpr size_t kPointsToCutAround = 100;
+    static constexpr double kMinCutDistanceFromOrigin = 10;
+
     GraphicsState::SharedPtr mpGraphicsState = nullptr;
     GraphicsVars::SharedPtr mpProgramVars = nullptr;
     RenderObject::SharedPtr mpPointRegionRenderObject = nullptr;

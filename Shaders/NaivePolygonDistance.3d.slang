@@ -58,7 +58,7 @@ DistanceResult getSignedSquaredDistance(float2 coord)
             squaredDistance = distance;
             closerToVertex = p >= 0 && p <= 1;
         }
-        bool3 winding = bool3(coord.y >= segments[i].point2.y, coord.y < segments[i].point1.y, e.x * w.y > e.y * w.x);
+        bool3 winding = bool3(coord.y >= segments[i].point2.y, coord.y<segments[i].point1.y, e.x * w.y> e.y * w.x);
         if (all(winding) || all(!winding))
         {
             distanceSign *= -1.0;

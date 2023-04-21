@@ -6,7 +6,7 @@ namespace psdf
 {
 using namespace Falcor;
 
-struct RegionBoundVertex
+struct LineRegionBoundVertex
 {
     float2 position;
     float signedDistance;

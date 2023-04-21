@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.h"
+#include "../../../Rendering/PolygonRenderer/Impl/SdfAlgorithmPointRegionRenderer.h"
 #include "../../Aggregator/StackPeekingEditorAggregator.h"
 #include "../Input/DragMouseInputHandler.h"
 #include "Presenter.h"
@@ -14,7 +14,7 @@ class SdfAlgorithmOutputPresenter : public Presenter
   public:
     using SharedPtr = std::shared_ptr<SdfAlgorithmOutputPresenter>;
 
-    static SharedPtr create(Editor::SharedPtr pEditor, SdfAlgorithmOutputRenderer::SharedPtr outputRenderer);
+    static SharedPtr create(Editor::SharedPtr pEditor, PolygonRenderer::SharedPtr outputRenderer);
 
     void render(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo);
 
@@ -22,7 +22,7 @@ class SdfAlgorithmOutputPresenter : public Presenter
     void resetInputState() override;
 
   protected:
-    SdfAlgorithmOutputPresenter(Editor::SharedPtr pEditor, SdfAlgorithmOutputRenderer::SharedPtr outputRenderer);
+    SdfAlgorithmOutputPresenter(Editor::SharedPtr pEditor, PolygonRenderer::SharedPtr outputRenderer);
 
     void updatePolygon();
 
@@ -38,7 +38,7 @@ class SdfAlgorithmOutputPresenter : public Presenter
     float2 mRotationSpeed{-glm::pi<float>(), -glm::pi<float>()};
 
     Editor::SharedPtr mpEditor;
-    SdfAlgorithmOutputRenderer::SharedPtr mpRenderer;
+    PolygonRenderer::SharedPtr mpRenderer;
     StackPeekingEditorAggregator::SharedPtr mpPolygonPeekingAggregator;
     Polygon::SharedPtr mpPolygon;
     DragMouseInputHandler::SharedPtr mpDragHandler;

@@ -19,6 +19,9 @@ class LineRegion : public Region
     static void cutWithPoints(std::vector<LineRegion> &lineRegions, const std::vector<PointRegion> &pointRegions);
     static void cutWithLines(std::vector<LineRegion> &lineRegions, const std::vector<LineRegion> &cuttingRegions);
 
+    void createMesh(std::vector<LineRegionBoundVertex> &vertices, std::vector<uint32_t> &indices,
+                    Point fanCenter) const;
+
   private:
     static glm::dvec2 computeParabolics(const glm::dvec2 &point, const glm::dvec2 &normal, const glm::dvec2 &bPoint);
     static glm::dvec2 computeBisectorIntersection(const glm::dvec2 &point, const glm::dvec2 &normal,

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Impl/SdfAlgorithmOutputRenderer.h"
+#include "Impl/SdfAlgorithmPointRegionRenderer.h"
 #include "PolygonRenderer.h"
 
 namespace psdf
@@ -10,7 +10,7 @@ class PolygonRendererFactory
 {
   public:
     static PolygonRenderer::SharedPtr getPolygonRenderer();
-    static SdfAlgorithmOutputRenderer::SharedPtr getAlgorithmOutputRenderer();
+    static PolygonRenderer::SharedPtr getAlgorithmOutputRenderer();
 
   private:
     PolygonRendererFactory() = default;

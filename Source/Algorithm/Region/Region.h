@@ -2,7 +2,7 @@
 
 #include "../../CommonConstants.h"
 #include "../../Polygon/Point.h"
-#include "./RegionBoundVertex.h"
+#include "./LineRegionBoundVertex.h"
 
 #include <Falcor.h>
 
@@ -21,8 +21,6 @@ class Region
     std::vector<glm::dvec2> getBounds() const;
 
     virtual double getDistanceToPointInsideBounds(Point point) const = 0;
-
-    void createMesh(std::vector<RegionBoundVertex> &vertices, std::vector<uint32_t> &indices, Point fanCenter) const;
 
   private:
     std::vector<double> calculateVnd(glm::dvec2 edgeVector, double d);

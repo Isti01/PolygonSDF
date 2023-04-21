@@ -1,4 +1,5 @@
 #include "PointRegion.h"
+#include "../../Util/CoordinateUtil.h"
 
 using namespace psdf;
 
@@ -98,4 +99,30 @@ double PointRegion::getCornerSign() const
 double PointRegion::getDistanceToPointInsideBounds(Point point) const
 {
     return glm::distance(point, mPoint) * mCornerSign;
+}
+
+void PointRegion::createMesh(std::vector<PointRegionBoundVertex> &vertices, std::vector<uint32_t> &indices,
+                             Point fanCenter) const
+{
+    if (mBounds.empty())
+    {
+        return;
+    }
+    size_t initialVertexCount = vertices.size();
+
+    for (const auto &boundVertex : mBounds)
+    {
+        vertices.push_back(
+            {mPoint, float2(boundVertex), static_cast<float>(getDistanceToPointInsideBounds(boundVertex))});
+    }
+    std::optional<size_t> centerIndexOptional = CoordinateUtil::findClosestInSubPolygon(mBounds, fanCenter);
+    FALCOR_ASSERT(centerIndexOptional);
+    size_t centerIndex = *centerIndexOptional;
+
+    for (size_t i = 0; i < mBounds.size() - 2; i++)
+    {
+        indices.push_back(initialVertexCount + centerIndex);
+        indices.push_back(initialVertexCount + ((centerIndex + i + 1) % mBounds.size()));
+        indices.push_back(initialVertexCount + ((centerIndex + i + 2) % mBounds.size()));
+    }
 }

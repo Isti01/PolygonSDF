@@ -2,6 +2,7 @@
 
 #include "../../Polygon/Point.h"
 #include "LineRegion.h"
+#include "PointRegionBoundVertex.h"
 #include "Region.h"
 
 namespace psdf
@@ -16,6 +17,9 @@ class PointRegion : public Region
 
     static void cutWithPoints(std::vector<PointRegion> &pointRegions, const std::vector<PointRegion> &cuttingRegions);
     static void cutWithLines(std::vector<PointRegion> &pointRegions, const std::vector<LineRegion> &lineRegions);
+
+    void createMesh(std::vector<PointRegionBoundVertex> &vertices, std::vector<uint32_t> &indices,
+                    Point fanCenter) const;
 
     Point getPoint() const;
     double getCornerSign() const;

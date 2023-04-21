@@ -4,14 +4,14 @@
 using namespace psdf;
 using namespace Falcor;
 
-SdfAlgorithmOutputPresenter::SharedPtr SdfAlgorithmOutputPresenter::create(
-    Editor::SharedPtr pEditor, SdfAlgorithmOutputRenderer::SharedPtr outputRenderer)
+SdfAlgorithmOutputPresenter::SharedPtr SdfAlgorithmOutputPresenter::create(Editor::SharedPtr pEditor,
+                                                                           PolygonRenderer::SharedPtr outputRenderer)
 {
     return SharedPtr(new SdfAlgorithmOutputPresenter(std::move(pEditor), std::move(outputRenderer)));
 }
 
 SdfAlgorithmOutputPresenter::SdfAlgorithmOutputPresenter(Editor::SharedPtr pEditor,
-                                                         SdfAlgorithmOutputRenderer::SharedPtr outputRenderer)
+                                                         PolygonRenderer::SharedPtr outputRenderer)
     : mpEditor(std::move(pEditor)), mpPolygonPeekingAggregator(StackPeekingEditorAggregator::create()),
       mpDragHandler(DragMouseInputHandler::create()), mpRenderer(std::move(outputRenderer))
 {

@@ -3,6 +3,7 @@
 #include "Impl/CompositePolygonRenderer.h"
 #include "Impl/FullScreenPolygonRenderer.h"
 #include "Impl/PolygonOutlineRenderer.h"
+#include "Impl/SdfAlgorithmLineRegionRenderer.h"
 
 using namespace Falcor;
 using namespace psdf;
@@ -41,14 +42,13 @@ static GraphicsState::SharedPtr getOutlineRendererGS()
 PolygonRenderer::SharedPtr PolygonRendererFactory::getPolygonRenderer()
 {
     auto combinedRenderers = CompositePolygonRenderer::create(std::vector<PolygonRenderer::SharedPtr>{
-        std::static_pointer_cast<PolygonRenderer>(FullScreenPolygonRenderer::create(getFullscreenRendererGS())),
-        std::static_pointer_cast<PolygonRenderer>(
-            PolygonOutlineRenderer::create(getOutlineRendererGS(), float4(1, 0, 0, 1))),
+        FullScreenPolygonRenderer::create(getFullscreenRendererGS()),
+        PolygonOutlineRenderer::create(getOutlineRendererGS(), float4(1, 0, 0, 1)),
     });
-    return std::static_pointer_cast<PolygonRenderer>(AspectRatioIndependentPolygonRenderer::create(combinedRenderers));
+    return AspectRatioIndependentPolygonRenderer::create(combinedRenderers);
 }
 
-SdfAlgorithmOutputRenderer::SharedPtr PolygonRendererFactory::getAlgorithmOutputRenderer()
+static GraphicsState::SharedPtr getGraphicsStateForAlgorithmOutputRenderer(const char *shaderPath)
 {
     auto pGraphicsState = GraphicsState::create();
     auto pRasterizerState =
@@ -57,11 +57,18 @@ SdfAlgorithmOutputRenderer::SharedPtr PolygonRendererFactory::getAlgorithmOutput
 
     pGraphicsState->setDepthStencilState(DepthStencilState::create(DepthStencilState::Desc().setDepthEnabled(true)));
 
-    auto pProgram = GraphicsProgram::create(Program::Desc()
-                                                .addShaderLibrary("PolygonSDF/Shaders/AlgorithmOutput.3d.slang")
-                                                .vsEntry("vsMain")
-                                                .psEntry("psMain"));
+    auto pProgram =
+        GraphicsProgram::create(Program::Desc().addShaderLibrary(shaderPath).vsEntry("vsMain").psEntry("psMain"));
     pGraphicsState->setProgram(pProgram);
+    return pGraphicsState;
+}
 
-    return SdfAlgorithmOutputRenderer::create(pGraphicsState);
+PolygonRenderer::SharedPtr PolygonRendererFactory::getAlgorithmOutputRenderer()
+{
+    return CompositePolygonRenderer::create({
+        SdfAlgorithmLineRegionRenderer::create(
+            getGraphicsStateForAlgorithmOutputRenderer("PolygonSDF/Shaders/LineRegionAlgorithmOutput.3d.slang")),
+        SdfAlgorithmPointRegionRenderer::create(
+            getGraphicsStateForAlgorithmOutputRenderer("PolygonSDF/Shaders/PointRegionAlgorithmOutput.3d.slang")),
+    });
 }

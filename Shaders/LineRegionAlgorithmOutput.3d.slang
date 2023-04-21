@@ -35,7 +35,7 @@ float4 signedDistanceToColor(float distance)
     col *= 1 - exp(-4 * abs(distance));
     col *= 0.7 + 0.2 * cos(110 * distance);
     col = lerp(col, float3(1), 1 - smoothstep(0, 0.015, abs(distance)));
-    return float4(col, 1);
+    return float4(col, 1) * .7;
 }
 
 PsOut psMain(VsOut vsOut, uint triangleIndex: SV_PrimitiveID) : SV_TARGET

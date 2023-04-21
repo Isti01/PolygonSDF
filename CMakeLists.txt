@@ -1,8 +1,9 @@
 add_falcor_executable(PolygonSDF)
 
 target_sources(PolygonSDF PRIVATE
-        Shaders/AlgorithmOutput.3d.slang
+        Shaders/LineRegionAlgorithmOutput.3d.slang
         Shaders/NaivePolygonDistance.3d.slang
+        Shaders/PointRegionAlgorithmOutput.3d.slang
         Shaders/SolidColor.3d.slang
 
         Source/Algorithm/Region/LineRegion.cpp
@@ -11,7 +12,7 @@ target_sources(PolygonSDF PRIVATE
         Source/Algorithm/Region/PointRegion.h
         Source/Algorithm/Region/Region.cpp
         Source/Algorithm/Region/Region.h
-        Source/Algorithm/Region/RegionBoundVertex.h
+        Source/Algorithm/Region/LineRegionBoundVertex.h
 
         Source/Algorithm/SdfPlaneAlgorithm.cpp
         Source/Algorithm/SdfPlaneAlgorithm.h
@@ -140,8 +141,12 @@ target_sources(PolygonSDF PRIVATE
         Source/Rendering/PolygonRenderer/PolygonRenderer.h
         Source/Rendering/PolygonRenderer/PolygonRendererFactory.cpp
         Source/Rendering/PolygonRenderer/PolygonRendererFactory.h
+        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmLineRegionRenderer.cpp
+        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmLineRegionRenderer.h
         Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.cpp
         Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.h
+        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmPointRegionRenderer.cpp
+        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmPointRegionRenderer.h
 
         Source/Util/CoordinateUtil.cpp
         Source/Util/CoordinateUtil.h
@@ -170,8 +175,9 @@ target_source_group(PolygonSDF Samples)
 add_falcor_executable(PolygonSDFTest)
 
 target_sources(PolygonSDFTest PRIVATE
-        Shaders/AlgorithmOutput.3d.slang
+        Shaders/LineRegionAlgorithmOutput.3d.slang
         Shaders/NaivePolygonDistance.3d.slang
+        Shaders/PointRegionAlgorithmOutput.3d.slang
         Shaders/SolidColor.3d.slang
 
         Source/Algorithm/Region/LineRegion.cpp
@@ -180,7 +186,7 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Algorithm/Region/PointRegion.h
         Source/Algorithm/Region/Region.cpp
         Source/Algorithm/Region/Region.h
-        Source/Algorithm/Region/RegionBoundVertex.h
+        Source/Algorithm/Region/LineRegionBoundVertex.h
 
         Source/Algorithm/SdfPlaneAlgorithm.cpp
         Source/Algorithm/SdfPlaneAlgorithm.h
@@ -309,8 +315,12 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Rendering/PolygonRenderer/PolygonRenderer.h
         Source/Rendering/PolygonRenderer/PolygonRendererFactory.cpp
         Source/Rendering/PolygonRenderer/PolygonRendererFactory.h
+        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmLineRegionRenderer.cpp
+        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmLineRegionRenderer.h
         Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.cpp
         Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.h
+        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmPointRegionRenderer.cpp
+        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmPointRegionRenderer.h
 
         Source/Util/CoordinateUtil.cpp
         Source/Util/CoordinateUtil.h

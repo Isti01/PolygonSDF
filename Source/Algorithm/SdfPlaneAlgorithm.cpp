@@ -17,23 +17,60 @@ static bool isCcwWindingOrder(const SubPolygon &subPolygon)
     return sum < 0;
 }
 
+static bool isSubPolygonInside(size_t polygonIndex, const std::vector<SubPolygon> &polygons)
+{
+    bool isInside = false;
+
+    // checking only one of the points is enough, because we don't work with self-intersecting polygons
+    glm::dvec2 coordToCheck = polygons[polygonIndex].getPoints()[0];
+
+    for (size_t j = 0; j < polygons.size(); j++)
+    {
+        if (j == polygonIndex)
+        {
+            continue;
+        }
+
+        for (const auto &segment : polygons[j].getSegments())
+        {
+            glm::dvec2 e = segment.getPoint1() - segment.getPoint2();
+            glm::dvec2 w = coordToCheck - segment.getPoint2();
+            glm::bvec3 winding{
+                coordToCheck.y >= segment.getPoint2().y,
+                coordToCheck.y<segment.getPoint1().y, e.x * w.y> e.y * w.x,
+            };
+            if (all(winding) || all(glm::not_(winding)))
+            {
+                isInside = !isInside;
+            }
+        }
+    }
+    return isInside;
+}
+
+static void reorderPointsForTheAlgorithm(std::vector<SubPolygon> &reorderedPolygons)
+{
+    for (size_t i = 0; i < reorderedPolygons.size(); i++)
+    {
+        auto &subPolygon = reorderedPolygons[i];
+        bool isPolygonCcWindingOrder = isCcwWindingOrder(subPolygon);
+        bool isOnInside = isSubPolygonInside(i, reorderedPolygons);
+        if (isOnInside && isPolygonCcWindingOrder || (!isOnInside && !isPolygonCcWindingOrder))
+        {
+            SubPolygon::Points pointsCopy = subPolygon.getPoints();
+            std::reverse(pointsCopy.begin(), pointsCopy.end());
+            subPolygon = SubPolygon(std::move(pointsCopy));
+        }
+    }
+}
+
 SdfPlaneAlgorithmOutput::SharedPtr SdfPlaneAlgorithm::calculateForPolygon(const Polygon::SharedPtr &pPolygon)
 {
     std::vector<LineRegion> lineRegions;
     std::vector<PointRegion> pointRegions;
 
     std::vector<SubPolygon> reorderedPolygons = pPolygon->getPolygons();
-
-    for (auto &subPolygon : reorderedPolygons)
-    {
-        if (!isCcwWindingOrder(subPolygon))
-        {
-            continue;
-        }
-        SubPolygon::Points pointsCopy = subPolygon.getPoints();
-        std::reverse(pointsCopy.begin(), pointsCopy.end());
-        subPolygon = SubPolygon(std::move(pointsCopy));
-    }
+    reorderPointsForTheAlgorithm(reorderedPolygons);
 
     for (const auto &subPolygon : reorderedPolygons)
     {

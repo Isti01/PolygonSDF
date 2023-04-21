@@ -80,10 +80,9 @@ void SdfAlgorithmOutputRenderer::transformImpl()
 {
     FALCOR_ASSERT(mpProgramVars);
 
-    const float4x4 correction = rmcv::translate(float3{-1, -1, 0}) * rmcv::scale(float3{2, 2, 1});
-    const auto transform = correction * mTransform;
+    const auto transform = mTransform;
 
-    float4x4 projection{1};
+    auto projection = rmcv::identity<float4x4>();
     if (mFboWidth != 0)
     {
         projection = rmcv::perspective(glm::pi<float>() / 2, float(mFboWidth) / float(mFboHeight), 0.1f, 250.0f);

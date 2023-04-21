@@ -10,7 +10,7 @@ class LineRegion : public Region
 {
   public:
     LineRegion(const Segment &segment);
-    LineRegion(std::vector<glm::dvec2> bounds, const Segment &segment);
+    LineRegion(std::vector<glm::dvec2> bounds, Segment segment);
 
     Segment getSegment() const;
     glm::dvec2 getDir() const;

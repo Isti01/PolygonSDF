@@ -8,8 +8,8 @@ LineRegion::LineRegion(const Segment &segment) : Region(), mSegment(segment)
 {
 }
 
-LineRegion::LineRegion(std::vector<glm::dvec2> bounds, const Segment &segment)
-    : Region(std::move(bounds)), mSegment(segment)
+LineRegion::LineRegion(std::vector<glm::dvec2> bounds, Segment segment)
+    : Region(std::move(bounds)), mSegment(std::move(segment))
 {
 }
 

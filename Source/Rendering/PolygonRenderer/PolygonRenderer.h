@@ -31,7 +31,7 @@ class PolygonRenderer
     void ensureInitialized();
 
   protected:
-    float4x4 mTransform = float4x4{1};
+    float4x4 mTransform = rmcv::identity<float4x4>();
     Polygon::SharedPtr mpPolygon = nullptr;
 
   private:

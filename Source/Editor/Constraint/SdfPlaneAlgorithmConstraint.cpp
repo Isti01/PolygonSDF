@@ -30,26 +30,30 @@ static bool isPolygonEligibleForAlgorithm(const Polygon::SharedPtr &pPolygon)
         const auto &polygon = polygons[i];
         const auto &currentSegments = polygon.getSegments();
         const auto currentSegmentCount = currentSegments.size();
-        const auto &segment = currentSegments[i];
 
-        for (size_t sInd = 2; sInd < currentSegmentCount - 1; sInd++) // we don't need to check neighboring segments
+        for (size_t j = 0; j < currentSegmentCount; j++)
         {
-            const size_t indexToCheck = (i + sInd) % currentSegmentCount;
-            if (segment.isIntersecting(currentSegments[indexToCheck]))
-            {
-                return false;
-            }
-        }
+            const auto &segment = currentSegments[j];
 
-        for (size_t j = 0; j < polygons.size(); j++)
-        {
-            if (i == j)
+            for (size_t sInd = 2; sInd < currentSegmentCount - 1; sInd++) // we don't need to check neighboring segments
             {
-                continue;
+                const size_t indexToCheck = (j + sInd) % currentSegmentCount;
+                if (segment.isIntersecting(currentSegments[indexToCheck]))
+                {
+                    return false;
+                }
             }
-            if (isSegmentIntersectingPolygonOutline(segment, polygons[j]))
+
+            for (size_t k = 0; k < polygons.size(); k++)
             {
-                return false;
+                if (i == k)
+                {
+                    continue;
+                }
+                if (isSegmentIntersectingPolygonOutline(segment, polygons[k]))
+                {
+                    return false;
+                }
             }
         }
     }

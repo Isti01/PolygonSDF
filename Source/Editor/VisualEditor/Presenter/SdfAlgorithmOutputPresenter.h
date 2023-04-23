@@ -27,15 +27,16 @@ class SdfAlgorithmOutputPresenter : public Presenter
     void updatePolygon();
 
   private:
+    void resetTransform();
     void transformPresenter();
     float getMappedScale() const;
 
   private:
-    float mScale = 1;
-    float mScaleSpeed = .1f;
+    static constexpr float mScaleSpeed = .1f;
+    static constexpr float2 mRotationSpeed{-glm::pi<float>(), -glm::pi<float>()};
 
+    float mScale = 3.5;
     float2 mRotation{0};
-    float2 mRotationSpeed{-glm::pi<float>(), -glm::pi<float>()};
 
     Editor::SharedPtr mpEditor;
     PolygonRenderer::SharedPtr mpRenderer;

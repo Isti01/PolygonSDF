@@ -34,7 +34,7 @@ class PolygonPresenter : public Presenter
     float getMappedScale() const;
 
   private:
-    float mScale = -.3f;
+    float mScale = -2.0f;
     float mScaleSpeed = .1f;
 
     float2 mTranslation{1.0f, .5f};

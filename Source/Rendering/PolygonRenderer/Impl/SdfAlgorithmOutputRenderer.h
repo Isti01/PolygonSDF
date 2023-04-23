@@ -29,6 +29,7 @@ class SdfAlgorithmOutputRenderer : public PolygonRenderer
 
     static constexpr size_t kPointsToCutAround = 100;
     static constexpr double kMinCutDistanceFromOrigin = 10;
+    static constexpr float kOrthoCamSize = 50;
 
     uint32_t mFboWidth = 0;
     uint32_t mFboHeight = 0;

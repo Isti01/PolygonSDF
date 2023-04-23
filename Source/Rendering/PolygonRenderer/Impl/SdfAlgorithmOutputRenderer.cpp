@@ -50,9 +50,11 @@ void SdfAlgorithmOutputRenderer::transformImpl()
     auto projection = rmcv::identity<float4x4>();
     if (mFboWidth != 0)
     {
-        projection = rmcv::perspective(glm::pi<float>() / 2, float(mFboWidth) / float(mFboHeight), 0.1f, 250.0f);
+        float orthoCamScaler = kOrthoCamSize / mFboWidth;
+        projection = rmcv::ortho(-orthoCamScaler * mFboWidth, orthoCamScaler * mFboWidth, -orthoCamScaler * mFboHeight,
+                                 orthoCamScaler * mFboHeight, -250.0f, 250.0f);
     }
-    auto view = rmcv::lookAt(float3(0, 0, -10), float3(0, 0, 0), float3(0, 1, 0));
+    auto view = rmcv::lookAt(float3(0, 0, -1), float3(0, 0, 0), float3(0, 1, 0));
     mpProgramVars["Data"]["iTransform"] = projection * view * transform;
 }
 

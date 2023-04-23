@@ -1,8 +1,11 @@
 #include "Polygon.h"
 #include "../Algorithm/SdfPlaneAlgorithm.h"
 
+#include <fstream>
+#include <json/json.hpp>
 #include <utility>
 
+using json = nlohmann::json;
 using namespace psdf;
 
 Polygon::SharedPtr Polygon::kExamplePolygon = Polygon::create({
@@ -14,6 +17,43 @@ Polygon::SharedPtr Polygon::kExamplePolygon = Polygon::create({
 Polygon::SharedPtr Polygon::kSquarePolygon = Polygon::create({
     Points{{1, 0}, {0, -1}, {-1, 0}, {0, 1}},
 });
+
+Polygon::SharedPtr Polygon::fromJson(const std::string &path)
+{
+    std::ifstream file(path);
+    if (!file)
+    {
+        return nullptr;
+    }
+    auto content = json::parse(file, nullptr, false);
+    if (content.empty())
+    {
+        return nullptr;
+    }
+    auto groups = content["groups"];
+    if (groups.empty())
+    {
+        return nullptr;
+    }
+
+    std::vector<SubPolygon> polygons;
+    std::vector<Point> groupVertices;
+
+    for (const auto &group : groups)
+    {
+        for (const auto &vertex : group)
+        {
+            Point p{vertex["x"], vertex["y"]};
+            groupVertices.emplace_back(p);
+        }
+        if (!groupVertices.empty())
+        {
+            polygons.emplace_back(groupVertices);
+            groupVertices.clear();
+        }
+    }
+    return create(polygons);
+}
 
 Polygon::SharedPtr Polygon::create(std::vector<SubPolygon> polygons)
 {
@@ -29,7 +69,7 @@ std::vector<SubPolygon> Polygon::getPolygons() const
     return mPolygons;
 }
 
-Polygon::FloatSegments psdf::Polygon::getAllFloatSegments() const
+Polygon::FloatSegments Polygon::getAllFloatSegments() const
 {
     FloatSegments floatSegments;
     for (const auto &mPolygon : mPolygons)
@@ -39,7 +79,6 @@ Polygon::FloatSegments psdf::Polygon::getAllFloatSegments() const
     }
     return floatSegments;
 }
-
 Polygon::Segments Polygon::getAllSegments() const
 {
     Segments segments;
@@ -55,6 +94,7 @@ SdfPlaneAlgorithmOutput::SharedPtr Polygon::getAlgorithmOutput() const
 {
     return mpSdfPlaneAlgorithmOutput;
 }
+
 void Polygon::runAlgorithm()
 {
     mpSdfPlaneAlgorithmOutput = SdfPlaneAlgorithm::calculateForPolygon(this->shared_from_this());

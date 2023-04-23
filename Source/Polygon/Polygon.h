@@ -23,6 +23,7 @@ class Polygon : public std::enable_shared_from_this<Polygon>
     static Polygon::SharedPtr kExamplePolygon;
     static Polygon::SharedPtr kSquarePolygon;
 
+    static SharedPtr fromJson(const std::string &path);
     static SharedPtr create(std::vector<SubPolygon> polygons);
 
     std::vector<SubPolygon> getPolygons() const;

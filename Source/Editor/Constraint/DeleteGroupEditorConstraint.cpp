@@ -14,7 +14,7 @@ bool DeleteGroupEditorConstraint::evaluate(const EditorStack::SharedPtr &pStack,
     if (const auto &pDeleteCommand = std::dynamic_pointer_cast<DeleteGroupStackCommand>(pCommand))
     {
         auto topPolygon = pStack->peek();
-        return topPolygon.has_value() && topPolygon->polygon->getPolygons().size() > 3;
+        return topPolygon.has_value() && topPolygon->polygon->getPolygons().size() > 1;
     }
     return true;
 }

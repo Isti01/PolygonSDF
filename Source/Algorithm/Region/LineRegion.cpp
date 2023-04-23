@@ -203,7 +203,7 @@ double LineRegion::getDistanceToPointInsideBounds(Point point) const
 }
 
 void LineRegion::createMesh(std::vector<LineRegionBoundVertex> &vertices, std::vector<uint32_t> &indices,
-                        Point fanCenter) const
+                            Point fanCenter) const
 {
     if (mBounds.empty())
     {

@@ -9,7 +9,8 @@ SdfAlgorithmLineRegionRenderer::SdfAlgorithmLineRegionRenderer(GraphicsState::Sh
 {
 }
 
-SdfAlgorithmLineRegionRenderer::SharedPtr SdfAlgorithmLineRegionRenderer::create(GraphicsState::SharedPtr pGraphicsState)
+SdfAlgorithmLineRegionRenderer::SharedPtr SdfAlgorithmLineRegionRenderer::create(
+    GraphicsState::SharedPtr pGraphicsState)
 {
     return SharedPtr(new SdfAlgorithmLineRegionRenderer(std::move(pGraphicsState)));
 }

@@ -1,3 +1,5 @@
+#include "Common.slang"
+
 cbuffer Data
 {
     float4x4 iTransform;
@@ -29,19 +31,14 @@ VsOut vsMain(VsIn input)
     return vsOut;
 }
 
-float4 signedDistanceToColor(float distance)
-{
-    float3 col = float3(1) - sign(distance) * float3(0.1, 0.4, 0.7);
-    col *= 1 - exp(-4 * abs(distance));
-    col *= 0.7 + 0.2 * cos(110 * distance);
-    col = lerp(col, float3(1), 1 - smoothstep(0, 0.015, abs(distance)));
-    return float4(col, 1) * .7;
-}
-
 PsOut psMain(VsOut vsOut, uint triangleIndex: SV_PrimitiveID) : SV_TARGET
 {
+    DistanceDesc desc;
+    desc.closerToVertex = false;
+    desc.distance = vsOut.signedDistance;
+
     PsOut psOut;
-    psOut.color = signedDistanceToColor(vsOut.signedDistance);
+    psOut.color = signedDistanceToColor(desc);
     psOut.depth = vsOut.signedDistance;
     return psOut;
 }

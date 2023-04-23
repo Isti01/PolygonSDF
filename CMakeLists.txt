@@ -1,6 +1,7 @@
 add_falcor_executable(PolygonSDF)
 
 target_sources(PolygonSDF PRIVATE
+        Shaders/Common.slang
         Shaders/LineRegionAlgorithmOutput.3d.slang
         Shaders/NaivePolygonDistance.3d.slang
         Shaders/PointRegionAlgorithmOutput.3d.slang
@@ -175,6 +176,7 @@ target_source_group(PolygonSDF Samples)
 add_falcor_executable(PolygonSDFTest)
 
 target_sources(PolygonSDFTest PRIVATE
+        Shaders/Common.slang
         Shaders/LineRegionAlgorithmOutput.3d.slang
         Shaders/NaivePolygonDistance.3d.slang
         Shaders/PointRegionAlgorithmOutput.3d.slang

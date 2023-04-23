@@ -1,3 +1,5 @@
+#include "Common.slang"
+
 cbuffer Data
 {
     float4x4 iTransform;
@@ -23,12 +25,6 @@ struct VsOut
     float2 texCoords : TEX_COORDS;
 };
 
-struct DistanceResult
-{
-    float distance;
-    bool closerToVertex;
-};
-
 VsOut vsMain(VsIn input)
 {
     VsOut vsOut;
@@ -37,7 +33,7 @@ VsOut vsMain(VsIn input)
     return vsOut;
 }
 
-DistanceResult getSignedSquaredDistance(float2 coord)
+DistanceDesc getSignedSquaredDistance(float2 coord)
 {
     bool closerToVertex = false;
     float squaredDistance = dot(coord - segments[0].point1, coord - segments[0].point1);
@@ -65,28 +61,14 @@ DistanceResult getSignedSquaredDistance(float2 coord)
         }
     }
 
-    DistanceResult result;
-    result.distance = distanceSign * sqrt(squaredDistance);
-    result.closerToVertex = closerToVertex;
-    return result;
-}
-
-float4 signedDistanceToColor(DistanceResult result)
-{
-    float distance = result.distance;
-    float3 col = float3(1) - sign(distance) * float3(0.1, 0.4, 0.7);
-    col *= 1 - exp(-4 * abs(distance));
-    col *= 0.7 + 0.2 * cos(110 * distance);
-    col = lerp(col, float3(1), 1 - smoothstep(0, 0.015, abs(distance)));
-    if (result.closerToVertex)
-    {
-        col *= .7;
-    }
-    return float4(col, 1);
+    DistanceDesc desc;
+    desc.distance = distanceSign * sqrt(squaredDistance);
+    desc.closerToVertex = closerToVertex;
+    return desc;
 }
 
 float4 psMain(VsOut vsOut, uint triangleIndex: SV_PrimitiveID) : SV_TARGET
 {
-    DistanceResult result = getSignedSquaredDistance(vsOut.texCoords);
-    return signedDistanceToColor(result);
+    DistanceDesc desc = getSignedSquaredDistance(vsOut.texCoords);
+    return signedDistanceToColor(desc);
 }

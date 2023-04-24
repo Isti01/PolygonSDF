@@ -123,7 +123,12 @@ void GuiEditor::showControlButtons(Gui::Group &window)
     }
     if (mpCurrentPolygon && mpCurrentPolygon->getAlgorithmOutput() && window.button("Save Algorithm Output"))
     {
-        // todo save algorithm output
+        std::filesystem::path path;
+        Falcor::saveFileDialog({FileDialogFilter("json")}, path);
+        if (path.empty() || !mpCurrentPolygon->getAlgorithmOutput()->saveJson(path.string()))
+        {
+            msgBox("Failed to save the algorithm output", MsgBoxType::Ok, Falcor::MsgBoxIcon::Info);
+        }
     }
 }
 

@@ -2,7 +2,7 @@
 #include "../../Rendering/PolygonRenderer/PolygonRendererFactory.h"
 #include "../PublishedEvent/HideGuiPublishedEvent.h"
 #include "../PublishedEvent/ShowGuiPublishedEvent.h"
-#include "Input/VertexMoveInputHandler.h"
+#include "Input/MoveInputHandler.h"
 
 using namespace psdf;
 
@@ -14,7 +14,8 @@ VisualEditor::SharedPtr VisualEditor::create(Editor::SharedPtr pEditor)
 VisualEditor::VisualEditor(Editor::SharedPtr pEditor)
     : mpEditor(std::move(pEditor)), mpPolygonRenderer(PolygonRendererFactory::getPolygonRenderer()),
       mpPolygonPresenter(PolygonPresenter::create(mpEditor, mpPolygonRenderer)),
-      mpVertexMover(VertexMoveInputHandler::create(mpEditor, mpPolygonRenderer)),
+      mpVertexMover(MoveInputHandler::create(PointUpdateMoveStrategy::create(), mpEditor, mpPolygonRenderer)),
+      mpGroupMover(MoveInputHandler::create(GroupMoveStrategy::create(), mpEditor, mpPolygonRenderer)),
       mpVertexInserter(InsertRemoveVertexInputHandler::create(mpEditor, mpPolygonRenderer)),
       mpActiveInputHandler(mpPolygonPresenter), mpStackPeekingAggregator(StackPeekingEditorAggregator::create()),
       mpAlgorithmOutputPresenter(
@@ -49,6 +50,13 @@ bool VisualEditor::onKeyEvent(const KeyboardEvent &keyEvent)
     {
         showGui();
         setActiveInputHandler(mpVertexMover);
+        return true;
+    }
+
+    if (keyEvent.key == Input::Key::G)
+    {
+        showGui();
+        setActiveInputHandler(mpGroupMover);
         return true;
     }
 

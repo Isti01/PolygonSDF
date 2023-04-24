@@ -39,6 +39,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Command/InsertPointStackCommand.h
         Source/Editor/Command/MergePolygonWithOffsetStackCommand.cpp
         Source/Editor/Command/MergePolygonWithOffsetStackCommand.h
+        Source/Editor/Command/MoveGroupStackCommand.cpp
+        Source/Editor/Command/MoveGroupStackCommand.h
         Source/Editor/Command/SetPolygonStackCommand.cpp
         Source/Editor/Command/SetPolygonStackCommand.h
         Source/Editor/Command/StackCommand.cpp
@@ -105,8 +107,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/VisualEditor/Input/InsertRemoveVertexInputHandler.cpp
         Source/Editor/VisualEditor/Input/InsertRemoveVertexInputHandler.h
         Source/Editor/VisualEditor/Input/MouseInputHandler.h
-        Source/Editor/VisualEditor/Input/VertexMoveInputHandler.cpp
-        Source/Editor/VisualEditor/Input/VertexMoveInputHandler.h
+        Source/Editor/VisualEditor/Input/MoveInputHandler.cpp
+        Source/Editor/VisualEditor/Input/MoveInputHandler.h
 
         Source/Editor/VisualEditor/Presenter/PolygonPresenter.cpp
         Source/Editor/VisualEditor/Presenter/PolygonPresenter.h
@@ -216,6 +218,8 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/Command/InsertPointStackCommand.h
         Source/Editor/Command/MergePolygonWithOffsetStackCommand.cpp
         Source/Editor/Command/MergePolygonWithOffsetStackCommand.h
+        Source/Editor/Command/MoveGroupStackCommand.cpp
+        Source/Editor/Command/MoveGroupStackCommand.h
         Source/Editor/Command/SetPolygonStackCommand.cpp
         Source/Editor/Command/SetPolygonStackCommand.h
         Source/Editor/Command/StackCommand.cpp
@@ -282,8 +286,8 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/VisualEditor/Input/InsertRemoveVertexInputHandler.cpp
         Source/Editor/VisualEditor/Input/InsertRemoveVertexInputHandler.h
         Source/Editor/VisualEditor/Input/MouseInputHandler.h
-        Source/Editor/VisualEditor/Input/VertexMoveInputHandler.cpp
-        Source/Editor/VisualEditor/Input/VertexMoveInputHandler.h
+        Source/Editor/VisualEditor/Input/MoveInputHandler.cpp
+        Source/Editor/VisualEditor/Input/MoveInputHandler.h
 
         Source/Editor/VisualEditor/Presenter/PolygonPresenter.cpp
         Source/Editor/VisualEditor/Presenter/PolygonPresenter.h

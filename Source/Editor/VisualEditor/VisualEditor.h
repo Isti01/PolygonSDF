@@ -5,7 +5,7 @@
 #include "./Presenter/PolygonPresenter.h"
 #include "./Presenter/SdfAlgorithmOutputPresenter.h"
 #include "Input/InsertRemoveVertexInputHandler.h"
-#include "Input/VertexMoveInputHandler.h"
+#include "Input/MoveInputHandler.h"
 
 #include <Falcor.h>
 
@@ -37,7 +37,8 @@ class VisualEditor
     PolygonRenderer::SharedPtr mpPolygonRenderer = nullptr;
     PolygonPresenter::SharedPtr mpPolygonPresenter = nullptr;
     SdfAlgorithmOutputPresenter::SharedPtr mpAlgorithmOutputPresenter = nullptr;
-    VertexMoveInputHandler::SharedPtr mpVertexMover = nullptr;
+    MoveInputHandler::SharedPtr mpVertexMover = nullptr;
+    MoveInputHandler::SharedPtr mpGroupMover = nullptr;
     InsertRemoveVertexInputHandler::SharedPtr mpVertexInserter = nullptr;
     MouseInputHandler::SharedPtr mpActiveInputHandler = nullptr;
     StackPeekingEditorAggregator::SharedPtr mpStackPeekingAggregator = nullptr;

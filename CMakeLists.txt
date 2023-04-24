@@ -37,6 +37,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Command/DeletePointStackCommand.h
         Source/Editor/Command/InsertPointStackCommand.cpp
         Source/Editor/Command/InsertPointStackCommand.h
+        Source/Editor/Command/MergePolygonWithOffsetStackCommand.cpp
+        Source/Editor/Command/MergePolygonWithOffsetStackCommand.h
         Source/Editor/Command/SetPolygonStackCommand.cpp
         Source/Editor/Command/SetPolygonStackCommand.h
         Source/Editor/Command/StackCommand.cpp
@@ -212,6 +214,8 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/Command/DeletePointStackCommand.h
         Source/Editor/Command/InsertPointStackCommand.cpp
         Source/Editor/Command/InsertPointStackCommand.h
+        Source/Editor/Command/MergePolygonWithOffsetStackCommand.cpp
+        Source/Editor/Command/MergePolygonWithOffsetStackCommand.h
         Source/Editor/Command/SetPolygonStackCommand.cpp
         Source/Editor/Command/SetPolygonStackCommand.h
         Source/Editor/Command/StackCommand.cpp

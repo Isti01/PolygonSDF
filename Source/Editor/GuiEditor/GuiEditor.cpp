@@ -5,6 +5,7 @@
 #include "../Command/CalculateSdfPlaneAlgorithmCommand.h"
 #include "../Command/DeleteGroupStackCommand.h"
 #include "../Command/DeletePointStackCommand.h"
+#include "../Command/MergePolygonWithOffsetStackCommand.h"
 #include "../Command/SetPolygonStackCommand.h"
 #include "../Command/UpdatePointStackCommand.h"
 #include "../Transformation/ClearHistoryEditorTransformation.h"
@@ -34,7 +35,8 @@ void GuiEditor::render(Gui::Window &window)
     showControlButtons(group);
     ImGui::Spacing();
 
-    if (!mpCurrentPolygon) {
+    if (!mpCurrentPolygon)
+    {
         return;
     }
     for (size_t i = 0; i < mpCurrentPolygon->getPolygons().size(); i++)
@@ -51,6 +53,25 @@ void GuiEditor::render(Gui::Window &window)
     }
 }
 
+static Polygon::SharedPtr loadPolygon()
+{
+    std::filesystem::path path;
+    openFileDialog({FileDialogFilter("json")}, path);
+    if (!path.empty())
+    {
+        auto polygon = Polygon::fromJson(path.string());
+        if (!polygon)
+        {
+            msgBox("Failed to load the polygon", MsgBoxType::Ok, Falcor::MsgBoxIcon::Info);
+        }
+        else
+        {
+            return polygon;
+        }
+    }
+    return nullptr;
+}
+
 void GuiEditor::showControlButtons(Gui::Group &window)
 {
     WithImGuiId id("ControlButtons");
@@ -60,6 +81,13 @@ void GuiEditor::showControlButtons(Gui::Group &window)
     ss << "Commands in the editor stack: " << stackSize;
     window.text(ss.str());
     if (window.button("New Polygon"))
+    {
+        if (auto polygon = loadPolygon())
+        {
+            mpEditor->addCommand(SetPolygonStackCommand::create(polygon));
+        }
+    }
+    if (window.button("New Placeholder Polygon", true))
     {
         mpEditor->addCommand(SetPolygonStackCommand::create(Polygon::kExamplePolygon));
     }
@@ -82,6 +110,20 @@ void GuiEditor::showControlButtons(Gui::Group &window)
     if (window.button("Run Plane Slicing Algorithm", true))
     {
         mpEditor->addCommand(CalculateSdfPlaneAlgorithmCommand::create());
+    }
+
+    ImGui::Spacing();
+    window.var("", mPolygonOffset);
+    if (window.button("Add Polygon with offset", true))
+    {
+        if (auto polygon = loadPolygon())
+        {
+            mpEditor->addCommand(MergePolygonWithOffsetStackCommand::create(polygon, mPolygonOffset));
+        }
+    }
+    if (mpCurrentPolygon && mpCurrentPolygon->getAlgorithmOutput() && window.button("Save Algorithm Output"))
+    {
+        // todo save algorithm output
     }
 }
 

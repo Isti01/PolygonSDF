@@ -34,6 +34,9 @@ void GuiEditor::render(Gui::Window &window)
     showControlButtons(group);
     ImGui::Spacing();
 
+    if (!mpCurrentPolygon) {
+        return;
+    }
     for (size_t i = 0; i < mpCurrentPolygon->getPolygons().size(); i++)
     {
         WithImGuiId id(static_cast<int>(i));

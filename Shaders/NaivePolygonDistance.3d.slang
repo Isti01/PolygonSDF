@@ -67,7 +67,7 @@ DistanceDesc getSignedSquaredDistance(float2 coord)
     return desc;
 }
 
-float4 psMain(VsOut vsOut, uint triangleIndex: SV_PrimitiveID) : SV_TARGET
+float4 psMain(VsOut vsOut, uint triangleIndex : SV_PrimitiveID) : SV_TARGET
 {
     DistanceDesc desc = getSignedSquaredDistance(vsOut.texCoords);
     return signedDistanceToColor(desc);

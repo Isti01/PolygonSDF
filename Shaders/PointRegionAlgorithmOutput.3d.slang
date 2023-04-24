@@ -36,12 +36,12 @@ VsOut vsMain(VsIn input)
     return vsOut;
 }
 
-PsOut psMain(VsOut vsOut, uint triangleIndex: SV_PrimitiveID) : SV_TARGET
+PsOut psMain(VsOut vsOut, uint triangleIndex : SV_PrimitiveID) : SV_TARGET
 {
     DistanceDesc desc;
     float dst = distance(vsOut.regionVertex, vsOut.samplePos);
     desc.distance = dst * sign(vsOut.signedDistance);
-    desc.closerToVertex = true;
+    desc.closerToVertex = false;
 
     PsOut psOut;
     psOut.color = signedDistanceToColor(desc);

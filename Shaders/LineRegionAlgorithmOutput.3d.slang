@@ -31,10 +31,10 @@ VsOut vsMain(VsIn input)
     return vsOut;
 }
 
-PsOut psMain(VsOut vsOut, uint triangleIndex: SV_PrimitiveID) : SV_TARGET
+PsOut psMain(VsOut vsOut, uint triangleIndex : SV_PrimitiveID) : SV_TARGET
 {
     DistanceDesc desc;
-    desc.closerToVertex = false;
+    desc.closerToVertex = true;
     desc.distance = vsOut.signedDistance;
 
     PsOut psOut;

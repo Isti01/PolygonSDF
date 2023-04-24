@@ -18,43 +18,6 @@ Polygon::SharedPtr Polygon::kSquarePolygon = Polygon::create({
     Points{{1, 0}, {0, -1}, {-1, 0}, {0, 1}},
 });
 
-Polygon::SharedPtr Polygon::fromJson(const std::string &path)
-{
-    std::ifstream file(path);
-    if (!file)
-    {
-        return nullptr;
-    }
-    auto content = json::parse(file, nullptr, false);
-    if (content.empty())
-    {
-        return nullptr;
-    }
-    auto groups = content["groups"];
-    if (groups.empty())
-    {
-        return nullptr;
-    }
-
-    std::vector<SubPolygon> polygons;
-    std::vector<Point> groupVertices;
-
-    for (const auto &group : groups)
-    {
-        for (const auto &vertex : group)
-        {
-            Point p{vertex["x"], vertex["y"]};
-            groupVertices.emplace_back(p);
-        }
-        if (!groupVertices.empty())
-        {
-            polygons.emplace_back(groupVertices);
-            groupVertices.clear();
-        }
-    }
-    return create(polygons);
-}
-
 Polygon::SharedPtr Polygon::create(std::vector<SubPolygon> polygons)
 {
     return SharedPtr(new Polygon(std::move(polygons)));
@@ -98,4 +61,49 @@ SdfPlaneAlgorithmOutput::SharedPtr Polygon::getAlgorithmOutput() const
 void Polygon::runAlgorithm()
 {
     mpSdfPlaneAlgorithmOutput = SdfPlaneAlgorithm::calculateForPolygon(this->shared_from_this());
+}
+
+Polygon::SharedPtr Polygon::fromJson(const std::string &path)
+{
+    std::ifstream file(path);
+    if (!file)
+    {
+        return nullptr;
+    }
+    auto content = json::parse(file, nullptr, false);
+    if (!content.contains("groups"))
+    {
+        return nullptr;
+    }
+    auto groups = content["groups"];
+    if (!groups.is_array())
+    {
+        return nullptr;
+    }
+
+    std::vector<SubPolygon> polygons;
+    std::vector<Point> groupVertices;
+
+    for (const auto &group : groups)
+    {
+        if (!group.is_array())
+        {
+            return nullptr;
+        }
+        for (const auto &vertex : group)
+        {
+            if (!vertex.contains("x") || !vertex.contains("y") || !vertex["x"].is_number() || !vertex["y"].is_number())
+            {
+                return nullptr;
+            }
+            Point p{vertex["x"], vertex["y"]};
+            groupVertices.emplace_back(p);
+        }
+        if (!groupVertices.empty())
+        {
+            polygons.emplace_back(groupVertices);
+            groupVertices.clear();
+        }
+    }
+    return polygons.empty() ? nullptr : create(polygons);
 }

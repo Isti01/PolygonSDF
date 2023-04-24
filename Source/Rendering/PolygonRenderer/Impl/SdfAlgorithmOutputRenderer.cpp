@@ -1,3 +1,5 @@
+#include <numeric>
+
 #include "SdfAlgorithmOutputRenderer.h"
 
 using namespace Falcor;
@@ -41,11 +43,31 @@ double SdfAlgorithmOutputRenderer::getMaxDistanceFromOriginInPolygon(const Polyg
     return maxDistance;
 }
 
+void SdfAlgorithmOutputRenderer::setPolygon(const Polygon::SharedPtr &pPolygon)
+{
+    if (pPolygon)
+    {
+        Point average{0};
+        const auto &polygons = pPolygon->getPolygons();
+        double pointWeight = std::accumulate(polygons.cbegin(), polygons.cend(), 0.0,
+                                             [](double count, const auto &p) { return count + p.getPoints().size(); });
+        for (const auto &group : polygons)
+        {
+            for (const auto &point : group.getPoints())
+            {
+                average += point / pointWeight;
+            }
+        }
+        mPolygonCenter = average;
+    }
+    PolygonRenderer::setPolygon(pPolygon);
+}
+
 void SdfAlgorithmOutputRenderer::transformImpl()
 {
     FALCOR_ASSERT(mpProgramVars);
 
-    const auto transform = mTransform;
+    const auto transform = mTransform * rmcv::translate(-float3{mPolygonCenter, 0});
 
     auto projection = rmcv::identity<float4x4>();
     if (mFboWidth != 0)

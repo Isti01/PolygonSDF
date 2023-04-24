@@ -18,6 +18,7 @@ class SdfAlgorithmOutputRenderer : public PolygonRenderer
     float4x4 getTransform() const override;
 
     void setFbo(const Fbo::SharedPtr &pFbo) override;
+    void setPolygon(const Polygon::SharedPtr &pPolygon) override;
 
   protected:
     SdfAlgorithmOutputRenderer(GraphicsState::SharedPtr pGraphicsState);
@@ -31,6 +32,7 @@ class SdfAlgorithmOutputRenderer : public PolygonRenderer
     static constexpr double kMinCutDistanceFromOrigin = 10;
     static constexpr float kOrthoCamSize = 50;
 
+    Point mPolygonCenter;
     uint32_t mFboWidth = 0;
     uint32_t mFboHeight = 0;
 

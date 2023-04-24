@@ -6,6 +6,7 @@
 #include "../Command/DeleteGroupStackCommand.h"
 #include "../Command/DeletePointStackCommand.h"
 #include "../Command/MergePolygonWithOffsetStackCommand.h"
+#include "../Command/MoveGroupStackCommand.h"
 #include "../Command/SetPolygonStackCommand.h"
 #include "../Command/UpdatePointStackCommand.h"
 #include "../Transformation/ClearHistoryEditorTransformation.h"
@@ -185,5 +186,16 @@ void GuiEditor::showGroupControls(size_t groupIndex, Gui::Group &window)
     if (window.button("Delete Group"))
     {
         mpEditor->addCommand(DeleteGroupStackCommand::create(groupIndex));
+    }
+
+    {
+        WithImGuiId id(2);
+        window.var("", mGroupOffset);
+        if (window.button("Offset Group", true))
+        {
+            auto firstPoint = mpCurrentPolygon->getPolygons()[groupIndex].getPoints().front();
+            auto toPoint = firstPoint + Point(mGroupOffset);
+            mpEditor->addCommand(MoveGroupStackCommand::create(groupIndex, firstPoint, toPoint));
+        }
     }
 }

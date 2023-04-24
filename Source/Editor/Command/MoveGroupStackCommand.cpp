@@ -38,7 +38,7 @@ bool MoveGroupStackCommand::canMerge(const StackCommand::SharedPtr &pCommand) co
         return false;
     }
 
-    return moveCommand->getGroupIndex() == getGroupIndex();
+    return moveCommand->getGroupIndex() == getGroupIndex() && moveCommand->getTo() == getFrom();
 }
 
 StackCommand::SharedPtr MoveGroupStackCommand::merge(const StackCommand::SharedPtr &pOther)

@@ -28,6 +28,7 @@ class GuiEditor
 
   private:
     float2 mNewPoint{0};
+    float2 mGroupOffset{0};
     float2 mPolygonOffset{0};
     Polygon::SharedPtr mpCurrentPolygon;
     Editor::SharedPtr mpEditor;

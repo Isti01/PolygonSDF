@@ -11,6 +11,10 @@ EventMenuGui::SharedPtr EventMenuGui::create()
 void EventMenuGui::renderGui(Gui::Window &window)
 {
     Gui::Group group = window.group("Editor Events", false);
+    if (!group)
+    {
+        return;
+    }
 
     if (group.button("Clear event history"))
     {

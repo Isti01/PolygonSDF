@@ -33,6 +33,10 @@ void GuiEditor::render(Gui::Window &window)
     FALCOR_ASSERT(pPeekResult);
     mpCurrentPolygon = pPeekResult->getEntry().polygon;
     Gui::Group group = window.group("GUI Polygon Editor", true);
+    if (!group)
+    {
+        return;
+    }
     showControlButtons(group);
     ImGui::Spacing();
 
@@ -44,13 +48,18 @@ void GuiEditor::render(Gui::Window &window)
     {
         WithImGuiId id(static_cast<int>(i));
 
-        window.separator();
+        Gui::Group subPolygonGroup = group.group("Polygon Group [" + std::to_string(i) + "]", false);
+        if (subPolygonGroup)
+        {
+            window.separator();
+            ImGui::Spacing();
+            showGroupControls(i, group);
+            ImGui::Spacing();
+            window.separator();
+            ImGui::Spacing();
+            showVertexList(i, group);
+        }
         ImGui::Spacing();
-        showGroupControls(i, group);
-        ImGui::Spacing();
-        window.separator();
-        ImGui::Spacing();
-        showVertexList(i, group);
     }
 }
 
@@ -98,12 +107,12 @@ void GuiEditor::showControlButtons(Gui::Group &window)
         mpEditor->addCommand(AddNewGroupStackCommand::create(Polygon::kSquarePolygon->getPolygons()[0]));
     }
 
-    if (window.button("Undo", true))
+    if (window.button("Undo"))
     {
         mpEditor->transform(UndoEditorTransformation::create());
     }
 
-    if (window.button("Clear History"))
+    if (window.button("Clear History"), true)
     {
         mpEditor->transform(ClearHistoryEditorTransformation::create());
     }

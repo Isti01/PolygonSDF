@@ -112,6 +112,7 @@ void VisualEditor::hideGui()
 {
     mpEditor->publishEvent(HideGuiPublishedEvent::create(), this);
 }
+
 void VisualEditor::setActiveInputHandler(const MouseInputHandler::SharedPtr &pInputHandler)
 {
     if (mpActiveInputHandler != pInputHandler)

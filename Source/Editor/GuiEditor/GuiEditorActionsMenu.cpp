@@ -86,7 +86,16 @@ void GuiEditorActionsMenu::renderGui(Gui::Window &window)
             mpEditor->addCommand(MergePolygonWithOffsetStackCommand::create(polygon, mPolygonOffset));
         }
     }
-    if (pPolygon->getAlgorithmOutput() && window.button("Save Algorithm Output"))
+    if (pPolygon && window.button("Save polygon"))
+    {
+        std::filesystem::path path;
+        Falcor::saveFileDialog({FileDialogFilter("json")}, path);
+        if (path.empty() || !pPolygon->saveJson(path.string()))
+        {
+            msgBox("Failed to save the polygon", MsgBoxType::Ok, Falcor::MsgBoxIcon::Info);
+        }
+    }
+    if (pPolygon->getAlgorithmOutput() && window.button("Save Algorithm Output", true))
     {
         std::filesystem::path path;
         Falcor::saveFileDialog({FileDialogFilter("json")}, path);

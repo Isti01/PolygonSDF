@@ -123,3 +123,32 @@ Polygon::SharedPtr Polygon::fromJson(const std::string &path)
     }
     return polygons.empty() ? nullptr : create(polygons);
 }
+
+bool Polygon::saveJson(const std::string &path) const
+{
+    std::ofstream file(path);
+    if (!file)
+    {
+        return false;
+    }
+
+    json result;
+    std::vector<json> groups;
+    for (const auto &group : mPolygons)
+    {
+        std::vector<json> groupJson;
+        for (const auto &point : group.getPoints())
+        {
+            json pointJson;
+            pointJson["x"] = point.x;
+            pointJson["y"] = point.y;
+            groupJson.emplace_back(std::move(pointJson));
+        }
+        groups.emplace_back(std::move(groupJson));
+    }
+
+    result["groups"] = groups;
+    file << result.dump();
+
+    return true;
+}

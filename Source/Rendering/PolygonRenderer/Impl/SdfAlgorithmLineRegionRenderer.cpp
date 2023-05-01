@@ -40,7 +40,11 @@ void SdfAlgorithmLineRegionRenderer::uploadPolygonData()
     {
         double t = (double(i) / double(mPointsToCutAround)) * glm::pi<double>() * 2;
         Point point{glm::cos(t), glm::sin(t)};
-        LineRegion::cutWithPoints(lineRegions, {PointRegion{point * circleRadius + center, 1}});
+        auto cuttingRegions = {
+            PointRegion{point * circleRadius + center, 1},
+            PointRegion{point * circleRadius + center, -1},
+        };
+        LineRegion::cutWithPoints(lineRegions, cuttingRegions);
     }
 
     std::vector<LineRegionBoundVertex> vertices;

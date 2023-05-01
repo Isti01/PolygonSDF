@@ -16,6 +16,7 @@ class PolygonRenderer
     void render(RenderContext *pRenderContext);
     void transform(const float4x4 &transform);
     void setProperty(const PolygonRendererProperty &rendererProperty);
+    void markDirty();
     virtual void setPolygon(const Polygon::SharedPtr &pPolygon);
     virtual void setFbo(const Fbo::SharedPtr &pFbo) = 0;
     virtual float4x4 getTransform() const = 0;
@@ -37,6 +38,7 @@ class PolygonRenderer
     Polygon::SharedPtr mpPolygon = nullptr;
 
   private:
+    bool mIsMarkedDirty = false;
     bool mInitialized = false;
 };
 

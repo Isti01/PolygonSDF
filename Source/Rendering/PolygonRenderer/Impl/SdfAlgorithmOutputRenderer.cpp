@@ -161,6 +161,7 @@ void SdfAlgorithmOutputRenderer::setPropertyImpl(const PolygonRendererProperty &
         if (auto *pointsToCutAround = std::get_if<size_t>(&rendererProperty.value))
         {
             mPointsToCutAround = *pointsToCutAround;
+            markDirty();
         }
     }
 }

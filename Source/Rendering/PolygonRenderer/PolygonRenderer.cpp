@@ -20,6 +20,11 @@ void PolygonRenderer::render(RenderContext *context)
 {
     FALCOR_ASSERT(context);
     ensureInitialized();
+    if (mIsMarkedDirty){
+        transform(mTransform);
+        uploadPolygonData();
+        mIsMarkedDirty = false;
+    }
 
     FALCOR_ASSERT(mpPolygon);
     renderImpl(context);
@@ -48,4 +53,9 @@ void PolygonRenderer::ensureInitialized()
     init();
     mInitialized = true;
     transform(mTransform);
+}
+
+void PolygonRenderer::markDirty()
+{
+    mIsMarkedDirty = true;
 }

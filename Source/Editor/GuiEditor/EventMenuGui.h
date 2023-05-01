@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../Core/Editor.h"
-#include <Falcor.h>
+#include "../Core/Editor.h"
+#include "Falcor.h"
 
 namespace psdf
 {

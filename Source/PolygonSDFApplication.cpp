@@ -19,7 +19,6 @@ void PolygonSDFApplication::onLoad(RenderContext *pRenderContext)
     mpEditor->addConstraint(DeleteGroupEditorConstraint::create());
     mpEditor->addConstraint(DeletePointEditorConstraint::create());
     mpEditor->addConstraint(SdfPlaneAlgorithmConstraint::create());
-    mpEventMenu = EventMenu::create(mpEditor);
     mpGuiStateConsumer = GuiStateEditorConsumer::create();
     mpEditor->addConsumer(mpGuiStateConsumer);
 }
@@ -32,7 +31,6 @@ void PolygonSDFApplication::onGuiRender(Gui *pGui)
     }
     Gui::Window window(pGui, "PolygonSDF");
     mpGuiEditor->render(window);
-    mpEventMenu->renderGui(window);
 }
 
 void PolygonSDFApplication::onFrameRender(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo)

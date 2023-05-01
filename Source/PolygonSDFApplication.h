@@ -5,7 +5,6 @@
 
 #include "Editor/Consumer/GuiStateEditorConsumer.h"
 #include "Editor/Core/Editor.h"
-#include "Editor/Event/Menu/EventMenu.h"
 #include "Editor/GuiEditor/GuiEditor.h"
 #include "Editor/VisualEditor/VisualEditor.h"
 
@@ -29,7 +28,6 @@ class PolygonSDFApplication : public IRenderer
     Editor::SharedPtr mpEditor = nullptr;
     GuiEditor::SharedPtr mpGuiEditor = nullptr;
     VisualEditor::SharedPtr mpVisualEditor = nullptr;
-    EventMenu::SharedPtr mpEventMenu = nullptr;
     GuiStateEditorConsumer::SharedPtr mpGuiStateConsumer = nullptr;
 };
 

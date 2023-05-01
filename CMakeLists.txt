@@ -77,11 +77,6 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Core/StackEntry.cpp
         Source/Editor/Core/StackEntry.h
 
-        Source/Editor/Event/Menu/EventMenu.cpp
-        Source/Editor/Event/Menu/EventMenu.h
-        Source/Editor/Event/Menu/EventMenuGui.cpp
-        Source/Editor/Event/Menu/EventMenuGui.h
-
         Source/Editor/Event/ConstraintViolationEvent.cpp
         Source/Editor/Event/ConstraintViolationEvent.h
         Source/Editor/Event/NewStackCommandEvent.cpp
@@ -91,6 +86,10 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Event/UnknownCommandEvent.cpp
         Source/Editor/Event/UnknownCommandEvent.h
 
+        Source/Editor/GuiEditor/EventMenu.cpp
+        Source/Editor/GuiEditor/EventMenu.h
+        Source/Editor/GuiEditor/EventMenuGui.cpp
+        Source/Editor/GuiEditor/EventMenuGui.h
         Source/Editor/GuiEditor/GuiEditor.cpp
         Source/Editor/GuiEditor/GuiEditor.h
         Source/Editor/GuiEditor/GuiEditorActionsMenu.cpp
@@ -270,11 +269,6 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/Core/StackEntry.cpp
         Source/Editor/Core/StackEntry.h
 
-        Source/Editor/Event/Menu/EventMenu.cpp
-        Source/Editor/Event/Menu/EventMenu.h
-        Source/Editor/Event/Menu/EventMenuGui.cpp
-        Source/Editor/Event/Menu/EventMenuGui.h
-
         Source/Editor/Event/ConstraintViolationEvent.cpp
         Source/Editor/Event/ConstraintViolationEvent.h
         Source/Editor/Event/NewStackCommandEvent.cpp
@@ -284,6 +278,10 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/Event/UnknownCommandEvent.cpp
         Source/Editor/Event/UnknownCommandEvent.h
 
+        Source/Editor/GuiEditor/EventMenu.cpp
+        Source/Editor/GuiEditor/EventMenu.h
+        Source/Editor/GuiEditor/EventMenuGui.cpp
+        Source/Editor/GuiEditor/EventMenuGui.h
         Source/Editor/GuiEditor/GuiEditor.cpp
         Source/Editor/GuiEditor/GuiEditor.h
         Source/Editor/GuiEditor/GuiEditorActionsMenu.cpp

@@ -2,6 +2,7 @@
 
 #include "../Aggregator/StackPeekingEditorAggregator.h"
 #include "../Aggregator/StackSizeEditorAggregator.h"
+#include "EventMenu.h"
 #include "GuiEditorActionsMenu.h"
 #include "GuiPolygonActionsMenu.h"
 #include "GuiVisualizationSettingsMenu.h"
@@ -28,6 +29,7 @@ class GuiEditor
     GuiVisualizationSettingsMenu::SharedPtr mpVisualizationsMenu;
     GuiEditorActionsMenu::SharedPtr mpEditorActionsMenu;
     GuiPolygonActionsMenu::SharedPtr mpPolygonActionsMenu;
+    EventMenu::SharedPtr mpEventMenu;
 };
 
 } // namespace psdf

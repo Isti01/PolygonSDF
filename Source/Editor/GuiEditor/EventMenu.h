@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../../Consumer/EventMenuEditorConsumer.h"
-#include "../../Core/Editor.h"
+#include "../Consumer/EventMenuEditorConsumer.h"
+#include "../Core/Editor.h"
 #include "EventMenuGui.h"
-#include <Falcor.h>
+#include "Falcor.h"
 
 namespace psdf
 {

@@ -10,6 +10,7 @@ namespace psdf
 struct RendererProperties
 {
     static constexpr const char *kPolygonOutlineRendererEnabledProperty = "PolygonOutlineRendererEnabledProperty";
+    static constexpr const char *kPolygonOutlineColorProperty = "kPolygonOutlineColorProperty";
     static constexpr const char *kFullScreenPolygonRendererEnabledProperty = "FullScreenPolygonRendererEnabledProperty";
     static constexpr const char *kPositiveColorProperty = "kPositiveColorProperty";
     static constexpr const char *kNegativeColorProperty = "kNegativeColorProperty";

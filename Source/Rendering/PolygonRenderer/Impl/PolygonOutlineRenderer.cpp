@@ -5,37 +5,24 @@
 using namespace Falcor;
 using namespace psdf;
 
-PolygonOutlineRenderer::PolygonOutlineRenderer(GraphicsState::SharedPtr pGraphicsState, const float4 &color)
-    : mpGraphicsState(std::move(pGraphicsState)), mColor(color)
+PolygonOutlineRenderer::PolygonOutlineRenderer(GraphicsState::SharedPtr pGraphicsState)
+    : mpGraphicsState(std::move(pGraphicsState))
 {
 }
 
-PolygonOutlineRenderer::SharedPtr PolygonOutlineRenderer::create(GraphicsState::SharedPtr pGraphicsState,
-                                                                 const float4 &color)
+PolygonOutlineRenderer::SharedPtr PolygonOutlineRenderer::create(GraphicsState::SharedPtr pGraphicsState)
 {
-    return SharedPtr(new PolygonOutlineRenderer(std::move(pGraphicsState), color));
+    return SharedPtr(new PolygonOutlineRenderer(std::move(pGraphicsState)));
 }
 
 void PolygonOutlineRenderer::init()
 {
     mpProgramVars = GraphicsVars::create(mpGraphicsState->getProgram().get());
-    uploadColor();
 }
 
 float4x4 PolygonOutlineRenderer::getTransform() const
 {
     return mTransform;
-}
-
-float4 PolygonOutlineRenderer::getColor() const
-{
-    return mColor;
-}
-
-void PolygonOutlineRenderer::setColor(const float4 &color)
-{
-    this->mColor = color;
-    uploadColor();
 }
 
 static VertexLayout::SharedPtr getVertexLayout()
@@ -88,14 +75,6 @@ void PolygonOutlineRenderer::setFbo(const Fbo::SharedPtr &pFbo)
     mpGraphicsState->setFbo(pFbo);
 }
 
-void PolygonOutlineRenderer::uploadColor()
-{
-    if (mpProgramVars)
-    {
-        mpProgramVars["Data"]["iColor"] = mColor;
-    }
-}
-
 void PolygonOutlineRenderer::setPropertyImpl(const PolygonRendererProperty &rendererProperty)
 {
     if (rendererProperty.key == RendererProperties::kPolygonOutlineRendererEnabledProperty)
@@ -103,6 +82,13 @@ void PolygonOutlineRenderer::setPropertyImpl(const PolygonRendererProperty &rend
         if (auto *enabled = std::get_if<bool>(&rendererProperty.value))
         {
             mEnabled = *enabled;
+        }
+    }
+    else if (rendererProperty.key == RendererProperties::kPolygonOutlineColorProperty)
+    {
+        if (auto *color = std::get_if<float3>(&rendererProperty.value))
+        {
+            mpProgramVars["Data"]["iColor"] = float4(*color, 1);
         }
     }
 }

@@ -7,7 +7,8 @@ using namespace psdf;
 using namespace Falcor;
 
 const std::map<std::string, std::string> GuiVisualizationSettingsMenu::kPropertyTitles{
-    {RendererProperties::kPolygonOutlineRendererEnabledProperty, "Enable polygon outline in the editor"},
+    {RendererProperties::kPolygonOutlineRendererEnabledProperty, "Enable polygon wireframe in the editor"},
+    {RendererProperties::kPolygonOutlineColorProperty, "Polygon wireframe color"},
     {RendererProperties::kFullScreenPolygonRendererEnabledProperty, "Enable distance visualization in editor"},
     {RendererProperties::kPositiveColorProperty, "Positive distance color"},
     {RendererProperties::kNegativeColorProperty, "Negative distance color"},

@@ -4,6 +4,7 @@ using namespace psdf;
 
 const std::vector<PolygonRendererProperty> RendererProperties::kInitialProperties = {
     {RendererProperties::kPolygonOutlineRendererEnabledProperty, true},
+    {RendererProperties::kPolygonOutlineColorProperty, float3(1, 1, 1)},
     {RendererProperties::kFullScreenPolygonRendererEnabledProperty, true},
     {RendererProperties::kPositiveColorProperty, float3(0.9, 0.6, 0.3)},
     {RendererProperties::kNegativeColorProperty, float3(0.65, 0.85, 1.0)},

@@ -67,9 +67,14 @@ void GuiEditorActionsMenu::renderGui(Gui::Window &window)
         mpEditor->transform(ClearHistoryEditorTransformation::create());
     }
 
-    if (window.button("Run Plane Slicing Algorithm", true))
+    if (pPolygon && !pPolygon->getAlgorithmOutput() && window.button("Run Plane Slicing Algorithm", true))
     {
         mpEditor->addCommand(CalculateSdfPlaneAlgorithmCommand::create());
+        if (!mpPolygonPeekingAggregator->peekEditor(mpEditor)->getEntry().polygon->getAlgorithmOutput())
+        {
+            msgBox("Failed to run the algorthm on the current polygon\nTip: Check for intersecting segments!",
+                   MsgBoxType::Ok, Falcor::MsgBoxIcon::Info);
+        }
     }
 
     ImGui::Spacing();

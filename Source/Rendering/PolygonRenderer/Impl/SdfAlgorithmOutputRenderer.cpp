@@ -47,18 +47,7 @@ void SdfAlgorithmOutputRenderer::setPolygon(const Polygon::SharedPtr &pPolygon)
 {
     if (pPolygon)
     {
-        Point average{0};
-        const auto &polygons = pPolygon->getPolygons();
-        double pointWeight = std::accumulate(polygons.cbegin(), polygons.cend(), 0.0,
-                                             [](double count, const auto &p) { return count + p.getPoints().size(); });
-        for (const auto &group : polygons)
-        {
-            for (const auto &point : group.getPoints())
-            {
-                average += point / pointWeight;
-            }
-        }
-        mPolygonCenter = average;
+        mPolygonCenter = pPolygon->getCenter();
     }
     PolygonRenderer::setPolygon(pPolygon);
 }

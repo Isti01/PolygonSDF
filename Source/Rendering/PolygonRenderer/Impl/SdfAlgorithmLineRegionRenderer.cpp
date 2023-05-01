@@ -35,12 +35,12 @@ void SdfAlgorithmLineRegionRenderer::uploadPolygonData()
     std::vector<LineRegion> lineRegions = mpPolygon->getAlgorithmOutput()->getLineRegions();
 
     double circleRadius = glm::max(getMaxDistanceFromOriginInPolygon(mpPolygon) * 3, kMinCutDistanceFromOrigin);
-
+    auto center = mpPolygon->getCenter();
     for (size_t i = 0; i < kPointsToCutAround; i++)
     {
         double t = (double(i) / double(kPointsToCutAround)) * glm::pi<double>() * 2;
         Point point{glm::cos(t), glm::sin(t)};
-        LineRegion::cutWithPoints(lineRegions, {PointRegion{point * circleRadius, 1}});
+        LineRegion::cutWithPoints(lineRegions, {PointRegion{point * circleRadius + center, 1}});
     }
 
     std::vector<LineRegionBoundVertex> vertices;

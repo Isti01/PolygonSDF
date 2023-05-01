@@ -27,11 +27,26 @@ Polygon::Polygon(std::vector<SubPolygon> polygons) : mPolygons(std::move(polygon
 {
 }
 
+Point Polygon::getCenter() const
+{
+    Point average{0};
+    const auto &polygons = getPolygons();
+    double pointWeight = std::accumulate(polygons.cbegin(), polygons.cend(), 0.0,
+                                         [](double count, const auto &p) { return count + p.getPoints().size(); });
+    for (const auto &group : polygons)
+    {
+        for (const auto &point : group.getPoints())
+        {
+            average += point / pointWeight;
+        }
+    }
+    return average;
+}
+
 std::vector<SubPolygon> Polygon::getPolygons() const
 {
     return mPolygons;
 }
-
 Polygon::FloatSegments Polygon::getAllFloatSegments() const
 {
     FloatSegments floatSegments;
@@ -53,6 +68,7 @@ Polygon::Segments Polygon::getAllSegments() const
 
     return segments;
 }
+
 SdfPlaneAlgorithmOutput::SharedPtr Polygon::getAlgorithmOutput() const
 {
     return mpSdfPlaneAlgorithmOutput;

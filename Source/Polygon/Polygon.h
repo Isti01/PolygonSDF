@@ -26,6 +26,8 @@ class Polygon : public std::enable_shared_from_this<Polygon>
     static SharedPtr fromJson(const std::string &path);
     static SharedPtr create(std::vector<SubPolygon> polygons);
 
+    Point getCenter() const;
+
     std::vector<SubPolygon> getPolygons() const;
     Segments getAllSegments() const;
 

@@ -59,6 +59,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Consumer/EventMenuEditorConsumer.h
         Source/Editor/Consumer/GuiStateEditorConsumer.cpp
         Source/Editor/Consumer/GuiStateEditorConsumer.h
+        Source/Editor/Consumer/PropertyUpdatingEditorConsumer.cpp
+        Source/Editor/Consumer/PropertyUpdatingEditorConsumer.h
 
         Source/Editor/Core/Editor.cpp
         Source/Editor/Core/Editor.h
@@ -91,9 +93,17 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Editor/GuiEditor/GuiEditor.cpp
         Source/Editor/GuiEditor/GuiEditor.h
+        Source/Editor/GuiEditor/GuiEditorActionsMenu.cpp
+        Source/Editor/GuiEditor/GuiEditorActionsMenu.h
+        Source/Editor/GuiEditor/GuiPolygonActionsMenu.cpp
+        Source/Editor/GuiEditor/GuiPolygonActionsMenu.h
+        Source/Editor/GuiEditor/GuiVisualizationSettingsMenu.cpp
+        Source/Editor/GuiEditor/GuiVisualizationSettingsMenu.h
 
         Source/Editor/PublishedEvent/HideGuiPublishedEvent.cpp
         Source/Editor/PublishedEvent/HideGuiPublishedEvent.h
+        Source/Editor/PublishedEvent/RendererPropertyPublishedEvent.cpp
+        Source/Editor/PublishedEvent/RendererPropertyPublishedEvent.h
         Source/Editor/PublishedEvent/ShowGuiPublishedEvent.cpp
         Source/Editor/PublishedEvent/ShowGuiPublishedEvent.h
 
@@ -238,6 +248,8 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/Consumer/EventMenuEditorConsumer.h
         Source/Editor/Consumer/GuiStateEditorConsumer.cpp
         Source/Editor/Consumer/GuiStateEditorConsumer.h
+        Source/Editor/Consumer/PropertyUpdatingEditorConsumer.cpp
+        Source/Editor/Consumer/PropertyUpdatingEditorConsumer.h
 
         Source/Editor/Core/Editor.cpp
         Source/Editor/Core/Editor.h
@@ -270,9 +282,17 @@ target_sources(PolygonSDFTest PRIVATE
 
         Source/Editor/GuiEditor/GuiEditor.cpp
         Source/Editor/GuiEditor/GuiEditor.h
+        Source/Editor/GuiEditor/GuiEditorActionsMenu.cpp
+        Source/Editor/GuiEditor/GuiEditorActionsMenu.h
+        Source/Editor/GuiEditor/GuiPolygonActionsMenu.cpp
+        Source/Editor/GuiEditor/GuiPolygonActionsMenu.h
+        Source/Editor/GuiEditor/GuiVisualizationSettingsMenu.cpp
+        Source/Editor/GuiEditor/GuiVisualizationSettingsMenu.h
 
         Source/Editor/PublishedEvent/HideGuiPublishedEvent.cpp
         Source/Editor/PublishedEvent/HideGuiPublishedEvent.h
+        Source/Editor/PublishedEvent/RendererPropertyPublishedEvent.cpp
+        Source/Editor/PublishedEvent/RendererPropertyPublishedEvent.h
         Source/Editor/PublishedEvent/ShowGuiPublishedEvent.cpp
         Source/Editor/PublishedEvent/ShowGuiPublishedEvent.h
 

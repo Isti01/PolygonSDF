@@ -42,3 +42,8 @@ void AspectRatioIndependentPolygonRenderer::updateAspectRatio()
 {
     transform(mTransform);
 }
+
+void AspectRatioIndependentPolygonRenderer::setProperty(const PolygonRendererProperty &rendererProperty)
+{
+    mpPolygonRenderer->setProperty(rendererProperty);
+}

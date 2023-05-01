@@ -72,10 +72,9 @@ void SdfAlgorithmOutputRenderer::transformImpl()
     auto projection = rmcv::identity<float4x4>();
     if (mFboWidth != 0)
     {
-        float width = float(mFboWidth);
-        float orthoCamScaler = kOrthoCamSize / width;
-        projection = rmcv::ortho(-orthoCamScaler * width, orthoCamScaler * width, -orthoCamScaler * width,
-                                 orthoCamScaler * width, -250.0f, 250.0f);
+        float camWidth = kOrthoCamWidth;
+        float camHeight = kOrthoCamWidth / float(mFboWidth) * float(mFboHeight);
+        projection = rmcv::ortho(-camWidth, camWidth, -camHeight, camHeight, -250.0f, 250.0f);
     }
     auto view = rmcv::lookAt(float3(0, 0, -1), float3(0, 0, 0), float3(0, 1, 0));
     mpProgramVars["Data"]["iTransform"] = projection * view * transform;
@@ -100,4 +99,15 @@ void SdfAlgorithmOutputRenderer::setFbo(const Fbo::SharedPtr &pFbo)
     mFboWidth = pFbo->getWidth();
     mFboHeight = pFbo->getHeight();
     transformImpl();
+}
+
+void SdfAlgorithmOutputRenderer::setProperty(const PolygonRendererProperty &rendererProperty)
+{
+    if (rendererProperty.key == kDifferentiateRegionByColoringProperty)
+    {
+        if (auto *differentiate = std::get_if<bool>(&rendererProperty.value))
+        {
+            mDifferentiateRegionByColoring = *differentiate;
+        }
+    }
 }

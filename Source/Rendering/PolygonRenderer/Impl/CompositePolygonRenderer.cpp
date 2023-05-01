@@ -55,3 +55,11 @@ void CompositePolygonRenderer::setPolygon(const Polygon::SharedPtr &pPolygon)
         pRenderer->setPolygon(pPolygon);
     }
 }
+
+void CompositePolygonRenderer::setProperty(const PolygonRendererProperty &rendererProperty)
+{
+    for (const PolygonRenderer::SharedPtr &pRenderer : mRenderers)
+    {
+        pRenderer->setProperty(rendererProperty);
+    }
+}

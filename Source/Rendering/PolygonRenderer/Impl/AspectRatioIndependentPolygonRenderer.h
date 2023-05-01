@@ -10,7 +10,7 @@ class AspectRatioIndependentPolygonRenderer : public ProxyPolygonRenderer
     using SharedPtr = std::shared_ptr<AspectRatioIndependentPolygonRenderer>;
 
     static SharedPtr create(PolygonRenderer::SharedPtr pPolygonRenderer);
-
+    void setProperty(const PolygonRendererProperty &rendererProperty) override;
     void setFbo(const Fbo::SharedPtr &pFbo) override;
 
   protected:

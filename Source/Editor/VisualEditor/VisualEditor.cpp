@@ -12,15 +12,25 @@ VisualEditor::SharedPtr VisualEditor::create(Editor::SharedPtr pEditor)
 }
 
 VisualEditor::VisualEditor(Editor::SharedPtr pEditor)
-    : mpEditor(std::move(pEditor)), mpPolygonRenderer(PolygonRendererFactory::getPolygonRenderer()),
-      mpPolygonPresenter(PolygonPresenter::create(mpEditor, mpPolygonRenderer)),
-      mpVertexMover(MoveInputHandler::create(PointUpdateMoveStrategy::create(), mpEditor, mpPolygonRenderer)),
-      mpGroupMover(MoveInputHandler::create(GroupMoveStrategy::create(), mpEditor, mpPolygonRenderer)),
-      mpVertexInserter(InsertRemoveVertexInputHandler::create(mpEditor, mpPolygonRenderer)),
+    : mpEditor(std::move(pEditor)), mpEditorPolygonRenderer(PolygonRendererFactory::getPolygonRenderer()),
+      mpAlgorithmPolygonRenderer(PolygonRendererFactory::getAlgorithmOutputRenderer()),
+      mpEditorRendererUpdatingConsumer(PropertyUpdatingEditorConsumer::create(mpEditorPolygonRenderer)),
+      mpAlgorithmRendererUpdatingConsumer(PropertyUpdatingEditorConsumer::create(mpAlgorithmPolygonRenderer)),
+      mpPolygonPresenter(PolygonPresenter::create(mpEditor, mpEditorPolygonRenderer)),
+      mpVertexMover(MoveInputHandler::create(PointUpdateMoveStrategy::create(), mpEditor, mpEditorPolygonRenderer)),
+      mpGroupMover(MoveInputHandler::create(GroupMoveStrategy::create(), mpEditor, mpEditorPolygonRenderer)),
+      mpVertexInserter(InsertRemoveVertexInputHandler::create(mpEditor, mpEditorPolygonRenderer)),
       mpActiveInputHandler(mpPolygonPresenter), mpStackPeekingAggregator(StackPeekingEditorAggregator::create()),
-      mpAlgorithmOutputPresenter(
-          SdfAlgorithmOutputPresenter::create(mpEditor, PolygonRendererFactory::getAlgorithmOutputRenderer()))
+      mpAlgorithmOutputPresenter(SdfAlgorithmOutputPresenter::create(mpEditor, mpAlgorithmPolygonRenderer))
 {
+    mpEditor->addConsumer(mpEditorRendererUpdatingConsumer);
+    mpEditor->addConsumer(mpAlgorithmRendererUpdatingConsumer);
+}
+
+VisualEditor::~VisualEditor()
+{
+    mpEditor->removeConsumer(mpEditorRendererUpdatingConsumer);
+    mpEditor->removeConsumer(mpAlgorithmRendererUpdatingConsumer);
 }
 
 void VisualEditor::render(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo)

@@ -7,6 +7,12 @@ namespace psdf
 {
 using namespace Falcor;
 
+struct PolygonRendererProperty
+{
+    std::string key;
+    std::variant<std::string, size_t, int32_t, float, bool> value;
+};
+
 class PolygonRenderer
 {
   public:
@@ -16,7 +22,7 @@ class PolygonRenderer
     void transform(const float4x4 &transform);
     virtual void setPolygon(const Polygon::SharedPtr &pPolygon);
     virtual void setFbo(const Fbo::SharedPtr &pFbo) = 0;
-
+    virtual void setProperty(const PolygonRendererProperty &rendererProperty) = 0;
     virtual float4x4 getTransform() const = 0;
 
     virtual ~PolygonRenderer() = default;

@@ -2,6 +2,9 @@
 
 #include "../Aggregator/StackPeekingEditorAggregator.h"
 #include "../Aggregator/StackSizeEditorAggregator.h"
+#include "GuiEditorActionsMenu.h"
+#include "GuiPolygonActionsMenu.h"
+#include "GuiVisualizationSettingsMenu.h"
 #include <Falcor.h>
 #include <memory>
 
@@ -22,18 +25,9 @@ class GuiEditor
     GuiEditor(Editor::SharedPtr pEditor);
 
   private:
-    void showControlButtons(Gui::Group &window);
-    void showVertexList(size_t groupIndex, Gui::Group &window);
-    void showGroupControls(size_t groupIndex, Gui::Group &window);
-
-  private:
-    float2 mNewPoint{0};
-    float2 mGroupOffset{0};
-    float2 mPolygonOffset{0};
-    Polygon::SharedPtr mpCurrentPolygon;
-    Editor::SharedPtr mpEditor;
-    StackPeekingEditorAggregator::SharedPtr mpPolygonPeekingAggregator;
-    StackSizeEditorAggregator::SharedPtr mpStackSizeAggregator;
+    GuiVisualizationSettingsMenu::SharedPtr mpVisualizationsMenu;
+    GuiEditorActionsMenu::SharedPtr mpEditorActionsMenu;
+    GuiPolygonActionsMenu::SharedPtr mpPolygonActionsMenu;
 };
 
 } // namespace psdf

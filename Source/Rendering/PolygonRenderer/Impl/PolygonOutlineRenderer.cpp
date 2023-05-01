@@ -58,6 +58,10 @@ void PolygonOutlineRenderer::uploadPolygonData()
 
 void PolygonOutlineRenderer::renderImpl(RenderContext *context)
 {
+    if (!mEnabled)
+    {
+        return;
+    }
     FALCOR_ASSERT(context);
 
     FALCOR_ASSERT(mpGraphicsState);
@@ -88,5 +92,16 @@ void PolygonOutlineRenderer::uploadColor()
     if (mpProgramVars)
     {
         mpProgramVars["Data"]["iColor"] = mColor;
+    }
+}
+
+void PolygonOutlineRenderer::setProperty(const PolygonRendererProperty &rendererProperty)
+{
+    if (rendererProperty.key == kPolygonOutlineRendererEnabledProperty)
+    {
+        if (auto *enabled = std::get_if<bool>(&rendererProperty.value))
+        {
+            mEnabled = *enabled;
+        }
     }
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Rendering/PolygonRenderer/PolygonRenderer.h"
+#include "../Consumer/PropertyUpdatingEditorConsumer.h"
 #include "../Core/Editor.h"
 #include "./Presenter/PolygonPresenter.h"
 #include "./Presenter/SdfAlgorithmOutputPresenter.h"
@@ -24,6 +25,8 @@ class VisualEditor
     bool onKeyEvent(const KeyboardEvent &keyEvent);
     bool onMouseEvent(const MouseEvent &mouseEvent);
 
+    ~VisualEditor();
+
   protected:
     VisualEditor(Editor::SharedPtr pEditor);
 
@@ -34,7 +37,10 @@ class VisualEditor
 
   private:
     Editor::SharedPtr mpEditor = nullptr;
-    PolygonRenderer::SharedPtr mpPolygonRenderer = nullptr;
+    PolygonRenderer::SharedPtr mpEditorPolygonRenderer = nullptr;
+    PolygonRenderer::SharedPtr mpAlgorithmPolygonRenderer = nullptr;
+    PropertyUpdatingEditorConsumer::SharedPtr mpEditorRendererUpdatingConsumer = nullptr;
+    PropertyUpdatingEditorConsumer::SharedPtr mpAlgorithmRendererUpdatingConsumer = nullptr;
     PolygonPresenter::SharedPtr mpPolygonPresenter = nullptr;
     SdfAlgorithmOutputPresenter::SharedPtr mpAlgorithmOutputPresenter = nullptr;
     MoveInputHandler::SharedPtr mpVertexMover = nullptr;

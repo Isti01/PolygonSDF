@@ -18,6 +18,7 @@ class CompositePolygonRenderer : public PolygonRenderer
     void setPolygon(const Polygon::SharedPtr &pPolygon) override;
     void setFbo(const Fbo::SharedPtr &pFbo) override;
     void transformImpl() override;
+    void setProperty(const PolygonRendererProperty &rendererProperty) override;
 
   protected:
     CompositePolygonRenderer(std::vector<PolygonRenderer::SharedPtr> renderers);

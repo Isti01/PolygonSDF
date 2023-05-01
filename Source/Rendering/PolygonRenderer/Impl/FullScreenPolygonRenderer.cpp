@@ -42,6 +42,11 @@ void FullScreenPolygonRenderer::uploadPolygonData()
 
 void FullScreenPolygonRenderer::renderImpl(RenderContext *pRenderContext)
 {
+    if (!mEnabled)
+    {
+        return;
+    }
+
     mpFullscreenTriangle->render(pRenderContext);
 }
 
@@ -49,4 +54,15 @@ void FullScreenPolygonRenderer::transformImpl()
 {
     // we need the inverse, because we are transforming the origin instead of the objects
     mpGraphicsVars["Data"]["iTransform"] = rmcv::inverse(mTransform);
+}
+
+void FullScreenPolygonRenderer::setProperty(const PolygonRendererProperty &rendererProperty)
+{
+    if (rendererProperty.key == kFullScreenPolygonRendererEnabledProperty)
+    {
+        if (auto *enabled = std::get_if<bool>(&rendererProperty.value))
+        {
+            mEnabled = *enabled;
+        }
+    }
 }

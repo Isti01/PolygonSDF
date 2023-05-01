@@ -12,6 +12,7 @@ class EditorEvent
     using SharedPtr = std::shared_ptr<EditorEvent>;
 
     virtual std::string getName() const = 0;
+
     virtual ~EditorEvent() = default;
 };
 

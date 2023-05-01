@@ -2,6 +2,7 @@
 
 #include "../Aggregator/StackPeekingEditorAggregator.h"
 #include "../Aggregator/StackSizeEditorAggregator.h"
+#include "../Consumer/VisualEditorStateChangeEditorConsumer.h"
 #include "EventMenu.h"
 #include "GuiEditorActionsMenu.h"
 #include "GuiPolygonActionsMenu.h"
@@ -22,10 +23,14 @@ class GuiEditor
 
     void render(Gui::Window &window);
 
+    ~GuiEditor();
+
   protected:
     GuiEditor(Editor::SharedPtr pEditor);
 
   private:
+    Editor::SharedPtr mpEditor;
+    VisualEditorStateChangeEditorConsumer::SharedPtr mpStateChangeConsumer;
     GuiVisualizationSettingsMenu::SharedPtr mpVisualizationsMenu;
     GuiEditorActionsMenu::SharedPtr mpEditorActionsMenu;
     GuiPolygonActionsMenu::SharedPtr mpPolygonActionsMenu;

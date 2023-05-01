@@ -2,6 +2,7 @@
 #include "../../Rendering/PolygonRenderer/PolygonRendererFactory.h"
 #include "../PublishedEvent/HideGuiPublishedEvent.h"
 #include "../PublishedEvent/ShowGuiPublishedEvent.h"
+#include "../PublishedEvent/VisualEditorModeChangedPublishedEvent.h"
 #include "Input/MoveInputHandler.h"
 
 using namespace psdf;
@@ -23,6 +24,7 @@ VisualEditor::VisualEditor(Editor::SharedPtr pEditor)
       mpActiveInputHandler(mpPolygonPresenter), mpStackPeekingAggregator(StackPeekingEditorAggregator::create()),
       mpAlgorithmOutputPresenter(SdfAlgorithmOutputPresenter::create(mpEditor, mpAlgorithmPolygonRenderer))
 {
+    mpEditor->publishEvent(VisualEditorModeChangedPublishedEvent::create("V - Pan and Zoom"), this);
     mpEditor->addConsumer(mpEditorRendererUpdatingConsumer);
     mpEditor->addConsumer(mpAlgorithmRendererUpdatingConsumer);
 }
@@ -60,6 +62,7 @@ bool VisualEditor::onKeyEvent(const KeyboardEvent &keyEvent)
     {
         showGui();
         setActiveInputHandler(mpVertexMover);
+        mpEditor->publishEvent(VisualEditorModeChangedPublishedEvent::create("M - Move Vertices"), this);
         return true;
     }
 
@@ -67,6 +70,7 @@ bool VisualEditor::onKeyEvent(const KeyboardEvent &keyEvent)
     {
         showGui();
         setActiveInputHandler(mpGroupMover);
+        mpEditor->publishEvent(VisualEditorModeChangedPublishedEvent::create("G - Move Groups"), this);
         return true;
     }
 
@@ -74,6 +78,7 @@ bool VisualEditor::onKeyEvent(const KeyboardEvent &keyEvent)
     {
         showGui();
         setActiveInputHandler(mpPolygonPresenter);
+        mpEditor->publishEvent(VisualEditorModeChangedPublishedEvent::create("V - Pan and Zoom"), this);
         return true;
     }
 
@@ -81,6 +86,7 @@ bool VisualEditor::onKeyEvent(const KeyboardEvent &keyEvent)
     {
         showGui();
         setActiveInputHandler(mpVertexInserter);
+        mpEditor->publishEvent(VisualEditorModeChangedPublishedEvent::create("I - Insert vertices"), this);
         return true;
     }
 
@@ -91,6 +97,7 @@ bool VisualEditor::onKeyEvent(const KeyboardEvent &keyEvent)
         {
             hideGui();
             setActiveInputHandler(mpAlgorithmOutputPresenter);
+            mpEditor->publishEvent(VisualEditorModeChangedPublishedEvent::create("D - View algorithm result"), this);
         }
         else
         {

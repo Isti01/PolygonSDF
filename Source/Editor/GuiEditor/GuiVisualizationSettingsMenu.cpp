@@ -33,7 +33,7 @@ GuiVisualizationSettingsMenu::GuiVisualizationSettingsMenu(Editor::SharedPtr pEd
 
 void GuiVisualizationSettingsMenu::renderGui(Gui::Window &window)
 {
-    Gui::Group group = window.group("Visualization Settings");
+    Gui::Group group = window.group("Visualization Settings", true);
     if (!group)
     {
         return;

@@ -14,6 +14,8 @@ class StackCommand : public EditorCommand, public std::enable_shared_from_this<S
     virtual Polygon::SharedPtr perform(const Polygon::SharedPtr &polygon) const = 0;
     virtual bool canMerge(const StackCommand::SharedPtr &pCommand) const;
     virtual StackCommand::SharedPtr merge(const StackCommand::SharedPtr &pOther);
+
+    virtual ~StackCommand() = default;
 };
 
 } // namespace psdf

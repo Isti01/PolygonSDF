@@ -22,7 +22,7 @@ Polygon::SharedPtr MergePolygonWithOffsetStackCommand::perform(const Polygon::Sh
     {
         for (const auto &group : mpPolygon->getPolygons())
         {
-            const auto& points = group.getPoints();
+            const auto &points = group.getPoints();
             std::transform(points.begin(), points.end(), std::back_inserter(currentGroup),
                            [&offset](const auto &point) { return point + offset; });
             mergedPolygons.emplace_back(currentGroup);

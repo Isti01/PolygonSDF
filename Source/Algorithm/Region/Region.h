@@ -22,6 +22,8 @@ class Region
 
     virtual double getDistanceToPointInsideBounds(Point point) const = 0;
 
+    virtual ~Region() = default;
+
   private:
     std::vector<double> calculateVnd(glm::dvec2 edgeVector, double d);
     void calculateNewBounds(const std::vector<double> &vnd, std::vector<bool> &b);

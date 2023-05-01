@@ -20,7 +20,8 @@ void PolygonRenderer::render(RenderContext *context)
 {
     FALCOR_ASSERT(context);
     ensureInitialized();
-    if (mIsMarkedDirty){
+    if (mIsMarkedDirty)
+    {
         transform(mTransform);
         uploadPolygonData();
         mIsMarkedDirty = false;

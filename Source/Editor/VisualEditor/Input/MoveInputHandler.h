@@ -29,7 +29,7 @@ class MoveInputHandler : public MouseInputHandler
 
   protected:
     MoveInputHandler(MoveStrategy::SharedPtr strategy, Editor::SharedPtr pEditor,
-                           PolygonRenderer::SharedPtr pPolygonRenderer);
+                     PolygonRenderer::SharedPtr pPolygonRenderer);
 
   private:
     void updateSelectedPolygon(StackEntry topStackEntry);

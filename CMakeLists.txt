@@ -61,6 +61,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Consumer/GuiStateEditorConsumer.h
         Source/Editor/Consumer/PropertyUpdatingEditorConsumer.cpp
         Source/Editor/Consumer/PropertyUpdatingEditorConsumer.h
+        Source/Editor/Consumer/VisualEditorStateChangeEditorConsumer.cpp
+        Source/Editor/Consumer/VisualEditorStateChangeEditorConsumer.h
 
         Source/Editor/Core/Editor.cpp
         Source/Editor/Core/Editor.h
@@ -105,6 +107,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/PublishedEvent/RendererPropertyPublishedEvent.h
         Source/Editor/PublishedEvent/ShowGuiPublishedEvent.cpp
         Source/Editor/PublishedEvent/ShowGuiPublishedEvent.h
+        Source/Editor/PublishedEvent/VisualEditorModeChangedPublishedEvent.cpp
+        Source/Editor/PublishedEvent/VisualEditorModeChangedPublishedEvent.h
 
         Source/Editor/Transformation/ClearHistoryEditorTransformation.cpp
         Source/Editor/Transformation/ClearHistoryEditorTransformation.h
@@ -253,6 +257,8 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/Consumer/GuiStateEditorConsumer.h
         Source/Editor/Consumer/PropertyUpdatingEditorConsumer.cpp
         Source/Editor/Consumer/PropertyUpdatingEditorConsumer.h
+        Source/Editor/Consumer/VisualEditorStateChangeEditorConsumer.cpp
+        Source/Editor/Consumer/VisualEditorStateChangeEditorConsumer.h
 
         Source/Editor/Core/Editor.cpp
         Source/Editor/Core/Editor.h
@@ -297,6 +303,8 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/PublishedEvent/RendererPropertyPublishedEvent.h
         Source/Editor/PublishedEvent/ShowGuiPublishedEvent.cpp
         Source/Editor/PublishedEvent/ShowGuiPublishedEvent.h
+        Source/Editor/PublishedEvent/VisualEditorModeChangedPublishedEvent.cpp
+        Source/Editor/PublishedEvent/VisualEditorModeChangedPublishedEvent.h
 
         Source/Editor/Transformation/ClearHistoryEditorTransformation.cpp
         Source/Editor/Transformation/ClearHistoryEditorTransformation.h

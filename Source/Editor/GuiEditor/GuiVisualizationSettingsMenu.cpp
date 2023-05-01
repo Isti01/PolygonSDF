@@ -1,9 +1,25 @@
 #include "GuiVisualizationSettingsMenu.h"
 #include "../../Rendering/PolygonRenderer/Impl/FullScreenPolygonRenderer.h"
+#include "../../Rendering/PolygonRenderer/RendererProperties.h"
 #include "../PublishedEvent/RendererPropertyPublishedEvent.h"
 
 using namespace psdf;
 using namespace Falcor;
+
+const std::map<std::string, std::string> GuiVisualizationSettingsMenu::kPropertyTitles{
+    {RendererProperties::kPolygonOutlineRendererEnabledProperty, "Enable polygon outline in the editor"},
+    {RendererProperties::kFullScreenPolygonRendererEnabledProperty, "Enable distance visualization in editor"},
+    {RendererProperties::kPositiveColorProperty, "Positive distance color"},
+    {RendererProperties::kNegativeColorProperty, "Negative distance color"},
+    {RendererProperties::kContourFrequencyProperty, "Distance contour frequency"},
+    {RendererProperties::kContourIntensityProperty, "Distance contour intensity"},
+    {RendererProperties::kDisplayShadowsProperty, "Display shadows"},
+    {RendererProperties::kShadowsIntensityProperty, "Shadow locality"},
+    {RendererProperties::kDisplayCloserToVertexProperty, "Darken segment regions"},
+    {RendererProperties::kShouldDisplayContoursProperty, "Display distance contours"},
+    {RendererProperties::kShouldColorBetweenContoursProperty, "Display coloring between contours"},
+    {RendererProperties::kAlgorithmVisualizationCuttingPointCount, "Number of points for cutting around visualization"},
+};
 
 GuiVisualizationSettingsMenu::SharedPtr GuiVisualizationSettingsMenu::create(Editor::SharedPtr pEditor)
 {
@@ -12,6 +28,7 @@ GuiVisualizationSettingsMenu::SharedPtr GuiVisualizationSettingsMenu::create(Edi
 
 GuiVisualizationSettingsMenu::GuiVisualizationSettingsMenu(Editor::SharedPtr pEditor) : mpEditor(std::move(pEditor))
 {
+    resetProperties();
 }
 
 void GuiVisualizationSettingsMenu::renderGui(Gui::Window &window)
@@ -21,11 +38,56 @@ void GuiVisualizationSettingsMenu::renderGui(Gui::Window &window)
     {
         return;
     }
-
-    if (group.checkbox("Enable Distance Visualization In The Editor", mEnableDistanceVisualization))
+    if (group.button("Reset to defaults"))
     {
-        PolygonRendererProperty property{FullScreenPolygonRenderer::kFullScreenPolygonRendererEnabledProperty,
-                                         mEnableDistanceVisualization};
+        resetProperties();
+        for (const auto &property : mProperties)
+        {
+            mpEditor->publishEvent(RendererPropertyPublishedEvent::create(property), this);
+        }
+    }
+
+    for (auto &property : mProperties)
+    {
+        showPropertySetting(group, property);
+    }
+}
+
+void GuiVisualizationSettingsMenu::resetProperties()
+{
+    mProperties = RendererProperties::kInitialProperties;
+}
+
+void GuiVisualizationSettingsMenu::showPropertySetting(Gui::Group &group, PolygonRendererProperty &property)
+{
+    const std::string &key = property.key;
+    std::string title = kPropertyTitles.find(key) != kPropertyTitles.end() ? kPropertyTitles.at(property.key) : key;
+    bool updated = false;
+    if (float3 *pFloat3Value = std::get_if<float3>(&property.value))
+    {
+        if (property.key.find("Color") != std::string::npos)
+        {
+            updated = group.rgbColor(title.c_str(), *pFloat3Value);
+        }
+        else
+        {
+            updated = group.var(title.c_str(), *pFloat3Value);
+        }
+    }
+    else if (float *pFloatValue = std::get_if<float>(&property.value))
+    {
+        updated = group.var(title.c_str(), *pFloatValue);
+    }
+    else if (size_t *pSizeValue = std::get_if<size_t>(&property.value))
+    {
+        updated = group.var(title.c_str(), *pSizeValue);
+    }
+    else if (bool *pBoolValue = std::get_if<bool>(&property.value))
+    {
+        updated = group.checkbox(title.c_str(), *pBoolValue);
+    }
+    if (updated)
+    {
         mpEditor->publishEvent(RendererPropertyPublishedEvent::create(property), this);
     }
 }

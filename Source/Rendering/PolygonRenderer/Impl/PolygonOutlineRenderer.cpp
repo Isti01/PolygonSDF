@@ -1,5 +1,6 @@
 #include "PolygonOutlineRenderer.h"
 #include "../../../Util/RangeGenerator.h"
+#include "../RendererProperties.h"
 
 using namespace Falcor;
 using namespace psdf;
@@ -95,9 +96,9 @@ void PolygonOutlineRenderer::uploadColor()
     }
 }
 
-void PolygonOutlineRenderer::setProperty(const PolygonRendererProperty &rendererProperty)
+void PolygonOutlineRenderer::setPropertyImpl(const PolygonRendererProperty &rendererProperty)
 {
-    if (rendererProperty.key == kPolygonOutlineRendererEnabledProperty)
+    if (rendererProperty.key == RendererProperties::kPolygonOutlineRendererEnabledProperty)
     {
         if (auto *enabled = std::get_if<bool>(&rendererProperty.value))
         {

@@ -32,6 +32,12 @@ void PolygonRenderer::transform(const float4x4 &transform)
     transformImpl();
 }
 
+void PolygonRenderer::setProperty(const PolygonRendererProperty &rendererProperty)
+{
+    ensureInitialized();
+    setPropertyImpl(rendererProperty);
+}
+
 void PolygonRenderer::ensureInitialized()
 {
     if (mInitialized)

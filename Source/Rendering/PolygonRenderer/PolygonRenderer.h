@@ -2,16 +2,11 @@
 
 #include "../../Polygon/Polygon.h"
 #include "Falcor.h"
+#include "PolygonRendererProperty.h"
 
 namespace psdf
 {
 using namespace Falcor;
-
-struct PolygonRendererProperty
-{
-    std::string key;
-    std::variant<std::string, size_t, int32_t, float, bool> value;
-};
 
 class PolygonRenderer
 {
@@ -20,9 +15,9 @@ class PolygonRenderer
 
     void render(RenderContext *pRenderContext);
     void transform(const float4x4 &transform);
+    void setProperty(const PolygonRendererProperty &rendererProperty);
     virtual void setPolygon(const Polygon::SharedPtr &pPolygon);
     virtual void setFbo(const Fbo::SharedPtr &pFbo) = 0;
-    virtual void setProperty(const PolygonRendererProperty &rendererProperty) = 0;
     virtual float4x4 getTransform() const = 0;
 
     virtual ~PolygonRenderer() = default;
@@ -32,6 +27,7 @@ class PolygonRenderer
     virtual void uploadPolygonData() = 0;
     virtual void renderImpl(RenderContext *pRenderContext) = 0;
     virtual void transformImpl() = 0;
+    virtual void setPropertyImpl(const PolygonRendererProperty &rendererProperty) = 0;
 
   private:
     void ensureInitialized();

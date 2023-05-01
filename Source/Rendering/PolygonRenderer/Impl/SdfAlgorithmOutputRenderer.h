@@ -14,13 +14,11 @@ class SdfAlgorithmOutputRenderer : public PolygonRenderer
 {
   public:
     using SharedPtr = std::shared_ptr<SdfAlgorithmOutputRenderer>;
-    static constexpr const char *kDifferentiateRegionByColoringProperty = "DifferentiateRegionByColoringProperty";
 
     float4x4 getTransform() const override;
 
     void setFbo(const Fbo::SharedPtr &pFbo) override;
     void setPolygon(const Polygon::SharedPtr &pPolygon) override;
-    void setProperty(const PolygonRendererProperty &rendererProperty) override;
 
   protected:
     SdfAlgorithmOutputRenderer(GraphicsState::SharedPtr pGraphicsState);
@@ -29,16 +27,15 @@ class SdfAlgorithmOutputRenderer : public PolygonRenderer
     void transformImpl() override;
     void init() override;
     void renderImpl(RenderContext *pRenderContext) override;
+    void setPropertyImpl(const PolygonRendererProperty &rendererProperty) override;
 
-    static constexpr size_t kPointsToCutAround = 100;
     static constexpr double kMinCutDistanceFromOrigin = 10;
     static constexpr float kOrthoCamWidth = 50;
 
+    size_t mPointsToCutAround = 100;
     Point mPolygonCenter;
     uint32_t mFboWidth = 0;
     uint32_t mFboHeight = 0;
-
-    bool mDifferentiateRegionByColoring = true;
 
     GraphicsState::SharedPtr mpGraphicsState = nullptr;
     GraphicsVars::SharedPtr mpProgramVars = nullptr;

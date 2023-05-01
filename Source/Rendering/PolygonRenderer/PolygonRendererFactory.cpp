@@ -4,6 +4,7 @@
 #include "Impl/FullScreenPolygonRenderer.h"
 #include "Impl/PolygonOutlineRenderer.h"
 #include "Impl/SdfAlgorithmLineRegionRenderer.h"
+#include "RendererProperties.h"
 
 using namespace Falcor;
 using namespace psdf;
@@ -45,7 +46,12 @@ PolygonRenderer::SharedPtr PolygonRendererFactory::getPolygonRenderer()
         FullScreenPolygonRenderer::create(getFullscreenRendererGS()),
         PolygonOutlineRenderer::create(getOutlineRendererGS(), float4(1, 0, 0, 1)),
     });
-    return AspectRatioIndependentPolygonRenderer::create(combinedRenderers);
+    auto renderer = AspectRatioIndependentPolygonRenderer::create(combinedRenderers);
+    for (const auto &property : RendererProperties::kInitialProperties)
+    {
+        renderer->setProperty(property);
+    }
+    return renderer;
 }
 
 static GraphicsState::SharedPtr getGraphicsStateForAlgorithmOutputRenderer(const char *shaderPath)
@@ -65,10 +71,15 @@ static GraphicsState::SharedPtr getGraphicsStateForAlgorithmOutputRenderer(const
 
 PolygonRenderer::SharedPtr PolygonRendererFactory::getAlgorithmOutputRenderer()
 {
-    return CompositePolygonRenderer::create({
+    auto renderer = CompositePolygonRenderer::create({
         SdfAlgorithmLineRegionRenderer::create(
             getGraphicsStateForAlgorithmOutputRenderer("PolygonSDF/Shaders/LineRegionAlgorithmOutput.3d.slang")),
         SdfAlgorithmPointRegionRenderer::create(
             getGraphicsStateForAlgorithmOutputRenderer("PolygonSDF/Shaders/PointRegionAlgorithmOutput.3d.slang")),
     });
+    for (const auto &property : RendererProperties::kInitialProperties)
+    {
+        renderer->setProperty(property);
+    }
+    return renderer;
 }

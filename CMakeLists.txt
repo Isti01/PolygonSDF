@@ -152,16 +152,20 @@ target_sources(PolygonSDF PRIVATE
         Source/Rendering/PolygonRenderer/Impl/PolygonOutlineRenderer.h
         Source/Rendering/PolygonRenderer/Impl/ProxyPolygonRenderer.cpp
         Source/Rendering/PolygonRenderer/Impl/ProxyPolygonRenderer.h
-        Source/Rendering/PolygonRenderer/PolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/PolygonRenderer.h
-        Source/Rendering/PolygonRenderer/PolygonRendererFactory.cpp
-        Source/Rendering/PolygonRenderer/PolygonRendererFactory.h
         Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmLineRegionRenderer.cpp
         Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmLineRegionRenderer.h
         Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.cpp
         Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.h
         Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmPointRegionRenderer.cpp
         Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmPointRegionRenderer.h
+
+        Source/Rendering/PolygonRenderer/PolygonRenderer.cpp
+        Source/Rendering/PolygonRenderer/PolygonRenderer.h
+        Source/Rendering/PolygonRenderer/PolygonRendererFactory.cpp
+        Source/Rendering/PolygonRenderer/PolygonRendererFactory.h
+        Source/Rendering/PolygonRenderer/PolygonRendererProperty.h
+        Source/Rendering/PolygonRenderer/RendererProperties.cpp
+        Source/Rendering/PolygonRenderer/RendererProperties.h
 
         Source/Util/CoordinateUtil.cpp
         Source/Util/CoordinateUtil.h
@@ -341,16 +345,20 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Rendering/PolygonRenderer/Impl/PolygonOutlineRenderer.h
         Source/Rendering/PolygonRenderer/Impl/ProxyPolygonRenderer.cpp
         Source/Rendering/PolygonRenderer/Impl/ProxyPolygonRenderer.h
-        Source/Rendering/PolygonRenderer/PolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/PolygonRenderer.h
-        Source/Rendering/PolygonRenderer/PolygonRendererFactory.cpp
-        Source/Rendering/PolygonRenderer/PolygonRendererFactory.h
         Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmLineRegionRenderer.cpp
         Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmLineRegionRenderer.h
         Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.cpp
         Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.h
         Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmPointRegionRenderer.cpp
         Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmPointRegionRenderer.h
+
+        Source/Rendering/PolygonRenderer/PolygonRenderer.cpp
+        Source/Rendering/PolygonRenderer/PolygonRenderer.h
+        Source/Rendering/PolygonRenderer/PolygonRendererFactory.cpp
+        Source/Rendering/PolygonRenderer/PolygonRendererFactory.h
+        Source/Rendering/PolygonRenderer/PolygonRendererProperty.h
+        Source/Rendering/PolygonRenderer/RendererProperties.cpp
+        Source/Rendering/PolygonRenderer/RendererProperties.h
 
         Source/Util/CoordinateUtil.cpp
         Source/Util/CoordinateUtil.h

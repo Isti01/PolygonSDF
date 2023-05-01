@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../Rendering/PolygonRenderer/PolygonRendererProperty.h"
 #include "../Core/Editor.h"
 namespace psdf
 {
@@ -17,8 +18,11 @@ class GuiVisualizationSettingsMenu
     GuiVisualizationSettingsMenu(Editor::SharedPtr pEditor);
 
   private:
-    bool mEnableDistanceVisualization = true;
+    void resetProperties();
+    void showPropertySetting(Gui::Group &group, PolygonRendererProperty &property);
+    static const std::map<std::string, std::string> kPropertyTitles;
 
+    std::vector<PolygonRendererProperty> mProperties;
     Editor::SharedPtr mpEditor;
 };
 

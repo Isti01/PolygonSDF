@@ -23,6 +23,7 @@ class PolygonPresenter : public Presenter
 
     bool onMouseEvent(const MouseEvent &mouseEvent) override;
     void resetInputState() override;
+    void resetTransform() override;
 
   protected:
     PolygonPresenter(Editor::SharedPtr pEditor, PolygonRenderer::SharedPtr pRenderer);
@@ -34,11 +35,11 @@ class PolygonPresenter : public Presenter
     float getMappedScale() const;
 
   private:
-    float mScale = -2.0f;
+    float mScale = 4;
     float mScaleSpeed = .1f;
 
-    float2 mTranslation{1.0f, .5f};
-    float2 mTranslationSpeed{1.0f, -1.0f};
+    float2 mTranslation{0, 0};
+    float2 mTranslationSpeed{-1.0f, 1.0f};
 
     Editor::SharedPtr mpEditor;
     StackPeekingEditorAggregator::SharedPtr mpPolygonPeekingAggregator;

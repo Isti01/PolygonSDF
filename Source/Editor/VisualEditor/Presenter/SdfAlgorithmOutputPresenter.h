@@ -20,6 +20,7 @@ class SdfAlgorithmOutputPresenter : public Presenter
 
     bool onMouseEvent(const MouseEvent &mouseEvent) override;
     void resetInputState() override;
+    void resetTransform() override;
 
   protected:
     SdfAlgorithmOutputPresenter(Editor::SharedPtr pEditor, PolygonRenderer::SharedPtr outputRenderer);
@@ -27,7 +28,6 @@ class SdfAlgorithmOutputPresenter : public Presenter
     void updatePolygon();
 
   private:
-    void resetTransform();
     void transformPresenter();
     float getMappedScale() const;
 
@@ -35,8 +35,9 @@ class SdfAlgorithmOutputPresenter : public Presenter
     static constexpr float mScaleSpeed = .1f;
     static constexpr float2 mRotationSpeed{-glm::pi<float>(), -glm::pi<float>()};
 
-    float mScale = 3.5;
+    float mScale = 4;
     float2 mRotation{0};
+    float2 mTranslation{0,0};
 
     Editor::SharedPtr mpEditor;
     PolygonRenderer::SharedPtr mpRenderer;

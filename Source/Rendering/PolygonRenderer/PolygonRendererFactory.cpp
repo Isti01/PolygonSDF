@@ -43,8 +43,8 @@ static GraphicsState::SharedPtr getOutlineRendererGS()
 PolygonRenderer::SharedPtr PolygonRendererFactory::getPolygonRenderer()
 {
     auto combinedRenderers = CompositePolygonRenderer::create(std::vector<PolygonRenderer::SharedPtr>{
-        FullScreenPolygonRenderer::create(getFullscreenRendererGS()),
         PolygonOutlineRenderer::create(getOutlineRendererGS()),
+        FullScreenPolygonRenderer::create(getFullscreenRendererGS()),
     });
     auto renderer = AspectRatioIndependentPolygonRenderer::create(combinedRenderers);
     for (const auto &property : RendererProperties::kInitialProperties)
@@ -71,12 +71,13 @@ static GraphicsState::SharedPtr getGraphicsStateForAlgorithmOutputRenderer(const
 
 PolygonRenderer::SharedPtr PolygonRendererFactory::getAlgorithmOutputRenderer()
 {
-    auto renderer = CompositePolygonRenderer::create({
+    auto combined = CompositePolygonRenderer::create({
         SdfAlgorithmLineRegionRenderer::create(
             getGraphicsStateForAlgorithmOutputRenderer("PolygonSDF/Shaders/LineRegionAlgorithmOutput.3d.slang")),
         SdfAlgorithmPointRegionRenderer::create(
             getGraphicsStateForAlgorithmOutputRenderer("PolygonSDF/Shaders/PointRegionAlgorithmOutput.3d.slang")),
     });
+    auto renderer = AspectRatioIndependentPolygonRenderer::create(combined);
     for (const auto &property : RendererProperties::kInitialProperties)
     {
         renderer->setProperty(property);

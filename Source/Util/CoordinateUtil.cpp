@@ -5,19 +5,19 @@ using namespace Falcor;
 
 float2 CoordinateUtil::screenToSceneSpaceCoordinate(const float4x4 &transform, float2 coords)
 {
-    float4 mapped = float4(coords.x, 1 - coords.y, 0, 1);
-    return (inverse(transform) * mapped).xy;
+    float2 mapped = float2(coords.x, coords.y) * 2.0f - 1.0f;
+    return (inverse(transform) * float4(mapped.x, -mapped.y, 0, 1)).xy;
 }
 
 float2 CoordinateUtil::sceneToScreenSpaceCoordinate(const float4x4 &transform, float2 coords)
 {
     auto transformed = (transform * float4(coords, 0, 1));
-    return {transformed.x, 1 - transformed.y};
+    return float2(transformed.x, -transformed.y) / 2.0f + 0.5f;
 }
 
 float2 CoordinateUtil::screenToSceneSpaceVector(const float4x4 &transform, float2 vector)
 {
-    return (transpose(inverse(transform)) * float4(vector, 0, 0)).xy;
+    return (inverse(transform) * float4(vector, 0, 0)).xy;
 }
 
 std::optional<size_t> CoordinateUtil::findClosestInSubPolygon(const Polygon::Points &points, Point point)

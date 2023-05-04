@@ -30,12 +30,8 @@ class SdfAlgorithmOutputRenderer : public PolygonRenderer
     void setPropertyImpl(const PolygonRendererProperty &rendererProperty) override;
 
     static constexpr double kMinCutDistanceFromOrigin = 10;
-    static constexpr float kOrthoCamWidth = 50;
 
     size_t mPointsToCutAround = 100;
-    Point mPolygonCenter;
-    uint32_t mFboWidth = 0;
-    uint32_t mFboHeight = 0;
 
     GraphicsState::SharedPtr mpGraphicsState = nullptr;
     GraphicsVars::SharedPtr mpProgramVars = nullptr;

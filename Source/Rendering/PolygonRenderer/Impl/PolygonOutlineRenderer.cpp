@@ -64,9 +64,7 @@ void PolygonOutlineRenderer::transformImpl()
 {
     FALCOR_ASSERT(mpProgramVars);
 
-    const float4x4 correction = rmcv::translate(float3{-1, -1, 0}) * rmcv::scale(float3{2, 2, 1});
-    const auto transform = correction * mTransform;
-    mpProgramVars["Data"]["iTransform"] = transform;
+    mpProgramVars["Data"]["iTransform"] = mTransform;
 }
 
 void PolygonOutlineRenderer::setFbo(const Fbo::SharedPtr &pFbo)

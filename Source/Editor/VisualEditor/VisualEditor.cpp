@@ -132,9 +132,17 @@ void VisualEditor::hideGui()
 
 void VisualEditor::setActiveInputHandler(const MouseInputHandler::SharedPtr &pInputHandler)
 {
-    if (mpActiveInputHandler != pInputHandler)
+    if (mpActiveInputHandler == pInputHandler)
     {
-        mpActiveInputHandler = pInputHandler;
-        mpActiveInputHandler->resetInputState();
+        return;
     }
+
+    if (mpActiveInputHandler.get() == mpAlgorithmOutputPresenter.get() ||
+        pInputHandler.get() == mpAlgorithmOutputPresenter.get())
+    {
+        mpAlgorithmOutputPresenter->resetTransform();
+        mpPolygonPresenter->resetTransform();
+    }
+    mpActiveInputHandler = pInputHandler;
+    mpActiveInputHandler->resetInputState();
 }

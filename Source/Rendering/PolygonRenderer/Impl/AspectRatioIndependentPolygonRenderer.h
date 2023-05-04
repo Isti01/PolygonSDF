@@ -21,6 +21,8 @@ class AspectRatioIndependentPolygonRenderer : public ProxyPolygonRenderer
     void updateAspectRatio();
 
   private:
+    static constexpr float kOrthoCamWidth = 50;
+
     float mAspectRatio = 1;
 };
 

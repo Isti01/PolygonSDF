@@ -26,16 +26,12 @@ void AspectRatioIndependentPolygonRenderer::setFbo(const Fbo::SharedPtr &pFbo)
 
 void AspectRatioIndependentPolygonRenderer::transformImpl()
 {
-    float4x4 correction;
-    if (mAspectRatio > 1)
-    {
-        correction = rmcv::scale(float3{1 / mAspectRatio, 1, 1});
-    }
-    else
-    {
-        correction = rmcv::scale(float3{1, mAspectRatio, 1});
-    }
-    mpPolygonRenderer->transform(correction * mTransform);
+    float camWidth = kOrthoCamWidth;
+    float camHeight = kOrthoCamWidth / mAspectRatio;
+    float4x4 projection = rmcv::ortho(-camWidth, camWidth, -camHeight, camHeight, -250.0f, 250.0f);
+    float4x4 view = rmcv::lookAt(float3(0, 0, -1), float3(0, 0, 0), float3(0, 1, 0));
+    auto vp = projection * view;
+    mpPolygonRenderer->transform(vp * mTransform);
 }
 
 void AspectRatioIndependentPolygonRenderer::updateAspectRatio()

@@ -15,6 +15,7 @@ class Presenter : public MouseInputHandler
     using SharedPtr = std::shared_ptr<Presenter>;
 
     virtual void render(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo) = 0;
+    virtual void resetTransform() = 0;
 };
 
 } // namespace psdf

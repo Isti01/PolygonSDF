@@ -53,8 +53,10 @@ void FullScreenPolygonRenderer::renderImpl(RenderContext *pRenderContext)
 
 void FullScreenPolygonRenderer::transformImpl()
 {
+    const float4x4 correction = rmcv::translate(float3{.5, .5, 0}) * rmcv::scale(float3{.5, .5, 1});
+
     // we need the inverse, because we are transforming the origin instead of the objects
-    mpGraphicsVars["Data"]["iTransform"] = rmcv::inverse(mTransform);
+    mpGraphicsVars["Data"]["iTransform"] = rmcv::inverse(correction * mTransform);
 }
 
 void FullScreenPolygonRenderer::setPropertyImpl(const PolygonRendererProperty &rendererProperty)

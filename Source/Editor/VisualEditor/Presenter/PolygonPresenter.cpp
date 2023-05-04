@@ -41,8 +41,11 @@ bool PolygonPresenter::onMouseEvent(const MouseEvent &mouseEvent)
     if (mpDragHandler->onMouseEvent(mouseEvent))
     {
         auto transform = mpRenderer->getTransform();
-        auto delta = (mpDragHandler->getDragDelta() * mTranslationSpeed) * getMappedScale();
-        mTranslation += CoordinateUtil::screenToSceneSpaceVector(transform, delta);
+        auto delta = mpDragHandler->getDragDelta() * mTranslationSpeed;
+        auto mappedCurrentPos = CoordinateUtil::screenToSceneSpaceCoordinate(transform, mouseEvent.pos);
+        auto mappedLastPos = CoordinateUtil::screenToSceneSpaceCoordinate(transform, mouseEvent.pos - delta);
+        auto mappedDelta = mappedCurrentPos - mappedLastPos;
+        mTranslation += float2(mappedDelta.x, -mappedDelta.y);
         transformPolygonRenderer();
         return true;
     }
@@ -79,11 +82,19 @@ float PolygonPresenter::getMappedScale() const
     return glm::pow(2.0f, mScale);
 }
 
+void PolygonPresenter::resetTransform()
+{
+    mScale = 4;
+    mTranslation = mpPolygon ? float2(mpPolygon->getCenter()) : float2{0, 0};
+    transformPolygonRenderer();
+}
+
 void PolygonPresenter::transformPolygonRenderer()
 {
-    auto translation = rmcv::translate(float3(mTranslation, 0));
+    auto translation = rmcv::translate(-float3(mTranslation, 0));
 
     float mappedScale = getMappedScale();
     auto scaling = rmcv::scale(float3{mappedScale, mappedScale, 1});
-    mpRenderer->transform(translation * scaling);
+    auto transform = scaling * translation;
+    mpRenderer->transform(transform);
 }

@@ -47,10 +47,6 @@ double SdfAlgorithmOutputRenderer::getMaxDistanceFromPointInPolygon(const Point 
 
 void SdfAlgorithmOutputRenderer::setPolygon(const Polygon::SharedPtr &pPolygon)
 {
-    if (pPolygon)
-    {
-        mPolygonCenter = pPolygon->getCenter();
-    }
     PolygonRenderer::setPolygon(pPolygon);
 }
 
@@ -58,17 +54,7 @@ void SdfAlgorithmOutputRenderer::transformImpl()
 {
     FALCOR_ASSERT(mpProgramVars);
 
-    const auto transform = mTransform * rmcv::translate(-float3{mPolygonCenter, 0});
-
-    auto projection = rmcv::identity<float4x4>();
-    if (mFboWidth != 0)
-    {
-        float camWidth = kOrthoCamWidth;
-        float camHeight = kOrthoCamWidth / float(mFboWidth) * float(mFboHeight);
-        projection = rmcv::ortho(-camWidth, camWidth, -camHeight, camHeight, -250.0f, 250.0f);
-    }
-    auto view = rmcv::lookAt(float3(0, 0, -1), float3(0, 0, 0), float3(0, 1, 0));
-    mpProgramVars["Data"]["iTransform"] = projection * view * transform;
+    mpProgramVars["Data"]["iTransform"] = mTransform;
 }
 
 void SdfAlgorithmOutputRenderer::renderImpl(RenderContext *context)
@@ -87,9 +73,6 @@ void SdfAlgorithmOutputRenderer::setFbo(const Fbo::SharedPtr &pFbo)
 {
     FALCOR_ASSERT(mpGraphicsState);
     mpGraphicsState->setFbo(pFbo);
-    mFboWidth = pFbo->getWidth();
-    mFboHeight = pFbo->getHeight();
-    transformImpl();
 }
 
 void SdfAlgorithmOutputRenderer::setPropertyImpl(const PolygonRendererProperty &rendererProperty)

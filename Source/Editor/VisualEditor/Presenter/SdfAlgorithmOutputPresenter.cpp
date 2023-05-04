@@ -54,7 +54,6 @@ bool SdfAlgorithmOutputPresenter::onMouseEvent(const MouseEvent &mouseEvent)
 
 void SdfAlgorithmOutputPresenter::resetInputState()
 {
-    resetTransform();
     mpDragHandler->resetInputState();
 }
 
@@ -75,8 +74,9 @@ void SdfAlgorithmOutputPresenter::updatePolygon()
 
 void SdfAlgorithmOutputPresenter::resetTransform()
 {
-    mScale = 3.5;
+    mScale = 4;
     mRotation = float2{0};
+    mTranslation = mpPolygon ? float2(mpPolygon->getCenter()) : float2{0, 0};
     transformPresenter();
 }
 
@@ -88,8 +88,7 @@ float SdfAlgorithmOutputPresenter::getMappedScale() const
 void SdfAlgorithmOutputPresenter::transformPresenter()
 {
     auto rotation = rmcv::rotate(mRotation.x, {0, 1, 0}) * rmcv::rotate(mRotation.y, {1, 0, 0});
-
-    float mappedScale = getMappedScale();
-    auto scaling = rmcv::scale(float3{-mappedScale, mappedScale, mappedScale});
-    mpRenderer->transform(rotation * scaling);
+    auto scaling = rmcv::scale(float3{getMappedScale()});
+    auto translation = rmcv::translate(-float3{mTranslation, 0});
+    mpRenderer->transform(rotation * scaling * translation);
 }

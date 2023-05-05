@@ -394,6 +394,17 @@ target_sources(PolygonSDFTest PRIVATE
         Tests/Editor/Aggregator/TestStackPeekingEditorAggregator.h
         Tests/Editor/Aggregator/TestStackSizeEditorAggregator.h
 
+        Tests/Editor/Command/TestAddNewGroupStackCommand.h
+        Tests/Editor/Command/TestAddPointStackCommand.h
+        Tests/Editor/Command/TestCalculateSdfPlaneAlgorithmCommand.h
+        Tests/Editor/Command/TestDeleteGroupStackCommand.h
+        Tests/Editor/Command/TestDeletePointStackCommand.h
+        Tests/Editor/Command/TestInsertPointStackCommand.h
+        Tests/Editor/Command/TestMergePolygonWithOffsetStackCommand.h
+        Tests/Editor/Command/TestMoveGroupStackCommand.h
+        Tests/Editor/Command/TestSetPolygonStackCommand.h
+        Tests/Editor/Command/TestUpdatePointStackCommand.h
+
         Tests/Editor/Core/TestEditor.h
 
         Tests/External/catch.hpp

@@ -13,4 +13,15 @@
 #include "Editor/Aggregator/TestStackPeekingEditorAggregator.h"
 #include "Editor/Aggregator/TestStackSizeEditorAggregator.h"
 
+#include "Editor/Command/TestAddNewGroupStackCommand.h"
+#include "Editor/Command/TestAddPointStackCommand.h"
+#include "Editor/Command/TestCalculateSdfPlaneAlgorithmCommand.h"
+#include "Editor/Command/TestDeleteGroupStackCommand.h"
+#include "Editor/Command/TestDeletePointStackCommand.h"
+#include "Editor/Command/TestInsertPointStackCommand.h"
+#include "Editor/Command/TestMergePolygonWithOffsetStackCommand.h"
+#include "Editor/Command/TestMoveGroupStackCommand.h"
+#include "Editor/Command/TestSetPolygonStackCommand.h"
+#include "Editor/Command/TestUpdatePointStackCommand.h"
+
 #include "Editor/Core/TestEditor.h"

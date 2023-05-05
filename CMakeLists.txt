@@ -424,6 +424,9 @@ target_sources(PolygonSDFTest PRIVATE
         Tests/Editor/Event/TestStackTransformedEvent.h
         Tests/Editor/Event/TestUnknownCommandEvent.h
 
+        Tests/Editor/Transformation/TestClearHistoryEditorTransformation.h
+        Tests/Editor/Transformation/TestUndoEditorTransformation.h
+
         Tests/External/catch.hpp
 
         Tests/Util/TestCommand.cpp

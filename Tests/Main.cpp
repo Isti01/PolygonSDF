@@ -38,3 +38,6 @@
 #include "Editor/Event/TestNewStackCommandEvent.h"
 #include "Editor/Event/TestStackTransformedEvent.h"
 #include "Editor/Event/TestUnknownCommandEvent.h"
+
+#include "Editor/Transformation/TestClearHistoryEditorTransformation.h"
+#include "Editor/Transformation/TestUndoEditorTransformation.h"

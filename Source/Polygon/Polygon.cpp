@@ -74,9 +74,9 @@ SdfPlaneAlgorithmOutput::SharedPtr Polygon::getAlgorithmOutput() const
     return mpSdfPlaneAlgorithmOutput;
 }
 
-void Polygon::runAlgorithm()
+void Polygon::runAlgorithm(SdfPlaneAlgorithmExecutionDesc desc)
 {
-    mpSdfPlaneAlgorithmOutput = SdfPlaneAlgorithm::calculateForPolygon(this->shared_from_this());
+    mpSdfPlaneAlgorithmOutput = SdfPlaneAlgorithm::calculateForPolygon(this->shared_from_this(), desc);
 }
 
 Polygon::SharedPtr Polygon::fromJson(const std::string &path)

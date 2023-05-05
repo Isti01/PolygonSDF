@@ -65,13 +65,13 @@ static void reorderPointsForTheAlgorithm(std::vector<SubPolygon> &reorderedPolyg
 }
 
 SdfPlaneAlgorithmOutput::SharedPtr SdfPlaneAlgorithm::calculateForPolygon(const Polygon::SharedPtr &pPolygon,
-                                                                          bool reorderPoints)
+                                                                          SdfPlaneAlgorithmExecutionDesc desc)
 {
     std::vector<LineRegion> lineRegions;
     std::vector<PointRegion> pointRegions;
 
     std::vector<SubPolygon> reorderedPolygons = pPolygon->getPolygons();
-    if (reorderPoints)
+    if (desc.reorderPoints)
     {
         reorderPointsForTheAlgorithm(reorderedPolygons);
     }
@@ -89,9 +89,10 @@ SdfPlaneAlgorithmOutput::SharedPtr SdfPlaneAlgorithm::calculateForPolygon(const 
             glm::dvec2 edgeVector2 = segment2.getEdgeVector();
             double cornerSign = glm::sign(glm::dot(glm::dvec2{-edgeVector1.y, edgeVector1.x}, edgeVector2));
 
-            lineRegions.emplace_back(segment1);
+            lineRegions.emplace_back(segment1, desc.initialBoundScale);
             lineRegions.back().polyCut({segment1.getPoint2(), segment1.getPoint1()}, {edgeVector1, -edgeVector1});
-            pointRegions.emplace_back(segment1.getPoint2(), cornerSign);
+            pointRegions.emplace_back(segment1.getPoint2(), cornerSign, desc.pointRegionSubdivision,
+                                      desc.initialBoundScale);
             pointRegions.back().polyCut({segment1.getPoint2(), segment1.getPoint2()}, {edgeVector2, -edgeVector1});
         }
     }

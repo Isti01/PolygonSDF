@@ -17,6 +17,7 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Algorithm/SdfPlaneAlgorithm.cpp
         Source/Algorithm/SdfPlaneAlgorithm.h
+        Source/Algorithm/SdfPlaneAlgorithmExecutionDesc.h
         Source/Algorithm/SdfPlaneAlgorithmOutput.cpp
         Source/Algorithm/SdfPlaneAlgorithmOutput.h
 
@@ -213,6 +214,7 @@ target_sources(PolygonSDFTest PRIVATE
 
         Source/Algorithm/SdfPlaneAlgorithm.cpp
         Source/Algorithm/SdfPlaneAlgorithm.h
+        Source/Algorithm/SdfPlaneAlgorithmExecutionDesc.h
         Source/Algorithm/SdfPlaneAlgorithmOutput.cpp
         Source/Algorithm/SdfPlaneAlgorithmOutput.h
 

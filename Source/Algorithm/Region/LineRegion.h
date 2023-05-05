@@ -9,7 +9,7 @@ class PointRegion;
 class LineRegion : public Region
 {
   public:
-    LineRegion(const Segment &segment);
+    LineRegion(const Segment &segment, double initialBoundScale);
     LineRegion(std::vector<glm::dvec2> bounds, Segment segment);
 
     Segment getSegment() const;

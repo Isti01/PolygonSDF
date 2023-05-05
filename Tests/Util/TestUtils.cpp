@@ -21,7 +21,7 @@ PointRegion TestUtils::readPointRegion(const std::string &spaceSeparatedList)
         bounds.push_back(bound);
     }
 
-    return {bounds, point, sign};
+    return {bounds, point, sign, 5};
 }
 
 LineRegion TestUtils::readLineRegion(const std::string &spaceSeparatedList)

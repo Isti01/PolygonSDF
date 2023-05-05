@@ -11,9 +11,8 @@ namespace psdf
 class PointRegion : public Region
 {
   public:
-    static constexpr int32_t kSubDivs = 5;
-    PointRegion(Point point, double cornerSign);
-    PointRegion(std::vector<glm::dvec2> bounds, Point point, double cornerSign);
+    PointRegion(Point point, double cornerSign, size_t subdivisions, double initialBoundScale);
+    PointRegion(std::vector<glm::dvec2> bounds, Point point, double cornerSign, size_t subdivisions);
 
     static void cutWithPoints(std::vector<PointRegion> &pointRegions, const std::vector<PointRegion> &cuttingRegions);
     static void cutWithLines(std::vector<PointRegion> &pointRegions, const std::vector<LineRegion> &lineRegions);
@@ -28,6 +27,7 @@ class PointRegion : public Region
   private:
     Point mPoint;
     double mCornerSign;
+    size_t mSubdivisions;
 };
 
 } // namespace psdf

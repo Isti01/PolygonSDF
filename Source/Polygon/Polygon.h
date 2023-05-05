@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Algorithm/SdfPlaneAlgorithmExecutionDesc.h"
 #include "../Algorithm/SdfPlaneAlgorithmOutput.h"
 #include "Point.h"
 #include "Segment.h"
@@ -36,7 +37,7 @@ class Polygon : public std::enable_shared_from_this<Polygon>
     FloatSegments getAllFloatSegments() const;
 
     SdfPlaneAlgorithmOutput::SharedPtr getAlgorithmOutput() const;
-    void runAlgorithm();
+    void runAlgorithm(SdfPlaneAlgorithmExecutionDesc desc = kDefaultSdfPlaneAlgorithmExecutionDesc);
 
   private:
     Polygon(std::vector<SubPolygon> polygons);

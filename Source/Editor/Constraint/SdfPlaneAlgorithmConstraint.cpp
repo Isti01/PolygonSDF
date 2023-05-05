@@ -67,7 +67,7 @@ bool SdfPlaneAlgorithmConstraint::evaluate(const EditorStack::SharedPtr &pStack,
     if (std::dynamic_pointer_cast<CalculateSdfPlaneAlgorithmCommand>(pCommand))
     {
         auto top = pStack->peek();
-        if (!top || top->polygon->getAlgorithmOutput() != nullptr)
+        if (!top)
         {
             return false;
         }

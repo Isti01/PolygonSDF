@@ -1,11 +1,12 @@
 #include "LineRegion.h"
+#include "../../CommonConstants.h"
 #include "../../Util/CoordinateUtil.h"
 #include "../../Util/MathUtil.h"
 #include "PointRegion.h"
 
 using namespace psdf;
 
-LineRegion::LineRegion(const Segment &segment) : Region(), mSegment(segment)
+LineRegion::LineRegion(const Segment &segment, double initialBoundScale) : Region(initialBoundScale), mSegment(segment)
 {
 }
 

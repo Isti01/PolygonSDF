@@ -67,18 +67,24 @@ void GuiEditorActionsMenu::renderGui(Gui::Window &window)
         mpEditor->transform(ClearHistoryEditorTransformation::create());
     }
 
-    if (pPolygon && !pPolygon->getAlgorithmOutput() && window.button("Run Plane Slicing Algorithm", true))
+    if (pPolygon)
     {
-        mpEditor->addCommand(CalculateSdfPlaneAlgorithmCommand::create());
-        if (!mpPolygonPeekingAggregator->peekEditor(mpEditor)->getEntry().polygon->getAlgorithmOutput())
+        ImGui::Spacing();
+        window.var("Initial region bound scale: ", mExecutionDesc.initialBoundScale, 0.0);
+        window.var("Point region subdivision count: ", mExecutionDesc.pointRegionSubdivision, size_t(3));
+        if (window.button("Run Plane Slicing Algorithm"))
         {
-            msgBox("Failed to run the algorthm on the current polygon\nTip: Check for intersecting segments!",
-                   MsgBoxType::Ok, Falcor::MsgBoxIcon::Info);
+            mpEditor->addCommand(CalculateSdfPlaneAlgorithmCommand::create(mExecutionDesc));
+            if (!mpPolygonPeekingAggregator->peekEditor(mpEditor)->getEntry().polygon->getAlgorithmOutput())
+            {
+                msgBox("Failed to run the algorthm on the current polygon\nTip: Check for intersecting segments!",
+                       MsgBoxType::Ok, Falcor::MsgBoxIcon::Info);
+            }
         }
     }
 
     ImGui::Spacing();
-    window.var("", mPolygonOffset);
+    window.var("Offset: ", mPolygonOffset);
     if (window.button("Add Polygon with offset", true))
     {
         if (auto polygon = GuiEditorActionsMenu::loadPolygon())

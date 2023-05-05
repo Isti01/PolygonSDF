@@ -23,6 +23,7 @@ class GuiEditorActionsMenu
     static Polygon::SharedPtr loadPolygon();
 
   private:
+    SdfPlaneAlgorithmExecutionDesc mExecutionDesc = kDefaultSdfPlaneAlgorithmExecutionDesc;
     float2 mPolygonOffset{0};
 
     Editor::SharedPtr mpEditor;

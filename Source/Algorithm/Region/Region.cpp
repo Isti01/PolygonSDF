@@ -2,11 +2,11 @@
 
 using namespace psdf;
 
-Region::Region()
-    : Region({{-CommonConstants::kInitialBoundScale, -CommonConstants::kInitialBoundScale},
-              {CommonConstants::kInitialBoundScale, -CommonConstants::kInitialBoundScale},
-              {CommonConstants::kInitialBoundScale, CommonConstants::kInitialBoundScale},
-              {-CommonConstants::kInitialBoundScale, CommonConstants::kInitialBoundScale}})
+Region::Region(double initialBoundScale)
+    : Region({{-initialBoundScale, -initialBoundScale},
+              {initialBoundScale, -initialBoundScale},
+              {initialBoundScale, initialBoundScale},
+              {-initialBoundScale, initialBoundScale}})
 {
 }
 

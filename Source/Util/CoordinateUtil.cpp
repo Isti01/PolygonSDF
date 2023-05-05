@@ -15,11 +15,6 @@ float2 CoordinateUtil::sceneToScreenSpaceCoordinate(const float4x4 &transform, f
     return float2(transformed.x, -transformed.y) / 2.0f + 0.5f;
 }
 
-float2 CoordinateUtil::screenToSceneSpaceVector(const float4x4 &transform, float2 vector)
-{
-    return (inverse(transform) * float4(vector, 0, 0)).xy;
-}
-
 std::optional<size_t> CoordinateUtil::findClosestInSubPolygon(const Polygon::Points &points, Point point)
 {
     auto isPointCloser = [point](const Point &p1, const Point &p2) {

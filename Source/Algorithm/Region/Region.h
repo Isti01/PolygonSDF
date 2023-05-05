@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../../CommonConstants.h"
 #include "../../Polygon/Point.h"
 #include "./LineRegionBoundVertex.h"
 
@@ -15,7 +14,7 @@ class Region
   public:
     void polyCut(const std::vector<Point> &points, const std::vector<glm::dvec2> &edgeVectors);
 
-    Region();
+    Region(double initialBoundScale);
     Region(std::vector<glm::dvec2> bounds);
 
     std::vector<glm::dvec2> getBounds() const;

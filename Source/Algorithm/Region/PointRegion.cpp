@@ -1,14 +1,16 @@
 #include "PointRegion.h"
+#include "../../CommonConstants.h"
 #include "../../Util/CoordinateUtil.h"
 
 using namespace psdf;
 
-PointRegion::PointRegion(Point point, double cornerSign) : Region(), mPoint(point), mCornerSign(cornerSign)
+PointRegion::PointRegion(Point point, double cornerSign, size_t subdivisions, double initialBoundScale)
+    : Region(initialBoundScale), mPoint(point), mCornerSign(cornerSign), mSubdivisions(subdivisions)
 {
 }
 
-PointRegion::PointRegion(std::vector<glm::dvec2> bounds, Point point, double cornerSign)
-    : Region(std::move(bounds)), mPoint(point), mCornerSign(cornerSign)
+PointRegion::PointRegion(std::vector<glm::dvec2> bounds, Point point, double cornerSign, size_t subdivisions)
+    : Region(std::move(bounds)), mPoint(point), mCornerSign(cornerSign), mSubdivisions(subdivisions)
 {
 }
 
@@ -46,10 +48,14 @@ void PointRegion::cutWithPoints(std::vector<PointRegion> &pointRegions, const st
 
 void PointRegion::cutWithLines(std::vector<PointRegion> &pointRegions, const std::vector<LineRegion> &lineRegions)
 {
+    if (pointRegions.empty() || lineRegions.empty())
+    {
+        return;
+    }
     std::vector<Point> points;
-    points.reserve(pointRegions.size() * (kSubDivs - 3));
+    points.reserve(pointRegions.size() * (pointRegions[0].mSubdivisions - 3));
     std::vector<glm::dvec2> edgeVectors;
-    edgeVectors.reserve(pointRegions.size() * (kSubDivs - 3));
+    edgeVectors.reserve(pointRegions.size() * (pointRegions[0].mSubdivisions - 3));
     for (size_t i = 0; i < pointRegions.size(); i++)
     {
         points.clear();
@@ -74,9 +80,9 @@ void PointRegion::cutWithLines(std::vector<PointRegion> &pointRegions, const std
                 continue;
             }
 
-            for (int32_t steps = 1; steps < kSubDivs - 2; steps++)
+            for (int32_t steps = 1; steps < region.mSubdivisions - 2; steps++)
             {
-                double t = steps / double(kSubDivs - 1);
+                double t = steps / double(region.mSubdivisions - 1);
                 glm::dvec2 nx = edgeVector1 + (segmentPoint2 - segmentPoint1) * t;
                 points.emplace_back(point + nx / 2.0);
                 edgeVectors.emplace_back(nx);

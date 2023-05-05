@@ -41,10 +41,7 @@ bool SdfAlgorithmOutputPresenter::onMouseEvent(const MouseEvent &mouseEvent)
 
     if (mpDragHandler->onMouseEvent(mouseEvent))
     {
-        float mappedScale = getMappedScale();
-        auto transform = rmcv::scale(float3{mappedScale, mappedScale, 1});
-        auto delta = (mpDragHandler->getDragDelta() * mRotationSpeed) * getMappedScale();
-        mRotation += CoordinateUtil::screenToSceneSpaceVector(transform, delta) * mRotationSpeed;
+        mRotation += mpDragHandler->getDragDelta() * mRotationSpeed;
         transformPresenter();
         return true;
     }

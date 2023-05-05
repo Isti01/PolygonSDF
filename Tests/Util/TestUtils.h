@@ -22,7 +22,7 @@ class TestUtils
 
     static std::vector<glm::dvec2> readDouble2Vector(const std::string &spaceSeparatedList);
 
-    static Polygon::SharedPtr readPolygon(const std::string& path);
+    static Polygon::SharedPtr readPolygon(const std::string &path);
     static std::vector<psdf::PointRegion> readPointRegionList(const std::string &path);
     static std::vector<psdf::LineRegion> readLineRegionList(const std::string &path);
 

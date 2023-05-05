@@ -33,3 +33,8 @@
 #include "Editor/Consumer/TestVisualEditorStateChangeEditorConsumer.h"
 
 #include "Editor/Core/TestEditor.h"
+
+#include "Editor/Event/TestConstraintViolationEvent.h"
+#include "Editor/Event/TestNewStackCommandEvent.h"
+#include "Editor/Event/TestStackTransformedEvent.h"
+#include "Editor/Event/TestUnknownCommandEvent.h"

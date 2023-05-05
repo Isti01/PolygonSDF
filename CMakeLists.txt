@@ -419,6 +419,11 @@ target_sources(PolygonSDFTest PRIVATE
 
         Tests/Editor/Core/TestEditor.h
 
+        Tests/Editor/Event/TestConstraintViolationEvent.h
+        Tests/Editor/Event/TestNewStackCommandEvent.h
+        Tests/Editor/Event/TestStackTransformedEvent.h
+        Tests/Editor/Event/TestUnknownCommandEvent.h
+
         Tests/External/catch.hpp
 
         Tests/Util/TestCommand.cpp

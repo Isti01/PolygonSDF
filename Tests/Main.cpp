@@ -28,4 +28,8 @@
 #include "Editor/Constraint/TestDeletePointEditorConstraint.h"
 #include "Editor/Constraint/TestSdfPlaneAlgorithmConstraint.h"
 
+#include "Editor/Consumer/TestGuiStateEditorConsumer.h"
+#include "Editor/Consumer/TestPropertyUpdatingEditorConsumer.h"
+#include "Editor/Consumer/TestVisualEditorStateChangeEditorConsumer.h"
+
 #include "Editor/Core/TestEditor.h"

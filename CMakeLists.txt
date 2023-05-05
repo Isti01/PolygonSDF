@@ -150,6 +150,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Rendering/PolygonRenderer/Impl/AspectRatioIndependentPolygonRenderer.h
         Source/Rendering/PolygonRenderer/Impl/CompositePolygonRenderer.cpp
         Source/Rendering/PolygonRenderer/Impl/CompositePolygonRenderer.h
+        Source/Rendering/PolygonRenderer/Impl/EmptyPolygonRenderer.cpp
+        Source/Rendering/PolygonRenderer/Impl/EmptyPolygonRenderer.h
         Source/Rendering/PolygonRenderer/Impl/FullScreenPolygonRenderer.cpp
         Source/Rendering/PolygonRenderer/Impl/FullScreenPolygonRenderer.h
         Source/Rendering/PolygonRenderer/Impl/PolygonOutlineRenderer.cpp
@@ -347,6 +349,8 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Rendering/PolygonRenderer/Impl/AspectRatioIndependentPolygonRenderer.h
         Source/Rendering/PolygonRenderer/Impl/CompositePolygonRenderer.cpp
         Source/Rendering/PolygonRenderer/Impl/CompositePolygonRenderer.h
+        Source/Rendering/PolygonRenderer/Impl/EmptyPolygonRenderer.cpp
+        Source/Rendering/PolygonRenderer/Impl/EmptyPolygonRenderer.h
         Source/Rendering/PolygonRenderer/Impl/FullScreenPolygonRenderer.cpp
         Source/Rendering/PolygonRenderer/Impl/FullScreenPolygonRenderer.h
         Source/Rendering/PolygonRenderer/Impl/PolygonOutlineRenderer.cpp
@@ -408,6 +412,10 @@ target_sources(PolygonSDFTest PRIVATE
         Tests/Editor/Constraint/TestDeleteGroupEditorConstraint.h
         Tests/Editor/Constraint/TestDeletePointEditorConstraint.h
         Tests/Editor/Constraint/TestSdfPlaneAlgorithmConstraint.h
+
+        Tests/Editor/Consumer/TestGuiStateEditorConsumer.h
+        Tests/Editor/Consumer/TestPropertyUpdatingEditorConsumer.h
+        Tests/Editor/Consumer/TestVisualEditorStateChangeEditorConsumer.h
 
         Tests/Editor/Core/TestEditor.h
 

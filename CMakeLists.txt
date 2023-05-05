@@ -391,8 +391,17 @@ target_sources(PolygonSDFTest PRIVATE
 
         Tests/Algorithm/TestSdfPlaneAlgorithm.h
 
+        Tests/Editor/Aggregator/TestStackPeekingEditorAggregator.h
+        Tests/Editor/Aggregator/TestStackSizeEditorAggregator.h
+
+        Tests/Editor/Core/TestEditor.h
+
         Tests/External/catch.hpp
 
+        Tests/Util/TestCommand.cpp
+        Tests/Util/TestCommand.h
+        Tests/Util/TestConsumer.cpp
+        Tests/Util/TestConsumer.h
         Tests/Util/TestUtils.cpp
         Tests/Util/TestUtils.h
 

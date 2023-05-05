@@ -24,4 +24,8 @@
 #include "Editor/Command/TestSetPolygonStackCommand.h"
 #include "Editor/Command/TestUpdatePointStackCommand.h"
 
+#include "Editor/Constraint/TestDeleteGroupEditorConstraint.h"
+#include "Editor/Constraint/TestDeletePointEditorConstraint.h"
+#include "Editor/Constraint/TestSdfPlaneAlgorithmConstraint.h"
+
 #include "Editor/Core/TestEditor.h"

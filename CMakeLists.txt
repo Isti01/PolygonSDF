@@ -405,6 +405,10 @@ target_sources(PolygonSDFTest PRIVATE
         Tests/Editor/Command/TestSetPolygonStackCommand.h
         Tests/Editor/Command/TestUpdatePointStackCommand.h
 
+        Tests/Editor/Constraint/TestDeleteGroupEditorConstraint.h
+        Tests/Editor/Constraint/TestDeletePointEditorConstraint.h
+        Tests/Editor/Constraint/TestSdfPlaneAlgorithmConstraint.h
+
         Tests/Editor/Core/TestEditor.h
 
         Tests/External/catch.hpp

@@ -33,7 +33,7 @@ class SdfAlgorithmOutputPresenter : public Presenter
 
   private:
     static constexpr float mScaleSpeed = .1f;
-    static constexpr float2 mRotationSpeed{glm::pi<float>() * 1.5, glm::pi<float>() * 1.5};
+    static constexpr float2 mRotationSpeed{-glm::pi<float>() * 1.5, glm::pi<float>() * 1.5};
 
     float mScale = 4;
     float2 mRotation{0};

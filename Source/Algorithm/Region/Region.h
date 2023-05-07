@@ -24,9 +24,9 @@ class Region
     virtual ~Region() = default;
 
   private:
-    std::vector<double> calculateVnd(glm::dvec2 edgeVector, double d);
-    void calculateNewBounds(const std::vector<double> &vnd, std::vector<bool> &b);
-    std::vector<int> getNeighborDifference(const std::vector<bool> &b);
+    void calculateVnd(std::vector<double> &vnd, glm::dvec2 edgeVector, double d);
+    void calculateNewBounds(std::vector<int> &ind, const std::vector<double> &vnd, std::vector<bool> &b);
+    void getNeighborDifference(std::vector<int> &ind, const std::vector<bool> &b);
     void applyNewBounds(std::vector<bool> &b, const std::vector<glm::dvec2> &w, size_t m0, size_t p1);
 
   protected:

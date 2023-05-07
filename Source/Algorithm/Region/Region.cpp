@@ -25,11 +25,15 @@ void Region::polyCut(const std::vector<Point> &points, const std::vector<glm::dv
     {
         return;
     }
+    std::vector<bool> b;
+    std::vector<double> vnd;
+    std::vector<int> ind;
     for (size_t i = 0; i < points.size(); i++)
     {
+        b.clear();
         double d = glm::dot(points[i], edgeVectors[i]);
-        std::vector<double> vnd = calculateVnd(edgeVectors[i], d);
-        std::vector<bool> b(vnd.size());
+        calculateVnd(vnd, edgeVectors[i], d);
+        b.resize(vnd.size());
         std::transform(vnd.cbegin(), vnd.cend(), b.begin(), [](double v) { return v <= 0; });
         if (std::all_of(b.cbegin(), b.cend(), [](bool p) { return p; }))
         {
@@ -40,23 +44,23 @@ void Region::polyCut(const std::vector<Point> &points, const std::vector<glm::dv
             mBounds.clear();
             return;
         }
-        calculateNewBounds(vnd, b);
+        calculateNewBounds(ind, vnd, b);
     }
 }
 
-std::vector<double> Region::calculateVnd(glm::dvec2 edgeVector, double d)
+void Region::calculateVnd(std::vector<double> &vnd, glm::dvec2 edgeVector, double d)
 {
-    std::vector<double> vnd(mBounds.size());
-    for (size_t i = 0; i < vnd.size(); ++i)
+    vnd.clear();
+    vnd.resize(mBounds.size());
+    for (size_t i = 0; i < mBounds.size(); i++)
     {
         vnd[i] = glm::dot(mBounds[i], edgeVector) - d;
     }
-    return vnd;
 }
 
-void Region::calculateNewBounds(const std::vector<double> &vnd, std::vector<bool> &b)
+void Region::calculateNewBounds(std::vector<int> &ind, const std::vector<double> &vnd, std::vector<bool> &b)
 {
-    std::vector<int> ind = getNeighborDifference(b);
+    getNeighborDifference(ind, b);
     int64_t m1 = std::distance(ind.cbegin(), std::find(ind.cbegin(), ind.cend(), -1));
     size_t m0 = (m1 + (ind.size() - 1)) % ind.size();
 
@@ -72,16 +76,16 @@ void Region::calculateNewBounds(const std::vector<double> &vnd, std::vector<bool
     applyNewBounds(b, w, m0, p1);
 }
 
-std::vector<int> Region::getNeighborDifference(const std::vector<bool> &b)
+void Region::getNeighborDifference(std::vector<int> &ind, const std::vector<bool> &b)
 {
-    std::vector<int> ind(b.size());
+    ind.clear();
+    ind.resize(b.size());
     for (size_t i = 0; i < b.size(); i++)
     {
         bool b1 = b[(i + b.size() - 1) % b.size()];
         bool b2 = b[i];
         ind[i] = b1 - b2;
     }
-    return ind;
 }
 
 void Region::applyNewBounds(std::vector<bool> &b, const std::vector<glm::dvec2> &w, size_t m0, size_t p1)

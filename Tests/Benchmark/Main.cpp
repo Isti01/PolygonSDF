@@ -20,7 +20,7 @@ void benchmarkPolygonAlgorithm(const std::string &name, const Polygon::SharedPtr
 int main()
 {
     std::filesystem::create_directories("Benchmarks");
-    const std::vector<size_t> subdivisionsToBenchmark{3, 10, 25, 50};
+    const std::vector<size_t> subdivisionsToBenchmark{3, 10, 25, 50, 100};
     const size_t executions = 100;
 
     benchmarkPolygonAlgorithm("low_vertex_count_", Polygon::fromJson("Data/BenchmarkData/cat.json"),

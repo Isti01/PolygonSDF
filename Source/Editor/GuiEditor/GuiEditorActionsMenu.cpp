@@ -1,6 +1,5 @@
 #include "GuiEditorActionsMenu.h"
 #include "../../Util/WithImGuiId.h"
-#include "../Command/AddNewGroupStackCommand.h"
 #include "../Command/CalculateSdfPlaneAlgorithmCommand.h"
 #include "../Command/MergePolygonWithOffsetStackCommand.h"
 #include "../Command/SetPolygonStackCommand.h"
@@ -50,11 +49,6 @@ void GuiEditorActionsMenu::renderGui(Gui::Window &window)
     if (window.button("New Placeholder Polygon", true))
     {
         mpEditor->addCommand(SetPolygonStackCommand::create(Polygon::kExamplePolygon));
-    }
-
-    if (window.button("New Group", true))
-    {
-        mpEditor->addCommand(AddNewGroupStackCommand::create(Polygon::kSquarePolygon->getPolygons()[0]));
     }
 
     if (window.button("Undo"))

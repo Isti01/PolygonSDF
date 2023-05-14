@@ -9,7 +9,7 @@ using namespace Falcor;
 const std::map<std::string, std::string> GuiVisualizationSettingsMenu::kPropertyTitles{
     {RendererProperties::kPolygonOutlineRendererEnabledProperty, "Enable polygon wireframe in the editor"},
     {RendererProperties::kPolygonOutlineColorProperty, "Polygon wireframe color"},
-    {RendererProperties::kFullScreenPolygonRendererEnabledProperty, "Enable distance visualization in editor"},
+    {RendererProperties::kFullScreenPolygonRendererEnabledProperty, "Enable distance visualization in the editor"},
     {RendererProperties::kPositiveColorProperty, "Positive distance color"},
     {RendererProperties::kNegativeColorProperty, "Negative distance color"},
     {RendererProperties::kContourFrequencyProperty, "Distance contour frequency"},
@@ -19,7 +19,7 @@ const std::map<std::string, std::string> GuiVisualizationSettingsMenu::kProperty
     {RendererProperties::kDisplayCloserToVertexProperty, "Darken segment regions"},
     {RendererProperties::kShouldDisplayContoursProperty, "Display distance contours"},
     {RendererProperties::kShouldColorBetweenContoursProperty, "Display coloring between contours"},
-    {RendererProperties::kAlgorithmVisualizationCuttingPointCount, "Number of points for cutting around visualization"},
+    {RendererProperties::kAlgorithmVisualizationCuttingPointCount, "Number of cutting points around output geometry"},
 };
 
 GuiVisualizationSettingsMenu::SharedPtr GuiVisualizationSettingsMenu::create(Editor::SharedPtr pEditor)

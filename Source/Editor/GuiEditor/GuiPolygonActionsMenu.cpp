@@ -1,5 +1,6 @@
 #include "GuiPolygonActionsMenu.h"
 #include "../../Util/WithImGuiId.h"
+#include "../Command/AddNewGroupStackCommand.h"
 #include "../Command/AddPointStackCommand.h"
 #include "../Command/DeleteGroupStackCommand.h"
 #include "../Command/DeletePointStackCommand.h"
@@ -34,6 +35,11 @@ void GuiPolygonActionsMenu::renderGui(Gui::Window &window)
     if (!group)
     {
         return;
+    }
+
+    if (window.button("New Group"))
+    {
+        mpEditor->addCommand(AddNewGroupStackCommand::create(Polygon::kSquarePolygon->getPolygons()[0]));
     }
     size_t groupCount = mpCurrentPolygon->getPolygons().size();
     for (size_t i = 0; i < groupCount; i++)
@@ -100,17 +106,17 @@ void GuiPolygonActionsMenu::showGroupControls(size_t groupIndex, Gui::Group &win
 {
     {
         WithImGuiId id("GroupControlSection");
+        if (window.button("Delete Group"))
+        {
+            mpEditor->addCommand(DeleteGroupStackCommand::create(groupIndex));
+        }
+
         window.text("Add New Vertex");
         window.var("", mNewPoint);
         if (window.button("Add Point", true))
         {
             mpEditor->addCommand(AddPointStackCommand::create(groupIndex, mNewPoint));
             mNewPoint = float2{0};
-        }
-
-        if (window.button("Delete Group"))
-        {
-            mpEditor->addCommand(DeleteGroupStackCommand::create(groupIndex));
         }
     }
     {

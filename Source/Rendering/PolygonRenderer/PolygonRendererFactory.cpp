@@ -43,8 +43,8 @@ static GraphicsState::SharedPtr getOutlineRendererGS()
 PolygonRenderer::SharedPtr PolygonRendererFactory::getPolygonRenderer()
 {
     auto combinedRenderers = CompositePolygonRenderer::create(std::vector<PolygonRenderer::SharedPtr>{
-        PolygonOutlineRenderer::create(getOutlineRendererGS()),
         FullScreenPolygonRenderer::create(getFullscreenRendererGS()),
+        PolygonOutlineRenderer::create(getOutlineRendererGS()),
     });
     auto renderer = AspectRatioIndependentPolygonRenderer::create(combinedRenderers);
     for (const auto &property : RendererProperties::kInitialProperties)

@@ -1,0 +1,34 @@
+@startuml
+scale 2
+:Felhasználó: as user
+
+(Körvonal engedélyezése) as outline_enable
+(Körvonal szín) as outline_color
+(Távolság megjelenítésének engedélyezése) as display_distance
+(Távolság pozitív tartományának színe) as positive_color
+(Távolság negatív tartományának színe) as negative_color
+(Távolsági kontúrok megjelenítése) as display_contours
+(Kontúrok közötti tartomány kitöltése) as fill_between_contours
+(Távolsági kontúrvonalak frekvenciája) as contour_frequency
+(Távolsági kontúrvonalak intenzitása) as contour_intensity
+(Árnyék megjelenítése) as display_shadows
+(Árnyék lokalitása) as shadow_locality
+(Szakaszokhoz tartozó régiók elsötétítése) as darken_segment_regions
+(Az algoritmus kimenetének\nkörbevágásához használt pontok száma) as points_used
+
+
+user - outline_enable
+user -- outline_color
+user --- display_distance
+user ---- positive_color
+user --- negative_color
+user -- display_contours
+fill_between_contours -- user
+contour_frequency --- user
+contour_intensity ---- user
+display_shadows ---- user
+shadow_locality --- user
+darken_segment_regions -- user
+points_used - user
+
+@enduml

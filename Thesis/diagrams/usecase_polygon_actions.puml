@@ -1,0 +1,18 @@
+@startuml
+scale 2
+:Felhasználó: as user
+
+(Új csoport hozzáadása) as new_group
+(Csoport törlése) as delete_group
+(Csúcs hozzáadása) as add_vertex
+(Csoport eltolása) as offset_group
+(Csúcs törlése) as delete_vertex
+
+
+user -- new_group
+user - delete_group
+add_vertex -- user
+offset_group -- user
+delete_vertex - user
+
+@enduml

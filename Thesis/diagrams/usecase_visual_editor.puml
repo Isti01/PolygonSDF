@@ -1,0 +1,18 @@
+@startuml
+scale 2
+:Felhasználó: as user
+
+(Csúcspontok mozgatása) as move_vertex
+(Csoportok mozgatása) as move_group
+(Vászon mozgatása) as pan_and_zoom
+(Csúcspont beszúrása) as insert_vertex
+(Váltás a háromdimenziós\nalgoritmus kimenet nézetre) as switch_to_3d_view
+
+
+user -- move_vertex
+user - move_group
+pan_and_zoom -- user
+insert_vertex -- user
+switch_to_3d_view - user
+
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+scale 2
+:Felhasználó: as user
+
+(Új poligon hozzáadása) as new_polygon
+(Új kezdőpoligon) as new_example_polygon
+(Visszalépés) as undo
+(Előzmények törlése) as clear_history
+(A vágásokat végző\nalgoritmus futtatása) as run_algorithm
+(Poligon hozzáfűzése eltolással) as add_polygon_with_offset
+(Poligon mentése) as save_polygon
+(Algoritmuskimenet mentése) as save_algorithm_output
+
+
+user -- new_polygon
+user -- new_example_polygon
+user -- undo
+user - clear_history
+save_algorithm_output -- user
+run_algorithm - user
+add_polygon_with_offset -- user
+save_polygon - user
+
+
+run_algorithm .right.> save_algorithm_output : <<precedes>>
+
+@enduml

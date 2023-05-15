@@ -27,60 +27,21 @@ Point Segment::getPoint2() const
     return mEndpoints[1];
 }
 
-bool inAABB(const Point &e1, const Point &e2, const Point &p)
+static bool isIntersecting(const Segment &s1, const Segment &s2)
 {
-    return p.x <= glm::max(e1.x, e2.x) && p.x >= glm::min(e1.x, e2.x) && p.y <= glm::max(e1.y, e2.y) &&
-           p.y >= glm::min(e1.y, e2.y);
-}
-
-double orientation(const Point &p, const Point &q, const Point &r)
-{
-    double o = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
-
-    if (glm::abs(o) < CommonConstants::kEpsilon)
+    glm::dvec2 v1 = s1.getPoint1() - s2.getPoint1();
+    glm::dvec2 v2 = s2.getEdgeVector();
+    glm::dvec2 v3(-s1.getEdgeVector().y, s1.getEdgeVector().x);
+    double d = glm::dot(v2, v3);
+    if (glm::abs(d) < CommonConstants::kEpsilon)
     {
-        return 0;
+        return false;
     }
-
-    return glm::sign(o);
+    double t = glm::dot(v1, v3) / d;
+    return t >= 0.0 && t <= 1.0;
 }
 
 bool Segment::isIntersecting(const Segment &other) const
 {
-    const auto &p1 = getPoint1();
-    const auto &e1 = getPoint2();
-    const auto &p2 = other.getPoint1();
-    const auto &e2 = other.getPoint2();
-
-    double o1 = orientation(p1, e1, p2);
-    double o2 = orientation(p1, e1, e2);
-    double o3 = orientation(p2, e2, p1);
-    double o4 = orientation(p2, e2, e1);
-
-    if (glm::all(glm::notEqual(glm::dvec2{o1, o3}, glm::dvec2{o2, o4}, CommonConstants::kEpsilon)))
-    {
-        return true;
-    }
-
-    if (glm::abs(o1) < CommonConstants::kEpsilon && inAABB(p1, p2, e1))
-    {
-        return true;
-    }
-
-    if (glm::abs(o2) < CommonConstants::kEpsilon && inAABB(p1, e2, e1))
-    {
-        return true;
-    }
-
-    if (glm::abs(o3) < CommonConstants::kEpsilon && inAABB(p2, p1, e2))
-    {
-        return true;
-    }
-
-    if (glm::abs(o4) < CommonConstants::kEpsilon && inAABB(p2, e1, e2))
-    {
-        return true;
-    }
-
-    return false;
+    return ::isIntersecting(other, *this) && ::isIntersecting(*this, other);
 }

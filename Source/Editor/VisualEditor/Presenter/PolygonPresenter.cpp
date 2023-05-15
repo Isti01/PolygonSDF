@@ -11,10 +11,8 @@ PolygonPresenter::SharedPtr PolygonPresenter::create(Editor::SharedPtr pEditor, 
 }
 
 PolygonPresenter::PolygonPresenter(Editor::SharedPtr pEditor, PolygonRenderer::SharedPtr pRenderer)
-    : mpEditor(std::move(pEditor)), mpRenderer(std::move(pRenderer)),
-      mpPolygonPeekingAggregator(StackPeekingEditorAggregator::create()), mpDragHandler(DragMouseInputHandler::create())
+    : Presenter(std::move(pEditor), std::move(pRenderer))
 {
-    transformPolygonRenderer();
 }
 
 void PolygonPresenter::render(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo)
@@ -34,7 +32,7 @@ bool PolygonPresenter::onMouseEvent(const MouseEvent &mouseEvent)
     if (mouseEvent.type == MouseEvent::Type::Wheel)
     {
         mScale += mouseEvent.wheelDelta.y * mScaleSpeed;
-        transformPolygonRenderer();
+        transformPresenter();
         return true;
     }
 
@@ -46,50 +44,14 @@ bool PolygonPresenter::onMouseEvent(const MouseEvent &mouseEvent)
         auto mappedLastPos = CoordinateUtil::screenToSceneSpaceCoordinate(transform, mouseEvent.pos - delta);
         auto mappedDelta = mappedCurrentPos - mappedLastPos;
         mTranslation += float2(mappedDelta.x, -mappedDelta.y);
-        transformPolygonRenderer();
+        transformPresenter();
         return true;
     }
 
     return false;
 }
 
-void PolygonPresenter::resetInputState()
-{
-    mpDragHandler->resetInputState();
-}
-
-void PolygonPresenter::updatePolygon()
-{
-    auto pResult = mpPolygonPeekingAggregator->peekEditor(mpEditor);
-    FALCOR_ASSERT(pResult);
-
-    auto pPolygon = pResult->getEntry().polygon;
-    if (mpPolygon.get() == pPolygon.get())
-    {
-        return;
-    }
-
-    mpPolygon = pPolygon;
-
-    if (mpPolygon != nullptr)
-    {
-        mpRenderer->setPolygon(pPolygon);
-    }
-}
-
-float PolygonPresenter::getMappedScale() const
-{
-    return glm::pow(2.0f, mScale);
-}
-
-void PolygonPresenter::resetTransform()
-{
-    mScale = 4;
-    mTranslation = mpPolygon ? float2(mpPolygon->getCenter()) : float2{0, 0};
-    transformPolygonRenderer();
-}
-
-void PolygonPresenter::transformPolygonRenderer()
+void PolygonPresenter::transformPresenter()
 {
     auto translation = rmcv::translate(-float3(mTranslation, 0));
 

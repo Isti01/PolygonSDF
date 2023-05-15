@@ -126,6 +126,7 @@ target_sources(PolygonSDF PRIVATE
 
         Source/Editor/VisualEditor/Presenter/PolygonPresenter.cpp
         Source/Editor/VisualEditor/Presenter/PolygonPresenter.h
+        Source/Editor/VisualEditor/Presenter/Presenter.cpp
         Source/Editor/VisualEditor/Presenter/Presenter.h
         Source/Editor/VisualEditor/Presenter/SdfAlgorithmOutputPresenter.cpp
         Source/Editor/VisualEditor/Presenter/SdfAlgorithmOutputPresenter.h
@@ -325,6 +326,7 @@ target_sources(PolygonSDFTest PRIVATE
 
         Source/Editor/VisualEditor/Presenter/PolygonPresenter.cpp
         Source/Editor/VisualEditor/Presenter/PolygonPresenter.h
+        Source/Editor/VisualEditor/Presenter/Presenter.cpp
         Source/Editor/VisualEditor/Presenter/Presenter.h
         Source/Editor/VisualEditor/Presenter/SdfAlgorithmOutputPresenter.cpp
         Source/Editor/VisualEditor/Presenter/SdfAlgorithmOutputPresenter.h

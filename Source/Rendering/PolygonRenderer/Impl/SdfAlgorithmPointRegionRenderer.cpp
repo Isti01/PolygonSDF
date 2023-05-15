@@ -35,7 +35,7 @@ void SdfAlgorithmPointRegionRenderer::uploadPolygonData()
 
     std::vector<PointRegion> pointRegions = mpPolygon->getAlgorithmOutput()->getPointRegions();
     auto center = mpPolygon->getCenter();
-    double circleRadius = glm::max(getMaxDistanceFromPointInPolygon(center, mpPolygon) * 3, kMinCutDistanceFromOrigin);
+    double circleRadius = glm::max(mpPolygon->getCircumscribedCircleRadiusFromCenter() * 3, kMinCutDistanceFromOrigin);
     for (size_t i = 0; i < mPointsToCutAround; i++)
     {
         double t = (double(i) / double(mPointsToCutAround)) * glm::pi<double>() * 2;

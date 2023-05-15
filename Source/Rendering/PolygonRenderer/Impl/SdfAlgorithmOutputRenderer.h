@@ -23,7 +23,6 @@ class SdfAlgorithmOutputRenderer : public PolygonRenderer
   protected:
     SdfAlgorithmOutputRenderer(GraphicsState::SharedPtr pGraphicsState);
 
-    static double getMaxDistanceFromPointInPolygon(const Point &point, const Polygon::SharedPtr &pPolygon);
     void transformImpl() override;
     void init() override;
     void renderImpl(RenderContext *pRenderContext) override;

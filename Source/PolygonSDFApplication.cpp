@@ -13,9 +13,9 @@ using namespace psdf;
 void PolygonSDFApplication::onLoad(RenderContext *pRenderContext)
 {
     mpEditor = Editor::create(EditorStack::create());
+    mpEditor->addCommand(SetPolygonStackCommand::create(Polygon::kExamplePolygon));
     mpGuiEditor = GuiEditor::create(mpEditor);
     mpVisualEditor = VisualEditor::create(mpEditor);
-    mpEditor->addCommand(SetPolygonStackCommand::create(Polygon::kExamplePolygon));
     mpEditor->addConstraint(DeleteGroupEditorConstraint::create());
     mpEditor->addConstraint(DeletePointEditorConstraint::create());
     mpEditor->addConstraint(SdfPlaneAlgorithmConstraint::create());

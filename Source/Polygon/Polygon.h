@@ -30,6 +30,7 @@ class Polygon : public std::enable_shared_from_this<Polygon>
     bool saveJson(const std::string &path) const;
 
     Point getCenter() const;
+    double getCircumscribedCircleRadiusFromCenter() const;
 
     std::vector<SubPolygon> getPolygons() const;
     Segments getAllSegments() const;

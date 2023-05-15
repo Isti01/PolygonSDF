@@ -23,7 +23,7 @@ class AspectRatioIndependentPolygonRenderer : public ProxyPolygonRenderer
   private:
     static constexpr float kOrthoCamWidth = 50;
 
-    float mAspectRatio = 1;
+    float mAspectRatio = 0;
 };
 
 } // namespace psdf

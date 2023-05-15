@@ -27,6 +27,8 @@ VisualEditor::VisualEditor(Editor::SharedPtr pEditor)
     mpEditor->publishEvent(VisualEditorModeChangedPublishedEvent::create("V - Pan and Zoom"), this);
     mpEditor->addConsumer(mpEditorRendererUpdatingConsumer);
     mpEditor->addConsumer(mpAlgorithmRendererUpdatingConsumer);
+    mpAlgorithmOutputPresenter->resetTransform();
+    mpPolygonPresenter->resetTransform();
 }
 
 VisualEditor::~VisualEditor()

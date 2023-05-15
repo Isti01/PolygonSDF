@@ -17,10 +17,14 @@ AspectRatioIndependentPolygonRenderer::AspectRatioIndependentPolygonRenderer(
 
 void AspectRatioIndependentPolygonRenderer::setFbo(const Fbo::SharedPtr &pFbo)
 {
-    updateAspectRatio();
-
-    mAspectRatio =
+    float newAspectRatio =
         pFbo->getHeight() != 0 && pFbo->getWidth() != 0 ? ((float)pFbo->getWidth() / (float)pFbo->getHeight()) : 1;
+    if (mAspectRatio != newAspectRatio)
+    {
+        mAspectRatio = newAspectRatio;
+        updateAspectRatio();
+    }
+
     mpPolygonRenderer->setFbo(pFbo);
 }
 

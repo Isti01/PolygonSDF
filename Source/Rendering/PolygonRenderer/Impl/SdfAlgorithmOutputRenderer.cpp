@@ -31,20 +31,6 @@ static VertexLayout::SharedPtr getVertexLayout()
     return pLayout;
 }
 
-double SdfAlgorithmOutputRenderer::getMaxDistanceFromPointInPolygon(const Point &origin,
-                                                                    const Polygon::SharedPtr &pPolygon)
-{
-    double maxDistance = glm::distance(origin, pPolygon->getPolygons()[0].getPoints()[0]);
-    for (const auto &subPolygon : pPolygon->getPolygons())
-    {
-        for (const auto &point : subPolygon.getPoints())
-        {
-            maxDistance = glm::max(maxDistance, glm::distance(origin, point));
-        }
-    }
-    return maxDistance;
-}
-
 void SdfAlgorithmOutputRenderer::setPolygon(const Polygon::SharedPtr &pPolygon)
 {
     PolygonRenderer::setPolygon(pPolygon);

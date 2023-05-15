@@ -12,10 +12,8 @@ SdfAlgorithmOutputPresenter::SharedPtr SdfAlgorithmOutputPresenter::create(Edito
 
 SdfAlgorithmOutputPresenter::SdfAlgorithmOutputPresenter(Editor::SharedPtr pEditor,
                                                          PolygonRenderer::SharedPtr outputRenderer)
-    : mpEditor(std::move(pEditor)), mpPolygonPeekingAggregator(StackPeekingEditorAggregator::create()),
-      mpDragHandler(DragMouseInputHandler::create()), mpRenderer(std::move(outputRenderer))
+    : Presenter(std::move(pEditor), std::move(outputRenderer))
 {
-    transformPresenter();
 }
 
 void SdfAlgorithmOutputPresenter::render(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo)
@@ -47,39 +45,6 @@ bool SdfAlgorithmOutputPresenter::onMouseEvent(const MouseEvent &mouseEvent)
     }
 
     return false;
-}
-
-void SdfAlgorithmOutputPresenter::resetInputState()
-{
-    mpDragHandler->resetInputState();
-}
-
-void SdfAlgorithmOutputPresenter::updatePolygon()
-{
-    auto pResult = mpPolygonPeekingAggregator->peekEditor(mpEditor);
-    FALCOR_ASSERT(pResult);
-
-    auto pPolygon = pResult->getEntry().polygon;
-    if (mpPolygon.get() == pPolygon.get())
-    {
-        return;
-    }
-
-    mpPolygon = pPolygon;
-    mpRenderer->setPolygon(mpPolygon);
-}
-
-void SdfAlgorithmOutputPresenter::resetTransform()
-{
-    mScale = 4;
-    mRotation = float2{0};
-    mTranslation = mpPolygon ? float2(mpPolygon->getCenter()) : float2{0, 0};
-    transformPresenter();
-}
-
-float SdfAlgorithmOutputPresenter::getMappedScale() const
-{
-    return glm::pow(2.0f, mScale);
 }
 
 void SdfAlgorithmOutputPresenter::transformPresenter()

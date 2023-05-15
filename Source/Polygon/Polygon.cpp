@@ -152,3 +152,17 @@ bool Polygon::saveJson(const std::string &path) const
 
     return true;
 }
+
+double psdf::Polygon::getCircumscribedCircleRadiusFromCenter() const
+{
+    glm::dvec2 origin = getCenter();
+    double maxDistance = glm::distance(origin, mPolygons[0].getPoints()[0]);
+    for (const auto &subPolygon : mPolygons)
+    {
+        for (const auto &point : subPolygon.getPoints())
+        {
+            maxDistance = glm::max(maxDistance, glm::distance(origin, point));
+        }
+    }
+    return glm::abs(maxDistance);
+}

@@ -54,5 +54,12 @@ void SdfAlgorithmPointRegionRenderer::uploadPolygonData()
         region.createMesh(vertices, indices, region.getPoint());
     }
 
-    mpRenderObject = RenderObject::create(vertices, indices, getVertexLayout());
+    if (vertices.empty() || indices.empty())
+    {
+        mpRenderObject = nullptr;
+    }
+    else
+    {
+        mpRenderObject = RenderObject::create(vertices, indices, getVertexLayout());
+    }
 }

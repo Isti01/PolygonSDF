@@ -28,6 +28,10 @@ glm::dvec2 LineRegion::getDir() const
 
 void LineRegion::cutWithPoints(std::vector<LineRegion> &lineRegions, const std::vector<PointRegion> &pointRegions)
 {
+    if (pointRegions.empty() || lineRegions.empty())
+    {
+        return;
+    }
     std::vector<Point> points;
     points.reserve(lineRegions.size() - 1);
     std::vector<glm::dvec2> edgeVectors;
@@ -106,6 +110,10 @@ glm::dvec2 LineRegion::computeBisectorIntersection(const glm::dvec2 &point, cons
 
 void LineRegion::cutWithLines(std::vector<LineRegion> &lineRegions, const std::vector<LineRegion> &cuttingRegions)
 {
+    if (lineRegions.empty() || cuttingRegions.empty())
+    {
+        return;
+    }
     std::vector<Point> points;
     points.reserve(lineRegions.size() - 1);
     std::vector<glm::dvec2> edgeVectors;

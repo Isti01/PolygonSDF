@@ -49,8 +49,10 @@ void SdfAlgorithmOutputRenderer::renderImpl(RenderContext *context)
 
     FALCOR_ASSERT(mpGraphicsState);
     FALCOR_ASSERT(mpProgramVars);
-    FALCOR_ASSERT(mpRenderObject);
-
+    if (!mpRenderObject)
+    {
+        return;
+    }
     mpGraphicsState->setVao(mpRenderObject->pVao);
     context->drawIndexed(mpGraphicsState.get(), mpProgramVars.get(), mpRenderObject->indexCount, 0, 0);
 }

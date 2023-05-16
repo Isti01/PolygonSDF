@@ -76,6 +76,7 @@ PolygonRenderer::SharedPtr PolygonRendererFactory::getAlgorithmOutputRenderer()
             getGraphicsStateForAlgorithmOutputRenderer("PolygonSDF/Shaders/LineRegionAlgorithmOutput.3d.slang")),
         SdfAlgorithmPointRegionRenderer::create(
             getGraphicsStateForAlgorithmOutputRenderer("PolygonSDF/Shaders/PointRegionAlgorithmOutput.3d.slang")),
+        PolygonOutlineRenderer::create(getOutlineRendererGS()),
     });
     auto renderer = AspectRatioIndependentPolygonRenderer::create(combined);
     for (const auto &property : RendererProperties::kInitialProperties)

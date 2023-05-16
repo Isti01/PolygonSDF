@@ -16,6 +16,10 @@ PointRegion::PointRegion(std::vector<glm::dvec2> bounds, Point point, double cor
 
 void PointRegion::cutWithPoints(std::vector<PointRegion> &pointRegions, const std::vector<PointRegion> &cuttingRegions)
 {
+    if (pointRegions.empty() || cuttingRegions.empty())
+    {
+        return;
+    }
     std::vector<Point> points;
     points.reserve(pointRegions.size() - 1);
     std::vector<glm::dvec2> edgeVectors;
@@ -48,6 +52,10 @@ void PointRegion::cutWithPoints(std::vector<PointRegion> &pointRegions, const st
 
 void PointRegion::cutWithLines(std::vector<PointRegion> &pointRegions, const std::vector<LineRegion> &lineRegions)
 {
+    if (pointRegions.empty() || lineRegions.empty())
+    {
+        return;
+    }
     if (pointRegions.empty() || lineRegions.empty())
     {
         return;

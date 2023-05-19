@@ -64,13 +64,13 @@ void GuiShapeActionsMenu::renderGui(Gui::Window &window)
     }
 }
 
-bool pointEntry(Gui::Group &window, float2 &point, size_t index)
+bool pointEntry(Gui::Group &window, float2 &vertex, size_t index)
 {
     std::stringstream ss;
     ss << "[Vertex " << index << "]: \t";
     window.text(ss.str());
     ImGui::SameLine();
-    return window.var("", point);
+    return window.var("", vertex);
 }
 
 void GuiShapeActionsMenu::showVertexList(size_t outlineIndex, Gui::Group &window)
@@ -91,10 +91,10 @@ void GuiShapeActionsMenu::showVertexList(size_t outlineIndex, Gui::Group &window
     for (size_t i = 0; i < vertices.size(); i++)
     {
         WithImGuiId vertexId(static_cast<int>(i));
-        float2 point = vertices[i];
-        if (pointEntry(window, point, i))
+        float2 vertex = vertices[i];
+        if (pointEntry(window, vertex, i))
         {
-            mpEditor->addCommand(UpdateVertexStackCommand::create(outlineIndex, i, point));
+            mpEditor->addCommand(UpdateVertexStackCommand::create(outlineIndex, i, vertex));
         }
         if (showDeleteButtons && window.button("Delete Vertex", true))
         {
@@ -112,11 +112,11 @@ void GuiShapeActionsMenu::showGroupControls(size_t outlineIndex, Gui::Group &win
         }
 
         window.text("Add New Vertex");
-        window.var("", mNewPoint);
+        window.var("", mNewVertex);
         if (window.button("Add Vertex", true))
         {
-            mpEditor->addCommand(AddVertexStackCommand::create(outlineIndex, mNewPoint));
-            mNewPoint = float2{0};
+            mpEditor->addCommand(AddVertexStackCommand::create(outlineIndex, mNewVertex));
+            mNewVertex = float2{0};
         }
     }
     {

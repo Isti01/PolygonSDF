@@ -63,10 +63,10 @@ void VertexRegion::cutWithEdges(std::vector<VertexRegion> &vertexRegions, const 
         vertices.clear();
         edgeVectors.clear();
         Vertex vertex = region.getVertex();
-        for (const auto &lineRegion : edgeRegions)
+        for (const auto &edgeRegion : edgeRegions)
         {
-            const Vertex &segmentPoint1 = lineRegion.getEdge().getVertex1();
-            const Vertex &segmentPoint2 = lineRegion.getEdge().getVertex2();
+            const Vertex &segmentPoint1 = edgeRegion.getEdge().getVertex1();
+            const Vertex &segmentPoint2 = edgeRegion.getEdge().getVertex2();
 
             glm::dvec2 edgeVector1 = segmentPoint1 - vertex;
             glm::dvec2 edgeVector2 = segmentPoint2 - vertex;

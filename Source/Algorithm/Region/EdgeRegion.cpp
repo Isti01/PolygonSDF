@@ -31,23 +31,23 @@ void EdgeRegion::cutWithVertices(std::vector<EdgeRegion> &edgeRegions, const std
     {
         return;
     }
-    std::vector<Vertex> points;
-    points.reserve(edgeRegions.size() - 1);
+    std::vector<Vertex> vertices;
+    vertices.reserve(edgeRegions.size() - 1);
     std::vector<glm::dvec2> edgeVectors;
     edgeVectors.reserve(edgeRegions.size() - 1);
     for (auto &region : edgeRegions)
     {
-        points.clear();
+        vertices.clear();
         edgeVectors.clear();
-        Vertex point1 = region.getEdge().getVertex1();
-        Vertex point2 = region.getEdge().getVertex2();
+        Vertex vertex1 = region.getEdge().getVertex1();
+        Vertex vertex2 = region.getEdge().getVertex2();
         glm::dvec2 dir = region.getDir();
         glm::dvec2 normal{dir.y, -dir.x};
 
-        for (const auto &pointRegion : vertexRegions)
+        for (const auto &vertexRegion : vertexRegions)
         {
-            glm::dvec2 ba1 = pointRegion.getVertex() - point1;
-            glm::dvec2 ba2 = pointRegion.getVertex() - point2;
+            glm::dvec2 ba1 = vertexRegion.getVertex() - vertex1;
+            glm::dvec2 ba2 = vertexRegion.getVertex() - vertex2;
 
             if (glm::dot(ba1, ba1) < CommonConstants::kEpsilon || glm::dot(ba2, ba2) < CommonConstants::kEpsilon ||
                 glm::abs(glm::dot(normal, ba1)) < CommonConstants::kEpsilon ||
@@ -58,19 +58,19 @@ void EdgeRegion::cutWithVertices(std::vector<EdgeRegion> &edgeRegions, const std
             double t1 = glm::dot(ba1, ba1) / (2.0 * glm::dot(normal, ba1));
             double t2 = glm::dot(ba2, ba2) / (2.0 * glm::dot(normal, ba2));
 
-            glm::dvec2 x = point1 + normal * t1;
-            glm::dvec2 y = point2 + normal * t2;
+            glm::dvec2 x = vertex1 + normal * t1;
+            glm::dvec2 y = vertex2 + normal * t2;
             glm::dvec2 d = y - x;
             glm::dvec2 m{d.y, -d.x};
-            if (glm::dot(m, x - point1) < 0)
+            if (glm::dot(m, x - vertex1) < 0)
             {
                 m *= -1;
             }
 
-            points.emplace_back(x);
+            vertices.emplace_back(x);
             edgeVectors.emplace_back(m);
         }
-        region.polyCut(points, edgeVectors);
+        region.polyCut(vertices, edgeVectors);
     }
 }
 
@@ -107,33 +107,33 @@ void EdgeRegion::cutWithEdges(std::vector<EdgeRegion> &edgeRegions, const std::v
     {
         return;
     }
-    std::vector<Vertex> points;
-    points.reserve(edgeRegions.size() - 1);
+    std::vector<Vertex> vertices;
+    vertices.reserve(edgeRegions.size() - 1);
     std::vector<glm::dvec2> edgeVectors;
     edgeVectors.reserve(edgeRegions.size() - 1);
     for (auto &region : edgeRegions)
     {
-        points.clear();
+        vertices.clear();
         edgeVectors.clear();
-        Vertex point1 = region.getEdge().getVertex1();
-        Vertex point2 = region.getEdge().getVertex2();
+        Vertex vertex1 = region.getEdge().getVertex1();
+        Vertex vertex2 = region.getEdge().getVertex2();
         glm::dvec2 dir = region.getDir();
         glm::dvec2 normal{dir.y, -dir.x};
 
         for (const auto &bRegion : cuttingRegions)
         {
             glm::dvec2 bPoint1 = bRegion.getEdge().getVertex2();
-            glm::dvec2 bPoint2 = bRegion.getEdge().getVertex1(); // the points are flipped on purpose
+            glm::dvec2 bPoint2 = bRegion.getEdge().getVertex1(); // the vertices are flipped on purpose
             glm::dvec2 bDir = -bRegion.getDir();
 
-            if (glm::dot(dir, point1 - bPoint1) * glm::sqrt(glm::dot(point1 - bPoint2, point1 - bPoint2)) <
-                glm::dot(dir, point1 - bPoint2) * glm::sqrt(glm::dot(point1 - bPoint1, point1 - bPoint1)))
+            if (glm::dot(dir, vertex1 - bPoint1) * glm::sqrt(glm::dot(vertex1 - bPoint2, vertex1 - bPoint2)) <
+                glm::dot(dir, vertex1 - bPoint2) * glm::sqrt(glm::dot(vertex1 - bPoint1, vertex1 - bPoint1)))
             {
                 continue;
             }
             glm::dvec2 bNormal{-bDir.y, bDir.x};
             bool isParallel = glm::abs(glm::dot(dir, bNormal)) <= CommonConstants::kEpsilon;
-            if (isParallel && glm::abs(glm::dot(bPoint1 - point1, normal)) < CommonConstants::kEpsilon)
+            if (isParallel && glm::abs(glm::dot(bPoint1 - vertex1, normal)) < CommonConstants::kEpsilon)
             {
                 continue;
             }
@@ -141,15 +141,15 @@ void EdgeRegion::cutWithEdges(std::vector<EdgeRegion> &edgeRegions, const std::v
             glm::dvec2 g;
             if (isParallel)
             {
-                g = (point1 + point2 + bPoint1 + bPoint2) / 4.0;
+                g = (vertex1 + vertex2 + bPoint1 + bPoint2) / 4.0;
             }
             else
             {
-                g = (glm::dot(bPoint1 - point1, bNormal) / glm::dot(dir, bNormal)) * dir + point1;
+                g = (glm::dot(bPoint1 - vertex1, bNormal) / glm::dot(dir, bNormal)) * dir + vertex1;
             }
 
-            double ga1 = glm::dot(g - point1, dir);
-            double ga2 = glm::dot(g - point2, dir);
+            double ga1 = glm::dot(g - vertex1, dir);
+            double ga2 = glm::dot(g - vertex2, dir);
             double gb1 = glm::dot(g - bPoint1, bDir);
             double gb2 = glm::dot(g - bPoint2, bDir);
 
@@ -162,32 +162,32 @@ void EdgeRegion::cutWithEdges(std::vector<EdgeRegion> &edgeRegions, const std::v
             glm::dvec2 x, y;
             if (MathUtil::isMonotonic<double, 3>({ga1, gb1, ga2}, CommonConstants::kEpsilon))
             {
-                x = EdgeRegion::computeParabolics(point1, normal, bPoint1);
+                x = EdgeRegion::computeParabolics(vertex1, normal, bPoint1);
             }
             else
             {
-                x = EdgeRegion::computeBisectorIntersection(point1, normal, bPoint1, bNormal, g, isParallel);
+                x = EdgeRegion::computeBisectorIntersection(vertex1, normal, bPoint1, bNormal, g, isParallel);
             }
             if (MathUtil::isMonotonic<double, 3>({ga1, gb2, ga2}, CommonConstants::kEpsilon))
             {
-                y = EdgeRegion::computeParabolics(point2, normal, bPoint2);
+                y = EdgeRegion::computeParabolics(vertex2, normal, bPoint2);
             }
             else
             {
-                y = EdgeRegion::computeBisectorIntersection(point2, normal, bPoint2, bNormal, g, isParallel);
+                y = EdgeRegion::computeBisectorIntersection(vertex2, normal, bPoint2, bNormal, g, isParallel);
             }
 
             glm::dvec2 d = y - x;
             glm::dvec2 m{d.y, -d.x};
-            if (glm::dot(m, y - point1) + glm::dot(m, x - point2) < 0)
+            if (glm::dot(m, y - vertex1) + glm::dot(m, x - vertex2) < 0)
             {
                 m = -m;
             }
 
-            points.emplace_back(x);
+            vertices.emplace_back(x);
             edgeVectors.emplace_back(m);
         }
-        region.polyCut(points, edgeVectors);
+        region.polyCut(vertices, edgeVectors);
     }
 }
 

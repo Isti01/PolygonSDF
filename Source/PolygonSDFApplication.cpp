@@ -55,14 +55,6 @@ bool PolygonSDFApplication::onMouseEvent(const MouseEvent &mouseEvent)
     return mpVisualEditor->onMouseEvent(mouseEvent);
 }
 
-void PolygonSDFApplication::onHotReload(HotReloadFlags reloaded)
-{
-}
-
-void PolygonSDFApplication::onResizeSwapChain(uint32_t width, uint32_t height)
-{
-}
-
 void PolygonSDFApplication::onShutdown()
 {
     mpEditor->removeConsumer(mpGuiStateConsumer);

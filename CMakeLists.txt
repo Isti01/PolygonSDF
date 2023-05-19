@@ -196,6 +196,10 @@ target_link_libraries(PolygonSDF PRIVATE Falcor)
 set_target_properties(PolygonSDF PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${FALCOR_RUNTIME_OUTPUT_DIRECTORY})
 set_target_properties(PolygonSDF PROPERTIES VS_DEBUGGER_ENVIRONMENT "FALCOR_DEVMODE=1")
 
+target_copy_shaders(PolygonSDF PolygonSDF)
+target_copy_data_folder(PolygonSDF)
+target_source_group(PolygonSDF Samples)
+
 
 #### Main app executable
 add_executable(PolygonSDFApplication)
@@ -204,11 +208,6 @@ set_target_properties(PolygonSDFApplication PROPERTIES RUNTIME_OUTPUT_DIRECTORY 
 set_target_properties(PolygonSDFApplication PROPERTIES VS_DEBUGGER_ENVIRONMENT "FALCOR_DEVMODE=1")
 
 target_sources(PolygonSDFApplication PRIVATE Source/Main.cpp)
-
-target_copy_shaders(PolygonSDFApplication PolygonSDF)
-target_copy_data_folder(PolygonSDFApplication)
-
-target_source_group(PolygonSDFApplication Samples)
 
 
 #### A separate executable for testing
@@ -270,11 +269,6 @@ target_sources(PolygonSDFTest PRIVATE
         Tests/Main.cpp
         )
 
-target_copy_shaders(PolygonSDFTest PolygonSDF)
-target_copy_data_folder(PolygonSDFTest)
-
-target_source_group(PolygonSDFTest Samples)
-
 
 #### A separate executable for testing
 add_executable(PolygonSDFBenchmark)
@@ -288,8 +282,3 @@ target_sources(PolygonSDFBenchmark PRIVATE
 
         Tests/Benchmark/Main.cpp
         )
-
-target_copy_shaders(PolygonSDFBenchmark PolygonSDF)
-target_copy_data_folder(PolygonSDFBenchmark)
-
-target_source_group(PolygonSDFBenchmark Samples)

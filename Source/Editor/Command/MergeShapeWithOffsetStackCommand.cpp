@@ -22,8 +22,8 @@ Shape::SharedPtr MergeShapeWithOffsetStackCommand::perform(const Shape::SharedPt
     {
         for (const auto &group : mpShape->getOutlines())
         {
-            const auto &points = group.getVertices();
-            std::transform(points.begin(), points.end(), std::back_inserter(currentOutline),
+            const auto &vertices = group.getVertices();
+            std::transform(vertices.begin(), vertices.end(), std::back_inserter(currentOutline),
                            [&offset](const auto &point) { return point + offset; });
             mergedOutlines.emplace_back(currentOutline);
             currentOutline.clear();

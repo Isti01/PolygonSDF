@@ -6,12 +6,12 @@ static bool isCcwWindingOrder(const Outline &outline)
 {
     double sum = 0;
     const Outline::Vertices &vertices = outline.getVertices();
-    size_t pointsSize = vertices.size();
-    for (size_t i = 0; i < pointsSize; i++)
+    size_t verticesSize = vertices.size();
+    for (size_t i = 0; i < verticesSize; i++)
     {
-        Vertex point1 = vertices[i];
-        Vertex point2 = vertices[(i + 1) % pointsSize];
-        sum += (point2.x - point1.x) * (point2.y + point1.y);
+        Vertex vertex1 = vertices[i];
+        Vertex vertex2 = vertices[(i + 1) % verticesSize];
+        sum += (vertex2.x - vertex1.x) * (vertex2.y + vertex1.y);
     }
 
     return sum < 0;
@@ -57,9 +57,9 @@ static void reorderVerticesForTheAlgorithm(std::vector<Outline> &reorderedPolygo
         bool isOnInside = isOutlineInside(i, reorderedPolygons);
         if (isOnInside && isPolygonCcWindingOrder || (!isOnInside && !isPolygonCcWindingOrder))
         {
-            Outline::Vertices pointsCopy = outline.getVertices();
-            std::reverse(pointsCopy.begin(), pointsCopy.end());
-            outline = Outline(std::move(pointsCopy));
+            Outline::Vertices verticesCopy = outline.getVertices();
+            std::reverse(verticesCopy.begin(), verticesCopy.end());
+            outline = Outline(std::move(verticesCopy));
         }
     }
 }

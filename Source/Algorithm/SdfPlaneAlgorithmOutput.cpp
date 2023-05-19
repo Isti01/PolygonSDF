@@ -28,7 +28,7 @@ std::vector<EdgeRegion> SdfPlaneAlgorithmOutput::getEdgeRegions() const
     return mEdgeRegions;
 }
 
-static json getPointJson(Vertex vertex)
+static json getVertexJson(Vertex vertex)
 {
     json json;
     json["x"] = vertex.x;
@@ -42,7 +42,7 @@ static std::vector<json> getBoundsJson(const std::vector<Vertex> &bounds)
 
     for (const auto &vertex : bounds)
     {
-        boundJson.emplace_back(getPointJson(vertex));
+        boundJson.emplace_back(getVertexJson(vertex));
     }
 
     return boundJson;
@@ -61,19 +61,19 @@ bool SdfPlaneAlgorithmOutput::saveJson(const std::string &path) const
     std::vector<json> vertices;
     for (const auto &vertexRegion : mVertexRegions)
     {
-        json pointJson;
-        pointJson["vertex"] = getPointJson(vertexRegion.getVertex());
-        pointJson["cornerSign"] = vertexRegion.getCornerSign();
-        pointJson["bounds"] = getBoundsJson(vertexRegion.getBounds());
-        vertices.emplace_back(std::move(pointJson));
+        json vertexJson;
+        vertexJson["vertex"] = getVertexJson(vertexRegion.getVertex());
+        vertexJson["cornerSign"] = vertexRegion.getCornerSign();
+        vertexJson["bounds"] = getBoundsJson(vertexRegion.getBounds());
+        vertices.emplace_back(std::move(vertexJson));
     }
 
     std::vector<json> edges;
     for (const auto &edgeRegion : mEdgeRegions)
     {
         json lineJson;
-        lineJson["start"] = getPointJson(edgeRegion.getEdge().getVertex1());
-        lineJson["end"] = getPointJson(edgeRegion.getEdge().getVertex2());
+        lineJson["start"] = getVertexJson(edgeRegion.getEdge().getVertex1());
+        lineJson["end"] = getVertexJson(edgeRegion.getEdge().getVertex2());
         lineJson["bounds"] = getBoundsJson(edgeRegion.getBounds());
         edges.emplace_back(std::move(lineJson));
     }

@@ -25,7 +25,7 @@ class GuiShapeActionsMenu : public GuiEditorMenu
     void showGroupControls(size_t outlineIndex, Gui::Group &window);
 
   private:
-    float2 mNewPoint{0};
+    float2 mNewVertex{0};
     float2 mOutlineOffset{0};
 
     Editor::SharedPtr mpEditor;

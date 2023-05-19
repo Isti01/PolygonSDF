@@ -2,19 +2,20 @@
 
 #include "../Aggregator/StackPeekingEditorAggregator.h"
 #include "../Core/Editor.h"
+#include "GuiEditorMenu.h"
 
 namespace psdf
 {
 using namespace Falcor;
 
-class GuiPolygonActionsMenu
+class GuiPolygonActionsMenu : public GuiEditorMenu
 {
   public:
     using SharedPtr = std::shared_ptr<GuiPolygonActionsMenu>;
 
     static SharedPtr create(Editor::SharedPtr pEditor);
 
-    void renderGui(Gui::Window &window);
+    void renderGui(Gui::Window &window) override;
 
   protected:
     GuiPolygonActionsMenu(Editor::SharedPtr pEditor);

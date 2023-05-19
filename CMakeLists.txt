@@ -89,6 +89,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Event/UnknownCommandEvent.cpp
         Source/Editor/Event/UnknownCommandEvent.h
 
+        Source/Editor/GuiEditor/EditorGuideMenu.cpp
+        Source/Editor/GuiEditor/EditorGuideMenu.h
         Source/Editor/GuiEditor/EventMenu.cpp
         Source/Editor/GuiEditor/EventMenu.h
         Source/Editor/GuiEditor/EventMenuGui.cpp
@@ -97,6 +99,7 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/GuiEditor/GuiEditor.h
         Source/Editor/GuiEditor/GuiEditorActionsMenu.cpp
         Source/Editor/GuiEditor/GuiEditorActionsMenu.h
+        Source/Editor/GuiEditor/GuiEditorMenu.h
         Source/Editor/GuiEditor/GuiPolygonActionsMenu.cpp
         Source/Editor/GuiEditor/GuiPolygonActionsMenu.h
         Source/Editor/GuiEditor/GuiVisualizationSettingsMenu.cpp
@@ -289,6 +292,8 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/Event/UnknownCommandEvent.cpp
         Source/Editor/Event/UnknownCommandEvent.h
 
+        Source/Editor/GuiEditor/EditorGuideMenu.cpp
+        Source/Editor/GuiEditor/EditorGuideMenu.h
         Source/Editor/GuiEditor/EventMenu.cpp
         Source/Editor/GuiEditor/EventMenu.h
         Source/Editor/GuiEditor/EventMenuGui.cpp
@@ -297,6 +302,7 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/GuiEditor/GuiEditor.h
         Source/Editor/GuiEditor/GuiEditorActionsMenu.cpp
         Source/Editor/GuiEditor/GuiEditorActionsMenu.h
+        Source/Editor/GuiEditor/GuiEditorMenu.h
         Source/Editor/GuiEditor/GuiPolygonActionsMenu.cpp
         Source/Editor/GuiEditor/GuiPolygonActionsMenu.h
         Source/Editor/GuiEditor/GuiVisualizationSettingsMenu.cpp
@@ -539,6 +545,8 @@ target_sources(PolygonSDFBenchmark PRIVATE
         Source/Editor/Event/UnknownCommandEvent.cpp
         Source/Editor/Event/UnknownCommandEvent.h
 
+        Source/Editor/GuiEditor/EditorGuideMenu.cpp
+        Source/Editor/GuiEditor/EditorGuideMenu.h
         Source/Editor/GuiEditor/EventMenu.cpp
         Source/Editor/GuiEditor/EventMenu.h
         Source/Editor/GuiEditor/EventMenuGui.cpp
@@ -547,6 +555,7 @@ target_sources(PolygonSDFBenchmark PRIVATE
         Source/Editor/GuiEditor/GuiEditor.h
         Source/Editor/GuiEditor/GuiEditorActionsMenu.cpp
         Source/Editor/GuiEditor/GuiEditorActionsMenu.h
+        Source/Editor/GuiEditor/GuiEditorMenu.h
         Source/Editor/GuiEditor/GuiPolygonActionsMenu.cpp
         Source/Editor/GuiEditor/GuiPolygonActionsMenu.h
         Source/Editor/GuiEditor/GuiVisualizationSettingsMenu.cpp
@@ -576,6 +585,7 @@ target_sources(PolygonSDFBenchmark PRIVATE
 
         Source/Editor/VisualEditor/Presenter/PolygonPresenter.cpp
         Source/Editor/VisualEditor/Presenter/PolygonPresenter.h
+        Source/Editor/VisualEditor/Presenter/Presenter.cpp
         Source/Editor/VisualEditor/Presenter/Presenter.h
         Source/Editor/VisualEditor/Presenter/SdfAlgorithmOutputPresenter.cpp
         Source/Editor/VisualEditor/Presenter/SdfAlgorithmOutputPresenter.h

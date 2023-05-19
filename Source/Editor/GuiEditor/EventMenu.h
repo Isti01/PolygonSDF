@@ -3,19 +3,19 @@
 #include "../Consumer/EventMenuEditorConsumer.h"
 #include "../Core/Editor.h"
 #include "EventMenuGui.h"
-#include "Falcor.h"
+#include "GuiEditorMenu.h"
 
 namespace psdf
 {
 using namespace Falcor;
 
-class EventMenu
+class EventMenu: public GuiEditorMenu
 {
   public:
     using SharedPtr = std::shared_ptr<EventMenu>;
     static SharedPtr create(Editor::SharedPtr pEditor);
 
-    void renderGui(Gui::Window &window);
+    void renderGui(Gui::Window &window) override;
 
     ~EventMenu();
 

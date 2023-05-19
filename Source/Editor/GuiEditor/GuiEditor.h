@@ -1,14 +1,9 @@
 #pragma once
 
-#include "../Aggregator/StackPeekingEditorAggregator.h"
-#include "../Aggregator/StackSizeEditorAggregator.h"
 #include "../Consumer/VisualEditorStateChangeEditorConsumer.h"
-#include "EventMenu.h"
-#include "GuiEditorActionsMenu.h"
-#include "GuiPolygonActionsMenu.h"
-#include "GuiVisualizationSettingsMenu.h"
+#include "../Core/Editor.h"
+#include "GuiEditorMenu.h"
 #include <Falcor.h>
-#include <memory>
 
 namespace psdf
 {
@@ -31,10 +26,7 @@ class GuiEditor
   private:
     Editor::SharedPtr mpEditor;
     VisualEditorStateChangeEditorConsumer::SharedPtr mpStateChangeConsumer;
-    GuiVisualizationSettingsMenu::SharedPtr mpVisualizationsMenu;
-    GuiEditorActionsMenu::SharedPtr mpEditorActionsMenu;
-    GuiPolygonActionsMenu::SharedPtr mpPolygonActionsMenu;
-    EventMenu::SharedPtr mpEventMenu;
+    std::vector<GuiEditorMenu::SharedPtr> menus;
 };
 
 } // namespace psdf

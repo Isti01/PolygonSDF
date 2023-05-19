@@ -24,26 +24,19 @@ void PointRegion::cutWithPoints(std::vector<PointRegion> &pointRegions, const st
     points.reserve(pointRegions.size() - 1);
     std::vector<glm::dvec2> edgeVectors;
     edgeVectors.reserve(pointRegions.size() - 1);
-    for (size_t i = 0; i < pointRegions.size(); i++)
+    for (auto &region : pointRegions)
     {
         points.clear();
         edgeVectors.clear();
-        PointRegion &region = pointRegions[i];
-
-        for (size_t j = 0; j < cuttingRegions.size(); j++)
+        for (const auto &cuttingRegion : cuttingRegions)
         {
-            if (i == j)
-            {
-                continue;
-            }
-
-            glm::dvec2 edgeVector = cuttingRegions[j].mPoint - region.mPoint;
+            glm::dvec2 edgeVector = cuttingRegion.mPoint - region.mPoint;
             if (glm::dot(edgeVector, edgeVector) < CommonConstants::kEpsilon)
             {
                 continue;
             }
 
-            points.emplace_back((cuttingRegions[j].mPoint + region.mPoint) / 2.0);
+            points.emplace_back((cuttingRegion.mPoint + region.mPoint) / 2.0);
             edgeVectors.emplace_back(edgeVector);
         }
         region.polyCut(points, edgeVectors);
@@ -64,19 +57,13 @@ void PointRegion::cutWithLines(std::vector<PointRegion> &pointRegions, const std
     points.reserve(pointRegions.size() * (pointRegions[0].mSubdivisions - 3));
     std::vector<glm::dvec2> edgeVectors;
     edgeVectors.reserve(pointRegions.size() * (pointRegions[0].mSubdivisions - 3));
-    for (size_t i = 0; i < pointRegions.size(); i++)
+    for (auto &region : pointRegions)
     {
         points.clear();
         edgeVectors.clear();
-        PointRegion &region = pointRegions[i];
         Point point = region.getPoint();
-        for (size_t j = 0; j < pointRegions.size(); j++)
+        for (const auto &lineRegion : lineRegions)
         {
-            if (i == j)
-            {
-                continue;
-            }
-            const LineRegion &lineRegion = lineRegions[j];
             const Point &segmentPoint1 = lineRegion.getSegment().getPoint1();
             const Point &segmentPoint2 = lineRegion.getSegment().getPoint2();
 

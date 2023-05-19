@@ -36,25 +36,19 @@ void LineRegion::cutWithPoints(std::vector<LineRegion> &lineRegions, const std::
     points.reserve(lineRegions.size() - 1);
     std::vector<glm::dvec2> edgeVectors;
     edgeVectors.reserve(lineRegions.size() - 1);
-    for (size_t i = 0; i < lineRegions.size(); i++)
+    for (auto &region : lineRegions)
     {
         points.clear();
         edgeVectors.clear();
-        LineRegion &region = lineRegions[i];
         Point point1 = region.getSegment().getPoint1();
         Point point2 = region.getSegment().getPoint2();
         glm::dvec2 dir = region.getDir();
         glm::dvec2 normal{dir.y, -dir.x};
 
-        for (size_t j = 0; j < pointRegions.size(); j++)
+        for (const auto &pointRegion : pointRegions)
         {
-            if (i == j)
-            {
-                continue;
-            }
-
-            glm::dvec2 ba1 = pointRegions[j].getPoint() - point1;
-            glm::dvec2 ba2 = pointRegions[j].getPoint() - point2;
+            glm::dvec2 ba1 = pointRegion.getPoint() - point1;
+            glm::dvec2 ba2 = pointRegion.getPoint() - point2;
 
             if (glm::dot(ba1, ba1) < CommonConstants::kEpsilon || glm::dot(ba2, ba2) < CommonConstants::kEpsilon ||
                 glm::abs(glm::dot(normal, ba1)) < CommonConstants::kEpsilon ||
@@ -118,23 +112,17 @@ void LineRegion::cutWithLines(std::vector<LineRegion> &lineRegions, const std::v
     points.reserve(lineRegions.size() - 1);
     std::vector<glm::dvec2> edgeVectors;
     edgeVectors.reserve(lineRegions.size() - 1);
-    for (size_t i = 0; i < lineRegions.size(); i++)
+    for (auto &region : lineRegions)
     {
         points.clear();
         edgeVectors.clear();
-        LineRegion &region = lineRegions[i];
         Point point1 = region.getSegment().getPoint1();
         Point point2 = region.getSegment().getPoint2();
         glm::dvec2 dir = region.getDir();
         glm::dvec2 normal{dir.y, -dir.x};
 
-        for (size_t j = 0; j < cuttingRegions.size(); j++)
+        for (const auto &bRegion : cuttingRegions)
         {
-            if (i == j)
-            {
-                continue;
-            }
-            const LineRegion &bRegion = cuttingRegions[j];
             glm::dvec2 bPoint1 = bRegion.getSegment().getPoint2();
             glm::dvec2 bPoint2 = bRegion.getSegment().getPoint1(); // the points are flipped on purpose
             glm::dvec2 bDir = -bRegion.getDir();

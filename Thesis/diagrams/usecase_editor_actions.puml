@@ -2,13 +2,13 @@
 scale 2
 :Felhasználó: as user
 
-(Új poligon hozzáadása) as new_polygon
-(Új kezdőpoligon) as new_example_polygon
+(Új alakzat hozzáadása) as new_polygon
+(Alakzat beállítása a kezdőalakzatra) as new_example_polygon
 (Visszalépés) as undo
 (Előzmények törlése) as clear_history
 (A vágásokat végző\nalgoritmus futtatása) as run_algorithm
-(Poligon hozzáfűzése eltolással) as add_polygon_with_offset
-(Poligon mentése) as save_polygon
+(Alakzat hozzáfűzése eltolással) as add_polygon_with_offset
+(Alakzat mentése) as save_polygon
 (Algoritmuskimenet mentése) as save_algorithm_output
 
 

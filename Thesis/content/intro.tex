@@ -2,27 +2,17 @@
 \label{ch:intro}
 
 \section{Motiváció}\label{sec:motivacio}
-A számítógépes grafikában az előjeles távolságfüggvények rendkívül sokoldalúan felhasználhatóak.
-Például, sugárkövetéses algoritmusokban használják objektumok reprezentálására, lágy árnyékok hatékony számítására vagy szöveg megjelenítésére.
-Ennek következtében számos módszert fejlesztettek ki az előjeles távolságfüggvény meghatározására.
+A számítógépes grafikában az előjeles távolságfüggvények rendkívül sokoldalúan felhasználhatóak. Például, sugárkövetéses algoritmusokban használják objektumok reprezentálására, lágy árnyékok hatékony számítására vagy szöveg megjelenítésére. Ennek következtében számos módszert fejlesztettek ki az előjeles távolságfüggvény meghatározására.
 
 A szakdolgozatom keretein belül egy olyan algoritmust implementáltam, amely pontos előjeles távolságfüggvényt szolgáltat egy kétdimenziós sokszög számára.
 
 \section{Áttekintés}\label{sec:attekintes}
 A szoftverben a szerkesztői felület segítségével elkészített poligonokon futtathatjuk az algoritmust és menthetjük a kimenetet.
 
-A szerkesztőben két módon léphetünk interakcióba a szerkesztett sokszöggel: beviteli mezők és gombok segítségével, valamint billentyűkombinációkkal és egérkattintásokkal.
-Ezekkel a funkciókkal a felhasználó akár a csúcspontok szintjén is módosíthatja a poligont.
-Lehetséges a meglévő sokszögeket is betölteni a fájlrendszerből, így előre elkészített, magasabb szintű építőblokkokkal is dolgozhatunk.
+A szerkesztőben két módon léphetünk interakcióba a szerkesztett sokszöggel: beviteli mezők és gombok segítségével, valamint billentyűkombinációkkal és egérkattintásokkal. Ezekkel a funkciókkal a felhasználó akár a csúcspontok szintjén is módosíthatja a poligont. Lehetséges a meglévő sokszögeket is betölteni a fájlrendszerből, így előre elkészített, magasabb szintű építőblokkokkal is dolgozhatunk.
 
-A szerkesztés közben valós időben megjeleníthetjük a távolságfüggvényt.
-A program számos beállítást kínál a felhasználó számára, amelyekkel testreszabhatjuk a megjelenítést.
-Lehetőség van a színezés, árnyékolás és kontúrvonalak kinézetének meghatározására.
-A távolság vizualizációját ki is kapcsolhatjuk, mivel nagy csúcspontszámú sokszögek esetén erőforrásigényes lehet.
-Ilyenkor csak a körvonal kerül megjelenítésre.
+A szerkesztés közben valós időben megjeleníthetjük a távolságfüggvényt. A program számos beállítást kínál a felhasználó számára, amelyekkel testreszabhatjuk a megjelenítést. Lehetőség van a színezés, árnyékolás és kontúrvonalak kinézetének meghatározására. A távolság vizualizációját ki is kapcsolhatjuk, mivel nagy csúcspontszámú sokszögek esetén erőforrásigényes lehet. Ilyenkor csak a körvonal kerül megjelenítésre.
 
-Az algoritmus a síkot régiókra osztja fel, amelyeken belül triviálisan meghatározható a távolság.
-Egy kétdimenziós sokszöghöz egy háromdimenziós alakzatot rendel, ahol a mélységi komponens az előjeles távolság abszolútértékéből származik.
-Az értékelés során ez a tulajdonság rendkívül fontos, mivel a régiók gyakran átfedésben vannak egymással, és a helyes távolságértéket a Z-puffer algoritmus segítségével kapjuk meg a rajzolás során.
+Az algoritmus a síkot régiókra osztja fel, amelyeken belül triviálisan meghatározható a távolság. Egy kétdimenziós sokszöghöz egy háromdimenziós alakzatot rendel, ahol a mélységi komponens az előjeles távolság abszolútértékéből származik. Az értékelés során ez a tulajdonság rendkívül fontos, mivel a régiók gyakran átfedésben vannak egymással, és a helyes távolságértéket a Z-puffer algoritmus segítségével kapjuk meg a rajzolás során.
 
 A program rendelkezik egy külön nézettel is, ahol megtekinthetjük a generált háromdimenziós objektumot.

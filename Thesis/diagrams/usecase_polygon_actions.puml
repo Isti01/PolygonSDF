@@ -2,10 +2,10 @@
 scale 2
 :Felhasználó: as user
 
-(Új csoport hozzáadása) as new_group
-(Csoport törlése) as delete_group
+(Új poligon hozzáadása) as new_group
+(poligon törlése) as delete_group
 (Csúcs hozzáadása) as add_vertex
-(Csoport eltolása) as offset_group
+(poligon eltolása) as offset_group
 (Csúcs törlése) as delete_vertex
 
 

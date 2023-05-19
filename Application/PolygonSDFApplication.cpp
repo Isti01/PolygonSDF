@@ -1,9 +1,8 @@
 #include "PolygonSDFApplication.h"
-#include "../Tests/Util/TestUtils.h"
-#include "Editor/Command/SetShapeStackCommand.h"
-#include "Editor/Constraint/DeleteOutlineEditorConstraint.h"
-#include "Editor/Constraint/DeleteVertexEditorConstraint.h"
-#include "Editor/Constraint/SdfPlaneAlgorithmConstraint.h"
+#include "../Source/Editor/Command/SetShapeStackCommand.h"
+#include "../Source/Editor/Constraint/DeleteOutlineEditorConstraint.h"
+#include "../Source/Editor/Constraint/DeleteVertexEditorConstraint.h"
+#include "../Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.h"
 
 #include <memory>
 

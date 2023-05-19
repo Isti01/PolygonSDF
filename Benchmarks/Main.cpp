@@ -1,4 +1,4 @@
-#include "../../Source/Polygon/Shape.h"
+#include "../Source/Polygon/Shape.h"
 #include "Benchmark.h"
 
 using namespace psdf;

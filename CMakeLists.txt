@@ -188,8 +188,6 @@ add_library(PolygonSDF
         Source/Util/WithImGuiId.h
 
         Source/CommonConstants.h
-        Source/PolygonSDFApplication.cpp
-        Source/PolygonSDFApplication.h
         )
 
 target_link_libraries(PolygonSDF PRIVATE Falcor)
@@ -207,7 +205,10 @@ target_link_libraries(PolygonSDFApplication PRIVATE Falcor PolygonSDF)
 set_target_properties(PolygonSDFApplication PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${FALCOR_RUNTIME_OUTPUT_DIRECTORY})
 set_target_properties(PolygonSDFApplication PROPERTIES VS_DEBUGGER_ENVIRONMENT "FALCOR_DEVMODE=1")
 
-target_sources(PolygonSDFApplication PRIVATE Source/Main.cpp)
+target_sources(PolygonSDFApplication PRIVATE
+        Application/PolygonSDFApplication.cpp
+        Application/PolygonSDFApplication.h
+        Application/Main.cpp)
 
 
 #### A separate executable for testing
@@ -277,8 +278,8 @@ set_target_properties(PolygonSDFBenchmark PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${
 set_target_properties(PolygonSDFBenchmark PROPERTIES VS_DEBUGGER_ENVIRONMENT "FALCOR_DEVMODE=1")
 
 target_sources(PolygonSDFBenchmark PRIVATE
-        Tests/Benchmark/Benchmark.cpp
-        Tests/Benchmark/Benchmark.h
+        Benchmarks/Benchmark.cpp
+        Benchmarks/Benchmark.h
 
-        Tests/Benchmark/Main.cpp
+        Benchmarks/Main.cpp
         )

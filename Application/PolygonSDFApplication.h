@@ -3,10 +3,10 @@
 #include <Falcor.h>
 #include <utility>
 
-#include "Editor/Consumer/GuiStateEditorConsumer.h"
-#include "Editor/Core/Editor.h"
-#include "Editor/GuiEditor/GuiEditor.h"
-#include "Editor/VisualEditor/VisualEditor.h"
+#include "../Source/Editor/Consumer/GuiStateEditorConsumer.h"
+#include "../Source/Editor/Core/Editor.h"
+#include "../Source/Editor/GuiEditor/GuiEditor.h"
+#include "../Source/Editor/VisualEditor/VisualEditor.h"
 
 namespace psdf
 {

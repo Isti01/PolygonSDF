@@ -5,21 +5,21 @@ using namespace psdf;
 using namespace Falcor;
 
 SdfAlgorithmOutputPresenter::SharedPtr SdfAlgorithmOutputPresenter::create(Editor::SharedPtr pEditor,
-                                                                           PolygonRenderer::SharedPtr outputRenderer)
+                                                                           ShapeRenderer::SharedPtr outputRenderer)
 {
     return SharedPtr(new SdfAlgorithmOutputPresenter(std::move(pEditor), std::move(outputRenderer)));
 }
 
 SdfAlgorithmOutputPresenter::SdfAlgorithmOutputPresenter(Editor::SharedPtr pEditor,
-                                                         PolygonRenderer::SharedPtr outputRenderer)
+                                                         ShapeRenderer::SharedPtr outputRenderer)
     : Presenter(std::move(pEditor), std::move(outputRenderer))
 {
 }
 
 void SdfAlgorithmOutputPresenter::render(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo)
 {
-    updatePolygon();
-    if (!mpPolygon || !mpPolygon->getAlgorithmOutput())
+    updateShape();
+    if (!mpShape || !mpShape->getAlgorithmOutput())
     {
         return;
     }

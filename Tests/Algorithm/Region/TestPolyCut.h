@@ -45,7 +45,7 @@ TEST_CASE("Test 1 Region::polyCut")
     for (std::string line; std::getline(f, line);)
     {
         RegionTestcase testCase = readTestCase(line);
-        psdf::PointRegion region(testCase.startBounds, {0, 0}, 0, 5);
+        psdf::VertexRegion region(testCase.startBounds, {0, 0}, 0, 5);
         region.polyCut(testCase.points, testCase.edgeVectors);
         CHECK(psdf::TestUtils::areDouble2VectorsEqual(testCase.expectedBounds, region.getBounds()));
     }
@@ -57,7 +57,7 @@ TEST_CASE("Test 2 Region::polyCut")
     for (std::string line; std::getline(f, line);)
     {
         RegionTestcase testCase = readTestCase(line);
-        psdf::PointRegion region(testCase.startBounds, {0, 0}, 0, 5);
+        psdf::VertexRegion region(testCase.startBounds, {0, 0}, 0, 5);
         region.polyCut(testCase.points, testCase.edgeVectors);
         CHECK(psdf::TestUtils::areDouble2VectorsEqual(testCase.expectedBounds, region.getBounds()));
     }

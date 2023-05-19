@@ -6,43 +6,43 @@
 using json = nlohmann::json;
 using namespace psdf;
 
-SdfPlaneAlgorithmOutput::SharedPtr SdfPlaneAlgorithmOutput::create(std::vector<PointRegion> pointRegions,
-                                                                   std::vector<LineRegion> lineRegions)
+SdfPlaneAlgorithmOutput::SharedPtr SdfPlaneAlgorithmOutput::create(std::vector<VertexRegion> vertexRegions,
+                                                                   std::vector<EdgeRegion> edgeRegions)
 {
-    return SharedPtr(new SdfPlaneAlgorithmOutput(std::move(pointRegions), std::move(lineRegions)));
+    return SharedPtr(new SdfPlaneAlgorithmOutput(std::move(vertexRegions), std::move(edgeRegions)));
 }
 
-SdfPlaneAlgorithmOutput::SdfPlaneAlgorithmOutput(std::vector<PointRegion> pointRegions,
-                                                 std::vector<LineRegion> lineRegions)
-    : mPointRegions(std::move(pointRegions)), mLineRegions(std::move(lineRegions))
+SdfPlaneAlgorithmOutput::SdfPlaneAlgorithmOutput(std::vector<VertexRegion> vertexRegions,
+                                                 std::vector<EdgeRegion> edgeRegions)
+    : mVertexRegions(std::move(vertexRegions)), mEdgeRegions(std::move(edgeRegions))
 {
 }
 
-std::vector<PointRegion> SdfPlaneAlgorithmOutput::getPointRegions() const
+std::vector<VertexRegion> SdfPlaneAlgorithmOutput::getVertexRegions() const
 {
-    return mPointRegions;
+    return mVertexRegions;
 }
 
-std::vector<LineRegion> SdfPlaneAlgorithmOutput::getLineRegions() const
+std::vector<EdgeRegion> SdfPlaneAlgorithmOutput::getEdgeRegions() const
 {
-    return mLineRegions;
+    return mEdgeRegions;
 }
 
-static json getPointJson(Point point)
+static json getPointJson(Vertex vertex)
 {
     json json;
-    json["x"] = point.x;
-    json["y"] = point.y;
+    json["x"] = vertex.x;
+    json["y"] = vertex.y;
     return json;
 }
 
-static std::vector<json> getBoundsJson(const std::vector<Point> &bounds)
+static std::vector<json> getBoundsJson(const std::vector<Vertex> &bounds)
 {
     std::vector<json> boundJson;
 
-    for (const auto &point : bounds)
+    for (const auto &vertex : bounds)
     {
-        boundJson.emplace_back(getPointJson(point));
+        boundJson.emplace_back(getPointJson(vertex));
     }
 
     return boundJson;
@@ -59,27 +59,27 @@ bool SdfPlaneAlgorithmOutput::saveJson(const std::string &path) const
     json result;
 
     std::vector<json> vertices;
-    for (const auto &pointRegion : mPointRegions)
+    for (const auto &vertexRegion : mVertexRegions)
     {
         json pointJson;
-        pointJson["point"] = getPointJson(pointRegion.getPoint());
-        pointJson["cornerSign"] = pointRegion.getCornerSign();
-        pointJson["bounds"] = getBoundsJson(pointRegion.getBounds());
+        pointJson["vertex"] = getPointJson(vertexRegion.getVertex());
+        pointJson["cornerSign"] = vertexRegion.getCornerSign();
+        pointJson["bounds"] = getBoundsJson(vertexRegion.getBounds());
         vertices.emplace_back(std::move(pointJson));
     }
 
-    std::vector<json> segments;
-    for (const auto &lineRegion : mLineRegions)
+    std::vector<json> edges;
+    for (const auto &edgeRegion : mEdgeRegions)
     {
         json lineJson;
-        lineJson["start"] = getPointJson(lineRegion.getSegment().getPoint1());
-        lineJson["end"] = getPointJson(lineRegion.getSegment().getPoint2());
-        lineJson["bounds"] = getBoundsJson(lineRegion.getBounds());
-        segments.emplace_back(std::move(lineJson));
+        lineJson["start"] = getPointJson(edgeRegion.getEdge().getVertex1());
+        lineJson["end"] = getPointJson(edgeRegion.getEdge().getVertex2());
+        lineJson["bounds"] = getBoundsJson(edgeRegion.getBounds());
+        edges.emplace_back(std::move(lineJson));
     }
 
-    result["vertices"] = vertices;
-    result["segments"] = segments;
+    result["vertexRegions"] = vertices;
+    result["edgeRegions"] = edges;
     file << result.dump();
 
     return true;

@@ -7,11 +7,11 @@
 
 TEST_CASE("Test CalculateSdfPlaneAlgorithmCommand")
 {
-    auto pEditor = psdf::Editor::create(psdf::EditorStack::create({{nullptr, psdf::Polygon::kExamplePolygon}}));
+    auto pEditor = psdf::Editor::create(psdf::EditorStack::create({{nullptr, psdf::Shape::kStarterShape}}));
 
     pEditor->addCommand(psdf::CalculateSdfPlaneAlgorithmCommand::create(psdf::kDefaultSdfPlaneAlgorithmExecutionDesc));
     auto top = pEditor->getEditorStack()->peek();
 
     REQUIRE(top);
-    REQUIRE(top->polygon->getAlgorithmOutput());
+    REQUIRE(top->pShape->getAlgorithmOutput());
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../Rendering/PolygonRenderer/PolygonRenderer.h"
+#include "../../../Rendering/ShapeRenderer/ShapeRenderer.h"
 #include "../../Aggregator/StackPeekingEditorAggregator.h"
 #include "../../Core/Editor.h"
 #include "../Input/DragMouseInputHandler.h"
@@ -16,7 +16,7 @@ class Presenter : public MouseInputHandler
   public:
     using SharedPtr = std::shared_ptr<Presenter>;
 
-    Presenter(Editor::SharedPtr pEditor, PolygonRenderer::SharedPtr outputRenderer);
+    Presenter(Editor::SharedPtr pEditor, ShapeRenderer::SharedPtr outputRenderer);
 
     virtual void render(RenderContext *pRenderContext, const Fbo::SharedPtr &pTargetFbo) = 0;
     void resetTransform();
@@ -24,7 +24,7 @@ class Presenter : public MouseInputHandler
 
   protected:
     float getMappedScale() const;
-    void updatePolygon();
+    void updateShape();
     virtual void transformPresenter() = 0;
 
   protected:
@@ -38,9 +38,9 @@ class Presenter : public MouseInputHandler
 
     DragMouseInputHandler::SharedPtr mpDragHandler;
     Editor::SharedPtr mpEditor;
-    StackPeekingEditorAggregator::SharedPtr mpPolygonPeekingAggregator;
-    PolygonRenderer::SharedPtr mpRenderer;
-    Polygon::SharedPtr mpPolygon;
+    StackPeekingEditorAggregator::SharedPtr mpShapePeekingAggregator;
+    ShapeRenderer::SharedPtr mpRenderer;
+    Shape::SharedPtr mpShape;
 };
 
 } // namespace psdf

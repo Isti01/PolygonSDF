@@ -32,13 +32,13 @@ size_t EditorStack::getSize() const
 
 void EditorStack::push(const StackCommand::SharedPtr &pCommand)
 {
-    auto topPolygon = peek().value_or(StackEntry::kEmptyStackEntry).polygon;
+    auto topPolygon = peek().value_or(StackEntry::kEmptyStackEntry).pShape;
     mStack.push_back(StackEntry{pCommand, pCommand->perform(topPolygon)});
 }
 
 void EditorStack::pushReplacement(const StackCommand::SharedPtr &pCommand)
 {
-    auto topPolygon = pop().value_or(StackEntry::kEmptyStackEntry).polygon;
+    auto topPolygon = pop().value_or(StackEntry::kEmptyStackEntry).pShape;
     mStack.push_back(StackEntry{pCommand, pCommand->perform(topPolygon)});
 }
 

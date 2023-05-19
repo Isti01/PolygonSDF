@@ -1,17 +1,17 @@
-#include "Common.slang"
+#include "DistanceVisualization.slang"
 
 cbuffer Data
 {
     float4x4 iTransform;
 }
 
-struct Segment
+struct Edge
 {
-    float2 point1;
-    float2 point2;
+    float2 vertex1;
+    float2 vertex2;
 };
 
-StructuredBuffer<Segment> segments;
+StructuredBuffer<Edge> edges;
 
 struct VsIn
 {
@@ -33,19 +33,19 @@ VsOut vsMain(VsIn input)
     return vsOut;
 }
 
-DistanceDesc getSignedSquaredDistance(float2 coord)
+DistanceDesc getSignedDistance(float2 coord)
 {
     bool closerToVertex = false;
-    float squaredDistance = dot(coord - segments[0].point1, coord - segments[0].point1);
+    float squaredDistance = dot(coord - edges[0].vertex1, coord - edges[0].vertex1);
     float distanceSign = 1;
 
     uint segmentCount, _;
-    segments.GetDimensions(segmentCount, _);
+    edges.GetDimensions(segmentCount, _);
 
     for (int i = 0; i < segmentCount; i++)
     {
-        float2 e = segments[i].point1 - segments[i].point2;
-        float2 w = coord - segments[i].point2;
+        float2 e = edges[i].vertex1 - edges[i].vertex2;
+        float2 w = coord - edges[i].vertex2;
         float p = dot(w, e) / dot(e, e);
         float2 b = w - e * saturate(p);
         float distance = dot(b, b);
@@ -54,7 +54,7 @@ DistanceDesc getSignedSquaredDistance(float2 coord)
             squaredDistance = distance;
             closerToVertex = p >= 0 && p <= 1;
         }
-        bool3 winding = bool3(coord.y >= segments[i].point2.y, coord.y<segments[i].point1.y, e.x * w.y> e.y * w.x);
+        bool3 winding = bool3(coord.y >= edges[i].vertex2.y, coord.y<edges[i].vertex1.y, e.x * w.y> e.y * w.x);
         if (all(winding) || all(!winding))
         {
             distanceSign *= -1.0;
@@ -69,6 +69,6 @@ DistanceDesc getSignedSquaredDistance(float2 coord)
 
 float4 psMain(VsOut vsOut, uint triangleIndex : SV_PrimitiveID) : SV_TARGET
 {
-    DistanceDesc desc = getSignedSquaredDistance(vsOut.texCoords);
+    DistanceDesc desc = getSignedDistance(vsOut.texCoords);
     return signedDistanceToColor(desc);
 }

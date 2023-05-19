@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../Polygon/Polygon.h"
+#include "../Polygon/Shape.h"
 #include "./SdfPlaneAlgorithmOutput.h"
-#include "Region/LineRegion.h"
-#include "Region/PointRegion.h"
+#include "Region/EdgeRegion.h"
+#include "Region/VertexRegion.h"
 #include "SdfPlaneAlgorithmExecutionDesc.h"
 
 namespace psdf
@@ -12,7 +12,7 @@ namespace psdf
 class SdfPlaneAlgorithm
 {
   public:
-    static SdfPlaneAlgorithmOutput::SharedPtr calculateForPolygon(const Polygon::SharedPtr &pPolygon,
+    static SdfPlaneAlgorithmOutput::SharedPtr calculateForShape(const Shape::SharedPtr &pShape,
                                                                   SdfPlaneAlgorithmExecutionDesc desc);
 
   private:

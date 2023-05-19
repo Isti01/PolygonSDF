@@ -29,6 +29,6 @@ TEST_CASE("Test Editor::addCommand")
     auto top = pEditor->getEditorStack()->peek();
 
     REQUIRE(top);
-    REQUIRE(top->polygon == nullptr);
-    REQUIRE(top->command.get() == pCommand.get());
+    REQUIRE(top->pShape == nullptr);
+    REQUIRE(top->pCommand.get() == pCommand.get());
 }

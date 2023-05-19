@@ -11,7 +11,7 @@ class CalculateSdfPlaneAlgorithmCommand : public StackCommand
     using SharedPtr = std::shared_ptr<CalculateSdfPlaneAlgorithmCommand>;
     static SharedPtr create(SdfPlaneAlgorithmExecutionDesc executionDesc);
 
-    Polygon::SharedPtr perform(const Polygon::SharedPtr &polygon) const override;
+    Shape::SharedPtr perform(const Shape::SharedPtr &pShape) const override;
     std::string getName() const override;
     SdfPlaneAlgorithmExecutionDesc getExecutionDesc() const;
 

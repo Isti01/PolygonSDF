@@ -19,7 +19,7 @@ std::vector<glm::dvec2> Region::getBounds() const
     return mBounds;
 }
 
-void Region::polyCut(const std::vector<Point> &points, const std::vector<glm::dvec2> &edgeVectors)
+void Region::polyCut(const std::vector<Vertex> &vertices, const std::vector<glm::dvec2> &edgeVectors)
 {
     if (mBounds.empty())
     {
@@ -28,10 +28,10 @@ void Region::polyCut(const std::vector<Point> &points, const std::vector<glm::dv
     std::vector<bool> b;
     std::vector<double> vnd;
     std::vector<int> ind;
-    for (size_t i = 0; i < points.size(); i++)
+    for (size_t i = 0; i < vertices.size(); i++)
     {
         b.clear();
-        double d = glm::dot(points[i], edgeVectors[i]);
+        double d = glm::dot(vertices[i], edgeVectors[i]);
         calculateVnd(vnd, edgeVectors[i], d);
         b.resize(vnd.size());
         std::transform(vnd.cbegin(), vnd.cend(), b.begin(), [](double v) { return v <= 0; });

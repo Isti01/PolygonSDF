@@ -10,7 +10,7 @@ This class template enforces the required formatting rules for bachelor and mast
 The formatting rules are defined to meet the requirements for theses submitted at the Eötvös Loránd University, Faculty of Informatics (Budapest, Hungary). However with sufficient modifications the template should be usable at other universities, too.
 
 The template contains configuration both for single and double sided printing (see `twoside` option), by default it is set to the recommended single side format.
-The template supports producing both Hungarian and English theses, which can be easily controlled (see `\documentlang` command).
+The template supports producing both Hungarian and English theses, which can be easily controlled (see `\documentlang` pCommand).
 
 ## Compilation
 

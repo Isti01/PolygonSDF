@@ -6,7 +6,7 @@ namespace psdf
 struct SdfPlaneAlgorithmExecutionDesc
 {
     bool reorderPoints;
-    size_t pointRegionSubdivision;
+    size_t vertexRegionSubdivision;
     double initialBoundScale;
 };
 

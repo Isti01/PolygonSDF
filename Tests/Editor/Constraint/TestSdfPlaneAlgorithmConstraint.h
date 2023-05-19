@@ -2,15 +2,15 @@
 
 #include "catch.hpp"
 
-#include "../../../Source/Editor/Command/AddNewGroupStackCommand.h"
+#include "../../../Source/Editor/Command/AddNewOutlineStackCommand.h"
 #include "../../../Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.h"
 #include "../../../Source/Editor/Core/Editor.h"
 
 TEST_CASE("Test SdfPlaneAlgorithmConstraint")
 {
-    psdf::SubPolygon group{{{1, 2}, {1, 4}, {1, 2}, {0, 0}}};
-    auto pPolygon = psdf::Polygon::create({group});
-    auto pEditor = psdf::Editor::create(psdf::EditorStack::create({psdf::StackEntry{nullptr, pPolygon}}));
+    psdf::Outline outline{{{1, 2}, {1, 4}, {1, 2}, {0, 0}}};
+    auto pShape = psdf::Shape::create({outline});
+    auto pEditor = psdf::Editor::create(psdf::EditorStack::create({psdf::StackEntry{nullptr, pShape}}));
     auto pConsumer = psdf::TestConsumer::create();
 
     pEditor->addConsumer(pConsumer);

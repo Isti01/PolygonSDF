@@ -5,7 +5,7 @@
 using namespace psdf;
 using namespace Falcor;
 
-PointRegion TestUtils::readPointRegion(const std::string &spaceSeparatedList)
+VertexRegion TestUtils::readVertexRegion(const std::string &spaceSeparatedList)
 {
     std::stringstream ss(spaceSeparatedList);
     glm::dvec2 point;
@@ -24,7 +24,7 @@ PointRegion TestUtils::readPointRegion(const std::string &spaceSeparatedList)
     return {bounds, point, sign, 5};
 }
 
-LineRegion TestUtils::readLineRegion(const std::string &spaceSeparatedList)
+EdgeRegion TestUtils::readEdgeRegion(const std::string &spaceSeparatedList)
 {
     std::stringstream ss(spaceSeparatedList);
     glm::dvec2 point1;
@@ -38,7 +38,7 @@ LineRegion TestUtils::readLineRegion(const std::string &spaceSeparatedList)
         bounds.push_back(bound);
     }
 
-    return {bounds, Segment{{point1, point2}}};
+    return {bounds, Edge{{point1, point2}}};
 }
 
 std::vector<glm::dvec2> TestUtils::readDouble2Vector(const std::string &spaceSeparatedList)
@@ -54,39 +54,39 @@ std::vector<glm::dvec2> TestUtils::readDouble2Vector(const std::string &spaceSep
     return result;
 }
 
-Polygon::SharedPtr TestUtils::readPolygon(const std::string &path)
+Shape::SharedPtr TestUtils::readShape(const std::string &path)
 {
-    std::vector<Point> points;
+    std::vector<Vertex> points;
     std::ifstream f(path);
-    Point current;
+    Vertex current;
     while (f >> current.x >> current.y)
     {
         points.push_back(current);
     }
 
-    return Polygon::create({points});
+    return Shape::create({points});
 }
 
-std::vector<psdf::PointRegion> TestUtils::readPointRegionList(const std::string &path)
+std::vector<psdf::VertexRegion> TestUtils::readVertexRegionList(const std::string &path)
 {
-    std::vector<psdf::PointRegion> pointRegions;
+    std::vector<psdf::VertexRegion> vertexRegions;
     std::ifstream f(path);
     for (std::string line; std::getline(f, line);)
     {
-        pointRegions.push_back(psdf::TestUtils::readPointRegion(line));
+        vertexRegions.push_back(psdf::TestUtils::readVertexRegion(line));
     }
-    return pointRegions;
+    return vertexRegions;
 }
 
-std::vector<psdf::LineRegion> TestUtils::readLineRegionList(const std::string &path)
+std::vector<psdf::EdgeRegion> TestUtils::readEdgeRegionList(const std::string &path)
 {
-    std::vector<psdf::LineRegion> lineRegions;
+    std::vector<psdf::EdgeRegion> edgeRegions;
     std::ifstream f(path);
     for (std::string line; std::getline(f, line);)
     {
-        lineRegions.push_back(psdf::TestUtils::readLineRegion(line));
+        edgeRegions.push_back(psdf::TestUtils::readEdgeRegion(line));
     }
-    return lineRegions;
+    return edgeRegions;
 }
 
 bool TestUtils::areDouble2VectorsEqual(const std::vector<glm::dvec2> &expected, const std::vector<glm::dvec2> &result,
@@ -108,7 +108,7 @@ bool TestUtils::areDouble2VectorsEqual(const std::vector<glm::dvec2> &expected, 
     return true;
 }
 
-bool TestUtils::arePointRegionsEqual(const std::vector<PointRegion> &expected, const std::vector<PointRegion> &actual,
+bool TestUtils::arePointRegionsEqual(const std::vector<VertexRegion> &expected, const std::vector<VertexRegion> &actual,
                                      double epsilon)
 {
     if (expected.size() != actual.size())
@@ -126,7 +126,7 @@ bool TestUtils::arePointRegionsEqual(const std::vector<PointRegion> &expected, c
         {
             return false;
         }
-        if (!glm::all(glm::epsilonEqual(expected[i].getPoint(), actual[i].getPoint(), epsilon)))
+        if (!glm::all(glm::epsilonEqual(expected[i].getVertex(), actual[i].getVertex(), epsilon)))
         {
             return false;
         }
@@ -135,7 +135,7 @@ bool TestUtils::arePointRegionsEqual(const std::vector<PointRegion> &expected, c
     return true;
 }
 
-bool TestUtils::areLineRegionsEqual(const std::vector<LineRegion> &expected, const std::vector<LineRegion> &actual,
+bool TestUtils::areLineRegionsEqual(const std::vector<EdgeRegion> &expected, const std::vector<EdgeRegion> &actual,
                                     double epsilon)
 {
     if (expected.size() != actual.size())
@@ -149,13 +149,13 @@ bool TestUtils::areLineRegionsEqual(const std::vector<LineRegion> &expected, con
         {
             return false;
         }
-        auto expectedSegment = expected[i].getSegment();
-        auto actualSegment = actual[i].getSegment();
-        if (!glm::all(glm::epsilonEqual(expectedSegment.getPoint1(), actualSegment.getPoint1(), epsilon)))
+        auto expectedSegment = expected[i].getEdge();
+        auto actualSegment = actual[i].getEdge();
+        if (!glm::all(glm::epsilonEqual(expectedSegment.getVertex1(), actualSegment.getVertex1(), epsilon)))
         {
             return false;
         }
-        if (!glm::all(glm::epsilonEqual(expectedSegment.getPoint2(), actualSegment.getPoint2(), epsilon)))
+        if (!glm::all(glm::epsilonEqual(expectedSegment.getVertex2(), actualSegment.getVertex2(), epsilon)))
         {
             return false;
         }

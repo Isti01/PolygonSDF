@@ -45,9 +45,9 @@ void Editor::addStackCommand(const StackCommand::SharedPtr &pStackCommand)
     }
 
     auto stackTop = mpStack->peek();
-    if (stackTop && pStackCommand->canMerge(stackTop->command))
+    if (stackTop && pStackCommand->canMerge(stackTop->pCommand))
     {
-        mpStack->pushReplacement(pStackCommand->merge(stackTop->command));
+        mpStack->pushReplacement(pStackCommand->merge(stackTop->pCommand));
     }
     else
     {

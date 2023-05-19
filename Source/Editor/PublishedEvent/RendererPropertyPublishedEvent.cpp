@@ -2,17 +2,17 @@
 
 using namespace psdf;
 
-RendererPropertyPublishedEvent::SharedPtr RendererPropertyPublishedEvent::create(PolygonRendererProperty property)
+RendererPropertyPublishedEvent::SharedPtr RendererPropertyPublishedEvent::create(ShapeRendererProperty property)
 {
     return SharedPtr(new RendererPropertyPublishedEvent(std::move(property)));
 }
 
-RendererPropertyPublishedEvent::RendererPropertyPublishedEvent(PolygonRendererProperty property)
+RendererPropertyPublishedEvent::RendererPropertyPublishedEvent(ShapeRendererProperty property)
     : mProperty(std::move(property))
 {
 }
 
-PolygonRendererProperty RendererPropertyPublishedEvent::getProperty() const
+ShapeRendererProperty RendererPropertyPublishedEvent::getProperty() const
 {
     return mProperty;
 }

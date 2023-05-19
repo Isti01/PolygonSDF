@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../Rendering/PolygonRenderer/PolygonRenderer.h"
+#include "../../../Rendering/ShapeRenderer/ShapeRenderer.h"
 #include "../../Aggregator/StackPeekingEditorAggregator.h"
 #include "../../Core/Editor.h"
 #include "DragMouseInputHandler.h"
@@ -14,7 +14,7 @@ class MoveStrategy
   public:
     using SharedPtr = std::shared_ptr<MoveStrategy>;
 
-    virtual StackCommand::SharedPtr createCommand(size_t groupInd, size_t vertexInd, Point prevPos, Point newPos) = 0;
+    virtual StackCommand::SharedPtr createCommand(size_t outlineInd, size_t vertexInd, Vertex prevPos, Vertex newPos) = 0;
 };
 
 class MoveInputHandler : public MouseInputHandler
@@ -23,13 +23,13 @@ class MoveInputHandler : public MouseInputHandler
     using SharedPtr = std::shared_ptr<MoveInputHandler>;
 
     static SharedPtr create(MoveStrategy::SharedPtr strategy, Editor::SharedPtr pEditor,
-                            PolygonRenderer::SharedPtr pPolygonRenderer);
+                            ShapeRenderer::SharedPtr pPolygonRenderer);
     void resetInputState() override;
     bool onMouseEvent(const MouseEvent &mouseEvent) override;
 
   protected:
     MoveInputHandler(MoveStrategy::SharedPtr strategy, Editor::SharedPtr pEditor,
-                     PolygonRenderer::SharedPtr pPolygonRenderer);
+                     ShapeRenderer::SharedPtr pPolygonRenderer);
 
   private:
     void updateSelectedPolygon(StackEntry topStackEntry);
@@ -42,9 +42,9 @@ class MoveInputHandler : public MouseInputHandler
     MoveStrategy::SharedPtr mpMoveStrategy;
     Editor::SharedPtr mpEditor = nullptr;
     DragMouseInputHandler::SharedPtr mpDragHandler = nullptr;
-    Polygon::SharedPtr mpActivePolygon = nullptr;
+    Shape::SharedPtr mpActiveShape = nullptr;
     StackPeekingEditorAggregator::SharedPtr mpPolygonAggregator = nullptr;
-    PolygonRenderer::SharedPtr mpPolygonRenderer = nullptr;
+    ShapeRenderer::SharedPtr mpShapeRenderer = nullptr;
     StackCommand::SharedPtr mpLastCommand = nullptr;
 };
 
@@ -53,21 +53,21 @@ class PointUpdateMoveStrategy : public MoveStrategy
   public:
     static SharedPtr create();
 
-    StackCommand::SharedPtr createCommand(size_t groupInd, size_t vertexInd, Point prevPos, Point newPos) override;
+    StackCommand::SharedPtr createCommand(size_t outlineInd, size_t vertexInd, Vertex prevPos, Vertex newPos) override;
 
   protected:
     PointUpdateMoveStrategy() = default;
 };
 
-class GroupMoveStrategy : public MoveStrategy
+class OutlineMoveStrategy : public MoveStrategy
 {
   public:
     static SharedPtr create();
 
-    StackCommand::SharedPtr createCommand(size_t groupInd, size_t vertexInd, Point prevPos, Point newPos) override;
+    StackCommand::SharedPtr createCommand(size_t outlineInd, size_t vertexInd, Vertex prevPos, Vertex newPos) override;
 
   protected:
-    GroupMoveStrategy() = default;
+    OutlineMoveStrategy() = default;
 };
 
 } // namespace psdf

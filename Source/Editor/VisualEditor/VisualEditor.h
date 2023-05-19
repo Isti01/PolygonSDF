@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../../Rendering/PolygonRenderer/PolygonRenderer.h"
+#include "../../Rendering/ShapeRenderer/ShapeRenderer.h"
 #include "../Consumer/PropertyUpdatingEditorConsumer.h"
 #include "../Core/Editor.h"
-#include "./Presenter/PolygonPresenter.h"
 #include "./Presenter/SdfAlgorithmOutputPresenter.h"
+#include "./Presenter/ShapePresenter.h"
 #include "Input/InsertRemoveVertexInputHandler.h"
 #include "Input/MoveInputHandler.h"
 
@@ -37,14 +37,14 @@ class VisualEditor
 
   private:
     Editor::SharedPtr mpEditor = nullptr;
-    PolygonRenderer::SharedPtr mpEditorPolygonRenderer = nullptr;
-    PolygonRenderer::SharedPtr mpAlgorithmPolygonRenderer = nullptr;
+    ShapeRenderer::SharedPtr mpEditorShapeRenderer = nullptr;
+    ShapeRenderer::SharedPtr mpAlgorithmOutputRenderer = nullptr;
     PropertyUpdatingEditorConsumer::SharedPtr mpEditorRendererUpdatingConsumer = nullptr;
     PropertyUpdatingEditorConsumer::SharedPtr mpAlgorithmRendererUpdatingConsumer = nullptr;
-    PolygonPresenter::SharedPtr mpPolygonPresenter = nullptr;
+    ShapePresenter::SharedPtr mpShapePresenter = nullptr;
     SdfAlgorithmOutputPresenter::SharedPtr mpAlgorithmOutputPresenter = nullptr;
     MoveInputHandler::SharedPtr mpVertexMover = nullptr;
-    MoveInputHandler::SharedPtr mpGroupMover = nullptr;
+    MoveInputHandler::SharedPtr mpOutlineMover = nullptr;
     InsertRemoveVertexInputHandler::SharedPtr mpVertexInserter = nullptr;
     MouseInputHandler::SharedPtr mpActiveInputHandler = nullptr;
     StackPeekingEditorAggregator::SharedPtr mpStackPeekingAggregator = nullptr;

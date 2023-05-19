@@ -15,9 +15,9 @@ float2 CoordinateUtil::sceneToScreenSpaceCoordinate(const float4x4 &transform, f
     return float2(transformed.x, -transformed.y) / 2.0f + 0.5f;
 }
 
-std::optional<size_t> CoordinateUtil::findClosestInSubPolygon(const Polygon::Points &points, Point point)
+std::optional<size_t> CoordinateUtil::findClosestInOutline(const Shape::Vertices &points, Vertex point)
 {
-    auto isPointCloser = [point](const Point &p1, const Point &p2) {
+    auto isPointCloser = [point](const Vertex &p1, const Vertex &p2) {
         return glm::distance(point, p1) < glm::distance(point, p2);
     };
     auto iterator = std::min_element(points.begin(), points.end(), isPointCloser);
@@ -29,20 +29,20 @@ std::optional<size_t> CoordinateUtil::findClosestInSubPolygon(const Polygon::Poi
     return iterator - points.begin();
 }
 
-std::optional<std::pair<size_t, size_t>> CoordinateUtil::findClosestPointIndex(const std::vector<SubPolygon> &polygons,
-                                                                               Point point)
+std::optional<std::pair<size_t, size_t>> CoordinateUtil::findClosestPointIndex(const std::vector<Outline> &polygons,
+                                                                               Vertex point)
 {
     std::optional<std::pair<size_t, size_t>> result = std::nullopt;
     for (size_t i = 0; i < polygons.size(); i++)
     {
         const auto &polygon = polygons[i];
-        auto closest = findClosestInSubPolygon(polygon.getPoints(), point);
+        auto closest = findClosestInOutline(polygon.getVertices(), point);
         if (!closest)
         {
             continue;
         }
-        if (!result || glm::distance(polygons[i].getPoints()[*closest], point) <
-                           glm::distance(polygons[result->first].getPoints()[result->second], point))
+        if (!result || glm::distance(polygons[i].getVertices()[*closest], point) <
+                           glm::distance(polygons[result->first].getVertices()[result->second], point))
         {
             result = {i, *closest};
         }

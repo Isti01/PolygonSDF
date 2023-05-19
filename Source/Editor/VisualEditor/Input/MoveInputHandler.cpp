@@ -1,29 +1,29 @@
 #include "MoveInputHandler.h"
 #include "../../../Util/CoordinateUtil.h"
 #include "../../../Util/Deferred.h"
-#include "../../Command/MoveGroupStackCommand.h"
-#include "../../Command/UpdatePointStackCommand.h"
+#include "../../Command/MoveOutlineStackCommand.h"
+#include "../../Command/UpdateVertexStackCommand.h"
 #include "../VisualEditorConstants.h"
 
 using namespace psdf;
 
 MoveInputHandler::SharedPtr MoveInputHandler::create(MoveStrategy::SharedPtr strategy, Editor::SharedPtr pEditor,
-                                                     PolygonRenderer::SharedPtr pPolygonRenderer)
+                                                     ShapeRenderer::SharedPtr pPolygonRenderer)
 {
     return SharedPtr(new MoveInputHandler(std::move(strategy), std::move(pEditor), std::move(pPolygonRenderer)));
 }
 
 MoveInputHandler::MoveInputHandler(MoveStrategy::SharedPtr strategy, Editor::SharedPtr pEditor,
-                                   PolygonRenderer::SharedPtr pPolygonRenderer)
+                                   ShapeRenderer::SharedPtr pPolygonRenderer)
     : mpMoveStrategy(std::move(strategy)), mpEditor(std::move(pEditor)), mpDragHandler(DragMouseInputHandler::create()),
-      mpPolygonAggregator(StackPeekingEditorAggregator::create()), mpPolygonRenderer(std::move(pPolygonRenderer))
+      mpPolygonAggregator(StackPeekingEditorAggregator::create()), mpShapeRenderer(std::move(pPolygonRenderer))
 {
 }
 
 bool MoveInputHandler::onMouseEvent(const Falcor::MouseEvent &mouseEvent)
 {
     updateSelectedPolygon(mpPolygonAggregator->peekEditor(mpEditor)->getEntry());
-    if (!mpActivePolygon)
+    if (!mpActiveShape)
     {
         return false;
     }
@@ -54,16 +54,16 @@ bool MoveInputHandler::onMouseEvent(const Falcor::MouseEvent &mouseEvent)
 
 void MoveInputHandler::selectClosestVertex(float2 mousePos)
 {
-    float4x4 transform = mpPolygonRenderer->getTransform();
+    float4x4 transform = mpShapeRenderer->getTransform();
     auto mappedMousePos = CoordinateUtil::screenToSceneSpaceCoordinate(transform, mousePos);
-    auto polygons = mpActivePolygon->getPolygons();
-    auto closestScenePoint = CoordinateUtil::findClosestPointIndex(polygons, mappedMousePos);
+    auto outlines = mpActiveShape->getOutlines();
+    auto closestScenePoint = CoordinateUtil::findClosestPointIndex(outlines, mappedMousePos);
     if (!closestScenePoint)
     {
         return;
     }
 
-    auto closestPoint = polygons.at(closestScenePoint->first).getPoints()[closestScenePoint->second];
+    auto closestPoint = outlines.at(closestScenePoint->first).getVertices()[closestScenePoint->second];
     auto distance = glm::distance(mousePos, CoordinateUtil::sceneToScreenSpaceCoordinate(transform, closestPoint));
     if (distance > VisualEditorConstants::kSelectionDistanceThreshold)
     {
@@ -82,10 +82,10 @@ void MoveInputHandler::moveSelectedVertex(float2 mousePos)
 
     size_t groupIndex = mSelectedVertexIndex->first;
     size_t vertIndex = mSelectedVertexIndex->second;
-    auto newPosition = CoordinateUtil::screenToSceneSpaceCoordinate(mpPolygonRenderer->getTransform(), mousePos);
-    auto oldPosition = mpActivePolygon->getPolygons()[groupIndex].getPoints()[vertIndex];
-    mpEditor->addCommand(mpMoveStrategy->createCommand(groupIndex, vertIndex, oldPosition, Point(newPosition)));
-    mpLastCommand = mpPolygonAggregator->peekEditor(mpEditor)->getEntry().command;
+    auto newPosition = CoordinateUtil::screenToSceneSpaceCoordinate(mpShapeRenderer->getTransform(), mousePos);
+    auto oldPosition = mpActiveShape->getOutlines()[groupIndex].getVertices()[vertIndex];
+    mpEditor->addCommand(mpMoveStrategy->createCommand(groupIndex, vertIndex, oldPosition, Vertex(newPosition)));
+    mpLastCommand = mpPolygonAggregator->peekEditor(mpEditor)->getEntry().pCommand;
 }
 
 void MoveInputHandler::resetInputState()
@@ -95,13 +95,13 @@ void MoveInputHandler::resetInputState()
 
 void MoveInputHandler::updateSelectedPolygon(StackEntry topStackEntry)
 {
-    if (mpActivePolygon == topStackEntry.polygon)
+    if (mpActiveShape == topStackEntry.pShape)
     {
         return;
     }
 
-    mpActivePolygon = topStackEntry.polygon;
-    if (topStackEntry.command != mpLastCommand) // the polygon was updated from outside
+    mpActiveShape = topStackEntry.pShape;
+    if (topStackEntry.pCommand != mpLastCommand) // the polygon was updated from outside
     {
         mSelectedVertexIndex = std::nullopt;
         mpDragHandler->resetInputState();
@@ -113,18 +113,19 @@ MoveStrategy::SharedPtr PointUpdateMoveStrategy::create()
     return SharedPtr(new PointUpdateMoveStrategy());
 }
 
-StackCommand::SharedPtr PointUpdateMoveStrategy::createCommand(size_t groupInd, size_t vertexInd, Point prevPos,
-                                                               Point newPos)
+StackCommand::SharedPtr PointUpdateMoveStrategy::createCommand(size_t groupInd, size_t vertexInd, Vertex prevPos,
+                                                               Vertex newPos)
 {
-    return UpdatePointStackCommand::create(groupInd, vertexInd, newPos);
+    return UpdateVertexStackCommand::create(groupInd, vertexInd, newPos);
 }
 
-MoveStrategy::SharedPtr GroupMoveStrategy::create()
+MoveStrategy::SharedPtr OutlineMoveStrategy::create()
 {
-    return SharedPtr(new GroupMoveStrategy());
+    return SharedPtr(new OutlineMoveStrategy());
 }
 
-StackCommand::SharedPtr GroupMoveStrategy::createCommand(size_t groupInd, size_t vertexInd, Point prevPos, Point newPos)
+StackCommand::SharedPtr OutlineMoveStrategy::createCommand(size_t groupInd, size_t vertexInd, Vertex prevPos,
+                                                         Vertex newPos)
 {
-    return MoveGroupStackCommand::create(groupInd, prevPos, newPos);
+    return MoveOutlineStackCommand::create(groupInd, prevPos, newPos);
 }

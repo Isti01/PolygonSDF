@@ -1,5 +1,5 @@
 #include "VisualEditor.h"
-#include "../../Rendering/PolygonRenderer/PolygonRendererFactory.h"
+#include "../../Rendering/ShapeRenderer/ShapeRendererFactory.h"
 #include "../PublishedEvent/HideGuiPublishedEvent.h"
 #include "../PublishedEvent/ShowGuiPublishedEvent.h"
 #include "../PublishedEvent/VisualEditorModeChangedPublishedEvent.h"
@@ -13,22 +13,22 @@ VisualEditor::SharedPtr VisualEditor::create(Editor::SharedPtr pEditor)
 }
 
 VisualEditor::VisualEditor(Editor::SharedPtr pEditor)
-    : mpEditor(std::move(pEditor)), mpEditorPolygonRenderer(PolygonRendererFactory::getPolygonRenderer()),
-      mpAlgorithmPolygonRenderer(PolygonRendererFactory::getAlgorithmOutputRenderer()),
-      mpEditorRendererUpdatingConsumer(PropertyUpdatingEditorConsumer::create(mpEditorPolygonRenderer)),
-      mpAlgorithmRendererUpdatingConsumer(PropertyUpdatingEditorConsumer::create(mpAlgorithmPolygonRenderer)),
-      mpPolygonPresenter(PolygonPresenter::create(mpEditor, mpEditorPolygonRenderer)),
-      mpVertexMover(MoveInputHandler::create(PointUpdateMoveStrategy::create(), mpEditor, mpEditorPolygonRenderer)),
-      mpGroupMover(MoveInputHandler::create(GroupMoveStrategy::create(), mpEditor, mpEditorPolygonRenderer)),
-      mpVertexInserter(InsertRemoveVertexInputHandler::create(mpEditor, mpEditorPolygonRenderer)),
-      mpActiveInputHandler(mpPolygonPresenter), mpStackPeekingAggregator(StackPeekingEditorAggregator::create()),
-      mpAlgorithmOutputPresenter(SdfAlgorithmOutputPresenter::create(mpEditor, mpAlgorithmPolygonRenderer))
+    : mpEditor(std::move(pEditor)), mpEditorShapeRenderer(ShapeRendererFactory::getEditorShapeRenderer()),
+      mpAlgorithmOutputRenderer(ShapeRendererFactory::getAlgorithmOutputRenderer()),
+      mpEditorRendererUpdatingConsumer(PropertyUpdatingEditorConsumer::create(mpEditorShapeRenderer)),
+      mpAlgorithmRendererUpdatingConsumer(PropertyUpdatingEditorConsumer::create(mpAlgorithmOutputRenderer)),
+      mpShapePresenter(ShapePresenter::create(mpEditor, mpEditorShapeRenderer)),
+      mpVertexMover(MoveInputHandler::create(PointUpdateMoveStrategy::create(), mpEditor, mpEditorShapeRenderer)),
+      mpOutlineMover(MoveInputHandler::create(OutlineMoveStrategy::create(), mpEditor, mpEditorShapeRenderer)),
+      mpVertexInserter(InsertRemoveVertexInputHandler::create(mpEditor, mpEditorShapeRenderer)),
+      mpActiveInputHandler(mpShapePresenter), mpStackPeekingAggregator(StackPeekingEditorAggregator::create()),
+      mpAlgorithmOutputPresenter(SdfAlgorithmOutputPresenter::create(mpEditor, mpAlgorithmOutputRenderer))
 {
     mpEditor->publishEvent(VisualEditorModeChangedPublishedEvent::create("V - Pan and Zoom"), this);
     mpEditor->addConsumer(mpEditorRendererUpdatingConsumer);
     mpEditor->addConsumer(mpAlgorithmRendererUpdatingConsumer);
     mpAlgorithmOutputPresenter->resetTransform();
-    mpPolygonPresenter->resetTransform();
+    mpShapePresenter->resetTransform();
 }
 
 VisualEditor::~VisualEditor()
@@ -45,7 +45,7 @@ void VisualEditor::render(RenderContext *pRenderContext, const Fbo::SharedPtr &p
     }
     else
     {
-        mpPolygonPresenter->render(pRenderContext, pTargetFbo);
+        mpShapePresenter->render(pRenderContext, pTargetFbo);
     }
 }
 
@@ -71,15 +71,15 @@ bool VisualEditor::onKeyEvent(const KeyboardEvent &keyEvent)
     if (keyEvent.key == Input::Key::G)
     {
         showGui();
-        setActiveInputHandler(mpGroupMover);
-        mpEditor->publishEvent(VisualEditorModeChangedPublishedEvent::create("G - Move Groups"), this);
+        setActiveInputHandler(mpOutlineMover);
+        mpEditor->publishEvent(VisualEditorModeChangedPublishedEvent::create("G - Move Outlines"), this);
         return true;
     }
 
     if (keyEvent.key == Input::Key::V)
     {
         showGui();
-        setActiveInputHandler(mpPolygonPresenter);
+        setActiveInputHandler(mpShapePresenter);
         mpEditor->publishEvent(VisualEditorModeChangedPublishedEvent::create("V - Pan and Zoom"), this);
         return true;
     }
@@ -94,8 +94,8 @@ bool VisualEditor::onKeyEvent(const KeyboardEvent &keyEvent)
 
     if (keyEvent.key == Input::Key::D)
     {
-        auto pPolygon = mpStackPeekingAggregator->peekEditor(mpEditor)->getEntry().polygon;
-        if (pPolygon && pPolygon->getAlgorithmOutput())
+        auto pShape = mpStackPeekingAggregator->peekEditor(mpEditor)->getEntry().pShape;
+        if (pShape && pShape->getAlgorithmOutput())
         {
             hideGui();
             setActiveInputHandler(mpAlgorithmOutputPresenter);
@@ -103,7 +103,7 @@ bool VisualEditor::onKeyEvent(const KeyboardEvent &keyEvent)
         }
         else
         {
-            msgBox("There is nothing to display!\nTry running the algorithm on the polygon!", MsgBoxType::Ok,
+            msgBox("There is nothing to display!\nTry running the algorithm on the shape!", MsgBoxType::Ok,
                    Falcor::MsgBoxIcon::Info);
         }
 
@@ -143,7 +143,7 @@ void VisualEditor::setActiveInputHandler(const MouseInputHandler::SharedPtr &pIn
         pInputHandler.get() == mpAlgorithmOutputPresenter.get())
     {
         mpAlgorithmOutputPresenter->resetTransform();
-        mpPolygonPresenter->resetTransform();
+        mpShapePresenter->resetTransform();
     }
     mpActiveInputHandler = pInputHandler;
     mpActiveInputHandler->resetInputState();

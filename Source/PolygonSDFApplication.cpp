@@ -1,8 +1,8 @@
 #include "PolygonSDFApplication.h"
 #include "../Tests/Util/TestUtils.h"
-#include "Editor/Command/SetPolygonStackCommand.h"
-#include "Editor/Constraint/DeleteGroupEditorConstraint.h"
-#include "Editor/Constraint/DeletePointEditorConstraint.h"
+#include "Editor/Command/SetShapeStackCommand.h"
+#include "Editor/Constraint/DeleteOutlineEditorConstraint.h"
+#include "Editor/Constraint/DeleteVertexEditorConstraint.h"
 #include "Editor/Constraint/SdfPlaneAlgorithmConstraint.h"
 
 #include <memory>
@@ -13,11 +13,11 @@ using namespace psdf;
 void PolygonSDFApplication::onLoad(RenderContext *pRenderContext)
 {
     mpEditor = Editor::create(EditorStack::create());
-    mpEditor->addCommand(SetPolygonStackCommand::create(Polygon::kExamplePolygon));
+    mpEditor->addCommand(SetShapeStackCommand::create(Shape::kStarterShape));
     mpGuiEditor = GuiEditor::create(mpEditor);
     mpVisualEditor = VisualEditor::create(mpEditor);
-    mpEditor->addConstraint(DeleteGroupEditorConstraint::create());
-    mpEditor->addConstraint(DeletePointEditorConstraint::create());
+    mpEditor->addConstraint(DeleteOutlineEditorConstraint::create());
+    mpEditor->addConstraint(DeleteVertexEditorConstraint::create());
     mpEditor->addConstraint(SdfPlaneAlgorithmConstraint::create());
     mpGuiStateConsumer = GuiStateEditorConsumer::create();
     mpEditor->addConsumer(mpGuiStateConsumer);

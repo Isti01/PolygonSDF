@@ -7,7 +7,7 @@ TestCommand::SharedPtr TestCommand::create()
     return SharedPtr(new TestCommand());
 }
 
-Polygon::SharedPtr TestCommand::perform(const Polygon::SharedPtr &polygon) const
+Shape::SharedPtr TestCommand::perform(const Shape::SharedPtr &polygon) const
 {
     return polygon;
 }

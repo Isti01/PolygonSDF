@@ -1,8 +1,8 @@
 #include "GuiEditorActionsMenu.h"
 #include "../../Util/WithImGuiId.h"
 #include "../Command/CalculateSdfPlaneAlgorithmCommand.h"
-#include "../Command/MergePolygonWithOffsetStackCommand.h"
-#include "../Command/SetPolygonStackCommand.h"
+#include "../Command/MergeShapeWithOffsetStackCommand.h"
+#include "../Command/SetShapeStackCommand.h"
 #include "../Transformation/ClearHistoryEditorTransformation.h"
 #include "../Transformation/UndoEditorTransformation.h"
 
@@ -35,20 +35,20 @@ void GuiEditorActionsMenu::renderGui(Gui::Window &window)
     size_t stackSize = mpStackSizeAggregator->getEditorStackSize(mpEditor)->getSize();
     auto pPeekResult = mpPolygonPeekingAggregator->peekEditor(mpEditor);
     FALCOR_ASSERT(pPeekResult);
-    auto pPolygon = pPeekResult->getEntry().polygon;
+    auto pShape = pPeekResult->getEntry().pShape;
     std::stringstream ss;
     ss << "Commands in the editor stack: " << stackSize;
     window.text(ss.str());
-    if (window.button("New Polygon"))
+    if (window.button("New Shape"))
     {
-        if (auto polygon = loadPolygon())
+        if (auto shape = loadShape())
         {
-            mpEditor->addCommand(SetPolygonStackCommand::create(polygon));
+            mpEditor->addCommand(SetShapeStackCommand::create(shape));
         }
     }
-    if (window.button("New Placeholder Polygon", true))
+    if (window.button("Set to starter shape", true))
     {
-        mpEditor->addCommand(SetPolygonStackCommand::create(Polygon::kExamplePolygon));
+        mpEditor->addCommand(SetShapeStackCommand::create(Shape::kStarterShape));
     }
 
     if (window.button("Undo"))
@@ -61,65 +61,65 @@ void GuiEditorActionsMenu::renderGui(Gui::Window &window)
         mpEditor->transform(ClearHistoryEditorTransformation::create());
     }
 
-    if (pPolygon)
+    if (pShape)
     {
         ImGui::Spacing();
         window.var("Initial region bound scale: ", mExecutionDesc.initialBoundScale, 0.0);
-        window.var("Point region subdivision count: ", mExecutionDesc.pointRegionSubdivision, size_t(3));
+        window.var("Vertex region subdivision count: ", mExecutionDesc.vertexRegionSubdivision, size_t(3));
         if (window.button("Run Plane Slicing Algorithm"))
         {
             mpEditor->addCommand(CalculateSdfPlaneAlgorithmCommand::create(mExecutionDesc));
-            if (!mpPolygonPeekingAggregator->peekEditor(mpEditor)->getEntry().polygon->getAlgorithmOutput())
+            if (!mpPolygonPeekingAggregator->peekEditor(mpEditor)->getEntry().pShape->getAlgorithmOutput())
             {
-                msgBox("Failed to run the algorthm on the current polygon\nTip: Check for intersecting segments!",
+                msgBox("Failed to run the algorthm on the current shape\nTip: Check for intersecting segments!",
                        MsgBoxType::Ok, Falcor::MsgBoxIcon::Info);
             }
         }
     }
 
     ImGui::Spacing();
-    window.var("Offset: ", mPolygonOffset);
-    if (window.button("Add Polygon with offset", true))
+    window.var("Offset: ", pShapeOffset);
+    if (window.button("Add Shape with offset", true))
     {
-        if (auto polygon = GuiEditorActionsMenu::loadPolygon())
+        if (auto shape = GuiEditorActionsMenu::loadShape())
         {
-            mpEditor->addCommand(MergePolygonWithOffsetStackCommand::create(polygon, mPolygonOffset));
+            mpEditor->addCommand(MergeShapeWithOffsetStackCommand::create(shape, pShapeOffset));
         }
     }
-    if (pPolygon && window.button("Save polygon"))
+    if (pShape && window.button("Save shape"))
     {
         std::filesystem::path path;
         Falcor::saveFileDialog({FileDialogFilter("json")}, path);
-        if (path.empty() || !pPolygon->saveJson(path.string()))
+        if (path.empty() || !pShape->saveJson(path.string()))
         {
-            msgBox("Failed to save the polygon", MsgBoxType::Ok, Falcor::MsgBoxIcon::Info);
+            msgBox("Failed to save the shape", MsgBoxType::Ok, Falcor::MsgBoxIcon::Info);
         }
     }
-    if (pPolygon->getAlgorithmOutput() && window.button("Save Algorithm Output", true))
+    if (pShape->getAlgorithmOutput() && window.button("Save Algorithm Output", true))
     {
         std::filesystem::path path;
         Falcor::saveFileDialog({FileDialogFilter("json")}, path);
-        if (path.empty() || !pPolygon->getAlgorithmOutput()->saveJson(path.string()))
+        if (path.empty() || !pShape->getAlgorithmOutput()->saveJson(path.string()))
         {
             msgBox("Failed to save the algorithm output", MsgBoxType::Ok, Falcor::MsgBoxIcon::Info);
         }
     }
 }
 
-Polygon::SharedPtr GuiEditorActionsMenu::loadPolygon()
+Shape::SharedPtr GuiEditorActionsMenu::loadShape()
 {
     std::filesystem::path path;
     openFileDialog({FileDialogFilter("json")}, path);
     if (!path.empty())
     {
-        auto polygon = Polygon::fromJson(path.string());
-        if (!polygon)
+        auto shape = Shape::fromJson(path.string());
+        if (!shape)
         {
-            msgBox("Failed to load the polygon", MsgBoxType::Ok, Falcor::MsgBoxIcon::Info);
+            msgBox("Failed to load the shape", MsgBoxType::Ok, Falcor::MsgBoxIcon::Info);
         }
         else
         {
-            return polygon;
+            return shape;
         }
     }
     return nullptr;

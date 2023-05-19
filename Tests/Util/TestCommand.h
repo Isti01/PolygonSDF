@@ -12,7 +12,7 @@ class TestCommand : public StackCommand
 
     static SharedPtr create();
 
-    Polygon::SharedPtr perform(const Polygon::SharedPtr &polygon) const override;
+    Shape::SharedPtr perform(const Shape::SharedPtr &polygon) const override;
     std::string getName() const override;
 
   private:

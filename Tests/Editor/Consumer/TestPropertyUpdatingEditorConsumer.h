@@ -5,11 +5,11 @@
 #include "../../../Source/Editor/Consumer/PropertyUpdatingEditorConsumer.h"
 #include "../../../Source/Editor/Core/Editor.h"
 #include "../../../Source/Editor/PublishedEvent/RendererPropertyPublishedEvent.h"
-#include "../../../Source/Rendering/PolygonRenderer/Impl/EmptyPolygonRenderer.h"
+#include "../../../Source/Rendering/ShapeRenderer/Impl/EmptyShapeRenderer.h"
 
 TEST_CASE("Test PropertyUpdatingEditorConsumer")
 {
-    struct TestRenderer : public psdf::EmptyPolygonRenderer
+    struct TestRenderer : public psdf::EmptyShapeRenderer
     {
         using SharedPtr = std::shared_ptr<TestRenderer>;
         static SharedPtr create()
@@ -17,7 +17,7 @@ TEST_CASE("Test PropertyUpdatingEditorConsumer")
             return SharedPtr(new TestRenderer());
         }
 
-        std::vector<psdf::PolygonRendererProperty> getProperties() const
+        std::vector<psdf::ShapeRendererProperty> getProperties() const
         {
             return mProperties;
         }
@@ -25,13 +25,13 @@ TEST_CASE("Test PropertyUpdatingEditorConsumer")
       protected:
         TestRenderer() = default;
 
-        void setPropertyImpl(const psdf::PolygonRendererProperty &rendererProperty) override
+        void setPropertyImpl(const psdf::ShapeRendererProperty &rendererProperty) override
         {
             mProperties.push_back(rendererProperty);
         }
 
       private:
-        std::vector<psdf::PolygonRendererProperty> mProperties;
+        std::vector<psdf::ShapeRendererProperty> mProperties;
     };
 
     auto pRenderer = TestRenderer::create();

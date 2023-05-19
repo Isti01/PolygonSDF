@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Polygon/Polygon.h"
+#include "../../Polygon/Shape.h"
 #include "../Command/StackCommand.h"
 
 namespace psdf
@@ -10,8 +10,8 @@ struct StackEntry
 {
     static const StackEntry kEmptyStackEntry;
 
-    StackCommand::SharedPtr command;
-    Polygon::SharedPtr polygon;
+    StackCommand::SharedPtr pCommand;
+    Shape::SharedPtr pShape;
 };
 
 } // namespace psdf

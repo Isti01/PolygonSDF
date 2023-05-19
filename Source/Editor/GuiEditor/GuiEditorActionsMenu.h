@@ -21,11 +21,11 @@ class GuiEditorActionsMenu : public GuiEditorMenu
     GuiEditorActionsMenu(Editor::SharedPtr pEditor);
 
   private:
-    static Polygon::SharedPtr loadPolygon();
+    static Shape::SharedPtr loadShape();
 
   private:
     SdfPlaneAlgorithmExecutionDesc mExecutionDesc = kDefaultSdfPlaneAlgorithmExecutionDesc;
-    float2 mPolygonOffset{0};
+    float2 pShapeOffset{0};
 
     Editor::SharedPtr mpEditor;
     StackPeekingEditorAggregator::SharedPtr mpPolygonPeekingAggregator;

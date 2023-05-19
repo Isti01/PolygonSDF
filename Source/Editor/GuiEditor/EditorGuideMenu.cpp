@@ -15,7 +15,7 @@ void EditorGuideMenu::renderGui(Gui::Window &window)
         group.text("Visual Editor controls:\n\n"
                    "V - Pan and Zoom\n"
                    "M - Move Vertices\n"
-                   "G - Move Groups\n"
+                   "G - Move Outlines\n"
                    "V - Pan and Zoom\n"
                    "I - Insert vertices\n"
                    "D - View algorithm result");

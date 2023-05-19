@@ -14,7 +14,7 @@ TEST_CASE("Test StackSizeEditorAggregator for empty stack")
 
 TEST_CASE("Test StackSizeEditorAggregator for stack with entries")
 {
-    auto pStartPolygon = psdf::Polygon::kSquarePolygon;
+    auto pStartPolygon = psdf::Shape::kSquareShape;
     psdf::StackCommand::SharedPtr pStartCommand = psdf::TestCommand::create();
     auto pEditor = psdf::Editor::create(psdf::EditorStack::create({psdf::StackEntry{pStartCommand, pStartPolygon}}));
     auto pAggregator = psdf::StackSizeEditorAggregator::create();

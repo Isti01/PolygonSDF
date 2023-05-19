@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Rendering/PolygonRenderer/PolygonRenderer.h"
+#include "../../Rendering/ShapeRenderer/ShapeRenderer.h"
 #include "../Core/EditorConsumer.h"
 
 namespace psdf
@@ -11,15 +11,15 @@ class PropertyUpdatingEditorConsumer : public EditorConsumer
   public:
     using SharedPtr = std::shared_ptr<PropertyUpdatingEditorConsumer>;
 
-    static SharedPtr create(PolygonRenderer::SharedPtr pRenderer);
+    static SharedPtr create(ShapeRenderer::SharedPtr pRenderer);
 
     void accept(const EditorEvent::SharedPtr &pEvent) override;
 
   protected:
-    PropertyUpdatingEditorConsumer(PolygonRenderer::SharedPtr pRenderer);
+    PropertyUpdatingEditorConsumer(ShapeRenderer::SharedPtr pRenderer);
 
   private:
-    PolygonRenderer::SharedPtr mpRenderer;
+    ShapeRenderer::SharedPtr mpRenderer;
 };
 
 } // namespace psdf

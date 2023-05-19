@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../Rendering/PolygonRenderer/PolygonRenderer.h"
+#include "../../../Rendering/ShapeRenderer/ShapeRenderer.h"
 #include "../../Aggregator/StackPeekingEditorAggregator.h"
 #include "../../Core/Editor.h"
 #include "MouseInputHandler.h"
@@ -14,23 +14,23 @@ class InsertRemoveVertexInputHandler : public MouseInputHandler
 {
   public:
     using SharedPtr = std::shared_ptr<InsertRemoveVertexInputHandler>;
-    static SharedPtr create(Editor::SharedPtr pEditor, PolygonRenderer::SharedPtr pRenderer);
+    static SharedPtr create(Editor::SharedPtr pEditor, ShapeRenderer::SharedPtr pRenderer);
 
     bool onMouseEvent(const MouseEvent &mouseEvent) override;
     void resetInputState() override;
 
   protected:
-    InsertRemoveVertexInputHandler(Editor::SharedPtr pEditor, PolygonRenderer::SharedPtr pRenderer);
+    InsertRemoveVertexInputHandler(Editor::SharedPtr pEditor, ShapeRenderer::SharedPtr pRenderer);
 
   private:
     void insertNextToClosest(float2 position);
-    size_t findIndexToInsert(float2 vertexPosition, size_t closestVertexIndex, const Polygon::Points &points);
+    size_t findIndexToInsert(float2 vertexPosition, size_t closestVertexIndex, const Shape::Vertices &points);
 
     bool removeVertexIfCloseEnough(float2 position);
 
   private:
     Editor::SharedPtr mpEditor;
-    PolygonRenderer::SharedPtr mpRenderer;
+    ShapeRenderer::SharedPtr mpRenderer;
     StackPeekingEditorAggregator::SharedPtr mpAggregator;
 };
 

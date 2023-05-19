@@ -3,12 +3,12 @@
 
 using namespace psdf;
 
-PropertyUpdatingEditorConsumer::SharedPtr PropertyUpdatingEditorConsumer::create(PolygonRenderer::SharedPtr pRenderer)
+PropertyUpdatingEditorConsumer::SharedPtr PropertyUpdatingEditorConsumer::create(ShapeRenderer::SharedPtr pRenderer)
 {
     return SharedPtr(new PropertyUpdatingEditorConsumer(std::move(pRenderer)));
 }
 
-PropertyUpdatingEditorConsumer::PropertyUpdatingEditorConsumer(PolygonRenderer::SharedPtr pRenderer)
+PropertyUpdatingEditorConsumer::PropertyUpdatingEditorConsumer(ShapeRenderer::SharedPtr pRenderer)
     : mpRenderer(std::move(pRenderer))
 {
 }

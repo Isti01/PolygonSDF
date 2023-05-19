@@ -1,6 +1,6 @@
 #include "GuiVisualizationSettingsMenu.h"
-#include "../../Rendering/PolygonRenderer/Impl/FullScreenPolygonRenderer.h"
-#include "../../Rendering/PolygonRenderer/RendererProperties.h"
+#include "../../Rendering/ShapeRenderer/Impl/FullScreenShapeRenderer.h"
+#include "../../Rendering/ShapeRenderer/RendererProperties.h"
 #include "../PublishedEvent/RendererPropertyPublishedEvent.h"
 
 using namespace psdf;
@@ -16,7 +16,7 @@ const std::map<std::string, std::string> GuiVisualizationSettingsMenu::kProperty
     {RendererProperties::kContourIntensityProperty, "Distance contour intensity"},
     {RendererProperties::kDisplayShadowsProperty, "Display shadows"},
     {RendererProperties::kShadowsIntensityProperty, "Shadow locality"},
-    {RendererProperties::kDisplayCloserToVertexProperty, "Darken segment regions"},
+    {RendererProperties::kDisplayCloserToVertexProperty, "Darken edge regions"},
     {RendererProperties::kShouldDisplayContoursProperty, "Display distance contours"},
     {RendererProperties::kShouldColorBetweenContoursProperty, "Display coloring between contours"},
     {RendererProperties::kAlgorithmVisualizationCuttingPointCount, "Number of cutting points around output geometry"},
@@ -59,7 +59,7 @@ void GuiVisualizationSettingsMenu::resetProperties()
     mProperties = RendererProperties::kInitialProperties;
 }
 
-void GuiVisualizationSettingsMenu::showPropertySetting(Gui::Group &group, PolygonRendererProperty &property)
+void GuiVisualizationSettingsMenu::showPropertySetting(Gui::Group &group, ShapeRendererProperty &property)
 {
     const std::string &key = property.key;
     std::string title = kPropertyTitles.find(key) != kPropertyTitles.end() ? kPropertyTitles.at(property.key) : key;

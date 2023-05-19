@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../Polygon/Point.h"
-#include "./LineRegionBoundVertex.h"
+#include "../../Polygon/Vertex.h"
+#include "./EdgeRegionBoundVertex.h"
 
 #include <Falcor.h>
 
@@ -12,14 +12,14 @@ using namespace Falcor;
 class Region
 {
   public:
-    void polyCut(const std::vector<Point> &points, const std::vector<glm::dvec2> &edgeVectors);
+    void polyCut(const std::vector<Vertex> &vertices, const std::vector<glm::dvec2> &edgeVectors);
 
     Region(double initialBoundScale);
     Region(std::vector<glm::dvec2> bounds);
 
     std::vector<glm::dvec2> getBounds() const;
 
-    virtual double getDistanceToPointInsideBounds(Point point) const = 0;
+    virtual double getDistanceToPointInsideBounds(Vertex point) const = 0;
 
     virtual ~Region() = default;
 

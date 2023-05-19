@@ -2,7 +2,7 @@
 #include "EditorGuideMenu.h"
 #include "EventMenu.h"
 #include "GuiEditorActionsMenu.h"
-#include "GuiPolygonActionsMenu.h"
+#include "GuiShapeActionsMenu.h"
 #include "GuiVisualizationSettingsMenu.h"
 
 using namespace psdf;
@@ -15,7 +15,7 @@ GuiEditor::SharedPtr GuiEditor::create(Editor::SharedPtr pEditor)
 GuiEditor::GuiEditor(Editor::SharedPtr pEditor)
     : mpEditor(std::move(pEditor)), mpStateChangeConsumer(VisualEditorStateChangeEditorConsumer::create()),
       menus({GuiVisualizationSettingsMenu::create(mpEditor), GuiEditorActionsMenu::create(mpEditor),
-             GuiPolygonActionsMenu::create(mpEditor), EventMenu::create(mpEditor), EditorGuideMenu::create()})
+             GuiShapeActionsMenu::create(mpEditor), EventMenu::create(mpEditor), EditorGuideMenu::create()})
 {
     mpEditor->addConsumer(mpStateChangeConsumer);
 }

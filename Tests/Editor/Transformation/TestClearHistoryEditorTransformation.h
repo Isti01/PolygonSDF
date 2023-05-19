@@ -2,7 +2,7 @@
 
 #include "catch.hpp"
 
-#include "../../../Source/Editor/Command/SetPolygonStackCommand.h"
+#include "../../../Source/Editor/Command/SetShapeStackCommand.h"
 #include "../../../Source/Editor/Core/Editor.h"
 #include "../../../Source/Editor/Transformation/ClearHistoryEditorTransformation.h"
 #include "../../Util/TestCommand.h"
@@ -13,7 +13,7 @@ TEST_CASE("Test ClearHistoryEditorTransformation")
     auto pStack = psdf::EditorStack::create({psdf::StackEntry::kEmptyStackEntry, psdf::StackEntry::kEmptyStackEntry});
     auto pEditor = psdf::Editor::create(pStack);
     auto pConsumer = psdf::TestConsumer::create();
-    auto pCommand = psdf::SetPolygonStackCommand::create(psdf::Polygon::kSquarePolygon);
+    auto pCommand = psdf::SetShapeStackCommand::create(psdf::Shape::kSquareShape);
 
     pEditor->addCommand(pCommand);
     pEditor->addConsumer(pConsumer);
@@ -23,6 +23,6 @@ TEST_CASE("Test ClearHistoryEditorTransformation")
     REQUIRE(pConsumer->getAcceptedEvents()[0]->getName() == "StackTransformedEvent(ClearHistoryEditorTransformation)");
 
     REQUIRE(pStack->getSize() == 1);
-    REQUIRE(pStack->peek()->polygon.get() == psdf::Polygon::kSquarePolygon.get());
-    REQUIRE(pStack->peek()->command->getName() == pCommand->getName());
+    REQUIRE(pStack->peek()->pShape.get() == psdf::Shape::kSquareShape.get());
+    REQUIRE(pStack->peek()->pCommand->getName() == pCommand->getName());
 }

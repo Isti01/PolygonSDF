@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Region/LineRegion.h"
-#include "Region/PointRegion.h"
+#include "Region/EdgeRegion.h"
+#include "Region/VertexRegion.h"
 
 #include <Falcor.h>
 
@@ -12,19 +12,19 @@ class SdfPlaneAlgorithmOutput
 {
   public:
     using SharedPtr = std::shared_ptr<SdfPlaneAlgorithmOutput>;
-    static SharedPtr create(std::vector<PointRegion> pointRegions, std::vector<LineRegion> lineRegions);
+    static SharedPtr create(std::vector<VertexRegion> vertexRegions, std::vector<EdgeRegion> edgeRegions);
 
-    std::vector<PointRegion> getPointRegions() const;
-    std::vector<LineRegion> getLineRegions() const;
+    std::vector<VertexRegion> getVertexRegions() const;
+    std::vector<EdgeRegion> getEdgeRegions() const;
 
     bool saveJson(const std::string &path) const;
 
   protected:
-    SdfPlaneAlgorithmOutput(std::vector<PointRegion> pointRegions, std::vector<LineRegion> lineRegions);
+    SdfPlaneAlgorithmOutput(std::vector<VertexRegion> vertexRegions, std::vector<EdgeRegion> edgeRegions);
 
   private:
-    std::vector<PointRegion> mPointRegions;
-    std::vector<LineRegion> mLineRegions;
+    std::vector<VertexRegion> mVertexRegions;
+    std::vector<EdgeRegion> mEdgeRegions;
 };
 
 } // namespace psdf

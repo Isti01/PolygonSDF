@@ -1,5 +1,5 @@
 #include "ClearHistoryEditorTransformation.h"
-#include "../Command/SetPolygonStackCommand.h"
+#include "../Command/SetShapeStackCommand.h"
 
 using namespace psdf;
 
@@ -13,7 +13,7 @@ void ClearHistoryEditorTransformation::transform(EditorStack::SharedPtr &pEditor
     if (auto top = pEditorStack->peek())
     {
         pEditorStack->clear();
-        pEditorStack->push(SetPolygonStackCommand::create(top->polygon));
+        pEditorStack->push(SetShapeStackCommand::create(top->pShape));
     }
 }
 

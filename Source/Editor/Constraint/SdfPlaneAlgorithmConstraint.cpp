@@ -8,11 +8,11 @@ SdfPlaneAlgorithmConstraint::SharedPtr SdfPlaneAlgorithmConstraint::create()
     return SharedPtr(new SdfPlaneAlgorithmConstraint());
 }
 
-static bool isSegmentIntersectingPolygonOutline(const Segment &segment, const SubPolygon &subPolygon)
+static bool isSegmentIntersectingPolygonOutline(const Edge &edge, const Outline &outline)
 {
-    for (const auto &otherSegment : subPolygon.getSegments())
+    for (const auto &otherSegment : outline.getEdges())
     {
-        if (segment.isIntersecting(otherSegment))
+        if (edge.isIntersecting(otherSegment))
         {
             return true;
         }
@@ -21,36 +21,36 @@ static bool isSegmentIntersectingPolygonOutline(const Segment &segment, const Su
     return false;
 }
 
-static bool isPolygonEligibleForAlgorithm(const Polygon::SharedPtr &pPolygon)
+static bool isPolygonEligibleForAlgorithm(const Shape::SharedPtr &pShaper)
 {
-    const auto &polygons = pPolygon->getPolygons();
-    const size_t polygonCount = polygons.size();
-    for (size_t i = 0; i < polygonCount; i++)
+    const auto &outlines = pShaper->getOutlines();
+    const size_t outlineCount = outlines.size();
+    for (size_t i = 0; i < outlineCount; i++)
     {
-        const auto &polygon = polygons[i];
-        const auto &currentSegments = polygon.getSegments();
-        const auto currentSegmentCount = currentSegments.size();
+        const auto &outline = outlines[i];
+        const auto &currentEdges = outline.getEdges();
+        const auto edgeCount = currentEdges.size();
 
-        for (size_t j = 0; j < currentSegmentCount; j++)
+        for (size_t j = 0; j < edgeCount; j++)
         {
-            const auto &segment = currentSegments[j];
+            const auto &edge = currentEdges[j];
 
-            for (size_t sInd = 2; sInd < currentSegmentCount - 1; sInd++) // we don't need to check neighboring segments
+            for (size_t eInd = 2; eInd < edgeCount - 1; eInd++) // we don't need to check neighboring segments
             {
-                const size_t indexToCheck = (j + sInd) % currentSegmentCount;
-                if (segment.isIntersecting(currentSegments[indexToCheck]))
+                const size_t indexToCheck = (j + eInd) % edgeCount;
+                if (edge.isIntersecting(currentEdges[indexToCheck]))
                 {
                     return false;
                 }
             }
 
-            for (size_t k = 0; k < polygons.size(); k++)
+            for (size_t k = 0; k < outlines.size(); k++)
             {
                 if (i == k)
                 {
                     continue;
                 }
-                if (isSegmentIntersectingPolygonOutline(segment, polygons[k]))
+                if (isSegmentIntersectingPolygonOutline(edge, outlines[k]))
                 {
                     return false;
                 }
@@ -72,7 +72,7 @@ bool SdfPlaneAlgorithmConstraint::evaluate(const EditorStack::SharedPtr &pStack,
             return false;
         }
 
-        return isPolygonEligibleForAlgorithm(top->polygon);
+        return isPolygonEligibleForAlgorithm(top->pShape);
     }
     return true;
 }

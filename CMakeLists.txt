@@ -1,19 +1,19 @@
 add_falcor_executable(PolygonSDF)
 
 target_sources(PolygonSDF PRIVATE
-        Shaders/Common.slang
-        Shaders/LineRegionAlgorithmOutput.3d.slang
+        Shaders/DistanceVisualization.slang
+        Shaders/EdgeRegionAlgorithmOutput.3d.slang
         Shaders/NaivePolygonDistance.3d.slang
-        Shaders/PointRegionAlgorithmOutput.3d.slang
+        Shaders/VertexRegionAlgorithmOutput.3d.slang
         Shaders/SolidColor.3d.slang
 
-        Source/Algorithm/Region/LineRegion.cpp
-        Source/Algorithm/Region/LineRegion.h
-        Source/Algorithm/Region/PointRegion.cpp
-        Source/Algorithm/Region/PointRegion.h
+        Source/Algorithm/Region/EdgeRegion.cpp
+        Source/Algorithm/Region/EdgeRegion.h
+        Source/Algorithm/Region/VertexRegion.cpp
+        Source/Algorithm/Region/VertexRegion.h
         Source/Algorithm/Region/Region.cpp
         Source/Algorithm/Region/Region.h
-        Source/Algorithm/Region/LineRegionBoundVertex.h
+        Source/Algorithm/Region/EdgeRegionBoundVertex.h
 
         Source/Algorithm/SdfPlaneAlgorithm.cpp
         Source/Algorithm/SdfPlaneAlgorithm.h
@@ -26,33 +26,33 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/Aggregator/StackSizeEditorAggregator.cpp
         Source/Editor/Aggregator/StackSizeEditorAggregator.h
 
-        Source/Editor/Command/AddNewGroupStackCommand.cpp
-        Source/Editor/Command/AddNewGroupStackCommand.h
-        Source/Editor/Command/AddPointStackCommand.cpp
-        Source/Editor/Command/AddPointStackCommand.h
+        Source/Editor/Command/AddNewOutlineStackCommand.cpp
+        Source/Editor/Command/AddNewOutlineStackCommand.h
+        Source/Editor/Command/AddVertexStackCommand.cpp
+        Source/Editor/Command/AddVertexStackCommand.h
         Source/Editor/Command/CalculateSdfPlaneAlgorithmCommand.cpp
         Source/Editor/Command/CalculateSdfPlaneAlgorithmCommand.h
-        Source/Editor/Command/DeleteGroupStackCommand.cpp
-        Source/Editor/Command/DeleteGroupStackCommand.h
-        Source/Editor/Command/DeletePointStackCommand.cpp
-        Source/Editor/Command/DeletePointStackCommand.h
-        Source/Editor/Command/InsertPointStackCommand.cpp
-        Source/Editor/Command/InsertPointStackCommand.h
-        Source/Editor/Command/MergePolygonWithOffsetStackCommand.cpp
-        Source/Editor/Command/MergePolygonWithOffsetStackCommand.h
-        Source/Editor/Command/MoveGroupStackCommand.cpp
-        Source/Editor/Command/MoveGroupStackCommand.h
-        Source/Editor/Command/SetPolygonStackCommand.cpp
-        Source/Editor/Command/SetPolygonStackCommand.h
+        Source/Editor/Command/DeleteOutlineStackCommand.cpp
+        Source/Editor/Command/DeleteOutlineStackCommand.h
+        Source/Editor/Command/DeleteVertexStackCommand.cpp
+        Source/Editor/Command/DeleteVertexStackCommand.h
+        Source/Editor/Command/InsertVertexStackCommand.cpp
+        Source/Editor/Command/InsertVertexStackCommand.h
+        Source/Editor/Command/MergeShapeWithOffsetStackCommand.cpp
+        Source/Editor/Command/MergeShapeWithOffsetStackCommand.h
+        Source/Editor/Command/MoveOutlineStackCommand.cpp
+        Source/Editor/Command/MoveOutlineStackCommand.h
+        Source/Editor/Command/SetShapeStackCommand.cpp
+        Source/Editor/Command/SetShapeStackCommand.h
         Source/Editor/Command/StackCommand.cpp
         Source/Editor/Command/StackCommand.h
-        Source/Editor/Command/UpdatePointStackCommand.cpp
-        Source/Editor/Command/UpdatePointStackCommand.h
+        Source/Editor/Command/UpdateVertexStackCommand.cpp
+        Source/Editor/Command/UpdateVertexStackCommand.h
 
-        Source/Editor/Constraint/DeleteGroupEditorConstraint.cpp
-        Source/Editor/Constraint/DeleteGroupEditorConstraint.h
-        Source/Editor/Constraint/DeletePointEditorConstraint.cpp
-        Source/Editor/Constraint/DeletePointEditorConstraint.h
+        Source/Editor/Constraint/DeleteOutlineEditorConstraint.cpp
+        Source/Editor/Constraint/DeleteOutlineEditorConstraint.h
+        Source/Editor/Constraint/DeleteVertexEditorConstraint.cpp
+        Source/Editor/Constraint/DeleteVertexEditorConstraint.h
         Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.cpp
         Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.h
 
@@ -100,8 +100,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/GuiEditor/GuiEditorActionsMenu.cpp
         Source/Editor/GuiEditor/GuiEditorActionsMenu.h
         Source/Editor/GuiEditor/GuiEditorMenu.h
-        Source/Editor/GuiEditor/GuiPolygonActionsMenu.cpp
-        Source/Editor/GuiEditor/GuiPolygonActionsMenu.h
+        Source/Editor/GuiEditor/GuiShapeActionsMenu.cpp
+        Source/Editor/GuiEditor/GuiShapeActionsMenu.h
         Source/Editor/GuiEditor/GuiVisualizationSettingsMenu.cpp
         Source/Editor/GuiEditor/GuiVisualizationSettingsMenu.h
 
@@ -127,8 +127,8 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/VisualEditor/Input/MoveInputHandler.cpp
         Source/Editor/VisualEditor/Input/MoveInputHandler.h
 
-        Source/Editor/VisualEditor/Presenter/PolygonPresenter.cpp
-        Source/Editor/VisualEditor/Presenter/PolygonPresenter.h
+        Source/Editor/VisualEditor/Presenter/ShapePresenter.cpp
+        Source/Editor/VisualEditor/Presenter/ShapePresenter.h
         Source/Editor/VisualEditor/Presenter/Presenter.cpp
         Source/Editor/VisualEditor/Presenter/Presenter.h
         Source/Editor/VisualEditor/Presenter/SdfAlgorithmOutputPresenter.cpp
@@ -138,44 +138,44 @@ target_sources(PolygonSDF PRIVATE
         Source/Editor/VisualEditor/VisualEditor.h
         Source/Editor/VisualEditor/VisualEditorConstants.h
 
-        Source/Polygon/Point.h
-        Source/Polygon/Polygon.cpp
-        Source/Polygon/Polygon.h
-        Source/Polygon/Segment.cpp
-        Source/Polygon/Segment.h
-        Source/Polygon/SubPolygon.cpp
-        Source/Polygon/SubPolygon.h
+        Source/Polygon/Vertex.h
+        Source/Polygon/Shape.cpp
+        Source/Polygon/Shape.h
+        Source/Polygon/Edge.cpp
+        Source/Polygon/Edge.h
+        Source/Polygon/Outline.cpp
+        Source/Polygon/Outline.h
 
         Source/Rendering/FullScreenTriangle.cpp
         Source/Rendering/FullScreenTriangle.h
         Source/Rendering/RenderObject.h
 
-        Source/Rendering/PolygonRenderer/Impl/AspectRatioIndependentPolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/AspectRatioIndependentPolygonRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/CompositePolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/CompositePolygonRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/EmptyPolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/EmptyPolygonRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/FullScreenPolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/FullScreenPolygonRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/PolygonOutlineRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/PolygonOutlineRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/ProxyPolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/ProxyPolygonRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmLineRegionRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmLineRegionRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmPointRegionRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmPointRegionRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/AspectRatioIndependentShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/AspectRatioIndependentShapeRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/CompositeShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/CompositeShapeRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/EmptyShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/EmptyShapeRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/FullScreenShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/FullScreenShapeRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/ShapeOutlineRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/ShapeOutlineRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/ProxyShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/ProxyShapeRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmEdgeRegionRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmEdgeRegionRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmOutputRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmOutputRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmVertexRegionRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmVertexRegionRenderer.h
 
-        Source/Rendering/PolygonRenderer/PolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/PolygonRenderer.h
-        Source/Rendering/PolygonRenderer/PolygonRendererFactory.cpp
-        Source/Rendering/PolygonRenderer/PolygonRendererFactory.h
-        Source/Rendering/PolygonRenderer/PolygonRendererProperty.h
-        Source/Rendering/PolygonRenderer/RendererProperties.cpp
-        Source/Rendering/PolygonRenderer/RendererProperties.h
+        Source/Rendering/ShapeRenderer/ShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/ShapeRenderer.h
+        Source/Rendering/ShapeRenderer/ShapeRendererFactory.cpp
+        Source/Rendering/ShapeRenderer/ShapeRendererFactory.h
+        Source/Rendering/ShapeRenderer/ShapeRendererProperty.h
+        Source/Rendering/ShapeRenderer/RendererProperties.cpp
+        Source/Rendering/ShapeRenderer/RendererProperties.h
 
         Source/Util/CoordinateUtil.cpp
         Source/Util/CoordinateUtil.h
@@ -204,19 +204,19 @@ target_source_group(PolygonSDF Samples)
 add_falcor_executable(PolygonSDFTest)
 
 target_sources(PolygonSDFTest PRIVATE
-        Shaders/Common.slang
-        Shaders/LineRegionAlgorithmOutput.3d.slang
+        Shaders/DistanceVisualization.slang
+        Shaders/EdgeRegionAlgorithmOutput.3d.slang
         Shaders/NaivePolygonDistance.3d.slang
-        Shaders/PointRegionAlgorithmOutput.3d.slang
+        Shaders/VertexRegionAlgorithmOutput.3d.slang
         Shaders/SolidColor.3d.slang
 
-        Source/Algorithm/Region/LineRegion.cpp
-        Source/Algorithm/Region/LineRegion.h
-        Source/Algorithm/Region/PointRegion.cpp
-        Source/Algorithm/Region/PointRegion.h
+        Source/Algorithm/Region/EdgeRegion.cpp
+        Source/Algorithm/Region/EdgeRegion.h
+        Source/Algorithm/Region/VertexRegion.cpp
+        Source/Algorithm/Region/VertexRegion.h
         Source/Algorithm/Region/Region.cpp
         Source/Algorithm/Region/Region.h
-        Source/Algorithm/Region/LineRegionBoundVertex.h
+        Source/Algorithm/Region/EdgeRegionBoundVertex.h
 
         Source/Algorithm/SdfPlaneAlgorithm.cpp
         Source/Algorithm/SdfPlaneAlgorithm.h
@@ -229,33 +229,33 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/Aggregator/StackSizeEditorAggregator.cpp
         Source/Editor/Aggregator/StackSizeEditorAggregator.h
 
-        Source/Editor/Command/AddNewGroupStackCommand.cpp
-        Source/Editor/Command/AddNewGroupStackCommand.h
-        Source/Editor/Command/AddPointStackCommand.cpp
-        Source/Editor/Command/AddPointStackCommand.h
+        Source/Editor/Command/AddNewOutlineStackCommand.cpp
+        Source/Editor/Command/AddNewOutlineStackCommand.h
+        Source/Editor/Command/AddVertexStackCommand.cpp
+        Source/Editor/Command/AddVertexStackCommand.h
         Source/Editor/Command/CalculateSdfPlaneAlgorithmCommand.cpp
         Source/Editor/Command/CalculateSdfPlaneAlgorithmCommand.h
-        Source/Editor/Command/DeleteGroupStackCommand.cpp
-        Source/Editor/Command/DeleteGroupStackCommand.h
-        Source/Editor/Command/DeletePointStackCommand.cpp
-        Source/Editor/Command/DeletePointStackCommand.h
-        Source/Editor/Command/InsertPointStackCommand.cpp
-        Source/Editor/Command/InsertPointStackCommand.h
-        Source/Editor/Command/MergePolygonWithOffsetStackCommand.cpp
-        Source/Editor/Command/MergePolygonWithOffsetStackCommand.h
-        Source/Editor/Command/MoveGroupStackCommand.cpp
-        Source/Editor/Command/MoveGroupStackCommand.h
-        Source/Editor/Command/SetPolygonStackCommand.cpp
-        Source/Editor/Command/SetPolygonStackCommand.h
+        Source/Editor/Command/DeleteOutlineStackCommand.cpp
+        Source/Editor/Command/DeleteOutlineStackCommand.h
+        Source/Editor/Command/DeleteVertexStackCommand.cpp
+        Source/Editor/Command/DeleteVertexStackCommand.h
+        Source/Editor/Command/InsertVertexStackCommand.cpp
+        Source/Editor/Command/InsertVertexStackCommand.h
+        Source/Editor/Command/MergeShapeWithOffsetStackCommand.cpp
+        Source/Editor/Command/MergeShapeWithOffsetStackCommand.h
+        Source/Editor/Command/MoveOutlineStackCommand.cpp
+        Source/Editor/Command/MoveOutlineStackCommand.h
+        Source/Editor/Command/SetShapeStackCommand.cpp
+        Source/Editor/Command/SetShapeStackCommand.h
         Source/Editor/Command/StackCommand.cpp
         Source/Editor/Command/StackCommand.h
-        Source/Editor/Command/UpdatePointStackCommand.cpp
-        Source/Editor/Command/UpdatePointStackCommand.h
+        Source/Editor/Command/UpdateVertexStackCommand.cpp
+        Source/Editor/Command/UpdateVertexStackCommand.h
 
-        Source/Editor/Constraint/DeleteGroupEditorConstraint.cpp
-        Source/Editor/Constraint/DeleteGroupEditorConstraint.h
-        Source/Editor/Constraint/DeletePointEditorConstraint.cpp
-        Source/Editor/Constraint/DeletePointEditorConstraint.h
+        Source/Editor/Constraint/DeleteOutlineEditorConstraint.cpp
+        Source/Editor/Constraint/DeleteOutlineEditorConstraint.h
+        Source/Editor/Constraint/DeleteVertexEditorConstraint.cpp
+        Source/Editor/Constraint/DeleteVertexEditorConstraint.h
         Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.cpp
         Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.h
 
@@ -303,8 +303,8 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/GuiEditor/GuiEditorActionsMenu.cpp
         Source/Editor/GuiEditor/GuiEditorActionsMenu.h
         Source/Editor/GuiEditor/GuiEditorMenu.h
-        Source/Editor/GuiEditor/GuiPolygonActionsMenu.cpp
-        Source/Editor/GuiEditor/GuiPolygonActionsMenu.h
+        Source/Editor/GuiEditor/GuiShapeActionsMenu.cpp
+        Source/Editor/GuiEditor/GuiShapeActionsMenu.h
         Source/Editor/GuiEditor/GuiVisualizationSettingsMenu.cpp
         Source/Editor/GuiEditor/GuiVisualizationSettingsMenu.h
 
@@ -330,8 +330,8 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/VisualEditor/Input/MoveInputHandler.cpp
         Source/Editor/VisualEditor/Input/MoveInputHandler.h
 
-        Source/Editor/VisualEditor/Presenter/PolygonPresenter.cpp
-        Source/Editor/VisualEditor/Presenter/PolygonPresenter.h
+        Source/Editor/VisualEditor/Presenter/ShapePresenter.cpp
+        Source/Editor/VisualEditor/Presenter/ShapePresenter.h
         Source/Editor/VisualEditor/Presenter/Presenter.cpp
         Source/Editor/VisualEditor/Presenter/Presenter.h
         Source/Editor/VisualEditor/Presenter/SdfAlgorithmOutputPresenter.cpp
@@ -341,44 +341,44 @@ target_sources(PolygonSDFTest PRIVATE
         Source/Editor/VisualEditor/VisualEditor.h
         Source/Editor/VisualEditor/VisualEditorConstants.h
 
-        Source/Polygon/Point.h
-        Source/Polygon/Polygon.cpp
-        Source/Polygon/Polygon.h
-        Source/Polygon/Segment.cpp
-        Source/Polygon/Segment.h
-        Source/Polygon/SubPolygon.cpp
-        Source/Polygon/SubPolygon.h
+        Source/Polygon/Vertex.h
+        Source/Polygon/Shape.cpp
+        Source/Polygon/Shape.h
+        Source/Polygon/Edge.cpp
+        Source/Polygon/Edge.h
+        Source/Polygon/Outline.cpp
+        Source/Polygon/Outline.h
 
         Source/Rendering/FullScreenTriangle.cpp
         Source/Rendering/FullScreenTriangle.h
         Source/Rendering/RenderObject.h
 
-        Source/Rendering/PolygonRenderer/Impl/AspectRatioIndependentPolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/AspectRatioIndependentPolygonRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/CompositePolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/CompositePolygonRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/EmptyPolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/EmptyPolygonRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/FullScreenPolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/FullScreenPolygonRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/PolygonOutlineRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/PolygonOutlineRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/ProxyPolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/ProxyPolygonRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmLineRegionRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmLineRegionRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmPointRegionRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmPointRegionRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/AspectRatioIndependentShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/AspectRatioIndependentShapeRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/CompositeShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/CompositeShapeRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/EmptyShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/EmptyShapeRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/FullScreenShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/FullScreenShapeRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/ShapeOutlineRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/ShapeOutlineRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/ProxyShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/ProxyShapeRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmEdgeRegionRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmEdgeRegionRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmOutputRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmOutputRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmVertexRegionRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmVertexRegionRenderer.h
 
-        Source/Rendering/PolygonRenderer/PolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/PolygonRenderer.h
-        Source/Rendering/PolygonRenderer/PolygonRendererFactory.cpp
-        Source/Rendering/PolygonRenderer/PolygonRendererFactory.h
-        Source/Rendering/PolygonRenderer/PolygonRendererProperty.h
-        Source/Rendering/PolygonRenderer/RendererProperties.cpp
-        Source/Rendering/PolygonRenderer/RendererProperties.h
+        Source/Rendering/ShapeRenderer/ShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/ShapeRenderer.h
+        Source/Rendering/ShapeRenderer/ShapeRendererFactory.cpp
+        Source/Rendering/ShapeRenderer/ShapeRendererFactory.h
+        Source/Rendering/ShapeRenderer/ShapeRendererProperty.h
+        Source/Rendering/ShapeRenderer/RendererProperties.cpp
+        Source/Rendering/ShapeRenderer/RendererProperties.h
 
         Source/Util/CoordinateUtil.cpp
         Source/Util/CoordinateUtil.h
@@ -395,10 +395,10 @@ target_sources(PolygonSDFTest PRIVATE
         Source/PolygonSDFApplication.cpp
         Source/PolygonSDFApplication.h
 
-        Tests/Algorithm/Region/TestLineRegionCutWithLines.h
-        Tests/Algorithm/Region/TestLineRegionCutWithPoints.h
-        Tests/Algorithm/Region/TestPointRegionCutWithLines.h
-        Tests/Algorithm/Region/TestPointRegionCutWithPoints.h
+        Tests/Algorithm/Region/TestEdgeRegionCutWithEdges.h
+        Tests/Algorithm/Region/TestEdgeRegionCutWithVertices.h
+        Tests/Algorithm/Region/TestVertexRegionCutWithEdges.h
+        Tests/Algorithm/Region/TestVertexRegionCutWithVertices.h
         Tests/Algorithm/Region/TestPolyCut.h
 
         Tests/Algorithm/TestSdfPlaneAlgorithm.h
@@ -406,19 +406,19 @@ target_sources(PolygonSDFTest PRIVATE
         Tests/Editor/Aggregator/TestStackPeekingEditorAggregator.h
         Tests/Editor/Aggregator/TestStackSizeEditorAggregator.h
 
-        Tests/Editor/Command/TestAddNewGroupStackCommand.h
-        Tests/Editor/Command/TestAddPointStackCommand.h
+        Tests/Editor/Command/TestAddNewOutlineStackCommand.h
+        Tests/Editor/Command/TestAddVertexStackCommand.h
         Tests/Editor/Command/TestCalculateSdfPlaneAlgorithmCommand.h
-        Tests/Editor/Command/TestDeleteGroupStackCommand.h
-        Tests/Editor/Command/TestDeletePointStackCommand.h
-        Tests/Editor/Command/TestInsertPointStackCommand.h
-        Tests/Editor/Command/TestMergePolygonWithOffsetStackCommand.h
-        Tests/Editor/Command/TestMoveGroupStackCommand.h
-        Tests/Editor/Command/TestSetPolygonStackCommand.h
-        Tests/Editor/Command/TestUpdatePointStackCommand.h
+        Tests/Editor/Command/TestDeleteOutlineStackCommand.h
+        Tests/Editor/Command/TestDeleteVertexStackCommand.h
+        Tests/Editor/Command/TestInsertVertexStackCommand.h
+        Tests/Editor/Command/TestMergeShapeWithOffsetStackCommand.h
+        Tests/Editor/Command/TestMoveOutlineStackCommand.h
+        Tests/Editor/Command/TestSetShapeStackCommand.h
+        Tests/Editor/Command/TestUpdateVertexStackCommand.h
 
-        Tests/Editor/Constraint/TestDeleteGroupEditorConstraint.h
-        Tests/Editor/Constraint/TestDeletePointEditorConstraint.h
+        Tests/Editor/Constraint/TestDeleteOutlineEditorConstraint.h
+        Tests/Editor/Constraint/TestDeleteVertexEditorConstraint.h
         Tests/Editor/Constraint/TestSdfPlaneAlgorithmConstraint.h
 
         Tests/Editor/Consumer/TestGuiStateEditorConsumer.h
@@ -457,19 +457,19 @@ target_source_group(PolygonSDFTest Samples)
 add_falcor_executable(PolygonSDFBenchmark)
 
 target_sources(PolygonSDFBenchmark PRIVATE
-        Shaders/Common.slang
-        Shaders/LineRegionAlgorithmOutput.3d.slang
+        Shaders/DistanceVisualization.slang
+        Shaders/EdgeRegionAlgorithmOutput.3d.slang
         Shaders/NaivePolygonDistance.3d.slang
-        Shaders/PointRegionAlgorithmOutput.3d.slang
+        Shaders/VertexRegionAlgorithmOutput.3d.slang
         Shaders/SolidColor.3d.slang
 
-        Source/Algorithm/Region/LineRegion.cpp
-        Source/Algorithm/Region/LineRegion.h
-        Source/Algorithm/Region/PointRegion.cpp
-        Source/Algorithm/Region/PointRegion.h
+        Source/Algorithm/Region/EdgeRegion.cpp
+        Source/Algorithm/Region/EdgeRegion.h
+        Source/Algorithm/Region/VertexRegion.cpp
+        Source/Algorithm/Region/VertexRegion.h
         Source/Algorithm/Region/Region.cpp
         Source/Algorithm/Region/Region.h
-        Source/Algorithm/Region/LineRegionBoundVertex.h
+        Source/Algorithm/Region/EdgeRegionBoundVertex.h
 
         Source/Algorithm/SdfPlaneAlgorithm.cpp
         Source/Algorithm/SdfPlaneAlgorithm.h
@@ -482,33 +482,33 @@ target_sources(PolygonSDFBenchmark PRIVATE
         Source/Editor/Aggregator/StackSizeEditorAggregator.cpp
         Source/Editor/Aggregator/StackSizeEditorAggregator.h
 
-        Source/Editor/Command/AddNewGroupStackCommand.cpp
-        Source/Editor/Command/AddNewGroupStackCommand.h
-        Source/Editor/Command/AddPointStackCommand.cpp
-        Source/Editor/Command/AddPointStackCommand.h
+        Source/Editor/Command/AddNewOutlineStackCommand.cpp
+        Source/Editor/Command/AddNewOutlineStackCommand.h
+        Source/Editor/Command/AddVertexStackCommand.cpp
+        Source/Editor/Command/AddVertexStackCommand.h
         Source/Editor/Command/CalculateSdfPlaneAlgorithmCommand.cpp
         Source/Editor/Command/CalculateSdfPlaneAlgorithmCommand.h
-        Source/Editor/Command/DeleteGroupStackCommand.cpp
-        Source/Editor/Command/DeleteGroupStackCommand.h
-        Source/Editor/Command/DeletePointStackCommand.cpp
-        Source/Editor/Command/DeletePointStackCommand.h
-        Source/Editor/Command/InsertPointStackCommand.cpp
-        Source/Editor/Command/InsertPointStackCommand.h
-        Source/Editor/Command/MergePolygonWithOffsetStackCommand.cpp
-        Source/Editor/Command/MergePolygonWithOffsetStackCommand.h
-        Source/Editor/Command/MoveGroupStackCommand.cpp
-        Source/Editor/Command/MoveGroupStackCommand.h
-        Source/Editor/Command/SetPolygonStackCommand.cpp
-        Source/Editor/Command/SetPolygonStackCommand.h
+        Source/Editor/Command/DeleteOutlineStackCommand.cpp
+        Source/Editor/Command/DeleteOutlineStackCommand.h
+        Source/Editor/Command/DeleteVertexStackCommand.cpp
+        Source/Editor/Command/DeleteVertexStackCommand.h
+        Source/Editor/Command/InsertVertexStackCommand.cpp
+        Source/Editor/Command/InsertVertexStackCommand.h
+        Source/Editor/Command/MergeShapeWithOffsetStackCommand.cpp
+        Source/Editor/Command/MergeShapeWithOffsetStackCommand.h
+        Source/Editor/Command/MoveOutlineStackCommand.cpp
+        Source/Editor/Command/MoveOutlineStackCommand.h
+        Source/Editor/Command/SetShapeStackCommand.cpp
+        Source/Editor/Command/SetShapeStackCommand.h
         Source/Editor/Command/StackCommand.cpp
         Source/Editor/Command/StackCommand.h
-        Source/Editor/Command/UpdatePointStackCommand.cpp
-        Source/Editor/Command/UpdatePointStackCommand.h
+        Source/Editor/Command/UpdateVertexStackCommand.cpp
+        Source/Editor/Command/UpdateVertexStackCommand.h
 
-        Source/Editor/Constraint/DeleteGroupEditorConstraint.cpp
-        Source/Editor/Constraint/DeleteGroupEditorConstraint.h
-        Source/Editor/Constraint/DeletePointEditorConstraint.cpp
-        Source/Editor/Constraint/DeletePointEditorConstraint.h
+        Source/Editor/Constraint/DeleteOutlineEditorConstraint.cpp
+        Source/Editor/Constraint/DeleteOutlineEditorConstraint.h
+        Source/Editor/Constraint/DeleteVertexEditorConstraint.cpp
+        Source/Editor/Constraint/DeleteVertexEditorConstraint.h
         Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.cpp
         Source/Editor/Constraint/SdfPlaneAlgorithmConstraint.h
 
@@ -556,8 +556,8 @@ target_sources(PolygonSDFBenchmark PRIVATE
         Source/Editor/GuiEditor/GuiEditorActionsMenu.cpp
         Source/Editor/GuiEditor/GuiEditorActionsMenu.h
         Source/Editor/GuiEditor/GuiEditorMenu.h
-        Source/Editor/GuiEditor/GuiPolygonActionsMenu.cpp
-        Source/Editor/GuiEditor/GuiPolygonActionsMenu.h
+        Source/Editor/GuiEditor/GuiShapeActionsMenu.cpp
+        Source/Editor/GuiEditor/GuiShapeActionsMenu.h
         Source/Editor/GuiEditor/GuiVisualizationSettingsMenu.cpp
         Source/Editor/GuiEditor/GuiVisualizationSettingsMenu.h
 
@@ -583,8 +583,8 @@ target_sources(PolygonSDFBenchmark PRIVATE
         Source/Editor/VisualEditor/Input/MoveInputHandler.cpp
         Source/Editor/VisualEditor/Input/MoveInputHandler.h
 
-        Source/Editor/VisualEditor/Presenter/PolygonPresenter.cpp
-        Source/Editor/VisualEditor/Presenter/PolygonPresenter.h
+        Source/Editor/VisualEditor/Presenter/ShapePresenter.cpp
+        Source/Editor/VisualEditor/Presenter/ShapePresenter.h
         Source/Editor/VisualEditor/Presenter/Presenter.cpp
         Source/Editor/VisualEditor/Presenter/Presenter.h
         Source/Editor/VisualEditor/Presenter/SdfAlgorithmOutputPresenter.cpp
@@ -594,44 +594,44 @@ target_sources(PolygonSDFBenchmark PRIVATE
         Source/Editor/VisualEditor/VisualEditor.h
         Source/Editor/VisualEditor/VisualEditorConstants.h
 
-        Source/Polygon/Point.h
-        Source/Polygon/Polygon.cpp
-        Source/Polygon/Polygon.h
-        Source/Polygon/Segment.cpp
-        Source/Polygon/Segment.h
-        Source/Polygon/SubPolygon.cpp
-        Source/Polygon/SubPolygon.h
+        Source/Polygon/Vertex.h
+        Source/Polygon/Shape.cpp
+        Source/Polygon/Shape.h
+        Source/Polygon/Edge.cpp
+        Source/Polygon/Edge.h
+        Source/Polygon/Outline.cpp
+        Source/Polygon/Outline.h
 
         Source/Rendering/FullScreenTriangle.cpp
         Source/Rendering/FullScreenTriangle.h
         Source/Rendering/RenderObject.h
 
-        Source/Rendering/PolygonRenderer/Impl/AspectRatioIndependentPolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/AspectRatioIndependentPolygonRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/CompositePolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/CompositePolygonRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/EmptyPolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/EmptyPolygonRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/FullScreenPolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/FullScreenPolygonRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/PolygonOutlineRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/PolygonOutlineRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/ProxyPolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/ProxyPolygonRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmLineRegionRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmLineRegionRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmOutputRenderer.h
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmPointRegionRenderer.cpp
-        Source/Rendering/PolygonRenderer/Impl/SdfAlgorithmPointRegionRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/AspectRatioIndependentShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/AspectRatioIndependentShapeRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/CompositeShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/CompositeShapeRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/EmptyShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/EmptyShapeRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/FullScreenShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/FullScreenShapeRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/ShapeOutlineRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/ShapeOutlineRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/ProxyShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/ProxyShapeRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmEdgeRegionRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmEdgeRegionRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmOutputRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmOutputRenderer.h
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmVertexRegionRenderer.cpp
+        Source/Rendering/ShapeRenderer/Impl/SdfAlgorithmVertexRegionRenderer.h
 
-        Source/Rendering/PolygonRenderer/PolygonRenderer.cpp
-        Source/Rendering/PolygonRenderer/PolygonRenderer.h
-        Source/Rendering/PolygonRenderer/PolygonRendererFactory.cpp
-        Source/Rendering/PolygonRenderer/PolygonRendererFactory.h
-        Source/Rendering/PolygonRenderer/PolygonRendererProperty.h
-        Source/Rendering/PolygonRenderer/RendererProperties.cpp
-        Source/Rendering/PolygonRenderer/RendererProperties.h
+        Source/Rendering/ShapeRenderer/ShapeRenderer.cpp
+        Source/Rendering/ShapeRenderer/ShapeRenderer.h
+        Source/Rendering/ShapeRenderer/ShapeRendererFactory.cpp
+        Source/Rendering/ShapeRenderer/ShapeRendererFactory.h
+        Source/Rendering/ShapeRenderer/ShapeRendererProperty.h
+        Source/Rendering/ShapeRenderer/RendererProperties.cpp
+        Source/Rendering/ShapeRenderer/RendererProperties.h
 
         Source/Util/CoordinateUtil.cpp
         Source/Util/CoordinateUtil.h

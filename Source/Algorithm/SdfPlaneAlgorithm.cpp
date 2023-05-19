@@ -2,27 +2,27 @@
 
 using namespace psdf;
 
-static bool isCcwWindingOrder(const SubPolygon &subPolygon)
+static bool isCcwWindingOrder(const Outline &outline)
 {
     double sum = 0;
-    const SubPolygon::Points &points = subPolygon.getPoints();
-    size_t pointsSize = points.size();
+    const Outline::Vertices &vertices = outline.getVertices();
+    size_t pointsSize = vertices.size();
     for (size_t i = 0; i < pointsSize; i++)
     {
-        Point point1 = points[i];
-        Point point2 = points[(i + 1) % pointsSize];
+        Vertex point1 = vertices[i];
+        Vertex point2 = vertices[(i + 1) % pointsSize];
         sum += (point2.x - point1.x) * (point2.y + point1.y);
     }
 
     return sum < 0;
 }
 
-static bool isSubPolygonInside(size_t polygonIndex, const std::vector<SubPolygon> &polygons)
+static bool isOutlineInside(size_t polygonIndex, const std::vector<Outline> &polygons)
 {
     bool isInside = false;
 
-    // checking only one of the points is enough, because we don't work with self-intersecting polygons
-    glm::dvec2 coordToCheck = polygons[polygonIndex].getPoints()[0];
+    // checking only one of the vertices is enough, because we don't work with self-intersecting shapes
+    glm::dvec2 coordToCheck = polygons[polygonIndex].getVertices()[0];
 
     for (size_t j = 0; j < polygons.size(); j++)
     {
@@ -31,13 +31,13 @@ static bool isSubPolygonInside(size_t polygonIndex, const std::vector<SubPolygon
             continue;
         }
 
-        for (const auto &segment : polygons[j].getSegments())
+        for (const auto &edge : polygons[j].getEdges())
         {
-            glm::dvec2 e = segment.getPoint1() - segment.getPoint2();
-            glm::dvec2 w = coordToCheck - segment.getPoint2();
+            glm::dvec2 e = edge.getVertex1() - edge.getVertex2();
+            glm::dvec2 w = coordToCheck - edge.getVertex2();
             glm::bvec3 winding{
-                coordToCheck.y >= segment.getPoint2().y,
-                coordToCheck.y<segment.getPoint1().y, e.x * w.y> e.y * w.x,
+                coordToCheck.y >= edge.getVertex2().y,
+                coordToCheck.y<edge.getVertex1().y, e.x * w.y> e.y * w.x,
             };
             if (all(winding) || all(glm::not_(winding)))
             {
@@ -48,60 +48,60 @@ static bool isSubPolygonInside(size_t polygonIndex, const std::vector<SubPolygon
     return isInside;
 }
 
-static void reorderPointsForTheAlgorithm(std::vector<SubPolygon> &reorderedPolygons)
+static void reorderVerticesForTheAlgorithm(std::vector<Outline> &reorderedPolygons)
 {
     for (size_t i = 0; i < reorderedPolygons.size(); i++)
     {
-        auto &subPolygon = reorderedPolygons[i];
-        bool isPolygonCcWindingOrder = isCcwWindingOrder(subPolygon);
-        bool isOnInside = isSubPolygonInside(i, reorderedPolygons);
+        auto &outline = reorderedPolygons[i];
+        bool isPolygonCcWindingOrder = isCcwWindingOrder(outline);
+        bool isOnInside = isOutlineInside(i, reorderedPolygons);
         if (isOnInside && isPolygonCcWindingOrder || (!isOnInside && !isPolygonCcWindingOrder))
         {
-            SubPolygon::Points pointsCopy = subPolygon.getPoints();
+            Outline::Vertices pointsCopy = outline.getVertices();
             std::reverse(pointsCopy.begin(), pointsCopy.end());
-            subPolygon = SubPolygon(std::move(pointsCopy));
+            outline = Outline(std::move(pointsCopy));
         }
     }
 }
 
-SdfPlaneAlgorithmOutput::SharedPtr SdfPlaneAlgorithm::calculateForPolygon(const Polygon::SharedPtr &pPolygon,
-                                                                          SdfPlaneAlgorithmExecutionDesc desc)
+SdfPlaneAlgorithmOutput::SharedPtr SdfPlaneAlgorithm::calculateForShape(const Shape::SharedPtr &pShape,
+                                                                        SdfPlaneAlgorithmExecutionDesc desc)
 {
-    std::vector<LineRegion> lineRegions;
-    std::vector<PointRegion> pointRegions;
+    std::vector<EdgeRegion> edgeRegions;
+    std::vector<VertexRegion> vertexRegions;
 
-    std::vector<SubPolygon> reorderedPolygons = pPolygon->getPolygons();
+    std::vector<Outline> reorderedPolygons = pShape->getOutlines();
     if (desc.reorderPoints)
     {
-        reorderPointsForTheAlgorithm(reorderedPolygons);
+        reorderVerticesForTheAlgorithm(reorderedPolygons);
     }
-    for (const auto &subPolygon : reorderedPolygons)
+    for (const auto &outline : reorderedPolygons)
     {
-        const std::vector<Segment> &segments = subPolygon.getSegments();
+        const std::vector<Edge> &segments = outline.getEdges();
 
         size_t size = segments.size();
         for (int i = 0; i < size; i++)
         {
-            Segment segment1 = segments[i];
-            Segment segment2 = segments[(i + 1) % size];
+            Edge edge1 = segments[i];
+            Edge edge2 = segments[(i + 1) % size];
 
-            glm::dvec2 edgeVector1 = segment1.getEdgeVector();
-            glm::dvec2 edgeVector2 = segment2.getEdgeVector();
+            glm::dvec2 edgeVector1 = edge1.getEdgeVector();
+            glm::dvec2 edgeVector2 = edge2.getEdgeVector();
             double cornerSign = glm::sign(glm::dot(glm::dvec2{-edgeVector1.y, edgeVector1.x}, edgeVector2));
 
-            lineRegions.emplace_back(segment1, desc.initialBoundScale);
-            lineRegions.back().polyCut({segment1.getPoint2(), segment1.getPoint1()}, {edgeVector1, -edgeVector1});
-            pointRegions.emplace_back(segment1.getPoint2(), cornerSign, desc.pointRegionSubdivision,
-                                      desc.initialBoundScale);
-            pointRegions.back().polyCut({segment1.getPoint2(), segment1.getPoint2()}, {edgeVector2, -edgeVector1});
+            edgeRegions.emplace_back(edge1, desc.initialBoundScale);
+            edgeRegions.back().polyCut({edge1.getVertex2(), edge1.getVertex1()}, {edgeVector1, -edgeVector1});
+            vertexRegions.emplace_back(edge1.getVertex2(), cornerSign, desc.vertexRegionSubdivision,
+                                       desc.initialBoundScale);
+            vertexRegions.back().polyCut({edge1.getVertex2(), edge1.getVertex2()}, {edgeVector2, -edgeVector1});
         }
     }
 
-    PointRegion::cutWithPoints(pointRegions, pointRegions);
-    PointRegion::cutWithLines(pointRegions, lineRegions);
+    VertexRegion::cutWithVertices(vertexRegions, vertexRegions);
+    VertexRegion::cutWithEdges(vertexRegions, edgeRegions);
 
-    LineRegion::cutWithPoints(lineRegions, pointRegions);
-    LineRegion::cutWithLines(lineRegions, lineRegions);
+    EdgeRegion::cutWithVertices(edgeRegions, vertexRegions);
+    EdgeRegion::cutWithEdges(edgeRegions, edgeRegions);
 
-    return SdfPlaneAlgorithmOutput::create(pointRegions, lineRegions);
+    return SdfPlaneAlgorithmOutput::create(vertexRegions, edgeRegions);
 }

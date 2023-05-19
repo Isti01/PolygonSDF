@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Rendering/PolygonRenderer/PolygonRenderer.h"
+#include "../../Rendering/ShapeRenderer/ShapeRenderer.h"
 #include "../Core/PublishedEvent.h"
 
 namespace psdf
@@ -10,17 +10,17 @@ class RendererPropertyPublishedEvent : public PublishedEvent
 {
   public:
     using SharedPtr = std::shared_ptr<RendererPropertyPublishedEvent>;
-    static SharedPtr create(PolygonRendererProperty property);
+    static SharedPtr create(ShapeRendererProperty property);
 
     std::string getName() override;
-    PolygonRendererProperty getProperty() const;
+    ShapeRendererProperty getProperty() const;
     ~RendererPropertyPublishedEvent() override = default;
 
   protected:
-    RendererPropertyPublishedEvent(PolygonRendererProperty property);
+    RendererPropertyPublishedEvent(ShapeRendererProperty property);
 
   private:
-    PolygonRendererProperty mProperty;
+    ShapeRendererProperty mProperty;
 };
 
 } // namespace psdf

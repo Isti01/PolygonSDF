@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Rendering/PolygonRenderer/PolygonRendererProperty.h"
+#include "../../Rendering/ShapeRenderer/ShapeRendererProperty.h"
 #include "../Core/Editor.h"
 #include "GuiEditorMenu.h"
 
@@ -21,10 +21,10 @@ class GuiVisualizationSettingsMenu : public GuiEditorMenu
 
   private:
     void resetProperties();
-    void showPropertySetting(Gui::Group &group, PolygonRendererProperty &property);
+    void showPropertySetting(Gui::Group &group, ShapeRendererProperty &property);
     static const std::map<std::string, std::string> kPropertyTitles;
 
-    std::vector<PolygonRendererProperty> mProperties;
+    std::vector<ShapeRendererProperty> mProperties;
     Editor::SharedPtr mpEditor;
 };
 

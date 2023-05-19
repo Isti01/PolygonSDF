@@ -125,7 +125,7 @@ MoveStrategy::SharedPtr OutlineMoveStrategy::create()
 }
 
 StackCommand::SharedPtr OutlineMoveStrategy::createCommand(size_t groupInd, size_t vertexInd, Vertex prevPos,
-                                                         Vertex newPos)
+                                                           Vertex newPos)
 {
     return MoveOutlineStackCommand::create(groupInd, prevPos, newPos);
 }

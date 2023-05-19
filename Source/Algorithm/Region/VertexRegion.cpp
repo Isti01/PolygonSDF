@@ -14,7 +14,8 @@ VertexRegion::VertexRegion(std::vector<glm::dvec2> bounds, Vertex vertex, double
 {
 }
 
-void VertexRegion::cutWithVertices(std::vector<VertexRegion> &vertexRegions, const std::vector<VertexRegion> &cuttingRegions)
+void VertexRegion::cutWithVertices(std::vector<VertexRegion> &vertexRegions,
+                                   const std::vector<VertexRegion> &cuttingRegions)
 {
     if (vertexRegions.empty() || cuttingRegions.empty())
     {
@@ -103,7 +104,7 @@ double VertexRegion::getDistanceToPointInsideBounds(Vertex vertex) const
 }
 
 void VertexRegion::createMesh(std::vector<VertexRegionBoundVertex> &vertices, std::vector<uint32_t> &indices,
-                             Vertex fanCenter) const
+                              Vertex fanCenter) const
 {
     if (mBounds.empty())
     {

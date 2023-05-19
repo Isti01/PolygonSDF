@@ -97,7 +97,8 @@ bool InsertRemoveVertexInputHandler::removeVertexIfCloseEnough(float2 position)
     }
     size_t outlineIndex = closestIndex->first;
     size_t vertexIndex = closestIndex->second;
-    float closestPointDistance = glm::distance(mousePosition, float2(outlines.at(outlineIndex).getVertices()[vertexIndex]));
+    float closestPointDistance =
+        glm::distance(mousePosition, float2(outlines.at(outlineIndex).getVertices()[vertexIndex]));
     if (closestPointDistance > VisualEditorConstants::kSelectionDistanceThreshold)
     {
         return false;

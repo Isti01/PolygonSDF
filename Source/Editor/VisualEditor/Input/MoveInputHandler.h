@@ -14,7 +14,8 @@ class MoveStrategy
   public:
     using SharedPtr = std::shared_ptr<MoveStrategy>;
 
-    virtual StackCommand::SharedPtr createCommand(size_t outlineInd, size_t vertexInd, Vertex prevPos, Vertex newPos) = 0;
+    virtual StackCommand::SharedPtr createCommand(size_t outlineInd, size_t vertexInd, Vertex prevPos,
+                                                  Vertex newPos) = 0;
 };
 
 class MoveInputHandler : public MouseInputHandler

@@ -19,7 +19,6 @@ TEST_CASE("Test Editor::publishEvent")
     REQUIRE(pTestConsumer->getAcceptedEvents().size() == 1);
 }
 
-
 TEST_CASE("Test Editor::addCommand")
 {
     auto pEditor = psdf::Editor::create(psdf::EditorStack::create());

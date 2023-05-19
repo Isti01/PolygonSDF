@@ -3,7 +3,7 @@
 using namespace psdf;
 
 MergeShapeWithOffsetStackCommand::SharedPtr MergeShapeWithOffsetStackCommand::create(Shape::SharedPtr pShape,
-                                                                                         Vertex offset)
+                                                                                     Vertex offset)
 {
     return SharedPtr(new MergeShapeWithOffsetStackCommand(std::move(pShape), offset));
 }

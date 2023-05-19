@@ -13,7 +13,7 @@ class SdfPlaneAlgorithm
 {
   public:
     static SdfPlaneAlgorithmOutput::SharedPtr calculateForShape(const Shape::SharedPtr &pShape,
-                                                                  SdfPlaneAlgorithmExecutionDesc desc);
+                                                                SdfPlaneAlgorithmExecutionDesc desc);
 
   private:
     SdfPlaneAlgorithm() = default;

@@ -2,7 +2,8 @@
 
 using namespace psdf;
 
-InsertVertexStackCommand::SharedPtr InsertVertexStackCommand::create(size_t outlineIndex, size_t vertexIndex, Vertex vertex)
+InsertVertexStackCommand::SharedPtr InsertVertexStackCommand::create(size_t outlineIndex, size_t vertexIndex,
+                                                                     Vertex vertex)
 {
     return SharedPtr(new InsertVertexStackCommand(outlineIndex, vertexIndex, vertex));
 }

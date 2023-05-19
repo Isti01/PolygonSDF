@@ -7,7 +7,6 @@
 #include "../../../Source/Editor/PublishedEvent/HideGuiPublishedEvent.h"
 #include "../../../Source/Editor/PublishedEvent/ShowGuiPublishedEvent.h"
 
-
 TEST_CASE("Test GuiStateEditorConsumer")
 {
     auto pEditor = psdf::Editor::create(psdf::EditorStack::create());

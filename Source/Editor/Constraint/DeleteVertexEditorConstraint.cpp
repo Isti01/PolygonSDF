@@ -14,7 +14,7 @@ std::string DeleteVertexEditorConstraint::getName() const
 }
 
 bool DeleteVertexEditorConstraint::evaluate(const EditorStack::SharedPtr &pStack,
-                                           const EditorCommand::SharedPtr &pCommand)
+                                            const EditorCommand::SharedPtr &pCommand)
 {
     if (const auto &pDeleteCommand = std::dynamic_pointer_cast<DeleteVertexStackCommand>(pCommand))
     {

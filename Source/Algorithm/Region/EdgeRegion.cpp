@@ -10,8 +10,7 @@ EdgeRegion::EdgeRegion(const Edge &edge, double initialBoundScale) : Region(init
 {
 }
 
-EdgeRegion::EdgeRegion(std::vector<glm::dvec2> bounds, Edge edge)
-    : Region(std::move(bounds)), mEdge(std::move(edge))
+EdgeRegion::EdgeRegion(std::vector<glm::dvec2> bounds, Edge edge) : Region(std::move(bounds)), mEdge(std::move(edge))
 {
 }
 

@@ -9,7 +9,7 @@ namespace psdf
 {
 using namespace Falcor;
 
-class EventMenu: public GuiEditorMenu
+class EventMenu : public GuiEditorMenu
 {
   public:
     using SharedPtr = std::shared_ptr<EventMenu>;

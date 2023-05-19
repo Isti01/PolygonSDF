@@ -6,7 +6,6 @@
 #include "../../../Source/Editor/Core/Editor.h"
 #include "../../../Source/Editor/PublishedEvent/VisualEditorModeChangedPublishedEvent.h"
 
-
 TEST_CASE("Test VisualEditorStateChangeEditorConsumer")
 {
     auto pEditor = psdf::Editor::create(psdf::EditorStack::create());

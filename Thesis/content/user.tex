@@ -31,7 +31,7 @@ Az alkalmazásnak három fő célja van:
 
 \section{Telepítés és futtatás}
 
-A program nem rendelkezik telepítővel, a mellékelt állomány kicsomagolása után a \textit{"PolygonSDF.exe"} futtatásával azonnal használható. A mellékelt fájlok és mappák (pl. \textit{Falcor.dll}, \textit{Shaders/}, \textit{Data/}, ...) szükségesek az alkalmazás megfelelő működéséhez.
+A program nem rendelkezik telepítővel, a mellékelt állomány kicsomagolása után a \textit{,,PolygonSDF.exe"} futtatásával azonnal használható. A mellékelt fájlok és mappák (pl. \textit{Falcor.dll}, \textit{Shaders/}, \textit{Data/}, ...) szükségesek az alkalmazás megfelelő működéséhez.
 
 
 \section{Szerkesztői nézet}
@@ -57,7 +57,7 @@ A GUI szerkesztő csoportokra van felosztva, az elvégzett feladatkör szerint.
 
 \subsection{Vizualizációs beállítások}
 
-Ebben a szekcióban állíthatjuk be az objektumunk megjelenítését. Bizonyos tulajdonságok, mint például a színezés, árnyékolás, vagy kontúrozás, mindkét nézetben érvényesülnek.
+A \ref{fig:visualization_settings-1}-es ábrán látható menüben állíthatjuk be az objektumunk megjelenítését. Bizonyos tulajdonságok, mint például a színezés, árnyékolás, vagy kontúrozás, mindkét nézetben érvényesülnek.
 
 \begin{figure}[H]
     \centering
@@ -80,7 +80,7 @@ Ebben a szekcióban állíthatjuk be az objektumunk megjelenítését. Bizonyos 
     \item[Distance contour intensity] \textit{Távolsági kontúrvonalak intenzitása} -- Beállítás a kontúrok közötti tartomány színezésére. Amennyiben le van tiltva a kontúrok közötti terület nem kerül színezésre.
     \item[Display shadows] \textit{Árnyék megjelenítése} -- A távolság megjelenítéséhez használt kontúrvonalak gyakorisága. A magasabb megadott érték sűrűbben elhelyezkedő kontúrvonalakat eredményez.
     \item[Shadow locality] \textit{Árnyék lokalitása} -- Megadja, hogy színezéskor mennyivel súlyozzuk a kontúr színét a háttérhez képest. Nulla értékű intenzitással nincsenek kontúrvonalak, egy értéknél pedig nincs színezés közöttük.
-    \item[Darken segment regions] \textit{Élekhez tartozó régiók elsötétítése} -- Ki- és bekapcsolhatjuk az árnyékok rajzolását az alakzat körvonala mentén. A háromdimenziós nézetben fontos szerepe van az árnyéknak, mert információt ad a geometria mélységéről.        \item[Number of cutting points around output geometry] \textit{Az algoritmus kimenetének körbevágásához használt pontok száma} -- Az algoritmus egy \textit{"végtelenül nagy"} síkkal dolgozik. Megjelenítés előtt ezt a síkot az alkalmazás az alakzat középpontja körül egy az alakzat méretétől függő sugarú körív mentén körbevágja. A beviteli mezővel a vágáshoz használt pontok számát szabályozhatjuk.
+    \item[Darken segment regions] \textit{Élekhez tartozó régiók elsötétítése} -- Ki- és bekapcsolhatjuk az árnyékok rajzolását az alakzat körvonala mentén. A háromdimenziós nézetben fontos szerepe van az árnyéknak, mert információt ad a geometria mélységéről.        \item[Number of cutting points around output geometry] \textit{Az algoritmus kimenetének körbevágásához használt pontok száma} -- Az algoritmus egy \textit{,,végtelenül nagy"} síkkal dolgozik. Megjelenítés előtt ezt a síkot az alkalmazás az alakzat középpontja körül egy az alakzat méretétől függő sugarú körív mentén körbevágja. A beviteli mezővel a vágáshoz használt pontok számát szabályozhatjuk.
 \end{description}
 
 \begin{figure}[H]
@@ -100,7 +100,7 @@ Ebben a szekcióban állíthatjuk be az objektumunk megjelenítését. Bizonyos 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\linewidth]{images/outline_only.png}
-    \caption{Alakzat "wireframe" nézete}
+    \caption{Alakzat ,,wireframe" nézete}
     \label{fig:outline_only-1}
 \end{figure}
 
@@ -134,7 +134,7 @@ Ebben a szekcióban állíthatjuk be az objektumunk megjelenítését. Bizonyos 
 
 \subsection{Szerkesztői műveletek}
 
-Ezen szekció alatt általános szerkesztői műveletek találhatóak, mint például adatok betöltése, mentése, algoritmus futtatása. A szerkesztő az állapotokat veremszerűen tárolja, új művelet hozzáadásakor beszúrunk egy új bejegyzést, visszalépéskor pedig kiveszünk egyet. Ez a funkció szabadságot ad a felhasználónak kísérletezésre, mivel bármikor visszaléphet az arra szánt gomb megnyomásával, viszont a műveletek számával növekszik a memóriaigénye is a programnak, ezen a felületen keresztül törölhetjük is a szerkesztői előzményeket.
+A \ref{fig:editor_actions-1}-es ábrán látható menüben általános szerkesztői műveletek találhatóak, mint például adatok betöltése, mentése, algoritmus futtatása. A szerkesztő az állapotokat veremszerűen tárolja, új művelet hozzáadásakor beszúrunk egy új bejegyzést, visszalépéskor pedig kiveszünk egyet. Ez a funkció szabadságot ad a felhasználónak kísérletezésre, mivel bármikor visszaléphet az arra szánt gomb megnyomásával, viszont a műveletek számával növekszik a memóriaigénye is a programnak, ezen a felületen keresztül törölhetjük is a szerkesztői előzményeket.
 
 \begin{figure}[H]
     \centering
@@ -165,7 +165,7 @@ Ezen szekció alatt általános szerkesztői műveletek találhatóak, mint pél
 
 \subsection{Alakzat műveletek}
 
-A alakzat tartalmának módosítására létrehozott műveletek találhatóak a szekción belül.
+A \ref{fig:shape_actions-1}-es ábrán látható menüben az alakzat tartalmának módosítására létrehozott műveletek találhatóak.
 
 \begin{figure}[H]
     \centering
@@ -193,7 +193,7 @@ A alakzat tartalmának módosítására létrehozott műveletek találhatóak a 
 
 \subsection{Eseménynapló}
 
-A szerkesztés során számos esemény kerül kiváltásra különböző források hatására. Az eseménynaplóban megvizsgálhatunk minden bejövő eseményt valós időben. Az ismétlődő szignatúrák számozással csoportosításra kerülnek, mivel bizonyos esetekben másodpercenként akár több tíz is kiváltódhat, például amikor a felhasználó az egérrel mozgat egy csúcspontot, vagy egy poligont.
+A szerkesztés során számos esemény kerül kiváltásra különböző források hatására. A \ref{fig:editor_events-1}-es ábrán látható eseménynaplóban megvizsgálhatunk minden bejövő eseményt valós időben. Az ismétlődő szignatúrák számozással csoportosításra kerülnek, mivel bizonyos esetekben másodpercenként akár több tíz is kiváltódhat, például amikor a felhasználó az egérrel mozgat egy csúcspontot, vagy egy poligont.
 
 \begin{figure}[H]
     \centering
@@ -211,7 +211,7 @@ A szerkesztés során számos esemény kerül kiváltásra különböző forrás
 
 \subsection{Parancslista}
 
-A parancslista menüben megtekinthetjük az összes elérhető billentyűparancsot a szerkesztőprogramhoz.
+A \ref{fig:user_guide-1}-ös ábrán látható felületen megtekinthetjük az összes elérhető billentyűparancsot a szerkesztőprogramhoz.
 
 \begin{figure}[H]
     \centering
@@ -228,8 +228,8 @@ A vizuális szerkesztő lehetőséget ad arra, hogy szabadkézzel szerkesszük a
 \textbf{Elérhető funckionalitás}
 
 \begin{description}
-    \item[Csúcspontok mozgatása (M billentyű)] Csúcspontok "Drag and drop" mozgatása. Egérgomb lenyomásakor a program kiválasztja a legközelebbi csúcspontot egy megadott távolságkorláton belül és mozgatás hatására frissíti a pozíciójat.
-    \item[Poligon mozgatása (G billentyű)]  Poligonok "Drag and drop" mozgatása. Egérgomb lenyomásakor a program kiválasztja a legközelebbi csúcsponthoz tartozó poligont egy megadott távolságkorláton belül és mozgatás hatására frissíti a poligonban lévő csúcspontok pozícióját.
+    \item[Csúcspontok mozgatása (M billentyű)] Csúcspontok ,,Drag and drop" mozgatása. Egérgomb lenyomásakor a program kiválasztja a legközelebbi csúcspontot egy megadott távolságkorláton belül és mozgatás hatására frissíti a pozíciójat.
+    \item[Poligon mozgatása (G billentyű)]  Poligonok ,,Drag and drop" mozgatása. Egérgomb lenyomásakor a program kiválasztja a legközelebbi csúcsponthoz tartozó poligont egy megadott távolságkorláton belül és mozgatás hatására frissíti a poligonban lévő csúcspontok pozícióját.
     \item[Vászon mozgatása (V billentyű)] Az egérgomb nyomvatartásával és mozgatással mozgatni lehet a vászonon a teljes alakzatot. A görgő segítségével pedig nagyítani és zsugorítani a méretén. Ez a művelet nem módosít az alakzat állapotán.
     \item[Csúcspont beszúrása (I billentyű)] A bal egérgomb lenyomásával elhelyez egy csúcspontot a kattintás pozíciójához legközelebbi kettő, azonos poligonhoz tartozó csúcspont közé. A jobb egérgomb lenyomásával a legközelebbi csúcspont törlésre kerül, amennyiben egy megadott távolságon belül van.
     \item[Váltás a háromdimenziós algoritmus kimenet nézetre (D billentyű)] Ha az algoritmus végrehajtásra került az alakzat jelenlegi állapotán, akkor átvált a háromdimenziós nézetre, egyébként egy felugró ablakban jelzi, hogy nincs mit megjeleníteni.

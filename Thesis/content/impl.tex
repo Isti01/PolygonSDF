@@ -1,115 +1,150 @@
 \chapter{Fejlesztői dokumentáció}
 \label{ch:impl}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nibh leo, dapibus in elementum nec, aliquet id sem. Suspendisse potenti. Nullam sit amet consectetur nibh. Donec scelerisque varius turpis at tincidunt.
-
-
-\section{Tételek, definíciók, megjegyzések}
+\section{Algoritmus bemutatása}
 
 \begin{definition}
-Mauris tristique sollicitudin ultrices. Etiam tristique quam sit amet metus dictum imperdiet. Nunc id lorem sed nisl pulvinar aliquet vitae quis arcu. Morbi iaculis eleifend porttitor.
+    Egy ponthalmaz egy elemének a Voronoj-cellája a sík egy olyan régiója, amiben minden pont a ponthalmazból a cellához tartozó ponthoz van legközelebb.
 \end{definition}
 
-Maecenas rutrum eros sem, pharetra interdum nulla porttitor sit amet. In vitae viverra ante. Maecenas sit amet placerat orci, sed tincidunt velit. Vivamus mattis, enim vel suscipit elementum, quam odio venenatis elit, et mollis nulla nunc a risus. Praesent purus magna, tristique sed lacus sit amet, convallis malesuada magna. Phasellus faucibus varius purus, nec tristique enim porta vitae.
+\begin{definition}
+    A Voronoj-diagram a sík egy olyan felosztása amiben egy ponthalmaz minden eleméhez egy Voronoj-cellát rendelünk.
+\end{definition}
 
-\begin{theorem}
-Nulla finibus ante vel arcu tincidunt, ut consectetur ligula finibus. Mauris mollis lectus sed ipsum bibendum, ac ultrices erat dictum. Suspendisse faucibus euismod lacinia. Etiam vel odio ante.
-\end{theorem}
-\begin{proof}
-Etiam pulvinar nibh quis massa auctor congue. Pellentesque quis odio vitae sapien molestie vestibulum sit amet et quam. Pellentesque vel dui eget enim hendrerit finibus at sit amet libero. Quisque sollicitudin ultrices enim, nec porta magna imperdiet vitae. Cras condimentum nunc dui.
-\end{proof}
-
-Donec dapibus sodales ante, at scelerisque nunc laoreet sit amet. Mauris porttitor tincidunt neque, vel ullamcorper neque pulvinar et. Integer eu lorem euismod, faucibus lectus sed, accumsan felis. 
-
-\begin{remark}
-Nunc ornare mi at augue vulputate, eu venenatis magna mollis. Nunc sed posuere dui, et varius nulla. Sed mollis nibh augue, eget scelerisque eros ornare nec. Praesent porta, metus eget eleifend consequat, eros ligula eleifend ex, a pellentesque mi est vitae urna. Vivamus turpis nunc, iaculis non leo eget, mattis vulputate tellus.
-\end{remark}
-
-Fusce in aliquet neque, in pretium sem. Donec tincidunt tellus id lectus pretium fringilla. Nunc faucibus, erat pretium tempus tempor, tortor mi fringilla neque, ac congue ex dui vitae mauris. Donec pretium et quam a cursus.
-
-\begin{note}
-Aliquam vehicula luctus mi a pretium. Nulla quam neque, maximus nec velit in, aliquam mollis tortor. Aliquam erat volutpat. Curabitur vitae laoreet turpis. Integer id diam ligula.
-\end{note}
-
-Ut sollicitudin tempus urna et mollis. Aliquam et aliquam turpis, sed fermentum mauris. Nulla eget ex diam. Donec eget tellus pharetra, semper neque eget, rutrum diam.
-
-\subsection{Egyenletek, matematika}
-
-Duis suscipit ipsum nec urna blandit, $2 + 2 = 4$ pellentesque vehicula quam fringilla. Vivamus euismod, lectus sit amet euismod viverra, dolor metus consequat sapien, ut hendrerit nisl nulla id nisi. Nam in leo eu quam sollicitudin semper a quis velit.
-
-$$a^2 + b^2 = c^2$$
-
-Phasellus mollis, elit sed convallis feugiat, dolor quam dapibus nibh, suscipit consectetur lacus risus quis sem. Vivamus scelerisque porta odio, vitae euismod dolor accumsan ut.
-
-In mathematica, identitatem Euleri (equation est scriptor vti etiam notum) sit aequalitatem \ref{eq:euler}.~egyenlet:
-\begin{equation}\label{eq:euler}
-e^{i \times \pi} + 1 = 0
-\end{equation}
-
-
-\section{Forráskódok}
-
-Nulla sodales purus id mi consequat, eu venenatis odio pharetra. Cras a arcu quam. Suspendisse augue risus, pulvinar a turpis et, commodo aliquet turpis. Nulla aliquam scelerisque mi eget pharetra. Mauris sed posuere elit, ac lobortis metus. Proin lacinia sit amet diam sed auctor. Nam viverra orci id sapien sollicitudin, a aliquam lacus suscipit. Quisque ac tincidunt leo \ref{src:cpp}. és \ref{src:csharp}.~forráskód:
-
-\lstset{caption={Hello World in C++}, label=src:cpp}
-\begin{lstlisting}[language={C++}]
-#include <stdio>
-
-int main() 
-{
-	int c;
-	std::cout << "Hello World!" << std::endl;
-
-	std::cout << "Press any key to exit." << std::endl;
-	std::cin >> c;
-	
-	return 0;
-}
-\end{lstlisting}
-
-\lstset{caption={Hello World in C\#}, label=src:csharp}
-\begin{lstlisting}[language={[Sharp]C}]
-using System;
-namespace HelloWorld
-{
-	class Hello 
-	{
-		static void Main() 
-		{
-			Console.WriteLine("Hello World!");
-			
-			Console.WriteLine("Press any key to exit.");
-			Console.ReadKey();
-		}
-	}
-}
-\end{lstlisting}
-
-\subsection{Algoritmusok}
-
-Az \ref{alg:ibb}.~algoritmus egy általános elágazás és korlátozás algoritmust (\emph{Branch and Bound algorithm}) mutat be. A \ref{step:selrule}.~lépésben egy megfelelő kiválasztási szabályt kell alkalmazni.
-Példa forrása: \href{https://www.inf.u-szeged.hu/actacybernetica/}{Acta Cybernetica (ez egy hiperlink)}.
+A szakdolgozat keretein belül egy olyan algoritmus került implementálásra, ami egy kétdimenziós sokszöget feloszt Voronoj-cellákra, a magas szintű lépései az \ref{alg:algorithm}. algoritmus pszeudokódban láthatóak. Az algoritmus egy \textit{N} csúcsú alakzat esetén \textit{N} él- és \textit{N} csúcs régióra osztja fel a síkot, amivel azt teljesen lefedi. Mivel a megadott alakzat több egymásban elhelyezkedő poligonból is állhatnak, ezért az algoritmus futása előtt a pontok átrendezésre kerülnek, mert a megadási sorrend alapján kerül megállapításra a távolság előjele. A régiók véges csúcsszámú konvex poligonokkal vannak ábárzolva. Egy régiót úgy határozunk meg, hogy a kezdetben végtelenül nagy korlátokat vágásokkal az adott régióhoz tartozó Voronoj-cella korlátaihoz igazítjuk.
 
 \begin{algorithm}[H]
-\caption{A general interval B\&B algorithm}
-\label{alg:ibb}
-\textbf{\underline{Funct}} IBB($S,f$)
-\begin{algorithmic}[1] % sorszámok megjelenítése minden n. sor előtt, most n = 1
-\State Set the working list ${\cal L}_W$ := $\{S\}$ and the final list ${\cal L}_Q$ := $\{\}$
-\While{( ${\cal L}_W \neq \emptyset$ )} \label{alg:igoend}
-	\State Select an interval $X$ from ${\cal L}_W$ \label{step:selrule}\Comment{Selection rule}
-	\State Compute $lbf(X)$ \Comment{Bounding rule}
-	\If{$X$ cannot be eliminated} \Comment{Elimination rule}
-		\State Divide $X$ into $X^j,\ j=1,\dots, p$, subintervals   \Comment{Division rule}
-		\For{$j=1,\ldots,p$}
-			\If{$X^j$ satisfies the termination criterion} \Comment{Termination rule}
-				\State Store $X^j$ in ${\cal L}_W$
-			\Else
-				\State Store $X^j$ in ${\cal L}_W$
-			\EndIf
-		\EndFor
-	\EndIf
-\EndWhile
-\State \textbf{return} ${\cal L}_Q$
-\end{algorithmic}
+    \caption{A vágásokat végző algoritmus pszeudokódja}
+    \label{alg:algorithm}
+    \textbf{Bemenet:} \textit{Shape shape} \\
+    \textbf{Kimenet:} \textit{VertexRegion vertexRegions[M], EdgeRegion edgeRegions[M]}\\A meghatározott régióhatárok, M az alakzatban lévő csúcspontok száma.
+    \begin{algorithmic}[1]
+        \State reoderVertices(\textit{shape})
+        \For{$outline$ : $shape$.getOutlines()}
+            \For{$i$ : 0$,\ldots,outline$.size() - 1}
+                \State $edge1$ = $outline$[i]
+                \State $edge2$ = $outline$[(i + 1) \textbf{mod} $outline$.size()]
+                \State $vertexRegion$ = initVertexRegion($edge1$, $edge2$)
+                \State $vertexRegions$.add($vertexRegion$)
+                \State $edgeRegion$ = initEdgeRegion($edge1$)
+                \State $edgeRegions$.add($edgeRegion$)
+            \EndFor
+        \EndFor
+        \State $vertexRegions$.cutWithVertices($vertexRegions$)
+        \State $vertexRegions$.cutWithEdges($edgeRegions$)
+        \State $edgeRegions$.cutWithVertices($vertexRegions$)
+        \State $edgeRegions$.cutWithEdges($edgeRegions$)
+        \State \textbf{return} \textit{\{vertexRegions, edgeRegions\}}
+    \end{algorithmic}
 \end{algorithm}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_algorithm.png}
+    \caption{Az algoritmus osztálydiagramja}
+    \label{fig:class_algorithm-1}
+\end{figure}
+
+\subsection{A régiók meghatározása}
+
+A régiók vágása több lépésen keresztül történik, először felhasználjuk az információt ami az adott régió eleméhez tartozik. Csúcspontok esetén a két szomszédos él normálvektora mentén ejtünk egy-egy vágást. Élek esetében pedig a normálvektor mentén a két végponton kívül eső részt vágjuk le.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.6\linewidth]{images/initial_vertex_regions.png}
+    \caption{Csúcs régiók kezdeti határai}
+    \label{fig:initial_vertex_regions-1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.6\linewidth]{images/initial_segment_regions.png}
+    \caption{él régiók kezdeti határai}
+    \label{fig:initial_segment_regions-1}
+\end{figure}
+
+Az algoritmus következő lépéseként minden régiót elvágunk az összes többi régióhoz tartozó csúccsal és szakasszal. Eredményül a sokszög Voronoj-diagramja egy közelítését kapjuk, ahol a régiók között némi átfedés van. Ezt az átfedést a raszterizáció során a Z-puffer algoritmus oldja fel és jeleníti meg a megfelelő régiót.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.6\linewidth]{images/algorithm_output_top_down.png}
+    \caption{Alakzat felülnézete}
+    \label{fig:algorithm_output_top_down-1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.6\linewidth]{images/algorithm_output_bottom_up.png}
+    \caption{Alakzat alulnézetből}
+    \label{fig:algorithm_output_bottom_up-1}
+\end{figure}
+
+\subsection{Z-puffer algoritmus (Mélységi teszt)}
+A mélységi teszt egy módszer a raszterizálásban arra, hogy eldöntsük, hogy az egymást átfedő geometriák közül melyik kerüljön megjelenítésre. Az algoritmus a GPU-n hajtódik végre és úgy működik, hogy rajzoláskor nem csak a képernyő színpufferébe ír, hanem egy másodlagos pufferbe (mélységi puffer), ahol számon tartja, hogy minden egyes elemhez a színpufferben milyen mélység tartozik. Az alkalmazás esetében színpufferbe csak akkor írunk, ha az új szín mélysége alacsonyabb (közelebb van a kamerához) a mélységi pufferben tárolt jelenlegi értéknél.
+
+\subsection{Csúcs - csúcs vágások}
+
+Azok a pontok, amelyek két pont között egyenlő távolságra helyezkednek el kollineárisak. Ebben a lépésben meghatározzuk azt az egyenest és annak a mentén végzünk egy vágást. Ez a művelet nem hagy átfedést a régióhatárok között. A \ref{fig:vertex_vertex_cut-1}-ös ábrán láthatjuk a vágás eredményést.
+
+\iffalse
+Legyen \textit{a} pont a régióhoz tartozó csúcs és \textit{b} pont a sokszög egy pontja, ami segítségével a vágást szeretnénk végrehajtani \textit{V} régión. A vágás algoritmusa a következő:
+
+\begin{algorithm}[H]
+    \caption{csúcs - csúcs vágás}
+    \label{alg:vertex_cut_vertex}
+    \textbf{Bemenet:} A régió határait definiáló sokszög csúcspontjai \textit{V} és \textit{a}, \textit{b} csúcspontok
+    \textbf{Kimenet:} A régió új határai \textit{V}'
+    \begin{algorithmic}[1]
+        \State $e = b - a$ \Comment{A vágás egyenesére merőleges normálvektor.}
+        \If{$||e|| <= \epsilon$}
+            \State \textbf{return} V \Comment{Ha a két csúcs egybeesik, akkor nem végzünk módosítást.}
+        \Else
+            \State $m = (a + b) * 0.5$ \Comment{Meghatározzuk a két csúcs közötti pontot.}
+            \State \textbf{return} polyCut($V$, $m$, $e$) \Comment{$V$ konvex poligont elvágjuk $m$ pont és $e$ normálvektor által meghatározott egyenes mentén.}
+        \EndIf
+    \end{algorithmic}
+\end{algorithm}
+\fi
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/vertex_vertex_cut.png}
+    \caption{Csúcs - csúcs vágás eredménye}
+    \label{fig:vertex_vertex_cut-1}
+\end{figure}
+
+\subsection{csúcs - él vágás} \label{vertex_segment_cut}
+Azok a pontok, amelyek egy ponttól és egy egyenestől azonos távolságra vannak, egy parabolán helyezkednek el, ahol a parabola fókuszpontja megegyezik a vágási régióhoz tartozó csúccsal. Ebben a lépésben konstans számú vágást hajtunk végre a parabola görbéje mentén a csúcs régión. Minél nagyobb a vágások száma, annál pontosabb közelítést kapunk a csúcs régió Voronoj-cellájához. A \ref{fig:vertex_segment_cut-1}-os ábrán láthatjuk a vágás eredményést.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.55\linewidth]{images/vertex_segment_cut.png}
+    \caption{csúcs - él vágás eredménye}
+    \label{fig:vertex_segment_cut-1}
+\end{figure}
+
+\subsection{Él - csúcs vágás}
+Az él és csúcs közötti Voronok-cella határ a csúcs oldaláról konvex, az él oldaláról egy konkáv tartományt eredményez. A \ref{vertex_segment_cut}-es szekcióban meghatároztuk a parabolát, ami a csúcshoz tartozik. A számítások leegyszerűsítése érdekében az él esetében csak egy egyenes mentén vágunk úgy, hogy a csúcs régió paraboláját lefedjük, majd raszterizáláskor a Z-puffer algoritmus segítségével kerül feloldásra az átfedés. A lépés eredménye a \ref{fig:segment_vertex_cut-1}-es ábrán látható.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.55\linewidth]{images/segment_vertex_cut.png}
+    \caption{Él - csúcs vágás eredménye}
+    \label{fig:segment_vertex_cut-1}
+\end{figure}
+
+\subsection{Él - él vágás}
+Él - él vágás esetén figyelembe kell vennünk azoknak relatív pozícióját. Két él közötti rész három tartományra osztható fel: Az a tartomány, ahol az élek belső tartománya vannak közelebb egymáshoz, itt egy egyenes menén helyezkednek el az egyenlő távolságra lévő pontok, és két olyan tartomány, ahol az egyik élhez tartozó csúcshoz vagyunk közelebb, ahol a határ parabolikus. Ebben a lépésben egyetlen egyenes mentén vágunk élenként, az egyenesből és két parabolából álló összetett görbét lefedve. A vágással átfedések keletkeznek, amit a Z-puffer algoritmus old fel. A lépés eredménye a \ref{fig:segment_segment_cut-1}-as ábrán látható.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.55\linewidth]{images/segment_segment_cut.png}
+    \caption{Él - él vágás eredménye}
+    \label{fig:segment_segment_cut-1}
+\end{figure}
+
+\section{A szerkesztő megtervezése}
+A szerkesztő alapját az Autodesk Maya ,,construction history" funckiója inspirálta. Maya-ban a szerkesztett objektum az elvégzett műveletek sorozatából tevődik össze, ha egy köztes műveletet megváltoztatunk, akkor lehetőségünk van a rákövetkező műveleteket újra végrehajtani, közben egy teljesen eltérő eredményt kapva.
+
+Az alkalmazásban, amit készítettem az alakzatunkat állapot átmenetekkel módosíthatjuk, ahol minden változtatáskor egy állapottal bővül a szerkesztő verme. A verem adatstruktúra természetéből adódóan a visszalépés triviális triviális művelet, mivel csak el kell vetnünk a verem tetejéről a módosítást. Az alkalmazásban a teljesítményre való tekintettel a veremben az átmenet által készített új állapot is tárolásra kerül, így minimalizálva a potenciálisan nagy számításigényű műveletek túlzott számban való kiértékelését. \textit{Megjegyzés: A jelenlegi implementáció nem támogatja az előrelépés és a köztes műveletek módosítását.}
+
+A szerkesztő tervezésében különös figyelmet kapott annak skálázhatósága bővíthetőség szempontjából.

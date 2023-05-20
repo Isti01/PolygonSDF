@@ -1,0 +1,122 @@
+@startuml
+
+scale 2
+
+
+namespace psdf {
+	class Edge {
+		+Edge(array<Vertex, 2> endpoints)
+		+getEndpoints() : Endpoints {query}
+		+getVertex1() : Vertex {query}
+		+getVertex2() : Vertex {query}
+		-mEndpoints : array<Vertex, 2>
+		+isIntersecting(const Edge& other) : bool {query}
+		+getEdgeVector() : glm::dvec2 {query}
+	}
+
+	class EdgeRegion {
+		+EdgeRegion(const Edge& edge, double initialBoundScale)
+		+EdgeRegion(std::vector<glm::dvec2> bounds, Edge edge)
+		+getEdge() : Edge {query}
+		-mEdge : Edge
+		+getDistanceToPointInsideBounds(Vertex point) : double {query}
+		+getDir() : glm::dvec2 {query}
+		+createMesh(std::vector<EdgeRegionBoundVertex>& vertices, std::vector<uint32_t>& indices, Vertex fanCenter) : void {query}
+		+{static} cutWithEdges(std::vector<EdgeRegion>& edgeRegions, const std::vector<EdgeRegion>& cuttingRegions) : void
+		+{static} cutWithVertices(std::vector<EdgeRegion>& edgeRegions, const std::vector<VertexRegion>& vertexRegions) : void
+	}
+
+	class Outline {
+		+Outline(vector<Vertex> vertices)
+		+getEdges() : Edges {query}
+		+getFloatEdges() : FloatEdges {query}
+		+getFloatVertices() : FloatVertices {query}
+		+getVertices() : Vertices {query}
+		-mEdges : vector<Edge>
+		-mVertices : vector<Vertex>
+	}
+
+	abstract class Region {
+		+Region(double initialBoundScale)
+		+Region(std::vector<glm::dvec2> bounds)
+		+{abstract} getDistanceToPointInsideBounds(Vertex point) : double {query}
+		+getBounds() : std::vector<glm::dvec2> {query}
+		#mBounds : std::vector<glm::dvec2>
+		+polyCut(const std::vector<Vertex>& vertices, const std::vector<glm::dvec2>& edgeVectors) : void
+	}
+
+	class SdfPlaneAlgorithm {
+		-SdfPlaneAlgorithm()
+		+{static} calculateForShape(const Shape::SharedPtr& pShape, SdfPlaneAlgorithmExecutionDesc desc) : SdfPlaneAlgorithmOutput::SharedPtr
+	}
+
+	class SdfPlaneAlgorithmOutput {
+		#SdfPlaneAlgorithmOutput(std::vector<VertexRegion> vertexRegions, std::vector<EdgeRegion> edgeRegions)
+		+{static} create(std::vector<VertexRegion> vertexRegions, std::vector<EdgeRegion> edgeRegions) : SharedPtr
+		+saveJson(const std::string& path) : bool {query}
+		+getEdgeRegions() : std::vector<EdgeRegion> {query}
+		-mEdgeRegions : std::vector<EdgeRegion>
+		+getVertexRegions() : std::vector<VertexRegion> {query}
+		-mVertexRegions : std::vector<VertexRegion>
+	}
+
+	class Shape {
+		-Shape(std::vector<Outline> outlines)
+		+getAllEdges() : Edges {query}
+		+getAllFloatEdges() : FloatEdges {query}
+		+getAlgorithmOutput() : SdfPlaneAlgorithmOutput::SharedPtr {query}
+		-mpSdfPlaneAlgorithmOutput : SdfPlaneAlgorithmOutput::SharedPtr
+		+{static} create(std::vector<Outline> outlines) : SharedPtr
+		+{static} fromJson(const std::string& path) : SharedPtr
+		+getCenter() : Vertex {query}
+		+saveJson(const std::string& path) : bool {query}
+		+getCircumscribedCircleRadiusFromCenter() : double {query}
+		+getOutlines() : std::vector<Outline> {query}
+		-mOutlines : std::vector<Outline>
+		+runAlgorithm(SdfPlaneAlgorithmExecutionDesc desc) : void
+	}
+
+	class Vertex {
+		-mVertex : glm::dvec2
+	}
+
+	class VertexRegion {
+		+VertexRegion(Vertex vertex, double cornerSign, size_t subdivisions, double initialBoundScale)
+		+VertexRegion(std::vector<glm::dvec2> bounds, Vertex vertex, double cornerSign, size_t subdivisions)
+		+getVertex() : Vertex {query}
+		-mVertex : Vertex
+		+getCornerSign() : double {query}
+		+getDistanceToPointInsideBounds(Vertex vertex) : double {query}
+		-mCornerSign : double
+		-mSubdivisions : size_t
+		+createMesh(std::vector<VertexRegionBoundVertex>& vertices, std::vector<uint32_t>& indices, Vertex fanCenter) : void {query}
+		+{static} cutWithEdges(std::vector<VertexRegion>& vertexRegions, const std::vector<EdgeRegion>& edgeRegions) : void
+		+{static} cutWithVertices(std::vector<VertexRegion>& vertexRegions, const std::vector<VertexRegion>& cuttingRegions) : void
+	}
+	class SdfPlaneAlgorithmExecutionDesc {
+		+reorderPoints : bool
+		+initialBoundScale : double
+		+vertexRegionSubdivision : size_t
+	}
+}
+
+
+psdf.Region <|-- psdf.EdgeRegion
+psdf.Region <|-- psdf.VertexRegion
+
+psdf.Edge *-- psdf.Vertex
+psdf.EdgeRegion *-- psdf.Edge
+psdf.Outline *-- psdf.Edge
+psdf.Outline *-- psdf.Vertex
+psdf.SdfPlaneAlgorithmOutput *-- psdf.EdgeRegion
+psdf.SdfPlaneAlgorithmOutput *--- psdf.VertexRegion
+psdf.Shape *-- psdf.Outline
+psdf.Shape *-- psdf.SdfPlaneAlgorithmOutput
+psdf.VertexRegion *--- psdf.Vertex
+
+psdf.SdfPlaneAlgorithm <-- psdf.Shape
+psdf.SdfPlaneAlgorithm <-- psdf.SdfPlaneAlgorithmOutput
+psdf.SdfPlaneAlgorithm <-- psdf.SdfPlaneAlgorithmExecutionDesc
+
+
+@enduml

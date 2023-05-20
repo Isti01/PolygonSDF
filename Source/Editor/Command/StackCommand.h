@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Polygon/Shape.h"
+#include "../../Shape/Shape.h"
 #include "../Core/EditorCommand.h"
 
 namespace psdf

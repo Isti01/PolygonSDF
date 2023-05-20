@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "../../Source/Algorithm/Region/VertexRegion.h"
-#include "../../Source/Polygon/Shape.h"
+#include "../../Source/Shape/Shape.h"
 
 namespace psdf
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Polygon/Shape.h"
+#include "../Shape/Shape.h"
 #include "./SdfPlaneAlgorithmOutput.h"
 #include "Region/EdgeRegion.h"
 #include "Region/VertexRegion.h"

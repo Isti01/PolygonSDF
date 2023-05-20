@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Polygon/Vertex.h"
+#include "../../Shape/Vertex.h"
 #include "EdgeRegion.h"
 #include "Region.h"
 #include "VertexRegionBoundVertex.h"

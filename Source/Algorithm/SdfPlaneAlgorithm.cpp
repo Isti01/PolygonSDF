@@ -77,13 +77,13 @@ SdfPlaneAlgorithmOutput::SharedPtr SdfPlaneAlgorithm::calculateForShape(const Sh
     }
     for (const auto &outline : reorderedPolygons)
     {
-        const std::vector<Edge> &segments = outline.getEdges();
+        const std::vector<Edge> &edges = outline.getEdges();
 
-        size_t size = segments.size();
+        size_t size = edges.size();
         for (int i = 0; i < size; i++)
         {
-            Edge edge1 = segments[i];
-            Edge edge2 = segments[(i + 1) % size];
+            Edge edge1 = edges[i];
+            Edge edge2 = edges[(i + 1) % size];
 
             glm::dvec2 edgeVector1 = edge1.getEdgeVector();
             glm::dvec2 edgeVector2 = edge2.getEdgeVector();

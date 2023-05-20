@@ -5,6 +5,8 @@
 namespace psdf
 {
 
-using Vertex = glm::dvec2;
+class Vertex : public glm::dvec2 {
+    glm::dvec2 mVertex;
+};
 
 } // namespace psdf

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Polygon/Edge.h"
+#include "../../Shape/Edge.h"
 #include "Region.h"
 
 namespace psdf

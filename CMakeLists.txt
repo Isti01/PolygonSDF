@@ -137,13 +137,13 @@ add_library(PolygonSDF
         Source/Editor/VisualEditor/VisualEditor.h
         Source/Editor/VisualEditor/VisualEditorConstants.h
 
-        Source/Polygon/Edge.cpp
-        Source/Polygon/Edge.h
-        Source/Polygon/Outline.cpp
-        Source/Polygon/Outline.h
-        Source/Polygon/Shape.cpp
-        Source/Polygon/Shape.h
-        Source/Polygon/Vertex.h
+        Source/Shape/Edge.cpp
+        Source/Shape/Edge.h
+        Source/Shape/Outline.cpp
+        Source/Shape/Outline.h
+        Source/Shape/Shape.cpp
+        Source/Shape/Shape.h
+        Source/Shape/Vertex.h
 
         Source/Rendering/ShapeRenderer/Impl/AspectRatioIndependentShapeRenderer.cpp
         Source/Rendering/ShapeRenderer/Impl/AspectRatioIndependentShapeRenderer.h

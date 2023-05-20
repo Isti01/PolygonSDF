@@ -10,7 +10,7 @@
 #include "../../Source/Algorithm/Region/Region.h"
 #include "../../Source/Algorithm/SdfPlaneAlgorithm.h"
 #include "../../Source/Algorithm/SdfPlaneAlgorithmExecutionDesc.h"
-#include "../../Source/Polygon/Shape.h"
+#include "../../Source/Shape/Shape.h"
 #include "../Util/TestUtils.h"
 
 TEST_CASE("Test SdfPlaneAlgorithm::calculateForShape")

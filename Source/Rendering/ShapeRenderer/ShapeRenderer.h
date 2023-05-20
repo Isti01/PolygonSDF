@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Polygon/Shape.h"
+#include "../../Shape/Shape.h"
 #include "Falcor.h"
 #include "ShapeRendererProperty.h"
 

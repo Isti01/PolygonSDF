@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Polygon/Outline.h"
-#include "../Polygon/Shape.h"
+#include "../Shape/Outline.h"
+#include "../Shape/Shape.h"
 
 #include <Falcor.h>
 

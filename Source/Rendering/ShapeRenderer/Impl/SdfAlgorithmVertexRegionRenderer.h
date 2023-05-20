@@ -2,7 +2,7 @@
 
 #include <Falcor.h>
 
-#include "../../../Polygon/Shape.h"
+#include "../../../Shape/Shape.h"
 #include "../../RenderObject.h"
 #include "./SdfAlgorithmOutputRenderer.h"
 

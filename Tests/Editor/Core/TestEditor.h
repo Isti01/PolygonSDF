@@ -23,11 +23,13 @@ TEST_CASE("Test Editor::addCommand")
 {
     auto pEditor = psdf::Editor::create(psdf::EditorStack::create());
     auto pCommand = psdf::TestCommand::create();
+    auto pAggregator = psdf::StackPeekingEditorAggregator::create();
+
 
     pEditor->addCommand(pCommand);
-    auto top = pEditor->getEditorStack()->peek();
+    auto top = pAggregator->peekEditor(pEditor);
 
     REQUIRE(top);
-    REQUIRE(top->pShape == nullptr);
-    REQUIRE(top->pCommand.get() == pCommand.get());
+    REQUIRE(top->getEntry().pShape == nullptr);
+    REQUIRE(top->getEntry().pCommand.get() == pCommand.get());
 }

@@ -100,8 +100,3 @@ void Editor::notifyConsumers(const EditorEvent::SharedPtr &pEvent)
         pConsumer->accept(pEvent);
     }
 }
-
-EditorStack::SharedPtr Editor::getEditorStack() const
-{
-    return mpStack;
-}

@@ -33,8 +33,6 @@ class Editor : public std::enable_shared_from_this<Editor>
     void transform(const EditorTransformation::SharedPtr &pTransformation);
     [[nodiscard]] EditorAggregationResult::SharedPtr reduce(const EditorAggregator::SharedPtr &pAggregation) const;
 
-    [[nodiscard]] EditorStack::SharedPtr getEditorStack() const;
-
   protected:
     Editor(EditorStack::SharedPtr pStack);
 

@@ -10,12 +10,13 @@ TEST_CASE("Test TestAddVertexStackCommand")
     psdf::Outline group{{{1, 2}, {3, 4}, {5, 1}}};
     auto pPolygon = psdf::Shape::create({group, group});
     auto pEditor = psdf::Editor::create(psdf::EditorStack::create({psdf::StackEntry{nullptr, pPolygon}}));
+    auto pAggregator = psdf::StackPeekingEditorAggregator::create();
 
     psdf::Vertex newPoint{1, 1};
     pEditor->addCommand(psdf::AddVertexStackCommand::create(1, newPoint));
-    auto top = pEditor->getEditorStack()->peek();
+    auto top = pAggregator->peekEditor(pEditor);
 
     REQUIRE(top);
-    REQUIRE(top->pShape->getOutlines()[1].getVertices().size() == 4);
-    REQUIRE(top->pShape->getOutlines()[1].getVertices().back() == newPoint);
+    REQUIRE(top->getEntry().pShape->getOutlines()[1].getVertices().size() == 4);
+    REQUIRE(top->getEntry().pShape->getOutlines()[1].getVertices().back() == newPoint);
 }

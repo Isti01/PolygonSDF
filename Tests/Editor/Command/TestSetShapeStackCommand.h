@@ -8,10 +8,12 @@
 TEST_CASE("Test SetShapeStackCommand")
 {
     auto pEditor = psdf::Editor::create(psdf::EditorStack::create());
+    auto pAggregator = psdf::StackPeekingEditorAggregator::create();
+
 
     pEditor->addCommand(psdf::SetShapeStackCommand::create(psdf::Shape::kStarterShape));
-    auto top = pEditor->getEditorStack()->peek();
+    auto top = pAggregator->peekEditor(pEditor);
 
     REQUIRE(top);
-    REQUIRE(top->pShape.get() == psdf::Shape::kStarterShape.get());
+    REQUIRE(top->getEntry().pShape.get() == psdf::Shape::kStarterShape.get());
 }

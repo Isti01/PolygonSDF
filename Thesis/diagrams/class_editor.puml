@@ -1,0 +1,115 @@
+@startuml
+
+scale 2
+
+
+class Editor {
+    #Editor(EditorStack pStack)
+    +reduce(EditorAggregator& pAggregation) : EditorAggregationResult {query}
+    -mpStack : EditorStack
+    -mConstraints : std::vector<EditorConstraint>
+    -mConsumers : std::vector<EditorConsumer>
+    +addCommand(EditorCommand& pCommand) : void
+    +addConstraint(EditorConstraint pConstraint) : void
+    +addConsumer(EditorConsumer pConsumer) : void
+    -addStackCommand(StackCommand& pStackCommand) : void
+    -notifyConsumers(EditorEvent& pEvent) : void
+    +publishEvent(PublishedEvent& pPublishedEvent, void* publisher) : void
+    +removeConstraint(EditorConstraint& pConstraint) : void
+    +removeConsumer(EditorConsumer& pConsumer) : void
+    +transform(EditorTransformation& pTransformation) : void
+}
+
+class EditorAggregationResult {
+    #EditorAggregationResult()
+}
+
+abstract class EditorAggregator {
+    +{abstract} reduce(EditorStack& pEditorStack) : EditorAggregationResult
+}
+
+abstract class EditorCommand {
+    +{abstract} getName() : std::string {query}
+}
+
+abstract class EditorConstraint {
+    +{abstract} evaluate(EditorStack& pStack, EditorCommand& pCommand) : bool
+    +{abstract} getName() : std::string {query}
+}
+
+abstract class EditorConsumer {
+    +{abstract} accept(EditorEvent& pEvent) : void
+}
+
+abstract class EditorEvent {
+    +{abstract} getName() : std::string {query}
+}
+
+class EditorPublishedEvent {
+    #EditorPublishedEvent(PublishedEvent pPublishedEvent, void* pPublisher)
+    +getEvent() : PublishedEvent {query}
+    -mpPublishedEvent : PublishedEvent
+    -mpPublisher : void*
+    +getName() : std::string {query}
+    +getPublisher() : void* {query}
+}
+
+class EditorStack {
+    #EditorStack()
+    #EditorStack(std::vector<StackEntry> stack)
+    +getSize() : size_t {query}
+    +peek() : std::optional<StackEntry> {query}
+    +pop() : std::optional<StackEntry>
+    -mStack : std::vector<StackEntry>
+    +clear() : void
+    +push(StackCommand& pCommand) : void
+    +pushReplacement(StackCommand& pCommand) : void
+}
+
+abstract class EditorTransformation {
+    +{abstract} getName() : std::string {query}
+    +{abstract} transform(EditorStack& pEditorStack) : void
+}
+
+abstract class PublishedEvent {
+    +{abstract} getName() : std::string
+}
+
+abstract class StackCommand {
+    +{abstract} perform(Shape& pShape) : Shape {query}
+    +merge(StackCommand& pOther) : StackCommand
+    +canMerge(StackCommand& pCommand) : bool {query}
+}
+
+class StackEntry {
+    +pShape : Shape
+    +pCommand : StackCommand
+}
+
+class VisualEditor {}
+
+class GuiEditor {}
+
+class Shape {}
+
+
+EditorCommand <|-- StackCommand
+EditorEvent <|-- EditorPublishedEvent
+
+Editor o-- "0..*" EditorConstraint
+Editor o-- "0..*" EditorConsumer
+Editor o-- EditorStack
+EditorPublishedEvent o-- PublishedEvent
+EditorStack o-- "0..*" StackEntry
+GuiEditor o-- Editor
+StackEntry o-- Shape
+StackEntry o-- StackCommand
+VisualEditor o-- Editor
+
+EditorAggregator -- EditorAggregationResult
+EditorAggregator -- Editor
+EditorTransformation -- Editor
+EditorEvent -- Editor
+Editor -- EditorCommand
+
+@enduml

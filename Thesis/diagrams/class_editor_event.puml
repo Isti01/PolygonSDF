@@ -1,0 +1,67 @@
+@startuml
+
+scale 2
+
+
+class ConstraintViolationEvent {
+    #ConstraintViolationEvent(Editor pEditor, EditorConstraint pConstraint, EditorCommand pCommand)
+    -mpEditor : Editor
+    +getCommand() : EditorCommand {query}
+    -mpCommand : EditorCommand
+    +getConstraint() : EditorConstraint {query}
+    -mpConstraint : EditorConstraint
+    +getName() : std::string {query}
+}
+
+abstract class EditorEvent {
+    +{abstract} getName() : std::string {query}
+}
+
+class EditorPublishedEvent {
+    #EditorPublishedEvent(PublishedEvent pPublishedEvent, const void* pPublisher)
+    +getEvent() : PublishedEvent {query}
+    -mpPublishedEvent : PublishedEvent
+    -mpPublisher : const void*
+    +getName() : std::string {query}
+    +getPublisher() : void* {query}
+}
+
+class NewStackCommandEvent {
+    #NewStackCommandEvent(Editor pEditor, EditorCommand pCommand)
+    +getEditor() : Editor {query}
+    -mpEditor : Editor
+    +getCommand() : EditorCommand {query}
+    -mpCommand : EditorCommand
+    +getName() : std::string {query}
+}
+
+abstract class PublishedEvent {
+    +{abstract} getName() : std::string
+}
+
+class StackTransformedEvent {
+    #StackTransformedEvent(Editor pEditor, EditorTransformation pTransformation)
+    -mpEditor : Editor
+    +getTransformation() : EditorTransformation {query}
+    -mpTransformation : EditorTransformation
+    +getName() : std::string {query}
+}
+
+class UnknownCommandEvent {
+    #UnknownCommandEvent(EditorCommand pCommand)
+    +getEditorCommand() : EditorCommand {query}
+    -mpCommand : EditorCommand
+    +getName() : std::string {query}
+}
+
+
+ConstraintViolationEvent --|> EditorEvent
+EditorPublishedEvent --|> EditorEvent
+EditorEvent <|-- NewStackCommandEvent
+EditorEvent <|-- StackTransformedEvent
+EditorEvent <|-- UnknownCommandEvent
+
+EditorPublishedEvent o-- PublishedEvent
+
+
+@enduml

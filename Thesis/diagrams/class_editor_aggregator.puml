@@ -1,0 +1,47 @@
+@startuml
+
+scale 2
+
+
+class EditorAggregationResult {
+    #EditorAggregationResult()
+}
+
+abstract class EditorAggregator {
+    +{abstract} reduce(const EditorStack& pEditorStack) : EditorAggregationResult
+}
+
+class StackPeekingEditorAggregationResult {
+    #StackPeekingEditorAggregationResult(StackEntry stackEntry)
+    +getEntry() : StackEntry {query}
+    -mStackEntry : StackEntry
+}
+
+class StackPeekingEditorAggregator {
+    #StackPeekingEditorAggregator()
+    +reduce(const EditorStack& pEditorStack) : EditorAggregationResult
+    +peekEditor(const Editor& pEditor) : StackPeekingEditorAggregationResult
+}
+
+class StackSizeEditorAggregationResult {
+    #StackSizeEditorAggregationResult(size_t size)
+    +getSize() : size_t {query}
+    -mSize : size_t
+}
+
+class StackSizeEditorAggregator {
+    #StackSizeEditorAggregator()
+    +reduce(const EditorStack& pEditorStack) : EditorAggregationResult
+    +getEditorStackSize(const Editor& pEditor) : StackSizeEditorAggregationResult
+}
+
+
+StackPeekingEditorAggregationResult --|> EditorAggregationResult
+StackSizeEditorAggregationResult --|> EditorAggregationResult
+EditorAggregator <|-- StackPeekingEditorAggregator
+EditorAggregator <|-- StackSizeEditorAggregator
+
+EditorAggregationResult -- EditorAggregator
+
+
+@enduml

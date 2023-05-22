@@ -106,17 +106,17 @@ psdf.Region <|-- psdf.VertexRegion
 
 psdf.Edge *-- psdf.Vertex
 psdf.EdgeRegion *-- psdf.Edge
-psdf.Outline *-- psdf.Edge
-psdf.Outline *-- psdf.Vertex
+psdf.Outline *-- "3..*" psdf.Edge
+psdf.Outline *-- "3..*" psdf.Vertex
 psdf.SdfPlaneAlgorithmOutput *-- psdf.EdgeRegion
 psdf.SdfPlaneAlgorithmOutput *--- psdf.VertexRegion
-psdf.Shape *-- psdf.Outline
-psdf.Shape *-- psdf.SdfPlaneAlgorithmOutput
-psdf.VertexRegion *--- psdf.Vertex
+psdf.Shape *-- "1..*" psdf.Outline
+psdf.Shape o-- psdf.SdfPlaneAlgorithmOutput
+psdf.VertexRegion *-- psdf.Vertex
 
-psdf.SdfPlaneAlgorithm <-- psdf.Shape
-psdf.SdfPlaneAlgorithm <-- psdf.SdfPlaneAlgorithmOutput
-psdf.SdfPlaneAlgorithm <-- psdf.SdfPlaneAlgorithmExecutionDesc
+psdf.SdfPlaneAlgorithm -- psdf.Shape
+psdf.SdfPlaneAlgorithm -- psdf.SdfPlaneAlgorithmOutput
+psdf.SdfPlaneAlgorithm -- psdf.SdfPlaneAlgorithmExecutionDesc
 
 
 @enduml

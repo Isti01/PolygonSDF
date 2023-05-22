@@ -1,0 +1,41 @@
+@startuml
+
+scale 2
+
+
+class DeleteOutlineEditorConstraint {
+    #DeleteOutlineEditorConstraint()
+    +evaluate(const EditorStack& pStack, const EditorCommand& pCommand) : bool
+    +getName() : std::string {query}
+}
+
+class DeleteVertexEditorConstraint {
+    #DeleteVertexEditorConstraint()
+    +evaluate(const EditorStack& pStack, const EditorCommand& pCommand) : bool
+    +getName() : std::string {query}
+}
+
+abstract class EditorConstraint {
+    +{abstract} evaluate(const EditorStack& pStack, const EditorCommand& pCommand) : bool
+    +{abstract} getName() : std::string {query}
+}
+
+class SdfPlaneAlgorithmConstraint {
+    #SdfPlaneAlgorithmConstraint()
+    +evaluate(const EditorStack& pStack, const EditorCommand& pCommand) : bool
+    +getName() : std::string {query}
+}
+
+abstract class EditorCommand {}
+
+class EditorStack {}
+
+
+EditorConstraint <|- DeleteOutlineEditorConstraint
+EditorConstraint <|-- DeleteVertexEditorConstraint
+SdfPlaneAlgorithmConstraint --|> EditorConstraint
+
+EditorCommand -- EditorConstraint
+EditorStack - EditorConstraint
+
+@enduml

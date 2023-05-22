@@ -1,0 +1,41 @@
+@startuml
+
+scale 2
+
+
+class ClearHistoryEditorTransformation {
+    #ClearHistoryEditorTransformation()
+    +getName() : std::string {query}
+    +transform(EditorStack& pEditorStack) : void
+}
+
+class EditorStack {
+    #EditorStack()
+    #EditorStack(std::vector<StackEntry> stack)
+    +getSize() : size_t {query}
+    +peek() : std::optional<StackEntry> {query}
+    +pop() : std::optional<StackEntry>
+    -mStack : std::vector<StackEntry>
+    +clear() : void
+    +push(const StackCommand& pCommand) : void
+    +pushReplacement(const StackCommand& pCommand) : void
+}
+
+abstract class EditorTransformation {
+    +{abstract} getName() : std::string {query}
+    +{abstract} transform(EditorStack& pEditorStack) : void
+}
+
+class UndoEditorTransformation {
+    #UndoEditorTransformation()
+    +getName() : std::string {query}
+    +transform(EditorStack& pEditorStack) : void
+}
+
+
+EditorTransformation <|-- ClearHistoryEditorTransformation
+EditorTransformation <|-- UndoEditorTransformation
+EditorStack - EditorTransformation
+
+
+@enduml

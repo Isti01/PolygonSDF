@@ -145,6 +145,166 @@ Az él és csúcs közötti Voronok-cella határ a csúcs oldaláról konvex, az
 \section{A szerkesztő megtervezése}
 A szerkesztő alapját az Autodesk Maya ,,construction history" funckiója inspirálta. Maya-ban a szerkesztett objektum az elvégzett műveletek sorozatából tevődik össze, ha egy köztes műveletet megváltoztatunk, akkor lehetőségünk van a rákövetkező műveleteket újra végrehajtani, közben egy teljesen eltérő eredményt kapva.
 
-Az alkalmazásban, amit készítettem az alakzatunkat állapot átmenetekkel módosíthatjuk, ahol minden változtatáskor egy állapottal bővül a szerkesztő verme. A verem adatstruktúra természetéből adódóan a visszalépés triviális triviális művelet, mivel csak el kell vetnünk a verem tetejéről a módosítást. Az alkalmazásban a teljesítményre való tekintettel a veremben az átmenet által készített új állapot is tárolásra kerül, így minimalizálva a potenciálisan nagy számításigényű műveletek túlzott számban való kiértékelését. \textit{Megjegyzés: A jelenlegi implementáció nem támogatja az előrelépés és a köztes műveletek módosítását.}
+\subsection{A szerkesztő magja}
 
-A szerkesztő tervezésében különös figyelmet kapott annak skálázhatósága bővíthetőség szempontjából.
+A szerkesztő tervezésében különös figyelmet kapott annak skálázhatósága bővíthetőség szempontjából, osztálydiagramját a \ref{fig:class_editor-1}-es ábrán láthatjuk. Az alakzaton parancsok kiváltásával módosíthatunk, amire válaszul a szerkesztő eseményeket vált ki, hogy az alkalmazás minden eleme értesüljön a változásról és reagálni tudjon rá. Ezen architektúra lehetővé teszi, hogy minden szerkesztőt használó modulban a szerkesztési adatok frissek legyenek még akkor is, ha számos forrásból kap bemenetet a szerkesztő.
+
+A parancsokat felfoghatjuk állapot átmenetekként, ahol minden parancs után egy állapottal bővül a szerkesztő verme. A verem adatstruktúra természetéből adódóan a visszalépés triviális művelet, mivel csak el kell vetnünk a verem tetejéről a módosítást. Az alkalmazásban a teljesítményre való tekintettel a veremben az átmenet által készített új állapot is tárolásra kerül, így minimalizálva a potenciálisan nagy számításigényű műveletek túlzott számban való kiértékelését. \textit{Megjegyzés: A jelenlegi implementáció nem támogatja az előrelépés és a köztes műveletek módosítását.}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_editor.png}
+    \caption{Szerkesztő osztálydiagramja}
+    \label{fig:class_editor-1}
+\end{figure}
+
+
+\subsection{Szerkesztői parancsok}
+
+A szerkesztői parancs (\textbf{EditorCommand}) egy általános típus, egyetlen művelete annak nevének lekérése a szándék ezzel az interfésszel, hogy a szerkesztő eltérő hatáskörű parancsokat is le tudjon kezelni.
+
+A verem parancs (\textbf{StackCommand}) ennek egy olyan specializációja, ami egy alakzatból egy új alakzatot készít a \textit{perform} metódus segítségécel. A definiált műveletnek szigorúan tisztának kell lennie. Az osztálydiagram az implementációkkal a \ref{fig:class_editor_command-1}-es ábrán láthatóak.
+
+A verem parancsok egyesíthetőek, amennyiben az eredmény értelmezhető. Akkor hajthatjuk végre az egyesítést, ha a \textit{canMerge} metódus igazat ad vissza a parancsra, amivel meghívjuk, ekkor a \textit{merge} metódus végzi el az egyesítést. Az egyesítés rendelkezik alap implementációval, ami letiltja ezt a viselkedést. Erre a műveletre azért volt szükség, mert a vizuális szerkesztő esetében ugyanazt a csúcsot vagy poligont pár másodperc alatt akár ezerszer is elmozdíthatjuk, ami egyesítés nélkül 1000 új bejegyzést hozna létre a szerkesztői veremben.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_editor_command.png}
+    \caption{A szerkesztőben rendelkezésre álló parancsok osztálydiagramja}
+    \label{fig:class_editor_command-1}
+\end{figure}
+
+\textbf{A StackCommand osztály implementációi}
+
+\begin{description}
+    \item[AddNewOutlineStackCommand] Hozzáadja az alakzathoz a megadott poligont.
+    \item[AddVertexStackCommand] Az egyik poligonhoz hozzáad egy csúcsot a lista végére.
+    \item[CalculateSdfPlaneAlgorithmCommand] Végrehajtja az algoritmust az alakzaton.
+    \item[DeleteOutlineStackCommand] Töröl egy poligont az alakzatból.
+    \item[DeleteVertexStackCommand] Töröl egy csúcsot az egyik poligonból.
+    \item[InsertVertexStackCommand] Az egyik poligonhoz hozzáad egy csúcsot a lista egy megadott indexére.
+    \item[MergeShapeWithOffsetStackCommand] A megadott alakzatot egyesíti a szerkesztőével.
+    \item[MoveOutlineStackCommand] Elmozdít egy poligont az alakzatban két referencia pont segítéségvel. Ez a művelet egyesíthető egy azonos típusú paranccsal, ha ugyanazt a poligont mozgatják, ugyanabból a kiindulópontból.
+    \item[SetShapeStackCommand] Lecseréli az alakzatot.
+    \item[UpdateVertexStackCommand] Frissíti egy csúcs értékét az egyik poligonban. Ez a művelet egyesíthető egy azonos típusú paranccsal, ha pontosan ugyanazt a csúcsot mozgatják.
+\end{description}
+
+\subsection{Szerkesztő öszesítő műveletek}
+
+Az alkalmazásban szükség van olyan műveletre, amik a szerkesztő vermének állapotát összesítik, például a tárolt műveletek számát megadják. Erre a célra lett létrehozva a \textbf{EditorAggregator} osztály, két absztrakt metódussal rendelkezik, egyik a művelet megnevezésére, a másik az összesítés végrehajtására és az eredmény visszaadására, ami a szerkesztő állapotán nem módosíthat. Minden összesítő osztály \textbf{EditorAggregationResult} típusú eredményt adhat vissza. A művelet osztálydiagramja a \ref{fig:class_editor_aggregator-1}-es ábrán látható.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_editor_aggregator.png}
+    \caption{A szerkesztői összesítések osztálydiagramja}
+    \label{fig:class_editor_aggregator-1}
+\end{figure}
+
+\textbf{Az osztály implementációi}
+
+\begin{description}
+    \item[StackPeekingEditorAggregator] Visszaadja a legfelső bejegyzést a szerkesztő verméből.
+    \item[StackSizeEditorAggregator] Visszaadja a verem méretét.
+\end{description}
+
+\subsection{Szerkesztői megszorítások}
+
+Bizonyos esetekben egy változtatást nincs értelme végrehajtani egy alakzaton, például egy háromszögből nem törölhetünk csúcsot, mert akkor már nem egy sokszögről beszélünk. Az \textbf{EditorConstraint} osztályban kettő absztrakt metódus található, egyik a megszorítás azonosítására (\textit{getName}), a másik egy parancsra és a jelenlegi alakzatra megmondja, hogy a parancsban végrehajtandó művelet elvégezhető-e (\textit{evaluate}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_editor_constraint.png}
+    \caption{A szerkesztői megszorítások osztálydiagramja}
+    \label{fig:class_editor_constraint-1}
+\end{figure}
+
+\textbf{Az osztály implementációi}
+
+\begin{description}
+    \item[DeleteOutlineEditorConstraint] Tiltja a \textbf{DeleteOutlineStackCommand} példányú parancsokat, amennyiben nem maradna az alakzatban poligon a törlés után.
+    \item[DeleteVertexEditorConstraint] Tiltja a \textbf{DeleteVertexStackCommand} típusú parancsokat, amennyiben a kiválasztott poligonban kevesebb mint három pont maradna törlés után.
+    \item[SdfPlaneAlgorithmConstraint] Az algoritmus nem értelmezett önmetsző alakzatokra. Ez a megszorítás tiltja a \textbf{CalculateSdfPlaneAlgorithmCommand} típusú parancsokat, ha az alakzatban vannak egymást metsző élek. Szomszédos éleket nem vesz vigyelembe.
+\end{description}
+
+\subsection{Szerkesztői transzformációk}
+
+Az eddig felsorolt osztályoknak többek között egy dologban egyeztek meg, nem módosították közvetlenül a szerkesztő állapotát.
+
+Az \textbf{EditorTransformation} interfész kettő absztrakt metódussal rendelkezik, egyik az osztály azonosítására (\textit{getName}), a másik a verem módosításához (\textit{transform}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_editor_transformation.png}
+    \caption{A szerkesztői transzformációk osztálydiagramja}
+    \label{fig:class_editor_transformation-1}
+\end{figure}
+
+\textbf{Az osztály implementációi}
+
+\begin{description}
+    \item[ClearHistoryEditorTransformation] A szerkesztés során számos állapotváltozás bekövetkezhet az alakzatunkon. A felhasználónak a feladata a köztes állapotokat kitörölni, amikor úgy dönt, hogy azokra már biztos nincs szükség. Ez az osztály csak a legújabb állapotot hagyja meg a veremben, minden mást töröl.
+    \item[UndoEditorTransformation] Lehetővé teszi a visszalépést az alakzat előző állapotára. Ezt úgy teszi, hogy a verem legújabb állapotát törli. A törlést csak akkor hajtja végre, ha a törlés után marad bejegyzés a veremben.
+\end{description}
+
+
+\subsection{Szerkesztői események}
+
+A szerkesztő \textbf{EditorEvent} típusú objektumokkal értesíti az alkalmazás komponenseit, amikor valamilyen bemenetet kap, így gondoskodva arról, hogy a legfrissebb állapot szerepeljen mindenhol. Az osztályban egyetlen absztrakt metódus szerepel: (\textit{getName}), ami segítségével azonosíthatjuk az eseményt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_editor_event.png}
+    \caption{A szerkesztői események osztálydiagramja}
+    \label{fig:class_editor_event-1}
+\end{figure}
+
+\textbf{Az osztály implementációi}
+
+\begin{description}
+    \item[NewStackCommandEvent] A szerkesztőben történt sikeres állapotátmenetek következtében kerül kiváltásra, az implementáció tartalmaz egy referenciát a kiváltott parancsra.
+    \item[StackTransformedEvent] A szerkesztői transzformációk hátására váltódik ki, tárolják a módosítást végző objektumot.
+    \item[ConstraintViolationEvent] Kiváltásra kerül, amennyiben egy átmenet nem hajtható végre, mert egy megszorítás sérül. A komponensek ezen az eseményen keresztül értesülnek arról, hogy pontosan mi akadályozta meg az új állapot létrehozását.
+    \item[UnknownCommandEvent] Kiváltódik, ha a szerkesztő nem tudja feldolgozni a beadott EditorCommand implementációt. Jelenleg minden osztályra hibát ad a szerkesztő, ami nem a StackCommand leszármazottja.
+    \item[EditorPublishedEvent] Egyedi események beküldésekor kerül kiváltásra ez az esemény, tárol egy egyedi azonosítót a küldőről, ami általában a küldő objektum memóriacíme és egy \textbf{PublishedEvent} típusú objektumot, ami a közzétételre szánt információt tartalmazza.
+\end{description}
+
+\subsection{Kommunikáció komponensek között}
+
+Az alkalmazás komponensei szabadon kommunikálhatnak egymással a Publikáló-feliratkozó minta segítségével a szerkesztőn keresztül. Az üzenetküldés úgy történik, hogy meghívjuk a publishEvent metódusát a szerkesztőnek a PublishedEvent típusú objektumunkkal, amit üzenetként szeretnék küldeni. Erre a szerkesztő kivált egy EditorPublishedEvent típusú eseményt, amivel kézbesíti minden feliratkozott komponensnek.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_editor_published_event.png}
+    \caption{Az üzenetküldésre használt osztályok diagramja}
+    \label{fig:class_editor_published_event-1}
+\end{figure}
+
+\textbf{Az osztály implementációi}
+
+\begin{description}
+    \item[HideGuiPublishedEvent] Parancs a GUI szerkesztőnek, hogy ne jelenítse meg a felhasználói felületet. A 3D nézet aktiválásakor váltódik ki. A GUI láthatósága nem változik a következő parancsig.
+    \item[ShowGuiPublishedEvent] Parancs a GUI szerkesztőnek, hogy jelenítse meg a felhasználói felületet.
+    RendererPropertyPublishedEvent - A megjelenítés stílusának változtatásához használt esemény, a beállítás kulcsát és egy új értéket tartalmaz.
+    \item[RendererPropertyPublishedEvent] A megjelenítés stílusának változtatásához használt esemény, a beállítás kulcsát és egy új értéket tartalmaz.
+    \item[VisualEditorModeChangedPublishedEvent] A vizuális szerkesztő ezzel hírdeti ki, hogy épp milyen eszköz van kiválasztva, az aktív eszköz megjelenítéséhez a GUI-n van használva.
+\end{description}
+
+\subsection{Szerkesztői események feldolgozása}
+
+Az alkalmazásban \textbf{EditorConsumer} típusú objektumokat iratkoztathatunk fel és le a szerkesztőben az események fogadására. Az osztályban egy absztrakt metódus van (\textit{accept}) az események fogadására.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_editor_consumer.png}
+    \caption{Az eseményfeldolgozó osztálydiagramja}
+    \label{fig:class_editor_consumer-1}
+\end{figure}
+
+\textbf{Az osztály implementációi}
+
+\begin{description}
+    \item[EventMenuEditorConsumer] Minden beérkező eseményt lement egy listában, ami később az eseménymenün kerül megjelenítésre.
+    \item[GuiStateEditorConsumer] Figyel a \textbf{HideGuiPublishedEvent} és \textbf{ShowGuiPublishedEvent} üzenetekre és számontartja, hogy egy pillanatban meg kell-e jeleníteni a GUI-t.
+    \item[PropertyUpdatingEditorConsumer] Feldolgozza a \textbf{RendererPropertyPublishedEvent} típusú objektumokat, frissíti az adattagként tárolt \textbf{ShapeRenderer} kulcsát a kapott értékkel.
+    \item[VisualEditorStateChangedEditorConsumer] Feldolgozza a \textbf{VisualEditorModeChangedPublishedEvent} típusú eseményeket vizuális szerkesztő aktív eszközének számontartásához.
+\end{description}

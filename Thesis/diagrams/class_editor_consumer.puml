@@ -1,0 +1,54 @@
+@startuml
+
+scale 2
+
+
+abstract class EditorConsumer {
+    +{abstract} accept(const EditorEvent& pEvent) : void
+}
+
+class EventMenuEditorConsumer {
+    #EventMenuEditorConsumer(EventMenuGui pEventMenu)
+    -mpEventMenu : EventMenuGui
+    +accept(const EditorEvent& pEvent) : void
+}
+
+class GuiStateEditorConsumer {
+    #GuiStateEditorConsumer()
+    +isGuiEnabled() : bool {query}
+    -mIsGuiEnabled : bool
+    +accept(const EditorEvent& pEvent) : void
+}
+
+class PropertyUpdatingEditorConsumer {
+    #PropertyUpdatingEditorConsumer(ShapeRenderer pRenderer)
+    -mpRenderer : ShapeRenderer
+    +accept(const EditorEvent& pEvent) : void
+}
+
+abstract class ShapeRenderer {
+}
+
+class VisualEditorStateChangeEditorConsumer {
+    #VisualEditorStateChangeEditorConsumer()
+    +getCurrentState() : std::string {query}
+    -mCurrentState : std::string
+    +accept(const EditorEvent& pEvent) : void
+}
+
+class ShapeRendererProperty {
+    +key : std::string
+    +value : std::variant<float3, size_t, float, bool>
+}
+
+
+EditorConsumer <|- GuiStateEditorConsumer
+EditorConsumer <|-- VisualEditorStateChangeEditorConsumer
+EventMenuEditorConsumer --|> EditorConsumer
+PropertyUpdatingEditorConsumer -|> EditorConsumer
+
+PropertyUpdatingEditorConsumer o-- ShapeRenderer
+ShapeRendererProperty -- PropertyUpdatingEditorConsumer
+
+
+@enduml

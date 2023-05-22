@@ -1,0 +1,115 @@
+@startuml
+
+scale 2
+
+
+class AddNewOutlineStackCommand {
+    -mNewOutline : Outline
+    +perform(const Shape& shape) : Shape {query}
+    +getName() : std::string {query}
+}
+
+class AddVertexStackCommand {
+    +perform(const Shape& pShape) : Shape {query}
+    +getVertex() : Vertex
+    -mVertex : Vertex
+    -mOutlineIndex : size_t
+    +getName() : std::string {query}
+}
+
+class CalculateSdfPlaneAlgorithmCommand {
+    +getExecutionDesc() : SdfPlaneAlgorithmExecutionDesc {query}
+    -mExecutionDesc : SdfPlaneAlgorithmExecutionDesc
+    +perform(const Shape& pShape) : Shape {query}
+    +getName() : std::string {query}
+}
+
+class DeleteOutlineStackCommand {
+    +perform(const Shape& pShape) : Shape {query}
+    -mOutlineIndex : size_t
+    +getName() : std::string {query}
+}
+
+class DeleteVertexStackCommand {
+    +perform(const Shape& pShape) : Shape {query}
+    +getOutlineIndex() : size_t {query}
+    +getVertexIndex() : size_t {query}
+    -mOutlineIndex : size_t
+    -mVertexIndex : size_t
+    +getName() : std::string {query}
+}
+
+abstract class EditorCommand {
+    +{abstract} getName() : std::string {query}
+}
+
+class InsertVertexStackCommand {
+    +perform(const Shape& pShape) : Shape {query}
+    +getVertex() : Vertex {query}
+    -mVertex : Vertex
+    +getOutlineIndex() : size_t {query}
+    +getVertexIndex() : size_t {query}
+    -mOutlineIndex : size_t
+    -mVertexIndex : size_t
+    +getName() : std::string {query}
+}
+
+class MergeShapeWithOffsetStackCommand {
+    -mpShape : Shape
+    +perform(const Shape& pShape) : Shape {query}
+    -mOffset : Vertex
+    +getName() : std::string {query}
+}
+
+class MoveOutlineStackCommand {
+    +perform(const Shape& pShape) : Shape {query}
+    +merge(const StackCommand& pOther) : StackCommand
+    +getFrom() : Vertex {query}
+    +getTo() : Vertex {query}
+    -mFrom : Vertex
+    -mTo : Vertex
+    +canMerge(const StackCommand& pCommand) : bool {query}
+    +getOutlineIndex() : size_t {query}
+    -mOutlineIndex : size_t
+    +getName() : std::string {query}
+}
+
+class SetShapeStackCommand {
+    +getShape() : Shape {query}
+    -mpShape : Shape
+    +perform(const Shape& pShape) : Shape {query}
+    +getName() : std::string {query}
+}
+
+abstract class StackCommand {
+    +{abstract} perform(const Shape& pShape) : Shape {query}
+    +merge(const StackCommand& pOther) : StackCommand
+    +canMerge(const StackCommand& pCommand) : bool {query}
+}
+
+class UpdateVertexStackCommand {
+    +perform(const Shape& pPolygon) : Shape {query}
+    +getVertex() : Vertex {query}
+    -mVertex : Vertex
+    +canMerge(const StackCommand& pCommand) : bool {query}
+    +getVertexIndex() : size_t {query}
+    -mOutlineIndex : size_t
+    -mVertexIndex : size_t
+    +getName() : std::string {query}
+}
+
+
+EditorCommand <|- StackCommand
+StackCommand <|- AddNewOutlineStackCommand
+StackCommand <|-- AddVertexStackCommand
+StackCommand <|-- CalculateSdfPlaneAlgorithmCommand
+StackCommand <|-- DeleteOutlineStackCommand
+StackCommand <|-- DeleteVertexStackCommand
+InsertVertexStackCommand -|> StackCommand
+MergeShapeWithOffsetStackCommand --|> StackCommand
+MoveOutlineStackCommand --|> StackCommand
+SetShapeStackCommand --|> StackCommand
+UpdateVertexStackCommand --|> StackCommand
+
+
+@enduml

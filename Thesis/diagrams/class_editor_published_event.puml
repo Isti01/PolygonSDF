@@ -1,0 +1,57 @@
+@startuml
+
+scale 2
+
+
+abstract class EditorEvent {
+    +{abstract} getName() : std::string {query}
+}
+
+class EditorPublishedEvent {
+    #EditorPublishedEvent(PublishedEvent pPublishedEvent, const void* pPublisher)
+    +getEvent() : PublishedEvent {query}
+    -mpPublishedEvent : PublishedEvent
+    -mpPublisher : const void*
+    +getName() : std::string {query}
+    +getPublisher() : void* {query}
+}
+
+class HideGuiPublishedEvent {
+    #HideGuiPublishedEvent()
+    +getName() : std::string
+}
+
+abstract class PublishedEvent {
+    +{abstract} getName() : std::string
+}
+
+class RendererPropertyPublishedEvent {
+    #RendererPropertyPublishedEvent(ShapeRendererProperty property)
+    +getProperty() : ShapeRendererProperty {query}
+    -mProperty : ShapeRendererProperty
+    +getName() : std::string
+}
+
+class ShowGuiPublishedEvent {
+    #ShowGuiPublishedEvent()
+    +getName() : std::string
+}
+
+class VisualEditorModeChangedPublishedEvent {
+    #VisualEditorModeChangedPublishedEvent(std::string stateName)
+    +getName() : std::string
+    +getStateName() : std::string {query}
+    -mStateName : std::string
+}
+
+
+EditorEvent <|- EditorPublishedEvent
+PublishedEvent <|-- RendererPropertyPublishedEvent
+PublishedEvent <|- ShowGuiPublishedEvent
+PublishedEvent <|-- VisualEditorModeChangedPublishedEvent
+HideGuiPublishedEvent -|> PublishedEvent
+
+EditorPublishedEvent o-- PublishedEvent
+
+
+@enduml

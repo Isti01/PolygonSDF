@@ -13,6 +13,6 @@ A szerkesztőben két módon léphetünk interakcióba a szerkesztett sokszögge
 
 A szerkesztés közben valós időben megjeleníthetjük a távolságfüggvényt. A program számos beállítást kínál a felhasználó számára, amelyekkel testreszabhatjuk a megjelenítést. Lehetőség van a színezés, árnyékolás és kontúrvonalak kinézetének meghatározására. A távolság vizualizációját ki is kapcsolhatjuk, mivel nagy csúcspontszámú sokszögek esetén erőforrásigényes lehet. Ilyenkor csak a körvonal kerül megjelenítésre.
 
-Az algoritmus a síkot régiókra osztja fel, amelyeken belül triviálisan meghatározható a távolság. Egy kétdimenziós sokszöghöz egy háromdimenziós alakzatot rendel, ahol a mélységi komponens az előjeles távolság abszolútértékéből származik. Az értékelés során ez a tulajdonság rendkívül fontos, mivel a régiók gyakran átfedésben vannak egymással, és a helyes távolságértéket a Z-puffer algoritmus segítségével kapjuk meg a rajzolás során.
+Az algoritmus a síkot régiókra osztja fel, amelyeken belül triviálisan meghatározható a távolság. Egy kétdimenziós sokszöghöz egy háromdimenziós alakzatot rendel, ahol a mélységi komponens az előjeles távolság abszolút értékéből származik. Az értékelés során ez a tulajdonság rendkívül fontos, mivel a régiók gyakran átfedésben vannak egymással, és a helyes távolságértéket a Z-puffer algoritmus segítségével kapjuk meg a rajzolás során.
 
 A program rendelkezik egy külön nézettel is, ahol megtekinthetjük a generált háromdimenziós objektumot.

@@ -7,7 +7,7 @@
 Az alkalmazásnak három fő célja van:
 \begin{enumerate}
     \item Biztosítani egy szerkesztőt, amivel bármilyen 2D-s sokszög elkészíthető.
-    \item Lehetőséget adni arra, hogy az elkészített alazatra lefuttassuk az algoritmust.
+    \item Lehetőséget adni arra, hogy az elkészített alakzatra lefuttassuk az algoritmust.
     \item Személyreszabható és látványos módon vizualizáni a kiértékelt távolságfüggvényt
 \end{enumerate}
 
@@ -71,7 +71,7 @@ A \ref{fig:visualization_settings-1}-es ábrán látható menüben állíthatjuk
 \begin{description}
     \item[Enable polygon wireframe in the editor] \textit{Körvonal engedélyezése} -- Ki- és bekapcsolhatjuk az alakzat körvonalának megjelenítését.
     \item[Polygon wireframe color] \textit{Körvonal szín} -- Kiválaszthatjuk, hogy milyen RGB értékkel kerüljön kirajzolásra a körvonal.
-    \item[Enable distance visualization in the editor] \textit{Távolság megjelenítése} -- Szabályozhatjuk, hogy az alkalmazás rajzolja-e a távolságot. Ez egy viszonylag drága beaállítás, mert a minden kiszínezett pixelre a képernyőn ki kell értékelni a távolságot.
+    \item[Enable distance visualization in the editor] \textit{Távolság megjelenítése} -- Szabályozhatjuk, hogy az alkalmazás rajzolja-e a távolságot. Ez egy viszonylag drága beállítás, mert a minden kiszínezett pixelre a képernyőn ki kell értékelni a távolságot.
     \item[Positive distance color] \textit{Távolság pozitív tartományának színe} -- Megadhatjuk, hogy a pozitív tartomány színezésekor milyen alapszínt használjon a program
     \item[Negative distance color] \textit{Távolság negatív tartományának színe} -- Megadhatjuk, hogy a negatív tartomány színezésekor milyen alapszínt használjon a program
     \item[Display distance contours] \textit{Távolsági kontúrok megjelenítése} -- A beállított értékkel megszabhatjuk, hogy mekkora területre terjedjen ki az árnyék. Nagyobb érték esetén az árnyékolt rész kisebb, gyorsabban veszít az intenzitásából, ahogy a távolság növekedik.
@@ -146,14 +146,14 @@ A \ref{fig:editor_actions-1}-es ábrán látható menüben általános szerkeszt
 \textbf{Elérhető funckionalitás}
 
 \begin{description}
-    \item[New shape] \textit{Új alakzat hozzáadása} -- A fáljrendszerből tölt be egy sokszöget a meglévőt lecserélve, amennyiben a megadott JSON file a megfelelő formátumban van, ellenkező esetben egy felugró ablakkal értesül a felhasználó, hogy a művelet sikertelen.
+    \item[New shape] \textit{Új alakzat hozzáadása} -- A fájlrendszerből tölt be egy sokszöget a meglévőt lecserélve, amennyiben a megadott JSON file a megfelelő formátumban van, ellenkező esetben egy felugró ablakkal értesül a felhasználó, hogy a művelet sikertelen.
     \item[Set to starter shape] \textit{Alakzat beállítása a kezdőalakzatra} -- A jelenlegi alakzatot lecseréli a kezdőalakzatra.
     \item[Undo] \textit{Visszalépés} -- Az utolsó lépés visszavonása, amennyiben lehetséges.
     \item[Clear history] \textit{Előzmények törlése} -- A szerkesztői előzmények törlése, a köztes állapotokra fenntartott memória felszabadításához.
     \item[Run Plane Slicing Algorithm] \textit{A vágásokat végző algoritmus futtatása} -- Ha az alakzat megfelel az algoritmus előfeltételének, tehát nincsenek egymást metsző vagy egymásba eső élek, akkor az alkalmazás végrehajtja. Ellenkező esetben egy felugró ablak jelzi, hogy a művelet sikertelen.
-    \item[Add Shape With Offset] \textit{Alazkat hozzáfűzése eltolással} -- A fáljrendszerből tölt be egy sokszöget a meglévőhöz hozzáfűzve azt, a megadott X és Y koordinátákkal eltolva. Amennyiben a megadott JSON file a megfelelő formátumban van, ellenkező esetben egy felugró ablakkal értesül a felhasználó, hogy a művelet sikertelen.
-    \item[Save shape] \textit{Alakzat mentése} -- A szerkesztett alakzat jelenlegi állapotát a fáljrendszerbe menti JSON formátumban.
-    \item[Save Algorithm Output] \textit{Algoritmuskimenet mentése} -- Az alakzathoz tartozó algoritmuskimenetet lementi a fáljrendszerbe menti JSON formátumban, ha az algoritmus végre lett hajtva, ellenkező esetben nem kerül megjelenítésre a gomb.
+    \item[Add Shape With Offset] \textit{Alazkat hozzáfűzése eltolással} -- A fájlrendszerből tölt be egy sokszöget a meglévőhöz hozzáfűzve azt, a megadott X és Y koordinátákkal eltolva. Amennyiben a megadott JSON file a megfelelő formátumban van, ellenkező esetben egy felugró ablakkal értesül a felhasználó, hogy a művelet sikertelen.
+    \item[Save shape] \textit{Alakzat mentése} -- A szerkesztett alakzat jelenlegi állapotát a fájlrendszerbe menti JSON formátumban.
+    \item[Save Algorithm Output] \textit{Algoritmuskimenet mentése} -- Az alakzathoz tartozó algoritmuskimenetet lementi a fájlrendszerbe menti JSON formátumban, ha az algoritmus végre lett hajtva, ellenkező esetben nem kerül megjelenítésre a gomb.
 \end{description}
 
 \begin{figure}[H]
@@ -223,14 +223,14 @@ A \ref{fig:user_guide-1}-ös ábrán látható felületen megtekinthetjük az ö
 
 \section{Vizuális szerkesztő}\label{sec:visual_editor}
 
-A vizuális szerkesztő lehetőséget ad arra, hogy szabadkézzel szerkesszük a sokszögünket. Billentyűzet segítségével válthatunk módok (eszközök) között, majd az egérrel interakcióba léphetünk az alakzattal vagy a vászonnal. A vizuális szerkesztőn keresztül válthatunk a háromdimenziós nézetre is.
+A vizuális szerkesztő lehetőséget ad arra, hogy szabad kézzel szerkesszük a sokszögünket. Billentyűzet segítségével válthatunk módok (eszközök) között, majd az egérrel interakcióba léphetünk az alakzattal vagy a vászonnal. A vizuális szerkesztőn keresztül válthatunk a háromdimenziós nézetre is.
 
 \textbf{Elérhető funckionalitás}
 
 \begin{description}
-    \item[Csúcspontok mozgatása (M billentyű)] Csúcspontok ,,Drag and drop" mozgatása. Egérgomb lenyomásakor a program kiválasztja a legközelebbi csúcspontot egy megadott távolságkorláton belül és mozgatás hatására frissíti a pozíciójat.
+    \item[Csúcspontok mozgatása (M billentyű)] Csúcspontok ,,Drag and drop" mozgatása. Egérgomb lenyomásakor a program kiválasztja a legközelebbi csúcspontot egy megadott távolságkorláton belül és mozgatás hatására frissíti a pozícióját.
     \item[Poligon mozgatása (G billentyű)]  Poligonok ,,Drag and drop" mozgatása. Egérgomb lenyomásakor a program kiválasztja a legközelebbi csúcsponthoz tartozó poligont egy megadott távolságkorláton belül és mozgatás hatására frissíti a poligonban lévő csúcspontok pozícióját.
-    \item[Vászon mozgatása (V billentyű)] Az egérgomb nyomvatartásával és mozgatással mozgatni lehet a vászonon a teljes alakzatot. A görgő segítségével pedig nagyítani és zsugorítani a méretén. Ez a művelet nem módosít az alakzat állapotán.
+    \item[Vászon mozgatása (V billentyű)] Az egérgomb nyomva tartásával és mozgatással mozgatni lehet a vásznon a teljes alakzatot. A görgő segítségével pedig nagyítani és zsugorítani a méretén. Ez a művelet nem módosít az alakzat állapotán.
     \item[Csúcspont beszúrása (I billentyű)] A bal egérgomb lenyomásával elhelyez egy csúcspontot a kattintás pozíciójához legközelebbi kettő, azonos poligonhoz tartozó csúcspont közé. A jobb egérgomb lenyomásával a legközelebbi csúcspont törlésre kerül, amennyiben egy megadott távolságon belül van.
     \item[Váltás a háromdimenziós algoritmus kimenet nézetre (D billentyű)] Ha az algoritmus végrehajtásra került az alakzat jelenlegi állapotán, akkor átvált a háromdimenziós nézetre, egyébként egy felugró ablakban jelzi, hogy nincs mit megjeleníteni.
 \end{description}
@@ -244,7 +244,7 @@ A vizuális szerkesztő lehetőséget ad arra, hogy szabadkézzel szerkesszük a
 
 \section{Alakzat háromdimenziós nézete}
 
-Az algoritmus kimenetével egy háromdimenziós objektumként számol az alkalmazás megjelenítéskor, ahol a mélységi komponens az előjeles távolság abszolútértéke. Ezt a tulajdonságot kihasználva ebben a nézetben a térben mozgatva tekinthetjük meg alakzatunkat.
+Az algoritmus kimenetével egy háromdimenziós objektumként számol az alkalmazás megjelenítéskor, ahol a mélységi komponens az előjeles távolság abszolút értéke. Ezt a tulajdonságot kihasználva ebben a nézetben a térben mozgatva tekinthetjük meg alakzatunkat.
 
 Ebben az állapotban nem szerkeszthető az alakzat, ezért a teljes GUI el van rejtve. A szerkesztői felületre bármelyik \ref{sec:visual_editor}-ban említett eszközhöz rendelt billentyű lenyomásával átválthatunk.
 
@@ -255,4 +255,4 @@ Ebben az állapotban nem szerkeszthető az alakzat, ezért a teljes GUI el van r
     \label{fig:3d_view-1}
 \end{figure}
 
-A görgő segítségével változtathatjuk a távolságot a kamera és az objektum közepe között. Az egérgomb lenyomvatartása és mozgatással pedig forgathatjuk a geometriát, a mozgatás horizontális komponensével az Y tengey körül, a vertikális komponenssel pedig az X tengely körül.
+A görgő segítségével változtathatjuk a távolságot a kamera és az objektum közepe között. Az egérgomb lenyomva tartása és mozgatással pedig forgathatjuk a geometriát, a mozgatás horizontális komponensével az Y tengely körül, a vertikális komponenssel pedig az X tengely körül.

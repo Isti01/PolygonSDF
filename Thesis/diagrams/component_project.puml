@@ -1,0 +1,15 @@
+@startuml
+
+scale 2
+
+
+[Falcor] <.. [PolygonSDF] : <<import>>
+[Falcor] <.. [PolygonSDFApplication] : <<import>>
+[Falcor] <.. [PolygonSDFTest] : <<import>>
+[Falcor] <.. [PolygonSDFBenchmark] : <<import>>
+[PolygonSDFApplication] ..> [PolygonSDF] : <<import>>
+[PolygonSDFTest] ..> [PolygonSDF] : <<import>>
+[PolygonSDFBenchmark] ..> [PolygonSDF] : <<import>>
+
+
+@enduml

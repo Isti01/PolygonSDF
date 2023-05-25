@@ -1,48 +1,100 @@
 \chapter{Fejlesztői dokumentáció}
 \label{ch:impl}
 
+\section{Fejlesztői környezet}
+
+\subsection{Szükséges szoftver}
+
+\begin{itemize}
+    \item git
+    \item Windows 10 20H2 (2020 Októberi frissítés) vagy újabb.
+    \item Visual Studio 2022
+    \item Windows 10 SDK 2004-es verzió
+    \item NVIDIA GPU driver 466.11, vagy újabb
+\end{itemize}
+
+\subsection{Környezet előkészítése}
+
+A program egy Falcor alkalmazás, ezért mindenek előtt szükségünk van a keretrendszer forráskódjára. A fejlesztéshez az 5.2-es verzióra van szükségünk, ezért át kell váltanunk az 5.2-es címkével ellátott állapotra.
+
+\lstset{caption={Falcor 5.2 forráskód letöltése git segítségével}, label=src:falcor-clone}
+\begin{lstlisting}[language=bash]
+	git clone https://github.com/NVIDIAGameWorks/Falcor.git
+	cd Falcor
+	git checkout tags/5.2
+\end{lstlisting}
+
+Az alkalmazás a keretrendszer részeként egyszerűen lefordítható a keretrendszerrel mellékelt scriptekkel, ezért másoljuk be a szakdolgozat forráskódját a \textit{Falcor/Source/Samples/} mappába, majd adjuk hozzá a mappát a \textit{Falcor/Source/Samples/CMakeLists.txt} fájlhoz a következő módon:
+\lstset{caption={PolygonSDF hozzáadása a CMakeLists.txt-hez}, label=src:falcor-cmake}
+\begin{lstlisting}
+	# ... other subdirectories
+	add_subdirectory(PolygonSDF)
+\end{lstlisting}
+
+Miután kész a mappastruktúra a fejlesztéshez, a build rendszer segítségével le kell generálnunk a Visual Studio projektfájlokat. Szerencsére a keretrendszer készítői gondoskodtak arról, hogy ez a lépés a lehet legegyszerűbb legyen, a \textit{Falcor/setup\_vs2022.bat} batch fájl végrehajtásával minden előkészítésre kerül.
+
+
+\subsection{Az alkalmazás projektjei}
+
+Nyissuk meg Visual Studio-ban a \textit{Falcor/build/windows-vs2022-d3d12/Falcor.sln} fájlt! A szakdolgozat négy projektből áll, melyeket a \textit{Solution Explorer > [Project] > Set as Startup Project} beállítása után az indítás gombbal fordíthatunk:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/component_project.png}
+    \caption{Az alkalmazás csomagdiagramja}
+    \label{fig:component_project-1}
+\end{figure}
+
+\begin{description}
+    \item[PolygonSDF] Tartalmazza algoritmus implementációt és a szerkesztői osztályokat. Ez a projekt nem futtatható, mert egy könyvtár a fordítási folyamat eredménye.
+    \item[PolygonSDFApplication] A szerkesztői osztályokat egy alkalmazásba csomagolja, itt történik azon objektumok példányosítása, melyek az alkalmazás teljes élettartamán keresztül memóriában maradnak, mint például a központi szerkesztő objektum és a felhasználói felületei. Ez a réteg  kapja meg a felhasználói bemenetet és adja tovább a szerkesztő felé.
+    \item[PolygonSDFTest] Az algoritmus és szerkesztő tesztelésére szánt projekt.
+    \item[PolygonSDFBenchmark] Az algoritmus teljesítményének mérésére szánt projekt.
+\end{description}
+
+
 \section{Algoritmus bemutatása}
 
 \begin{definition}
-	Egy ponthalmaz egy elemének a Voronoj-cellája a sík egy olyan régiója, amiben minden pont a ponthalmazból a cellához tartozó ponthoz van legközelebb.
+    Egy ponthalmaz egy elemének a Voronoj-cellája a sík egy olyan régiója, amiben minden pont a ponthalmazból a cellához tartozó ponthoz van legközelebb.
 \end{definition}
 
 \begin{definition}
-	A Voronoj-diagram a sík egy olyan felosztása amiben egy ponthalmaz minden eleméhez egy Voronoj-cellát rendelünk.
+    A Voronoj-diagram a sík egy olyan felosztása amiben egy ponthalmaz minden eleméhez egy Voronoj-cellát rendelünk.
 \end{definition}
 
 A szakdolgozat keretein belül egy olyan algoritmus került implementálásra, ami egy kétdimenziós sokszöget feloszt Voronoj-cellákra, a magas szintű lépései az \ref{alg:algorithm}. algoritmus pszeudokódban láthatóak. Az algoritmus egy \textit{N} csúcsú alakzat esetén \textit{N} él- és \textit{N} csúcs régióra osztja fel a síkot, amivel azt teljesen lefedi. Mivel a megadott alakzat több egymásban elhelyezkedő poligonból is állhatnak, ezért az algoritmus futása előtt a pontok átrendezésre kerülnek, mert a megadási sorrend alapján kerül megállapításra a távolság előjele. A régiók véges csúcsszámú konvex poligonokkal vannak ábrázolva. Egy régiót úgy határozunk meg, hogy a kezdetben végtelenül nagy korlátokat vágásokkal az adott régióhoz tartozó Voronoj-cella korlátaihoz igazítjuk.
 
 \begin{algorithm}[H]
-	\caption{A vágásokat végző algoritmus pszeudokódja}
-	\label{alg:algorithm}
-	\textbf{Bemenet:} \textit{Shape shape} \\
-	\textbf{Kimenet:} \textit{VertexRegion vertexRegions[M], EdgeRegion edgeRegions[M]}\\A meghatározott régióhatárok, M az alakzatban lévő csúcspontok száma.
-	\begin{algorithmic}[1]
-		\State reoderVertices(\textit{shape})
-		\For{$outline$ : $shape$.getOutlines()}
-		\For{$i$ : 0$,\ldots,outline$.size() - 1}
-		\State $edge1$ = $outline$[i]
-		\State $edge2$ = $outline$[(i + 1) \textbf{mod} $outline$.size()]
-		\State $vertexRegion$ = initVertexRegion($edge1$, $edge2$)
-		\State $vertexRegions$.add($vertexRegion$)
-		\State $edgeRegion$ = initEdgeRegion($edge1$)
-		\State $edgeRegions$.add($edgeRegion$)
-		\EndFor
-		\EndFor
-		\State $vertexRegions$.cutWithVertices($vertexRegions$)
-		\State $vertexRegions$.cutWithEdges($edgeRegions$)
-		\State $edgeRegions$.cutWithVertices($vertexRegions$)
-		\State $edgeRegions$.cutWithEdges($edgeRegions$)
-		\State \textbf{return} \textit{\{vertexRegions, edgeRegions\}}
-	\end{algorithmic}
+    \caption{A vágásokat végző algoritmus pszeudokódja}
+    \label{alg:algorithm}
+    \textbf{Bemenet:} \textit{Shape shape} \\
+    \textbf{Kimenet:} \textit{VertexRegion vertexRegions[M], EdgeRegion edgeRegions[M]}\\A meghatározott régióhatárok, M az alakzatban lévő csúcspontok száma.
+    \begin{algorithmic}[1]
+        \State reoderVertices(\textit{shape})
+        \For{$outline$ : $shape$.getOutlines()}
+            \For{$i$ : 0$,\ldots,outline$.size() - 1}
+                \State $edge1$ = $outline$[i]
+                \State $edge2$ = $outline$[(i + 1) \textbf{mod} $outline$.size()]
+                \State $vertexRegion$ = initVertexRegion($edge1$, $edge2$)
+                \State $vertexRegions$.add($vertexRegion$)
+                \State $edgeRegion$ = initEdgeRegion($edge1$)
+                \State $edgeRegions$.add($edgeRegion$)
+            \EndFor
+        \EndFor
+        \State $vertexRegions$.cutWithVertices($vertexRegions$)
+        \State $vertexRegions$.cutWithEdges($edgeRegions$)
+        \State $edgeRegions$.cutWithVertices($vertexRegions$)
+        \State $edgeRegions$.cutWithEdges($edgeRegions$)
+        \State \textbf{return} \textit{\{vertexRegions, edgeRegions\}}
+    \end{algorithmic}
 \end{algorithm}
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=1\linewidth]{images/class_algorithm.png}
-	\caption{Az algoritmus osztálydiagramja}
-	\label{fig:class_algorithm-1}
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_algorithm.png}
+    \caption{Az algoritmus osztálydiagramja}
+    \label{fig:class_algorithm-1}
 \end{figure}
 
 \subsection{A régiók meghatározása}
@@ -50,32 +102,32 @@ A szakdolgozat keretein belül egy olyan algoritmus került implementálásra, a
 A régiók vágása több lépésen keresztül történik, először felhasználjuk az információt ami az adott régió eleméhez tartozik. Csúcspontok esetén a két szomszédos él normálvektora mentén ejtünk egy-egy vágást. Élek esetében pedig a normálvektor mentén a két végponton kívül eső részt vágjuk le.
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=.6\linewidth]{images/initial_vertex_regions.png}
-	\caption{Csúcs régiók kezdeti határai}
-	\label{fig:initial_vertex_regions-1}
+    \centering
+    \includegraphics[width=.6\linewidth]{images/initial_vertex_regions.png}
+    \caption{Csúcs régiók kezdeti határai}
+    \label{fig:initial_vertex_regions-1}
 \end{figure}
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=.6\linewidth]{images/initial_segment_regions.png}
-	\caption{él régiók kezdeti határai}
-	\label{fig:initial_segment_regions-1}
+    \centering
+    \includegraphics[width=.6\linewidth]{images/initial_segment_regions.png}
+    \caption{él régiók kezdeti határai}
+    \label{fig:initial_segment_regions-1}
 \end{figure}
 
 Az algoritmus következő lépéseként minden régiót elvágunk az összes többi régióhoz tartozó csúccsal és szakasszal. Eredményül a sokszög Voronoj-diagramja egy közelítését kapjuk, ahol a régiók között némi átfedés van. Ezt az átfedést a raszterizáció során a Z-puffer algoritmus oldja fel és jeleníti meg a megfelelő régiót.
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=.6\linewidth]{images/algorithm_output_top_down.png}
-	\caption{Alakzat felülnézete}
-	\label{fig:algorithm_output_top_down-1}
+    \centering
+    \includegraphics[width=.6\linewidth]{images/algorithm_output_top_down.png}
+    \caption{Alakzat felülnézete}
+    \label{fig:algorithm_output_top_down-1}
 \end{figure}
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=.6\linewidth]{images/algorithm_output_bottom_up.png}
-	\caption{Alakzat alulnézetből}
-	\label{fig:algorithm_output_bottom_up-1}
+    \centering
+    \includegraphics[width=.6\linewidth]{images/algorithm_output_bottom_up.png}
+    \caption{Alakzat alulnézetből}
+    \label{fig:algorithm_output_bottom_up-1}
 \end{figure}
 
 \subsection{Z-puffer algoritmus (Mélységi teszt)}
@@ -83,63 +135,63 @@ A mélységi teszt egy módszer a raszterizálásban arra, hogy eldöntsük, hog
 
 \subsection{Csúcs - csúcs vágások}
 
-Azok a pontok, amelyek két pont között egyenlő távolságra helyezkednek el kollineárisak. Ebben a lépésben meghatározzuk azt az egyenest és annak a mentén végzünk egy vágást. Ez a művelet nem hagy átfedést a régióhatárok között. A \ref{fig:vertex_vertex_cut-1}-ös ábrán láthatjuk a vágás eredményét.
+Azok a pontok, amelyek két pont között egyenlő távolságra helyezkednek el kollineárisak. Ebben a lépésben meghatározzuk azt az egyenest és annak a mentén végzünk egy vágást. Ez a művelet nem hagy átfedést a régióhatárok között. A \ref{fig:vertex_vertex_cut-1}-es ábrán láthatjuk a vágás eredményét.
 
 \iffalse
 Legyen \textit{a} pont a régióhoz tartozó csúcs és \textit{b} pont a sokszög egy pontja, ami segítségével a vágást szeretnénk végrehajtani \textit{V} régión. A vágás algoritmusa a következő:
 
 \begin{algorithm}[H]
-	\caption{csúcs - csúcs vágás}
-	\label{alg:vertex_cut_vertex}
-	\textbf{Bemenet:} A régió határait definiáló sokszög csúcspontjai \textit{V} és \textit{a}, \textit{b} csúcspontok
-	\textbf{Kimenet:} A régió új határai \textit{V}'
-	\begin{algorithmic}[1]
-		\State $e = b - a$ \Comment{A vágás egyenesére merőleges normálvektor.}
-		\If{$||e|| <= \epsilon$}
-		\State \textbf{return} V \Comment{Ha a két csúcs egybeesik, akkor nem végzünk módosítást.}
-		\Else
-		\State $m = (a + b) * 0.5$ \Comment{Meghatározzuk a két csúcs közötti pontot.}
-		\State \textbf{return} polyCut($V$, $m$, $e$) \Comment{$V$ konvex poligont elvágjuk $m$ pont és $e$ normálvektor által meghatározott egyenes mentén.}
-		\EndIf
-	\end{algorithmic}
+    \caption{csúcs - csúcs vágás}
+    \label{alg:vertex_cut_vertex}
+    \textbf{Bemenet:} A régió határait definiáló sokszög csúcspontjai \textit{V} és \textit{a}, \textit{b} csúcspontok
+    \textbf{Kimenet:} A régió új határai \textit{V}'
+    \begin{algorithmic}[1]
+        \State $e = b - a$ \Comment{A vágás egyenesére merőleges normálvektor.}
+        \If{$||e|| <= \epsilon$}
+            \State \textbf{return} V \Comment{Ha a két csúcs egybeesik, akkor nem végzünk módosítást.}
+        \Else
+            \State $m = (a + b) * 0.5$ \Comment{Meghatározzuk a két csúcs közötti pontot.}
+            \State \textbf{return} polyCut($V$, $m$, $e$) \Comment{$V$ konvex poligont elvágjuk $m$ pont és $e$ normálvektor által meghatározott egyenes mentén.}
+        \EndIf
+    \end{algorithmic}
 \end{algorithm}
 \fi
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=1\linewidth]{images/vertex_vertex_cut.png}
-	\caption{Csúcs - csúcs vágás eredménye}
-	\label{fig:vertex_vertex_cut-1}
+    \centering
+    \includegraphics[width=1\linewidth]{images/vertex_vertex_cut.png}
+    \caption{Csúcs - csúcs vágás eredménye}
+    \label{fig:vertex_vertex_cut-1}
 \end{figure}
 
 \subsection{csúcs - él vágás} \label{vertex_segment_cut}
-Azok a pontok, amelyek egy ponttól és egy egyenestől azonos távolságra vannak, egy parabolán helyezkednek el, ahol a parabola fókuszpontja megegyezik a vágási régióhoz tartozó csúccsal. Ebben a lépésben konstans számú vágást hajtunk végre a parabola görbéje mentén a csúcs régión. Minél nagyobb a vágások száma, annál pontosabb közelítést kapunk a csúcs régió Voronoj-cellájához. A \ref{fig:vertex_segment_cut-1}-os ábrán láthatjuk a vágás eredményét.
+Azok a pontok, amelyek egy ponttól és egy egyenestől azonos távolságra vannak, egy parabolán helyezkednek el, ahol a parabola fókuszpontja megegyezik a vágási régióhoz tartozó csúccsal. Ebben a lépésben konstans számú vágást hajtunk végre a parabola görbéje mentén a csúcs régión. Minél nagyobb a vágások száma, annál pontosabb közelítést kapunk a csúcs régió Voronoj-cellájához. A \ref{fig:vertex_segment_cut-1}-as ábrán láthatjuk a vágás eredményét.
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=.55\linewidth]{images/vertex_segment_cut.png}
-	\caption{csúcs - él vágás eredménye}
-	\label{fig:vertex_segment_cut-1}
+    \centering
+    \includegraphics[width=.55\linewidth]{images/vertex_segment_cut.png}
+    \caption{csúcs - él vágás eredménye}
+    \label{fig:vertex_segment_cut-1}
 \end{figure}
 
 \subsection{Él - csúcs vágás}
 Az él és csúcs közötti Voronoj-cella határ a csúcs oldaláról konvex, az él oldaláról egy konkáv tartományt eredményez. A \ref{vertex_segment_cut}-es szekcióban meghatároztuk a parabolát, ami a csúcshoz tartozik. A számítások leegyszerűsítése érdekében az él esetében csak egy egyenes mentén vágunk úgy, hogy a csúcs régió paraboláját lefedjük, majd raszterizáláskor a Z-puffer algoritmus segítségével kerül feloldásra az átfedés. A lépés eredménye a \ref{fig:segment_vertex_cut-1}-es ábrán látható.
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=.55\linewidth]{images/segment_vertex_cut.png}
-	\caption{Él - csúcs vágás eredménye}
-	\label{fig:segment_vertex_cut-1}
+    \centering
+    \includegraphics[width=.55\linewidth]{images/segment_vertex_cut.png}
+    \caption{Él - csúcs vágás eredménye}
+    \label{fig:segment_vertex_cut-1}
 \end{figure}
 
 \subsection{Él - él vágás}
-Él - él vágás esetén figyelembe kell vennünk azoknak relatív pozícióját. Két él közötti rész három tartományra osztható fel: Az a tartomány, ahol az élek belső tartománya vannak közelebb egymáshoz, itt egy egyenes mentén helyezkednek el az egyenlő távolságra lévő pontok, és két olyan tartomány, ahol az egyik élhez tartozó csúcshoz vagyunk közelebb, ahol a határ parabolikus. Ebben a lépésben egyetlen egyenes mentén vágunk élenként, az egyenesből és két parabolából álló összetett görbét lefedve. A vágással átfedések keletkeznek, amit a Z-puffer algoritmus old fel. A lépés eredménye a \ref{fig:segment_segment_cut-1}-as ábrán látható.
+Él - él vágás esetén figyelembe kell vennünk azoknak relatív pozícióját. Két él közötti rész három tartományra osztható fel: Az a tartomány, ahol az élek belső tartománya vannak közelebb egymáshoz, itt egy egyenes mentén helyezkednek el az egyenlő távolságra lévő pontok, és két olyan tartomány, ahol az egyik élhez tartozó csúcshoz vagyunk közelebb, ahol a határ parabolikus. Ebben a lépésben egyetlen egyenes mentén vágunk élenként, az egyenesből és két parabolából álló összetett görbét lefedve. A vágással átfedések keletkeznek, amit a Z-puffer algoritmus old fel. A lépés eredménye a \ref{fig:segment_segment_cut-1}-es ábrán látható.
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=.55\linewidth]{images/segment_segment_cut.png}
-	\caption{Él - él vágás eredménye}
-	\label{fig:segment_segment_cut-1}
+    \centering
+    \includegraphics[width=.55\linewidth]{images/segment_segment_cut.png}
+    \caption{Él - él vágás eredménye}
+    \label{fig:segment_segment_cut-1}
 \end{figure}
 
 \section{A szerkesztő megtervezése}
@@ -152,10 +204,10 @@ A szerkesztő tervezésében különös figyelmet kapott annak skálázhatóság
 A parancsokat felfoghatjuk állapot átmenetekként, ahol minden parancs után egy állapottal bővül a szerkesztő verme. A verem adatstruktúra természetéből adódóan a visszalépés triviális művelet, mivel csak el kell vetnünk a verem tetejéről a módosítást. Az alkalmazásban a teljesítményre való tekintettel a veremben az átmenet által készített új állapot is tárolásra kerül, így minimalizálva a potenciálisan nagy számításigényű műveletek túlzott számban való kiértékelését. \textit{Megjegyzés: A jelenlegi implementáció nem támogatja az előrelépés és a köztes műveletek módosítását.}
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=1\linewidth]{images/class_editor.png}
-	\caption{Szerkesztő osztálydiagramja}
-	\label{fig:class_editor-1}
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_editor.png}
+    \caption{Szerkesztő osztálydiagramja}
+    \label{fig:class_editor-1}
 \end{figure}
 
 
@@ -168,43 +220,43 @@ A verem parancs (\textbf{StackCommand}) ennek egy olyan specializációja, ami e
 A verem parancsok egyesíthetőek, amennyiben az eredmény értelmezhető. Akkor hajthatjuk végre az egyesítést, ha a \textit{canMerge} metódus igazat ad vissza a parancsra, amivel meghívjuk, ekkor a \textit{merge} metódus végzi el az egyesítést. Az egyesítés rendelkezik alap implementációval, ami letiltja ezt a viselkedést. Erre a műveletre azért volt szükség, mert a vizuális szerkesztő esetében ugyanazt a csúcsot vagy poligont pár másodperc alatt akár ezerszer is elmozdíthatjuk, ami egyesítés nélkül 1000 új bejegyzést hozna létre a szerkesztői veremben.
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=1\linewidth]{images/class_editor_command.png}
-	\caption{A szerkesztőben rendelkezésre álló parancsok osztálydiagramja}
-	\label{fig:class_editor_command-1}
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_editor_command.png}
+    \caption{A szerkesztőben rendelkezésre álló parancsok osztálydiagramja}
+    \label{fig:class_editor_command-1}
 \end{figure}
 
 \textbf{A StackCommand osztály implementációi}
 
 \begin{description}
-	\item[AddNewOutlineStackCommand] Hozzáadja az alakzathoz a megadott poligont.
-	\item[AddVertexStackCommand] Az egyik poligonhoz hozzáad egy csúcsot a lista végére.
-	\item[CalculateSdfPlaneAlgorithmCommand] Végrehajtja az algoritmust az alakzaton.
-	\item[DeleteOutlineStackCommand] Töröl egy poligont az alakzatból.
-	\item[DeleteVertexStackCommand] Töröl egy csúcsot az egyik poligonból.
-	\item[InsertVertexStackCommand] Az egyik poligonhoz hozzáad egy csúcsot a lista egy megadott indexére.
-	\item[MergeShapeWithOffsetStackCommand] A megadott alakzatot egyesíti a szerkesztőével.
-	\item[MoveOutlineStackCommand] Elmozdít egy poligont az alakzatban két referencia pont segítségével. Ez a művelet egyesíthető egy azonos típusú paranccsal, ha ugyanazt a poligont mozgatják, ugyanabból a kiindulópontból.
-	\item[SetShapeStackCommand] Lecseréli az alakzatot.
-	\item[UpdateVertexStackCommand] Frissíti egy csúcs értékét az egyik poligonban. Ez a művelet egyesíthető egy azonos típusú paranccsal, ha pontosan ugyanazt a csúcsot mozgatják.
+    \item[AddNewOutlineStackCommand] Hozzáadja az alakzathoz a megadott poligont.
+    \item[AddVertexStackCommand] Az egyik poligonhoz hozzáad egy csúcsot a lista végére.
+    \item[CalculateSdfPlaneAlgorithmCommand] Végrehajtja az algoritmust az alakzaton.
+    \item[DeleteOutlineStackCommand] Töröl egy poligont az alakzatból.
+    \item[DeleteVertexStackCommand] Töröl egy csúcsot az egyik poligonból.
+    \item[InsertVertexStackCommand] Az egyik poligonhoz hozzáad egy csúcsot a lista egy megadott indexére.
+    \item[MergeShapeWithOffsetStackCommand] A megadott alakzatot egyesíti a szerkesztőével.
+    \item[MoveOutlineStackCommand] Elmozdít egy poligont az alakzatban két referencia pont segítségével. Ez a művelet egyesíthető egy azonos típusú paranccsal, ha ugyanazt a poligont mozgatják, ugyanabból a kiindulópontból.
+    \item[SetShapeStackCommand] Lecseréli az alakzatot.
+    \item[UpdateVertexStackCommand] Frissíti egy csúcs értékét az egyik poligonban. Ez a művelet egyesíthető egy azonos típusú paranccsal, ha pontosan ugyanazt a csúcsot mozgatják.
 \end{description}
 
 \subsection{Szerkesztő összesítő műveletek}
 
-Az alkalmazásban szükség van olyan műveletre, amik a szerkesztő vermének állapotát összesítik, például a tárolt műveletek számát megadják. Erre a célra lett létrehozva a \textbf{EditorAggregator} osztály, két absztrakt metódussal rendelkezik, egyik a művelet megnevezésére, a másik az összesítés végrehajtására és az eredmény visszaadására, ami a szerkesztő állapotán nem módosíthat. Minden összesítő osztály \textbf{EditorAggregationResult} típusú eredményt adhat vissza. A művelet osztálydiagramja a \ref{fig:class_editor_aggregator-1}-es ábrán látható.
+Az alkalmazásban szükség van olyan műveletre, amik a szerkesztő vermének állapotát összesítik, például a tárolt műveletek számát megadják. Erre a célra lett létrehozva a \textbf{EditorAggregator} osztály, két absztrakt metódussal rendelkezik, egyik a művelet megnevezésére, a másik az összesítés végrehajtására és az eredmény visszaadására, ami a szerkesztő állapotán nem módosíthat. Minden összesítő osztály \textbf{EditorAggregationResult} típusú eredményt adhat vissza. A művelet osztálydiagramja a \ref{fig:class_editor_aggregator-1}-as ábrán látható.
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=1\linewidth]{images/class_editor_aggregator.png}
-	\caption{A szerkesztői összesítések osztálydiagramja}
-	\label{fig:class_editor_aggregator-1}
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_editor_aggregator.png}
+    \caption{A szerkesztői összesítések osztálydiagramja}
+    \label{fig:class_editor_aggregator-1}
 \end{figure}
 
 \textbf{Az osztály implementációi}
 
 \begin{description}
-	\item[StackPeekingEditorAggregator] Visszaadja a legfelső bejegyzést a szerkesztő verméből.
-	\item[StackSizeEditorAggregator] Visszaadja a verem méretét.
+    \item[StackPeekingEditorAggregator] Visszaadja a legfelső bejegyzést a szerkesztő verméből.
+    \item[StackSizeEditorAggregator] Visszaadja a verem méretét.
 \end{description}
 
 \subsection{Szerkesztői megszorítások}
@@ -212,18 +264,18 @@ Az alkalmazásban szükség van olyan műveletre, amik a szerkesztő vermének �
 Bizonyos esetekben egy változtatást nincs értelme végrehajtani egy alakzaton, például egy háromszögből nem törölhetünk csúcsot, mert akkor már nem egy sokszögről beszélünk. Az \textbf{EditorConstraint} osztályban kettő absztrakt metódus található, egyik a megszorítás azonosítására (\textit{getName}), a másik egy parancsra és a jelenlegi alakzatra megmondja, hogy a parancsban végrehajtandó művelet elvégezhető-e (\textit{evaluate}).
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=1\linewidth]{images/class_editor_constraint.png}
-	\caption{A szerkesztői megszorítások osztálydiagramja}
-	\label{fig:class_editor_constraint-1}
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_editor_constraint.png}
+    \caption{A szerkesztői megszorítások osztálydiagramja}
+    \label{fig:class_editor_constraint-1}
 \end{figure}
 
 \textbf{Az osztály implementációi}
 
 \begin{description}
-	\item[DeleteOutlineEditorConstraint] Tiltja a \textbf{DeleteOutlineStackCommand} példányú parancsokat, amennyiben nem maradna az alakzatban poligon a törlés után.
-	\item[DeleteVertexEditorConstraint] Tiltja a \textbf{DeleteVertexStackCommand} típusú parancsokat, amennyiben a kiválasztott poligonban kevesebb mint három pont maradna törlés után.
-	\item[SdfPlaneAlgorithmConstraint] Az algoritmus nem értelmezett önmetsző alakzatokra. Ez a megszorítás tiltja a \textbf{CalculateSdfPlaneAlgorithmCommand} típusú parancsokat, ha az alakzatban vannak egymást metsző élek. Szomszédos éleket nem vesz figyelembe.
+    \item[DeleteOutlineEditorConstraint] Tiltja a \textbf{DeleteOutlineStackCommand} példányú parancsokat, amennyiben nem maradna az alakzatban poligon a törlés után.
+    \item[DeleteVertexEditorConstraint] Tiltja a \textbf{DeleteVertexStackCommand} típusú parancsokat, amennyiben a kiválasztott poligonban kevesebb mint három pont maradna törlés után.
+    \item[SdfPlaneAlgorithmConstraint] Az algoritmus nem értelmezett önmetsző alakzatokra. Ez a megszorítás tiltja a \textbf{CalculateSdfPlaneAlgorithmCommand} típusú parancsokat, ha az alakzatban vannak egymást metsző élek. Szomszédos éleket nem vesz figyelembe.
 \end{description}
 
 \subsection{Szerkesztői transzformációk}
@@ -233,17 +285,17 @@ Az eddig felsorolt osztályoknak többek között egy dologban egyeztek meg, nem
 Az \textbf{EditorTransformation} interfész kettő absztrakt metódussal rendelkezik, egyik az osztály azonosítására (\textit{getName}), a másik a verem módosításához (\textit{transform}).
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=1\linewidth]{images/class_editor_transformation.png}
-	\caption{A szerkesztői transzformációk osztálydiagramja}
-	\label{fig:class_editor_transformation-1}
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_editor_transformation.png}
+    \caption{A szerkesztői transzformációk osztálydiagramja}
+    \label{fig:class_editor_transformation-1}
 \end{figure}
 
 \textbf{Az osztály implementációi}
 
 \begin{description}
-	\item[ClearHistoryEditorTransformation] A szerkesztés során számos állapotváltozás bekövetkezhet az alakzatunkon. A felhasználónak a feladata a köztes állapotokat kitörölni, amikor úgy dönt, hogy azokra már biztos nincs szükség. Ez az osztály csak a legújabb állapotot hagyja meg a veremben, minden mást töröl.
-	\item[UndoEditorTransformation] Lehetővé teszi a visszalépést az alakzat előző állapotára. Ezt úgy teszi, hogy a verem legújabb állapotát törli. A törlést csak akkor hajtja végre, ha a törlés után marad bejegyzés a veremben.
+    \item[ClearHistoryEditorTransformation] A szerkesztés során számos állapotváltozás bekövetkezhet az alakzatunkon. A felhasználónak a feladata a köztes állapotokat kitörölni, amikor úgy dönt, hogy azokra már biztos nincs szükség. Ez az osztály csak a legújabb állapotot hagyja meg a veremben, minden mást töröl.
+    \item[UndoEditorTransformation] Lehetővé teszi a visszalépést az alakzat előző állapotára. Ezt úgy teszi, hogy a verem legújabb állapotát törli. A törlést csak akkor hajtja végre, ha a törlés után marad bejegyzés a veremben.
 \end{description}
 
 
@@ -252,20 +304,20 @@ Az \textbf{EditorTransformation} interfész kettő absztrakt metódussal rendelk
 A szerkesztő \textbf{EditorEvent} típusú objektumokkal értesíti az alkalmazás komponenseit, amikor valamilyen bemenetet kap, így gondoskodva arról, hogy a legfrissebb állapot szerepeljen mindenhol. Az osztályban egyetlen absztrakt metódus szerepel: (\textit{getName}), ami segítségével azonosíthatjuk az eseményt.
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=1\linewidth]{images/class_editor_event.png}
-	\caption{A szerkesztői események osztálydiagramja}
-	\label{fig:class_editor_event-1}
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_editor_event.png}
+    \caption{A szerkesztői események osztálydiagramja}
+    \label{fig:class_editor_event-1}
 \end{figure}
 
 \textbf{Az osztály implementációi}
 
 \begin{description}
-	\item[NewStackCommandEvent] A szerkesztőben történt sikeres állapotátmenetek következtében kerül kiváltásra, az implementáció tartalmaz egy referenciát a kiváltott parancsra.
-	\item[StackTransformedEvent] A szerkesztői transzformációk hatására váltódik ki, tárolják a módosítást végző objektumot.
-	\item[ConstraintViolationEvent] Kiváltásra kerül, amennyiben egy átmenet nem hajtható végre, mert egy megszorítás sérül. A komponensek ezen az eseményen keresztül értesülnek arról, hogy pontosan mi akadályozta meg az új állapot létrehozását.
-	\item[UnknownCommandEvent] Kiváltódik, ha a szerkesztő nem tudja feldolgozni a beadott EditorCommand implementációt. Jelenleg minden osztályra hibát ad a szerkesztő, ami nem a StackCommand leszármazottja.
-	\item[EditorPublishedEvent] Egyedi események beküldésekor kerül kiváltásra ez az esemény, tárol egy egyedi azonosítót a küldőről, ami általában a küldő objektum memóriacíme és egy \textbf{PublishedEvent} típusú objektumot, ami a közzétételre szánt információt tartalmazza.
+    \item[NewStackCommandEvent] A szerkesztőben történt sikeres állapotátmenetek következtében kerül kiváltásra, az implementáció tartalmaz egy referenciát a kiváltott parancsra.
+    \item[StackTransformedEvent] A szerkesztői transzformációk hatására váltódik ki, tárolják a módosítást végző objektumot.
+    \item[ConstraintViolationEvent] Kiváltásra kerül, amennyiben egy átmenet nem hajtható végre, mert egy megszorítás sérül. A komponensek ezen az eseményen keresztül értesülnek arról, hogy pontosan mi akadályozta meg az új állapot létrehozását.
+    \item[UnknownCommandEvent] Kiváltódik, ha a szerkesztő nem tudja feldolgozni a beadott \textbf{EditorCommand} implementációt. Jelenleg minden osztályra hibát ad a szerkesztő, ami nem a \textbf{StackCommand} leszármazottja.
+    \item[EditorPublishedEvent] Egyedi események beküldésekor kerül kiváltásra ez az esemény, tárol egy egyedi azonosítót a küldőről, ami általában a küldő objektum memóriacíme és egy \textbf{PublishedEvent} típusú objektumot, ami a közzétételre szánt információt tartalmazza.
 \end{description}
 
 \subsection{Kommunikáció komponensek között}
@@ -273,19 +325,19 @@ A szerkesztő \textbf{EditorEvent} típusú objektumokkal értesíti az alkalmaz
 Az alkalmazás komponensei szabadon kommunikálhatnak egymással a Publikáló-feliratkozó minta segítségével a szerkesztőn keresztül. Az üzenetküldés úgy történik, hogy meghívjuk a \textit{publishEvent} metódusát a szerkesztőnek a \textbf{PublishedEvent} típusú objektumunkkal, amit üzenetként szeretnék küldeni. Erre a szerkesztő kivált egy \textbf{EditorPublishedEvent} típusú eseményt, amivel kézbesíti minden feliratkozott komponensnek.
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=1\linewidth]{images/class_editor_published_event.png}
-	\caption{Az üzenetküldésre használt osztályok diagramja}
-	\label{fig:class_editor_published_event-1}
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_editor_published_event.png}
+    \caption{Az üzenetküldésre használt osztályok diagramja}
+    \label{fig:class_editor_published_event-1}
 \end{figure}
 
 \textbf{Az osztály implementációi}
 
 \begin{description}
-	\item[HideGuiPublishedEvent] Parancs a GUI szerkesztőnek, hogy ne jelenítse meg a felhasználói felületet. A 3D nézet aktiválásakor váltódik ki. A GUI láthatósága nem változik a következő parancsig.
-	\item[ShowGuiPublishedEvent] Parancs a GUI szerkesztőnek, hogy jelenítse meg a felhasználói felületet.
-	\item[RendererPropertyPublishedEvent] A megjelenítés stílusának változtatásához használt esemény, a beállítás kulcsát és egy új értéket tartalmaz.
-	\item[VisualEditorModeChangedPublishedEvent] A vizuális szerkesztő ezzel hírdeti ki, hogy épp milyen eszköz van kiválasztva, az aktív eszköz megjelenítéséhez a GUI-n van használva.
+    \item[HideGuiPublishedEvent] Parancs a GUI szerkesztőnek, hogy ne jelenítse meg a felhasználói felületet. A 3D nézet aktiválásakor váltódik ki. A GUI láthatósága nem változik a következő parancsig.
+    \item[ShowGuiPublishedEvent] Parancs a GUI szerkesztőnek, hogy jelenítse meg a felhasználói felületet.
+    \item[RendererPropertyPublishedEvent] A megjelenítés stílusának változtatásához használt esemény, a beállítás kulcsát és egy új értéket tartalmaz.
+    \item[VisualEditorModeChangedPublishedEvent] A vizuális szerkesztő ezzel hírdeti ki, hogy épp milyen eszköz van kiválasztva, az aktív eszköz megjelenítéséhez a GUI-n van használva.
 \end{description}
 
 \subsection{Szerkesztői események feldolgozása}
@@ -293,17 +345,43 @@ Az alkalmazás komponensei szabadon kommunikálhatnak egymással a Publikáló-f
 Az alkalmazásban \textbf{EditorConsumer} típusú objektumokat iratkoztathatunk fel és le a szerkesztőben az események fogadására. Az osztályban egy absztrakt metódus van (\textit{accept}) az események fogadására.
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=1\linewidth]{images/class_editor_consumer.png}
-	\caption{Az eseményfeldolgozó osztálydiagramja}
-	\label{fig:class_editor_consumer-1}
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_editor_consumer.png}
+    \caption{Az eseményfeldolgozó osztálydiagramja}
+    \label{fig:class_editor_consumer-1}
 \end{figure}
 
 \textbf{Az osztály implementációi}
 
 \begin{description}
-	\item[EventMenuEditorConsumer] Minden beérkező eseményt lement egy listában, ami később az eseménymenün kerül megjelenítésre.
-	\item[GuiStateEditorConsumer] Figyel a \textbf{HideGuiPublishedEvent} és \textbf{ShowGuiPublishedEvent} üzenetekre és számon tartja, hogy egy pillanatban meg kell-e jeleníteni a GUI-t.
-	\item[PropertyUpdatingEditorConsumer] Feldolgozza a \textbf{RendererPropertyPublishedEvent} típusú objektumokat, frissíti az adattagként tárolt \textbf{ShapeRenderer} kulcsát a kapott értékkel.
-	\item[VisualEditorStateChangedEditorConsumer] Feldolgozza a \textbf{VisualEditorModeChangedPublishedEvent} típusú eseményeket vizuális szerkesztő aktív eszközének számontartásához.
+    \item[EventMenuEditorConsumer] Minden beérkező eseményt lement egy listában, ami később az eseménymenün kerül megjelenítésre.
+    \item[GuiStateEditorConsumer] Figyel a \textbf{HideGuiPublishedEvent} és \textbf{ShowGuiPublishedEvent} üzenetekre és számon tartja, hogy egy pillanatban meg kell-e jeleníteni a GUI-t.
+    \item[PropertyUpdatingEditorConsumer] Feldolgozza a \textbf{RendererPropertyPublishedEvent} típusú objektumokat, frissíti az adattagként tárolt \textbf{ShapeRenderer} kulcsát a kapott értékkel.
+    \item[VisualEditorStateChangedEditorConsumer] Feldolgozza a \textbf{VisualEditorModeChangedPublishedEvent} típusú eseményeket vizuális szerkesztő aktív eszközének számontartásához.
 \end{description}
+
+
+\section{GUI szerkesztő}
+
+Az alkalmazás felhasználói felülete szöveg, gombok és beviteli mezők csoportjaiból áll szerepkör szerint. Ami közös bennünk, hogy mindegyik adatforrása a szerkesztő magja, amihez példányosításkor referenciát kapnak, majd a referencián keresztül iratkoznak fel az eseményekre, parancsokat visznek be, esetleg küldenek üzeneteket más komponenseknek.
+
+A felületi elemek kirajzolásáért az ImGui könyvtár felel. A könyvtár funkcionalitása a Falcor keretrendszeren érhető el, Falcor-specifikus osztályokba becsomagolva.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_gui_editor.png}
+    \caption{A GUI szerkesztő osztálydiagramja}
+    \label{fig:class_gui_editor-1}
+\end{figure}
+
+\textbf{A szerkesztői menük}
+
+\begin{description}
+    \item[GuiVisualizationSettingsMenu] -- A megjelenítési beállítások itt érhetőek el. Kezdetben minden beállítás az alap értékével rendelkezik, aminek kiolvasása egy központi helyről történik. Amikor a felhasználó egy új értéket ad meg, akkor egy üzenettel közvetíti a változásokat.
+    \item[GuiEditorActionsMenu] -- Legfőképpen gombokból álló menü, elérhetővé tesz bizonyos \textbf{EditorCommand} implementációkat.
+    \item[GuiShapeActionsMenu] -- Megjeleníti az alakzatot a csúcspontok pontos koordinátáival, amiket a felhasználó kézzel is átírhat. Értékmódosításkor egy új paranccsal bővül a szerkesztő.
+    \item[EventMenu] -- Kettő osztály közötti kapcsolatot kezel, egyik az \textbf{EventMenuGui}, ami megjeleníti az eseményeket egy listában és az \textbf{EventMenuEditorConsumer}, ami az események rögzítéséért lett létrehozva, az \textbf{EventMenu} konstruktora iratkoztatja fel a szerkesztőre és a destruktora iratkoztatja le.
+    \item[EditorGuideMenu] -- Szöveges formában megjeleníti a vizuális szerkesztő eszközeit és azok billentyűparancsait.
+\end{description}
+

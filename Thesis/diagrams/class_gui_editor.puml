@@ -1,0 +1,110 @@
+@startuml
+
+scale 2
+
+
+class Editor {
+}
+
+
+class EditorGuideMenu {
+    #EditorGuideMenu()
+    +renderGui(Gui::Window& window) : void
+}
+
+class EventMenu {
+    #EventMenu(Editor pEditor)
+    -mpEditor : Editor
+    -mpConsumer : EventMenuEditorConsumer
+    -mpGui : EventMenuGui
+    +renderGui(Gui::Window& window) : void
+}
+
+class EventMenuEditorConsumer {
+    #EventMenuEditorConsumer(EventMenuGui pEventMenu)
+    -mpEventMenu : EventMenuGui
+    +accept(const EditorEvent& pEvent) : void
+}
+
+class EventMenuGui {
+    #EventMenuGui()
+    +getCumulatedText(size_t repeats, const std::string& text) : std::string {query}
+    -mEvents : std::vector<EditorEvent>
+    +addNewEvent(EditorEvent pEvent) : void
+    -renderCumulatedEvents(Gui::Group& group) : void {query}
+    +renderGui(Gui::Window& window) : void
+}
+
+class GuiEditor {
+    #GuiEditor(Editor pEditor)
+    -mpEditor : Editor
+    -mpStateChangeConsumer : VisualEditorStateChangeEditorConsumer
+    -menus : std::vector<GuiEditorMenu>
+    +render(Gui::Window& window) : void
+}
+
+class GuiEditorActionsMenu {
+    #GuiEditorActionsMenu(Editor pEditor)
+    -mpEditor : Editor
+    -mExecutionDesc : SdfPlaneAlgorithmExecutionDesc
+    -{static} loadShape() : Shape
+    -mpPolygonPeekingAggregator : StackPeekingEditorAggregator
+    -mpStackSizeAggregator : StackSizeEditorAggregator
+    +renderGui(Gui::Window& window) : void
+}
+
+abstract class GuiEditorMenu {
+    +{abstract} renderGui(Gui::Window& window) : void
+}
+
+class GuiShapeActionsMenu {
+    #GuiShapeActionsMenu(Editor pEditor)
+    -mpEditor : Editor
+    -mpCurrentShape : Shape
+    -mpPolygonPeekingAggregator : StackPeekingEditorAggregator
+    +renderGui(Gui::Window& window) : void
+    -showGroupControls(size_t outlineIndex, Gui::Group& window) : void
+    -showVertexList(size_t outlineIndex, Gui::Group& window) : void
+}
+
+
+class GuiVisualizationSettingsMenu {
+    #GuiVisualizationSettingsMenu(Editor pEditor)
+    -mpEditor : Editor
+    -{static} kPropertyTitles : static const std::map<std::string, std::string>
+    -mProperties : std::vector<ShapeRendererProperty>
+    +renderGui(Gui::Window& window) : void
+    -resetProperties() : void
+    -showPropertySetting(Gui::Group& group, ShapeRendererProperty& property) : void
+}
+
+class VisualEditorStateChangeEditorConsumer {
+    #VisualEditorStateChangeEditorConsumer()
+    +getCurrentState() : std::string {query}
+    -mCurrentState : std::string
+    +accept(const EditorEvent& pEvent) : void
+}
+
+
+EventMenuEditorConsumer --|> EditorConsumer
+VisualEditorStateChangeEditorConsumer -|> EditorConsumer
+EditorGuideMenu -|> GuiEditorMenu
+GuiEditorMenu <|--- EventMenu
+GuiEditorMenu <|-- GuiEditorActionsMenu
+GuiEditorMenu <|-- GuiShapeActionsMenu
+GuiEditorMenu <|-- GuiVisualizationSettingsMenu
+
+
+EventMenu o-- Editor
+EventMenu o-- EventMenuEditorConsumer
+EventMenu o-- EventMenuGui
+EventMenuEditorConsumer o-- EventMenuGui
+GuiEditor o-- Editor
+GuiEditor o-- GuiEditorMenu
+GuiEditor o-- VisualEditorStateChangeEditorConsumer
+GuiEditorActionsMenu o-- Editor
+GuiShapeActionsMenu o-- Editor
+GuiVisualizationSettingsMenu o-- Editor
+
+
+@enduml

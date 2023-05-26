@@ -1,4 +1,4 @@
-cbuffer DistanceColoring
+cbuffer DistanceColoringSettings
 {
     float3 iPositiveColor;
     float3 iNegativeColor;

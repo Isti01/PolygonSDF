@@ -72,63 +72,63 @@ void FullScreenShapeRenderer::setPropertyImpl(const ShapeRendererProperty &rende
     {
         if (auto *color = std::get_if<float3>(&rendererProperty.value))
         {
-            mpGraphicsVars["DistanceColoring"]["iPositiveColor"] = *color;
+            mpGraphicsVars["DistanceColoringSettings"]["iPositiveColor"] = *color;
         }
     }
     else if (rendererProperty.key == RendererProperties::kNegativeColorProperty)
     {
         if (auto *color = std::get_if<float3>(&rendererProperty.value))
         {
-            mpGraphicsVars["DistanceColoring"]["iNegativeColor"] = *color;
+            mpGraphicsVars["DistanceColoringSettings"]["iNegativeColor"] = *color;
         }
     }
     else if (rendererProperty.key == RendererProperties::kContourFrequencyProperty)
     {
         if (auto *frequency = std::get_if<float>(&rendererProperty.value))
         {
-            mpGraphicsVars["DistanceColoring"]["iContourFrequency"] = *frequency;
+            mpGraphicsVars["DistanceColoringSettings"]["iContourFrequency"] = *frequency;
         }
     }
     else if (rendererProperty.key == RendererProperties::kContourIntensityProperty)
     {
         if (auto *intensity = std::get_if<float>(&rendererProperty.value))
         {
-            mpGraphicsVars["DistanceColoring"]["iContourIntensity"] = *intensity;
+            mpGraphicsVars["DistanceColoringSettings"]["iContourIntensity"] = *intensity;
         }
     }
     else if (rendererProperty.key == RendererProperties::kDisplayShadowsProperty)
     {
         if (auto *display = std::get_if<bool>(&rendererProperty.value))
         {
-            mpGraphicsVars["DistanceColoring"]["iDisplayShadows"] = *display;
+            mpGraphicsVars["DistanceColoringSettings"]["iDisplayShadows"] = *display;
         }
     }
     else if (rendererProperty.key == RendererProperties::kShadowsIntensityProperty)
     {
         if (auto *intensity = std::get_if<float>(&rendererProperty.value))
         {
-            mpGraphicsVars["DistanceColoring"]["iShadowIntensity"] = *intensity;
+            mpGraphicsVars["DistanceColoringSettings"]["iShadowIntensity"] = *intensity;
         }
     }
     else if (rendererProperty.key == RendererProperties::kDisplayCloserToVertexProperty)
     {
         if (auto *shouldDisplay = std::get_if<bool>(&rendererProperty.value))
         {
-            mpGraphicsVars["DistanceColoring"]["iDisplayCloserToVertex"] = *shouldDisplay;
+            mpGraphicsVars["DistanceColoringSettings"]["iDisplayCloserToVertex"] = *shouldDisplay;
         }
     }
     else if (rendererProperty.key == RendererProperties::kShouldDisplayContoursProperty)
     {
         if (auto *shouldDisplay = std::get_if<bool>(&rendererProperty.value))
         {
-            mpGraphicsVars["DistanceColoring"]["iShouldDisplayContours"] = *shouldDisplay;
+            mpGraphicsVars["DistanceColoringSettings"]["iShouldDisplayContours"] = *shouldDisplay;
         }
     }
     else if (rendererProperty.key == RendererProperties::kShouldColorBetweenContoursProperty)
     {
         if (auto *shouldDisplay = std::get_if<bool>(&rendererProperty.value))
         {
-            mpGraphicsVars["DistanceColoring"]["iShouldColorBetweenContours"] = *shouldDisplay;
+            mpGraphicsVars["DistanceColoringSettings"]["iShouldColorBetweenContours"] = *shouldDisplay;
         }
     }
 }

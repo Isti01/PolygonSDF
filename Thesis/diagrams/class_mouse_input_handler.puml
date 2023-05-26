@@ -1,0 +1,86 @@
+@startuml
+
+scale 2
+
+
+class DragMouseInputHandler {
+    #DragMouseInputHandler()
+    +isDragStarted() : bool {query}
+    +isDragging() : bool {query}
+    +onMouseEvent(const MouseEvent& mouseEvent) : bool
+    +getDragDelta() : float2 {query}
+    +resetInputState() : void
+}
+
+class InsertRemoveVertexInputHandler {
+    #InsertRemoveVertexInputHandler(Editor pEditor, ShapeRenderer pRenderer)
+    -mpEditor : Editor
+    -mpRenderer : ShapeRenderer
+    -mpAggregator : StackPeekingEditorAggregator
+    +onMouseEvent(const MouseEvent& mouseEvent) : bool
+    -removeVertexIfCloseEnough(float2 position) : bool
+    -findIndexToInsert(float2 vertexPosition, size_t closestVertexIndex, const Shape::Vertices& points) : size_t
+    -insertNextToClosest(float2 position) : void
+    +resetInputState() : void
+}
+
+abstract class MouseInputHandler {
+    +{abstract} onMouseEvent(const MouseEvent& mouseEvent) : bool
+    +{abstract} resetInputState() : void
+}
+
+class MoveInputHandler {
+    #MoveInputHandler(MoveStrategy strategy, Editor pEditor, ShapeRenderer pPolygonRenderer)
+    -mpDragHandler : DragMouseInputHandler
+    -mpEditor : Editor
+    -mpMoveStrategy : MoveStrategy
+    -mpActiveShape : Shape
+    -mpShapeRenderer : ShapeRenderer
+    -mpLastCommand : StackCommand
+    -mpPolygonAggregator : StackPeekingEditorAggregator
+    +onMouseEvent(const MouseEvent& mouseEvent) : bool
+    -mSelectedVertexIndex : std::optional<std::pair<size_t, size_t>>
+    -moveSelectedVertex(float2 mousePos) : void
+    +resetInputState() : void
+    -selectClosestVertex(float2 mousePos) : void
+    -updateSelectedPolygon(StackEntry topStackEntry) : void
+}
+
+abstract class MoveStrategy {
+    +{abstract} createCommand(size_t outlineInd, size_t vertexInd, Vertex prevPos, Vertex newPos) : StackCommand
+}
+
+class OutlineMoveStrategy {
+    #OutlineMoveStrategy()
+    +createCommand(size_t outlineInd, size_t vertexInd, Vertex prevPos, Vertex newPos) : StackCommand
+}
+
+class PointUpdateMoveStrategy {
+    #PointUpdateMoveStrategy()
+    +createCommand(size_t outlineInd, size_t vertexInd, Vertex prevPos, Vertex newPos) : StackCommand
+}
+
+abstract class Presenter {
+}
+
+abstract class ShapeRenderer {
+
+}
+
+MouseInputHandler <|-- DragMouseInputHandler
+MouseInputHandler <|- InsertRemoveVertexInputHandler
+MouseInputHandler <|-- MoveInputHandler
+Presenter -|>  MouseInputHandler
+MoveStrategy <|-- OutlineMoveStrategy
+MoveStrategy <|-- PointUpdateMoveStrategy
+
+
+DragMouseInputHandler -o MoveInputHandler
+Presenter o- DragMouseInputHandler
+MoveInputHandler o-- MoveStrategy
+ShapeRenderer -o InsertRemoveVertexInputHandler
+ShapeRenderer --o MoveInputHandler
+ShapeRenderer -o Presenter
+
+
+@enduml

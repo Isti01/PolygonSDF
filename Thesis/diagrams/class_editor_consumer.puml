@@ -48,7 +48,7 @@ EventMenuEditorConsumer --|> EditorConsumer
 PropertyUpdatingEditorConsumer -|> EditorConsumer
 
 PropertyUpdatingEditorConsumer o-- ShapeRenderer
-ShapeRendererProperty -- PropertyUpdatingEditorConsumer
+ShapeRendererProperty .. PropertyUpdatingEditorConsumer
 
 
 @enduml

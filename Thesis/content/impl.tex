@@ -385,3 +385,266 @@ A felületi elemek kirajzolásáért az ImGui könyvtár felel. A könyvtár fun
     \item[EditorGuideMenu] -- Szöveges formában megjeleníti a vizuális szerkesztő eszközeit és azok billentyűparancsait.
 \end{description}
 
+
+\section{Vizuális szerkesztő}
+
+A vizuális szerkesztő tölti be az egyik legfontosabb szerepet az alkalmazásban, mivel itt történik az alakzat megjelenítése. Az eszközök között váltogatva az egérrel módosításokat végezhetünk az alakzaton. Az algoritmus kimenetének a megjelenítésért is ez a réteg felel.
+
+\subsection{A vizuális szerkesztő felépítése}
+
+A vizuális szerkesztő birtokolja a megjelenítésért (\textbf{ShapeRenderer}) és bemenet feldolgozásért felelős objektumokat (\textbf{MouseInputHandler}). A \textbf{Presenter} osztály a felhasználói bemenet alapján módosítja a \textbf{ShapeRenderer}-beli transzformációt, ezzel mozgatva az alakzatot a vásznon. A billentyűparancsok lekezelése viszonylag egyszerű, csak ellenőrizzük, hogy a lenyomott billentyű tartozik-e egy eszközhöz és ha igen aktívvá tesszük, ebből adódóan nem volt szükség plusz osztályok készítésére a parancsok feldolgozásához.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_visual_editor.png}
+    \caption{A vizuális szerkesztő osztálydiagramja}
+    \label{fig:class_visual_editor-1}
+\end{figure}
+
+
+\subsection{A MouseInputHandler osztály}
+
+Kettő absztrakt metódussal rendelkezik, egyik az egérhez fűződő bemenet feldolgozásához (\textit{onMouseEvent}) és a több eseményt felölelő művelet (pl ,,Drag and Drop") megszakításához (\textit{resetInputState}). A felhasználói bemenet nagyon alacsony szintű információként jön be az alkalmazás osztályaiba, ezért viszonylag sok logika szükséges arra, hogy megállapítsuk, hogy milyen eseményről van szó és azt feldolgozzuk.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_mouse_input_handler.png}
+    \caption{A MouseInputHandler osztálydiagramja}
+    \label{fig:class_mouse_input_handler-1}
+\end{figure}
+
+\textbf{Az osztály implementációi/specializációi}
+
+\begin{description}
+    \item[DragMouseInputHandler] Az egérhúzást dolgozza fel, segítségével detektálhatjuk és információt nyerhetünk ki a nyers eseményadatokból. Le tudjuk kérni, hogy épp aktív-e az egérhúzás (a felhasználó nyomva tarja-e az egérgombot) és azt, hogy mennyit mozdult az egér az előző esemény óta. Az állapot visszaállításakor az aktív állapot inaktívvá válik.
+    \item[InsertRemoveVertexInputHandler] Csak kattintásokra reagál. Jobb egérgomb kattintáskor megkeresi az egérhez a legközelebbi csúcspontot egy megadott korláton belül. Ha van ilyen, akkor törli. Bal kattintásra megkeresi a legközelebbi kettő csúcspontot egy poligonon belül és beszúr közéjük egy újat. Onnan tudjuk, hogy az alakzaton belül hova kattintunk, hogy a \textbf{ShapeRenderer}-ben lévő transzformációs mátrix segítségével az egér koordinátája átalakításra kerül az alakzat koordináta-rendszerébe.
+    \item[MoveInputHandler] Egérhúzással mozgatja egy csúcspontot vagy egy poligont a konstruktorban megadott \textbf{MoveStrategy} alapján, a mozgatási stratégia csak a kiadott parancsot szabja meg. A mozgatás úgy történik, hogy a kattintáskor megkeresi a legközelebbi csúcspontot, ami egy megadott korláton belül van. Ha létezik ilyen, akkor az egérgomb elengedéséig mozgatáskor a csúcspont pozícióját az egér pozíciójára állítja be. A helyes pozíciók meghatározásához az egér pozíciója a \textbf{ShapeRenderer} transzformációs mátrixával az alakzat koordináta-rendszerébe kerül átszámításra.
+    \item[Presenter] Az alakzat megjelenítéséért és mozgatásáért felel. A \textbf{DragMouseInputHandler} segítéségével meghatározza azt, hogy mennyit kell mozdítanunk az alakzaton a \textbf{ShapeRenderer}-en keresztül.
+\end{description}
+
+\subsection{A Presenter osztály}
+
+Ez az osztály felel azért, hogy lefordítsa a felhasználói bemenetet transzformációkra az alakzat megjelenítésekor. A szerkesztői nézetben az egérrel mozgathatjuk a vásznon az alakzatot, a háromdimenziós nézetben pedig forgathatjuk. Mindkét nézetben a görgővel nagyíthatjuk és kicsinyíthetjük a megjelenített objektumot. Mivel a bemenet feldolgozása jelentősen eltér a két nézet esetében, ezért két implementációval rendelkezik ez az absztrakt osztály, melynek diagramját a \ref{fig:class_presenter-1}-es ábrán láthatjuk.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_presenter.png}
+    \caption{A Presenter osztálydiagramja}
+    \label{fig:class_presenter-1}
+\end{figure}
+
+\textbf{Az osztály implementációi/specializációi}
+
+\begin{description}
+    \item[ShapePresenter] A szerkesztői nézetbeli megjelenítő irányításáért felel.
+    \item[SdfAlgorithmOutputPresenter] Az algoritmus kimeneteként kapott háromdimenziós objektum megjelenítése történik az osztályon keresztül.
+\end{description}
+
+\subsection{A ShapeRenderer osztály}
+
+Ez az absztrakt osztály függvényeket biztosít egy alakzat kirajzolására egy FrameBufferbe. Az osztály implementációi lehetővé teszik, hogy több ShapeRenderer által nyújtott funkcionalitást (pl körvonal és távolságvizualizáció együttes megjelenítése) összekombináljunk a kompozit tervminta alapján. Ez mind úgy történik, hogy a felhasználó objektum nem tudja azt, hogy akár több \textbf{ShapeRenderer} is együttműködhet a háttérben akár teljesen eltérő rajzolási módszerekkel. Az összes implementáció diagramja a \ref{fig:class_shape_renderer-1}-as ábrán látható.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/class_shape_renderer.png}
+    \caption{A ShapeRenderer osztálydiagramja}
+    \label{fig:class_shape_renderer-1}
+\end{figure}
+
+\textbf{Az osztály implementációi/specializációi}
+
+\begin{description}
+    \item[ProxyShapeRenderer] Az osztály absztrakt, viszont minden metódusa rendelkezik implementációval, amiben a konstruktorban megkapott \textbf{ShapeRenderer} objektum metódusait delegálja. Megkönnyíti olyan implementációk készítését, amik egy meglévő objektumot befolyásolnak.
+    \item[AspectRatioIndependentShapeRenderer] Egy olyan \textbf{ProxyShapeRenderer} implementáció, ami a bejövő transzformációhoz egy ortogonális kamerát ad, ami a rajzolási cél mérete alapján kerül kiszámításra. Ez a lépés nélkül a képernyő oldalarányai változásával torzulna az megjelenő objektum.
+    \item[CompositeShapeRenderer] Lehetővé teszi, hogy több \textbf{ShapeRenderer} objektumot egyetlen objektum alá csoportosítsunk.
+    \item[EmptyShapeRenderer] Üres metódustörzsekkel rendelkező implementáció, a tesztelésben hasznos.
+    \item[FullScreenShapeRenderer] Rajzoláskor egy a teljes képernyőt kitöltő háromszögre rajzol a konstruktorban megkapott shaderrel. A szerkesztőben ez a osztály felel a távolság megjelenítéséért.
+    \item[SdfAlgorithmOutputRenderer] Az algoritmus kimenetének megjelenítéséért felel. Egyetlen absztrakt metódusa van, az alakzathoz tartozó adat feltöltése a GPU memóriába (\textit{uploadShapeData}), mert a csúcsrégiók és az élrégiók esetében máshogy kell ebben a lépésben eljárni.
+    \item[SdfAlgorithmEdgeRegionRenderer] Implementálja az \textbf{SdfAlgorithmOutputRenderer} absztrakt osztályt, a csúcsrégiók adatainak feltöltésével.
+    \item[SdfAlgorithmVertexRegionRenderer] Implementálja az \textbf{SdfAlgorithmOutputRenderer} absztrakt osztályt, a élrégiók adatainak feltöltésével.
+    \item[ShapeOutlineRenderer] Az alakzat körvonalának megjelenítéséért felel. A rajzolás a GPU-n történik.
+\end{description}
+
+\subsection{Az alakzat megjelenítése a szerkesztőben}
+
+A szerkesztői nézet két megjelenítőt tartalmaz, egy \textbf{FullScreenShapeRenderer}-t és egy \textbf{ShapeOutlineRenderer}-t, melyeket egy \textbf{CompositeShapeRenderer} fog össze egy objektumba, amit egy \textbf{AspectRatioIndependentShapeRenderer} csomagol be, hogy a végeredmény ne függjön a képernyő oldalarányától.
+
+A GPU-val az alkalmazás a DirectX12 API segítségével kommunikál a Falcor keretrendszer által nyújtott magasabbszintű osztályokon keresztül. A shadereket Slang-ban kell írni, amire tekinthetünk úgy, mint a HLSL egy kibővített verziója. A nyelv rendkívül jó fejlesztői élményt nyújt, a fordító tisztában van a fájlrendszerrel, ezért használhatjuk az \textit{\#include} makrót fájlok bemásolásához, támogatja a generikus típusokat és még sok más produktivitást növelő funkciót. (todo ref)
+
+A körvonal megjelenítéséhez az textbf{ShapeOutlineRenderer} az alakzat szakaszait primitívként feltölti a GPU-ra és a paraméterként átadott shaderrel kirajzolja, a felhasználó által beállított színben.
+
+A távolság vizualizáció esetében egy háromszöget igazítunk a képernyőre úgy, hogy azt teljesen lefedje és a háromszögben megadott UV koordináták interpolációja után a képernyő bal alsó sarkában legyen a (0,0) pont és a jobb felső sarkában az (1,1), ez az érték képviseli a számításainkban a pont pozícióját, amihez a távolságot ki szeretnénk számolni. Az UV koordináták eltolásával és skálázásával pedig szimulálhatjuk az alakzat eltolását és méretezését a képernyőn.
+
+A fejlesztői nézetben a távolságot a naiv, lassú módszerrel vizualizáljuk, viszont az előnye az, hogy nagyon könnyen párhuzamosítható, ami fontos, ha a GPU-n egy shader formájában szeretnénk futtatni és az algoritmus működik olyan alakzatokra is amiben vannak önmetsző poligonok. Az utóbbit a szakdolgozatban implementált algoritmus nem tudja lekezelni. (todo https://www.shadertoy.com/view/wdBXRW)
+
+A távolság értékét, ami egy lebegőpontos, negatív és pozitív értékeket is felvehető szám átszámoljuk egy színné a képernyőn a \ref{src:distance-visualization}-as kódrészlet segítségével.
+
+\lstset{caption={Távolsági érték átszámítása színértékbe}, label=src:distance-visualization}
+\begin{lstlisting}[language=c]
+	cbuffer DistanceColoringSettings
+	{
+		float3 iPositiveColor;
+		float3 iNegativeColor;
+		float iContourFrequency;
+		float iContourIntensity;
+		bool iDisplayShadows;
+		float iShadowIntensity;
+		bool iDisplayCloserToVertex;
+		bool iShouldDisplayContours;
+		bool iShouldColorBetweenContours;
+	}
+
+	struct DistanceDesc
+	{
+		float distance;
+		bool closerToVertex;
+	};
+
+	float4 signedDistanceToColor(DistanceDesc desc)
+	{
+		float distance = desc.distance;
+		float3 col = (distance > 0.0)
+		? iPositiveColor
+		: iNegativeColor;
+		col *= 1.0 - exp(-iShadowIntensity * abs(distance))
+		* int(iDisplayShadows);
+		float colorBetweenContours = (1 - iContourIntensity)
+		* int(iShouldColorBetweenContours);
+		float colorContour = iContourIntensity
+		* cos(iContourFrequency * distance)
+		* int(iShouldDisplayContours);
+		col *= colorBetweenContours + colorContour;
+		col = lerp(col,
+		float3(1),
+		1 - smoothstep(0, 0.01, abs(distance)));
+		if (desc.closerToVertex && iDisplayCloserToVertex)
+		{
+			col *= .7;
+		}
+		return float4(col, 1);
+	}
+
+\end{lstlisting}
+
+\subsection{Az alakzat háromdimenziós nézete}
+
+A háromdimenziós nézet három levélszintű megjelenítőt tartalmaz, egy \textbf{SdfAlgorithmEdgeRegionRenderer}-t, egy \textbf{SdfAlgorithmVertexRegionRenderer}-t és egy \textbf{ShapeOutlineRenderer}-t, melyeket egy \textbf{CompositeShapeRenderer} fog össze egy objektumba, amit egy \textbf{AspectRatioIndependentShapeRenderer} csomagol be, hogy a végeredmény ne függjön a képernyő oldalarányától.
+
+Annyi különlegesség van a megjelenítésében az algoritmus kimenetének a megjelenítésében, hogy a vertex shaderben a Z koordináta az előjeles távolság abszolút értéke lesz, csúcsrégiókhoz tartozó geometria esetében pedig a pixel shaderben is felülírjuk az interpolált mélységet a távolság abszolút értékével, a csúcsrégiók pixel shaderét (\textit{psMain}) a \ref{src:vertex-region-shader}-es kódrészletben láthatjuk. A \ref{src:edge-region-shader}-ös kódrészletben láthatjuk az élrégiók vertex shaderét (\textit{vsMain}) és pixel shaderét (\textit{psMain}).
+
+\lstset{caption={Csúcsrégiók raszterizálásának vertex és pixel shadere}, label=src:vertex-region-shader}
+\begin{lstlisting}[language=c]
+	#include "DistanceVisualization.slang"
+
+	cbuffer Data
+	{
+		float4x4 iTransform;
+	}
+
+	struct VsIn
+	{
+		float2 regionVertex : RV;
+		float2 vertexPos : POS;
+		float signedDistance : DST;
+	};
+
+	struct VsOut
+	{
+		nointerpolation float2 regionVertex : RV;
+		float2 samplePos : POS;
+		float4 vertexPos : SV_POSITION;
+		float signedDistance : DST;
+	};
+
+	struct PsOut
+	{
+		float4 color : SV_TARGET;
+		float depth : SV_DEPTH;
+	};
+
+	VsOut vsMain(VsIn input)
+	{
+		VsOut vsOut;
+		vsOut.vertexPos = mul(iTransform,
+		float4(input.vertexPos, abs(input.signedDistance), 1));
+		vsOut.signedDistance = input.signedDistance;
+		vsOut.regionVertex = input.regionVertex;
+		vsOut.samplePos = input.vertexPos;
+		return vsOut;
+	}
+
+	PsOut psMain(VsOut vsOut, uint triangleIndex : SV_PrimitiveID)
+	: SV_TARGET
+	{
+		DistanceDesc desc;
+		float dst = distance(vsOut.regionVertex, vsOut.samplePos);
+		desc.distance = dst * sign(vsOut.signedDistance);
+		desc.closerToVertex = false;
+
+		PsOut psOut;
+		psOut.color = signedDistanceToColor(desc);
+		psOut.depth = dst;
+		return psOut;
+	}
+\end{lstlisting}
+
+
+\lstset{caption={Élrégiók raszterizálásának vertex és pixel shadere}, label=src:edge-region-shader}
+\begin{lstlisting}[language=c]
+	#include "DistanceVisualization.slang"
+
+	cbuffer Data
+	{
+		float4x4 iTransform;
+	}
+
+	struct VsIn
+	{
+		float2 vertexPos : POS;
+		float signedDistance : DST;
+	};
+
+	struct VsOut
+	{
+		float4 vertexPos : SV_POSITION;
+		float signedDistance : DST;
+	};
+
+	struct PsOut
+	{
+		float4 color : SV_TARGET;
+		float depth : SV_DEPTH;
+	};
+
+	VsOut vsMain(VsIn input)
+	{
+		VsOut vsOut;
+		vsOut.vertexPos = mul(iTransform,
+		float4(input.vertexPos, abs(input.signedDistance), 1));
+		vsOut.signedDistance = input.signedDistance;
+		return vsOut;
+	}
+
+	PsOut psMain(VsOut vsOut, uint triangleIndex : SV_PrimitiveID)
+	: SV_TARGET
+	{
+		DistanceDesc desc;
+		desc.closerToVertex = true;
+		desc.distance = vsOut.signedDistance;
+
+		PsOut psOut;
+		psOut.color = signedDistanceToColor(desc);
+		psOut.depth = vsOut.signedDistance;
+		return psOut;
+	}
+\end{lstlisting}
+
+
+
+\section{Perzisztencia}
+
+\section{Tesztelés}
+
+\subsection{Az algoritmus tesztelése}
+
+\subsection{A szerkesztő tesztelése}

@@ -1,0 +1,156 @@
+@startuml
+
+scale 2
+
+
+class AspectRatioIndependentShapeRenderer {
+    #AspectRatioIndependentShapeRenderer(ShapeRendererr pShapeRenderer)
+    -mAspectRatio : float
+    +setFbo(const Fbor& pFbo) : void
+    #setPropertyImpl(const ShapeRendererProperty& rendererProperty) : void
+    #transformImpl() : void
+    -updateAspectRatio() : void
+}
+
+class CompositeShapeRenderer {
+    #CompositeShapeRenderer(std::vector<ShapeRendererr> renderers)
+    +getTransform() : float4x4 {query}
+    -mRenderers : std::vector<ShapeRendererr>
+    #init() : void
+    #renderImpl(RenderContext* pRenderContext) : void
+    +setFbo(const Fbor& pFbo) : void
+    #setPropertyImpl(const ShapeRendererProperty& rendererProperty) : void
+    +setShape(const Shaper& pPolygon) : void
+    +transformImpl() : void
+    #uploadShapeData() : void
+}
+
+class EmptyShapeRenderer {
+    #EmptyShapeRenderer()
+    +getTransform() : float4x4 {query}
+    #init() : void
+    #renderImpl(RenderContext* pRenderContext) : void
+    +setFbo(const Fbor& pFbo) : void
+    #setPropertyImpl(const ShapeRendererProperty& rendererProperty) : void
+    #transformImpl() : void
+    #uploadShapeData() : void
+}
+
+class FullScreenShapeRenderer {
+    #FullScreenShapeRenderer(GraphicsStater pGraphicsState)
+    -mpFullscreenTriangle : FullScreenTriangler
+    -mpGraphicsState : GraphicsStater
+    -mpGraphicsVars : GraphicsVarsr
+    -mEnabled : bool
+    +getTransform() : float4x4 {query}
+    #init() : void
+    #renderImpl(RenderContext* pRenderContext) : void
+    +setFbo(const Fbor& pFbo) : void
+    #setPropertyImpl(const ShapeRendererProperty& rendererProperty) : void
+    +transformImpl() : void
+    #uploadShapeData() : void
+}
+
+class ProxyShapeRenderer {
+    #ProxyShapeRenderer(ShapeRendererr pPolygonRenderer)
+    #mpRenderer : ShapeRendererr
+    +getTransform() : float4x4 {query}
+    #init() : void
+    #renderImpl(RenderContext* pRenderContext) : void
+    +setFbo(const Fbor& pFbo) : void
+    +setShape(const Shaper& pPolygon) : void
+    #transformImpl() : void
+    #uploadShapeData() : void
+}
+
+class SdfAlgorithmEdgeRegionRenderer {
+    #SdfAlgorithmEdgeRegionRenderer(GraphicsStater pGraphicsState)
+    #uploadShapeData() : void
+}
+
+abstract class SdfAlgorithmOutputRenderer {
+    #SdfAlgorithmOutputRenderer(GraphicsStater pGraphicsState)
+    #mpGraphicsState : GraphicsStater
+    #mpProgramVars : GraphicsVarsr
+    #mpRenderObject : RenderObjectr
+    +getTransform() : float4x4 {query}
+    #mPointsToCutAround : size_t
+    #init() : void
+    #renderImpl(RenderContext* pRenderContext) : void
+    +setFbo(const Fbor& pFbo) : void
+    #setPropertyImpl(const ShapeRendererProperty& rendererProperty) : void
+    +setShape(const Shaper& pShape) : void
+    #transformImpl() : void
+}
+
+class SdfAlgorithmVertexRegionRenderer {
+    #SdfAlgorithmVertexRegionRenderer(GraphicsStater pGraphicsState)
+    #uploadShapeData() : void
+}
+
+class ShapeOutlineRenderer {
+    #ShapeOutlineRenderer(GraphicsStater pGraphicsState)
+    -mpGraphicsState : GraphicsStater
+    -mpProgramVars : GraphicsVarsr
+    -mpRenderObject : RenderObjectr
+    -mEnabled : bool
+    +getTransform() : float4x4 {query}
+    #init() : void
+    #renderImpl(RenderContext* pRenderContext) : void
+    +setFbo(const Fbor& pFbo) : void
+    #setPropertyImpl(const ShapeRendererProperty& rendererProperty) : void
+    #transformImpl() : void
+    #uploadShapeData() : void
+}
+
+abstract class ShapeRenderer {
+    +~ShapeRenderer()
+    #mpShape : Shaper
+    -mInitialized : bool
+    -mIsMarkedDirty : bool
+    +{abstract} getTransform() : float4x4 {query}
+    #mTransform : float4x4
+    -ensureInitialized() : void
+    #{abstract} init() : void
+    +markDirty() : void
+    +render(RenderContext* pRenderContext) : void
+    #{abstract} renderImpl(RenderContext* pRenderContext) : void
+    +{abstract} setFbo(const Fbor& pFbo) : void
+    +setProperty(const ShapeRendererProperty& rendererProperty) : void
+    #{abstract} setPropertyImpl(const ShapeRendererProperty& rendererProperty) : void
+    +setShape(const Shaper& pShape) : void
+    +transform(const float4x4& transform) : void
+    #{abstract} transformImpl() : void
+    #{abstract} uploadShapeData() : void
+}
+
+class ShapeRendererFactory {
+    -ShapeRendererFactory()
+    +{static} getAlgorithmOutputRenderer() : ShapeRendererr
+    +{static} getEditorShapeRenderer() : ShapeRendererr
+}
+
+
+class ShapeRendererProperty {
+    +key : std::string
+    +value : std::variant<float3, size_t, float, bool>
+}
+
+
+ProxyShapeRenderer <|-- AspectRatioIndependentShapeRenderer
+SdfAlgorithmOutputRenderer <|-- SdfAlgorithmEdgeRegionRenderer
+SdfAlgorithmVertexRegionRenderer --|> SdfAlgorithmOutputRenderer
+CompositeShapeRenderer --|> ShapeRenderer
+EmptyShapeRenderer -|> ShapeRenderer
+ShapeRenderer <|-- FullScreenShapeRenderer
+ShapeRenderer <|-- ProxyShapeRenderer
+ShapeRenderer <|- SdfAlgorithmOutputRenderer
+ShapeRenderer <|-- ShapeOutlineRenderer
+
+CompositeShapeRenderer --o ShapeRenderer
+ShapeRenderer o-- ProxyShapeRenderer
+
+ShapeRendererFactory .. ShapeRenderer
+ShapeRendererProperty .. ShapeRenderer
+
+@enduml

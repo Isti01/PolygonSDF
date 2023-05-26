@@ -1,7 +1,5 @@
 @startuml
 
-scale 2
-
 
 class EditorAggregationResult {
     #EditorAggregationResult()
@@ -41,7 +39,7 @@ StackSizeEditorAggregationResult --|> EditorAggregationResult
 EditorAggregator <|-- StackPeekingEditorAggregator
 EditorAggregator <|-- StackSizeEditorAggregator
 
-EditorAggregationResult -- EditorAggregator
+EditorAggregationResult .. EditorAggregator
 
 
 @enduml

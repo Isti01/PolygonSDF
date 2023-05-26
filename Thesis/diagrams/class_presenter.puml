@@ -1,0 +1,57 @@
+@startuml
+
+scale 2
+
+
+class DragMouseInputHandler {
+    #DragMouseInputHandler()
+    +isDragStarted() : bool {query}
+    +isDragging() : bool {query}
+    +onMouseEvent(const MouseEvent& mouseEvent) : bool
+    +getDragDelta() : float2 {query}
+    +resetInputState() : void
+}
+
+abstract class Presenter {
+    +Presenter(Editor pEditor, ShapeRenderer outputRenderer)
+    #mpDragHandler : DragMouseInputHandler
+    #mpEditor : Editor
+    #mpShape : Shape
+    #mpRenderer : ShapeRenderer
+    #mpShapePeekingAggregator : StackPeekingEditorAggregator
+    #getMappedScale() : float {query}
+    #mScale : float
+    #{static} mScaleSpeed : static constexpr float
+    +{abstract} render(RenderContext* pRenderContext, const Fbo& pTargetFbo) : void
+    +resetInputState() : void
+    +resetTransform() : void
+    #{abstract} transformPresenter() : void
+    #updateShape() : void
+}
+
+class SdfAlgorithmOutputPresenter {
+    #SdfAlgorithmOutputPresenter(Editor pEditor, ShapeRenderer outputRenderer)
+    +onMouseEvent(const MouseEvent& mouseEvent) : bool
+    +render(RenderContext* pRenderContext, const Fbo& pTargetFbo) : void
+    #transformPresenter() : void
+}
+
+class ShapePresenter {
+    #ShapePresenter(Editor pEditor, ShapeRenderer pRenderer)
+    +onMouseEvent(const MouseEvent& mouseEvent) : bool
+    +render(RenderContext* pRenderContext, const Fbo& pTargetFbo) : void
+    #transformPresenter() : void
+}
+
+abstract class ShapeRenderer {
+}
+
+
+Presenter <|-- SdfAlgorithmOutputPresenter
+Presenter <|-- ShapePresenter
+
+DragMouseInputHandler -o Presenter
+Presenter o- ShapeRenderer
+
+
+@enduml

@@ -35,7 +35,7 @@ class UndoEditorTransformation {
 
 EditorTransformation <|-- ClearHistoryEditorTransformation
 EditorTransformation <|-- UndoEditorTransformation
-EditorStack - EditorTransformation
+EditorStack . EditorTransformation
 
 
 @enduml

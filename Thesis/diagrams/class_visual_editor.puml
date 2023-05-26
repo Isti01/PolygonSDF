@@ -1,0 +1,83 @@
+@startuml
+
+scale 2
+
+
+class Editor {
+}
+
+abstract class MouseInputHandler {
+    +{abstract} onMouseEvent(const MouseEvent& mouseEvent) : bool
+    +{abstract} resetInputState() : void
+}
+
+abstract class Presenter {
+    +Presenter(Editor pEditor, ShapeRenderer outputRenderer)
+    #mpDragHandler : DragMouseInputHandler
+    #mpEditor : Editor
+    #mpShape : Shape
+    #mpRenderer : ShapeRenderer
+    #mpShapePeekingAggregator : StackPeekingEditorAggregator
+    #getMappedScale() : float {query}
+    #mScale : float
+    +{abstract} render(RenderContext* pRenderContext, const Fbo& pTargetFbo) : void
+    +resetInputState() : void
+    +resetTransform() : void
+    #{abstract} transformPresenter() : void
+    #updateShape() : void
+}
+
+abstract class ShapeRenderer {
+    #mpShape : Shape
+    -mInitialized : bool
+    -mIsMarkedDirty : bool
+    +{abstract} getTransform() : float4x4 {query}
+    #mTransform : float4x4
+    -ensureInitialized() : void
+    #{abstract} init() : void
+    +markDirty() : void
+    +render(RenderContext* pRenderContext) : void
+    #{abstract} renderImpl(RenderContext* pRenderContext) : void
+    +{abstract} setFbo(const Fbo& pFbo) : void
+    +setProperty(const ShapeRendererProperty& rendererProperty) : void
+    #{abstract} setPropertyImpl(const ShapeRendererProperty& rendererProperty) : void
+    +setShape(const Shape& pShape) : void
+    +transform(const float4x4& transform) : void
+    #{abstract} transformImpl() : void
+    #{abstract} uploadShapeData() : void
+}
+
+class VisualEditor {
+    #VisualEditor(Editor pEditor)
+    -mpEditor : Editor
+    -mpVertexInserter : InsertRemoveVertexInputHandler
+    -mpActiveInputHandler : MouseInputHandler
+    -mpOutlineMover : MoveInputHandler
+    -mpVertexMover : MoveInputHandler
+    -mpAlgorithmRendererUpdatingConsumer : PropertyUpdatingEditorConsumer
+    -mpEditorRendererUpdatingConsumer : PropertyUpdatingEditorConsumer
+    -mpAlgorithmOutputPresenter : SdfAlgorithmOutputPresenter
+    -mpShapePresenter : ShapePresenter
+    -mpAlgorithmOutputRenderer : ShapeRenderer
+    -mpEditorShapeRenderer : ShapeRenderer
+    -mpStackPeekingAggregator : StackPeekingEditorAggregator
+    +onKeyEvent(const KeyboardEvent& keyEvent) : bool
+    +onMouseEvent(const MouseEvent& mouseEvent) : bool
+    -hideGui() : void
+    +render(RenderContext* pRenderContext, const Fbo& pTargetFbo) : void
+    -setActiveInputHandler(const MouseInputHandler& pInputHandler) : void
+    -showGui() : void
+}
+
+
+MouseInputHandler <|-- Presenter
+
+Editor --o Presenter
+ShapeRenderer -o Presenter
+VisualEditor o-- Editor
+VisualEditor o-- MouseInputHandler
+VisualEditor o-- ShapeRenderer
+VisualEditor o-- Presenter
+
+
+@enduml

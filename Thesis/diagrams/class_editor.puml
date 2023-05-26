@@ -106,10 +106,10 @@ StackEntry o-- Shape
 StackEntry o-- StackCommand
 VisualEditor o-- Editor
 
-EditorAggregator -- EditorAggregationResult
-EditorAggregator -- Editor
-EditorTransformation -- Editor
-EditorEvent -- Editor
-Editor -- EditorCommand
+EditorAggregator .. EditorAggregationResult
+EditorAggregator .. Editor
+EditorTransformation .. Editor
+EditorEvent .. Editor
+Editor .. EditorCommand
 
 @enduml

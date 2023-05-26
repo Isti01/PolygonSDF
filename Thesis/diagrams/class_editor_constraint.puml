@@ -35,7 +35,7 @@ EditorConstraint <|- DeleteOutlineEditorConstraint
 EditorConstraint <|-- DeleteVertexEditorConstraint
 SdfPlaneAlgorithmConstraint --|> EditorConstraint
 
-EditorCommand -- EditorConstraint
-EditorStack - EditorConstraint
+EditorCommand .. EditorConstraint
+EditorStack . EditorConstraint
 
 @enduml

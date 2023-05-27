@@ -696,14 +696,14 @@ Az algoritmus kimenetét le lehet menteni a fájlrendszerbe JSON formátumban. A
 
 \section{Tesztelés}
 
-A szoftver világában a tesztelés az, amivel időtállóvá tehetünk egy kódbázist, mert segít felismerni, ha egy változtatással valami meglévő funckiónalitást módosítottunk. Mivel a tesztekkel a kód viselkedését is validáljuk, ezért remek eszköz a kód megismerésére is, az elvárt kimenetek értelmezésével, bemutatásra kerül az is, hogy egy osztályt hogy kell használni, így példaként is kezelhető.
+A szoftver világában a tesztelés az, amivel időtállóvá tehetünk egy kódbázist, mert segít felismerni, ha egy változtatással valami meglévő funkcionalitást módosítottunk. Mivel a tesztekkel a kód viselkedését is validáljuk, ezért remek eszköz a kód megismerésére is, az elvárt kimenetek értelmezésével, bemutatásra kerül az is, hogy egy osztályt hogy kell használni, így példaként is kezelhető.
 Az alkalmazásban az algoritmus és a szerkesztő került tesztelésre.
 
 \subsection{Az algoritmus tesztelése}
 
 Az algoritmus tesztelése szinten történt, függvények szintjéről kiindulva egészen egy teljes alakzaton való végrehajtásig. Minden tesztesethez bemeneti fájlok tartoztak, melyekre végrehajtásra került az adott számítás, majd az elvárt kimenetet tartalmazó fájlokkal kerültek összehasonlításra. Ha a kimenet és a tartalom egyezik, akkor a teszt sikeres.
 
-\textbf{Tesztelt funckionalitás}
+\textbf{Tesztelt funkcionalitás}
 
 \begin{itemize}
     \item Csúcs - csúcs vágás -- Régióhatárok kerültek ellenőrzésre
@@ -718,7 +718,7 @@ Az algoritmus tesztelése szinten történt, függvények szintjéről kiindulva
 
 A szerkesztő osztály teljes funkcionalitása tesztelésre került és minden az abban használt interfészek összes implementációja. A tesztek egy friss szerkesztő objektummal lépnek interakcióba egy adott funkcionalitás teszteléséhez.
 
-\textbf{Tesztelt funckionalitás}
+\textbf{Tesztelt funkcionalitás}
 
 \begin{itemize}
     \item \textbf{Editor} és \textbf{EditorStack} osztályok -- Állapotátmenet kezelése
@@ -749,7 +749,7 @@ A szerkesztő osztály teljes funkcionalitása tesztelésre került és minden a
     \begin{itemize}
         \item \textbf{GuiStateEditorConsumer} -- Állapot váltása \textbf{ShowGuiPublishedEvent} üzenet és \textbf{HideGuiPublishedEvent} üzenet küldésekor.
         \item \textbf{PropertyUpdatingEditorConsumer} -- Tulajdonság frissítése egy \textbf{ShapeRendererben}, ha \textbf{RendererPropertyPublishedEvent} típusú üzenet kerül kiváltásra.
-        \item \textbf{VisualEditorStateChangeEditorConsumer} -- Számontartott állapot frissítése, \textbf{VisualEditorModeChangedPublishedEvent} üzenet küldésekor.
+        \item \textbf{VisualEditorStateChangeEditorConsumer} -- Számon tartott állapot frissítése, \textbf{VisualEditorModeChangedPublishedEvent} üzenet küldésekor.
     \end{itemize}
     \item \textbf{EditorEvent} implementációk
     \begin{itemize}

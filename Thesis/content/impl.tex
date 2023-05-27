@@ -648,7 +648,7 @@ Minden adat szerializációja JSON formátumba történik, melynek számos előn
 
 \subsection{Alakzat szerializációja}
 
-Az alakzatok menthetőek és betölthetőek. Olvasáskor az alkalmazásban nem csak séma validáció történik, hanem ellenőrzésre kerül az is, hogy a beolvasott alakzat helyes-e, rendelkezik-e legalább egy poligonnal és minden poligon legalább három csúccsal. Az alakzat JSON sémája a \ref{src:shape-json-schema}-os kódrészletben látható.
+Az alakzatok menthetőek és betölthetőek. Olvasáskor az alkalmazásban nem csak séma validáció történik, hanem ellenőrzésre kerül az is, hogy a beolvasott alakzat helyes-e, rendelkezik-e legalább egy poligonnal és minden poligon rendelkezik-e legalább három csúccsal. Az alakzat JSON sémája a \ref{src:shape-json-schema}-os kódrészletben látható.
 
 \lstset{caption={Alakzat JSON sémája}, label=src:shape-json-schema}
 \begin{lstlisting}[language=C]
@@ -666,14 +666,14 @@ Az alakzatok menthetőek és betölthetőek. Olvasáskor az alkalmazásban nem c
 
 
 \subsection{Algoritmus kimenetének szerializációja}
-Az algoritmus kimenetét le lehet menteni a fájlrendszerbe JSON formátumban. Az algoritmus kimenetében az alakzat összes csúcspontja és éle is benne van, mivel annak raszterizálásban arra az információra is szükségünk van. Az algoritmus kimenetének JSON sémája a \ref{src:algorithm-output-json-schema}-es kódrészletben látható.
+Az algoritmus kimenetét le lehet menteni a fájlrendszerbe JSON formátumban. Az algoritmus kimenetében az alakzat összes csúcspontja és éle is benne van, mivel annak raszterizáláshoz arra az információra is szükségünk van. Az algoritmus kimenetének JSON sémája a \ref{src:algorithm-output-json-schema}-es kódrészletben látható.
 
 \lstset{caption={Algoritmus kimenetének JSON sémája}, label=src:algorithm-output-json-schema}
 \begin{lstlisting}[language=C]
 	type AlgorithmOutput = {
 		edgeRegions: EdgeRegion[],
 		vertexRegions: VertexRegion[]
-	};
+	}
 
 	type EdgeRegion = {
 		bounds: Vertex[],
@@ -691,12 +691,76 @@ Az algoritmus kimenetét le lehet menteni a fájlrendszerbe JSON formátumban. A
 		x: number,
 		y: number
 	}
-
 \end{lstlisting}
 
 
 \section{Tesztelés}
 
+A szoftver világában a tesztelés az, amivel időtállóvá tehetünk egy kódbázist, mert segít felismerni, ha egy változtatással valami meglévő funckiónalitást módosítottunk. Mivel a tesztekkel a kód viselkedését is validáljuk, ezért remek eszköz a kód megismerésére is, az elvárt kimenetek értelmezésével, bemutatásra kerül az is, hogy egy osztályt hogy kell használni, így példaként is kezelhető.
+Az alkalmazásban az algoritmus és a szerkesztő került tesztelésre.
+
 \subsection{Az algoritmus tesztelése}
 
+Az algoritmus tesztelése szinten történt, függvények szintjéről kiindulva egészen egy teljes alakzaton való végrehajtásig. Minden tesztesethez bemeneti fájlok tartoztak, melyekre végrehajtásra került az adott számítás, majd az elvárt kimenetet tartalmazó fájlokkal kerültek összehasonlításra. Ha a kimenet és a tartalom egyezik, akkor a teszt sikeres.
+
+\textbf{Tesztelt funkcionalitás}
+
+\begin{itemize}
+    \item Csúcs - csúcs vágás -- Régióhatárok kerültek ellenőrzésre
+    \item Csúcs - él vágás
+    \item Él - csúcs vágás
+    \item Él - él vágás
+    \item Az algoritmus végrehajtása teljes alakzatra
+\end{itemize}
+
+
 \subsection{A szerkesztő tesztelése}
+
+A szerkesztő osztály teljes funkcionalitása tesztelésre került és minden az abban használt interfészek összes implementációja. A tesztek egy friss szerkesztő objektummal lépnek interakcióba egy adott funkcionalitás teszteléséhez.
+
+\textbf{Tesztelt funkcionalitás}
+
+\begin{itemize}
+    \item \textbf{Editor} és \textbf{EditorStack} osztályok -- Állapotátmenet kezelése
+    \item \textbf{EditorAggregator} implementációk
+    \begin{itemize}
+        \item \textbf{StackPeekingEditorAggregator} -- Kiértékelés üres és egy általános veremre.
+        \item \textbf{StackSizeEditorAggregator} -- Kiértékelés üres és egy általános veremre.
+    \end{itemize}
+    \item \textbf{EditorCommand} implementációk
+    \begin{itemize}
+        \item \textbf{AddNewOutlineStackCommand} -- Poligon hozzáadása egy alakzathoz.
+        \item \textbf{AddVertexStackCommand} -- Csúcspont hozzáadása egy poligonhoz.
+        \item \textbf{CalculateSdfPlaneAlgorithmCommand} -- Átmegy a teszt, ha az algoritmus kiszámításra kerül.
+        \item \textbf{DeleteOutlineStackCommand} -- Poligon törlése egy alakzatból.
+        \item \textbf{DeleteVertexStackCommand} -- Csúcs törlése egy poligonból.
+        \item \textbf{InsertVertexStackCommand} -- Csúcs beszúrása egy poligonba, egy adott pozícióra.
+        \item \textbf{MergeShapeWithOffsetStackCommand} -- Két alakzat egyesítése.
+        \item \textbf{SetShapeStackCommand} -- Alakzat lecserélése.
+        \item \textbf{UpdateVertexStackCommand} -- Megadott poligonban, egy adott csúcs értékének módosítása.
+    \end{itemize}
+    \item \textbf{EditorConstraint} implementációk
+    \begin{itemize}
+        \item \textbf{DeleteOutlineEditorConstraint} -- Poligon törlésének letiltása, ha a művelet helytelen állapotba helyezi az alakzatot.
+        \item \textbf{DeleteVertexEditorConstraint} -- Csúcs törlésének letiltása, ha a művelet helytelen állapotba helyezi a poligont.
+        \item \textbf{SdfPlaneAlgorithmConstraint} -- Algoritmus végrehajtásának letiltása, ha vannak egymást metsző élek az alakzatban.
+    \end{itemize}
+    \item \textbf{EditorConsumer} implementációk
+    \begin{itemize}
+        \item \textbf{GuiStateEditorConsumer} -- Állapot váltása \textbf{ShowGuiPublishedEvent} üzenet és \textbf{HideGuiPublishedEvent} üzenet küldésekor.
+        \item \textbf{PropertyUpdatingEditorConsumer} -- Tulajdonság frissítése egy \textbf{ShapeRendererben}, ha \textbf{RendererPropertyPublishedEvent} típusú üzenet kerül kiváltásra.
+        \item \textbf{VisualEditorStateChangeEditorConsumer} -- Számon tartott állapot frissítése, \textbf{VisualEditorModeChangedPublishedEvent} üzenet küldésekor.
+    \end{itemize}
+    \item \textbf{EditorEvent} implementációk
+    \begin{itemize}
+        \item \textbf{ConstraintViolationEvent} -- Kiváltódás sérülő megszorítás esetén
+        \item \textbf{NewStackCommandEvent} -- Kiváltódás sikeres átmenet esetén..
+        \item \textbf{StackTransformedEvent} -- Kiváltódás szerkesztői transzformáció végbemenetekor.
+        \item \textbf{DeleteOutlineStackCommand} -- Kiváltódás feldolgozhatatlan \textbf{EditorCommand} implementáció esetében.
+    \end{itemize}
+    \item \textbf{EditorTransformation} implementációk
+    \begin{itemize}
+        \item \textbf{ClearHistoryEditorTransformation} -- Szerkesztői előzmények törlése.
+        \item \textbf{TestUndoEditorTransformation} -- Visszalépés.
+    \end{itemize}
+\end{itemize}

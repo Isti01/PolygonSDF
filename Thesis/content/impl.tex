@@ -703,7 +703,7 @@ Az alkalmazásban az algoritmus és a szerkesztő került tesztelésre.
 
 Az algoritmus tesztelése szinten történt, függvények szintjéről kiindulva egészen egy teljes alakzaton való végrehajtásig. Minden tesztesethez bemeneti fájlok tartoztak, melyekre végrehajtásra került az adott számítás, majd az elvárt kimenetet tartalmazó fájlokkal kerültek összehasonlításra. Ha a kimenet és a tartalom egyezik, akkor a teszt sikeres.
 
-\textbf{Tesztelt funkcionalitás}
+\textbf{Tesztelt funckionalitás}
 
 \begin{itemize}
     \item Csúcs - csúcs vágás -- Régióhatárok kerültek ellenőrzésre
@@ -718,7 +718,7 @@ Az algoritmus tesztelése szinten történt, függvények szintjéről kiindulva
 
 A szerkesztő osztály teljes funkcionalitása tesztelésre került és minden az abban használt interfészek összes implementációja. A tesztek egy friss szerkesztő objektummal lépnek interakcióba egy adott funkcionalitás teszteléséhez.
 
-\textbf{Tesztelt funkcionalitás}
+\textbf{Tesztelt funckionalitás}
 
 \begin{itemize}
     \item \textbf{Editor} és \textbf{EditorStack} osztályok -- Állapotátmenet kezelése
@@ -749,7 +749,7 @@ A szerkesztő osztály teljes funkcionalitása tesztelésre került és minden a
     \begin{itemize}
         \item \textbf{GuiStateEditorConsumer} -- Állapot váltása \textbf{ShowGuiPublishedEvent} üzenet és \textbf{HideGuiPublishedEvent} üzenet küldésekor.
         \item \textbf{PropertyUpdatingEditorConsumer} -- Tulajdonság frissítése egy \textbf{ShapeRendererben}, ha \textbf{RendererPropertyPublishedEvent} típusú üzenet kerül kiváltásra.
-        \item \textbf{VisualEditorStateChangeEditorConsumer} -- Számon tartott állapot frissítése, \textbf{VisualEditorModeChangedPublishedEvent} üzenet küldésekor.
+        \item \textbf{VisualEditorStateChangeEditorConsumer} -- Számontartott állapot frissítése, \textbf{VisualEditorModeChangedPublishedEvent} üzenet küldésekor.
     \end{itemize}
     \item \textbf{EditorEvent} implementációk
     \begin{itemize}
@@ -764,3 +764,44 @@ A szerkesztő osztály teljes funkcionalitása tesztelésre került és minden a
         \item \textbf{TestUndoEditorTransformation} -- Visszalépés.
     \end{itemize}
 \end{itemize}
+
+\subsection{Teljesítmény tesztek}
+
+A grafikailag intenzív alkalmazásokban a teljesítmény kritikus szerepet játszik, mivel a legtöbb esetben valós időben kell képeket előállítani a felhasználónak, amire csak kicsivel több mint egy tucatnyi milliszekundum áll rendelkezésre. Igaz, az algoritmus nem értékelődik ki minden képkocka kirajzolásánál, sőt, a program futása alatt nagyon kevés alkalommal, viszont a felhasználói élmény érdekében fontos, hogy minél gyorsabban eredményt kapjunk.
+
+Az algoritmust több méretű alakzattal, több csúcsrégió parabola felosztási szinttel is teszteltem, minden konfigurációt száz iteráción keresztül. A szakdolgozat készítésekor rendelkezésre állt egy MatLabos implementációja is az algoritmusnak, a teljesítmény tesztekben az ott mért időket használom majd alapvonalként.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ | m{0.2\linewidth} | m{0.2\linewidth} | m{0.2\linewidth} | m{0.2\linewidth} | }
+        \hline
+        \textbf{Csúcspontok} & \textbf{Felosztások}  & \textbf{Saját idő}  & \textbf{Referencia idő} \\
+        \hline \hline
+        228 & 3 & 11ms & 2326ms \\
+        \hline
+        228 & 10 & 31ms & 2675ms \\
+        \hline
+        228 & 25 & 88ms & 2631ms \\
+        \hline
+        228 & 50 & 216ms & 1468ms \\
+        \hline
+        431 & 3 & 35ms & 8134ms \\
+        \hline
+        431 & 10 & 108ms & 8440ms \\
+        \hline
+        431 & 25 & 301ms & 9244ms \\
+        \hline
+        431 & 50 & 742ms & 4789ms \\
+        \hline
+        2001 & 3 & 601ms & 199485ms \\
+        \hline
+        2001 & 10 & 2237ms & 205704ms \\
+        \hline
+        2001 & 25 & 6781ms & 230432ms \\
+        \hline
+        2001 & 50 & 16370ms & 133285ms \\
+        \hline
+    \end{tabular}
+    \caption{A teljesítménytesztek eredményei}
+    \label{tab:benchmarks}
+\end{table}

@@ -640,8 +640,60 @@ Annyi különlegesség van a megjelenítésében az algoritmus kimenetének a me
 \end{lstlisting}
 
 
-
 \section{Perzisztencia}
+
+Az alakzatok írhatóak és olvashatóak a fájlrendszerbből. Amennyiben a szerkesztő jelenlegi alakzatára végre van hajtva az algoritmus, az is lementhető.
+
+Minden adat szerializációja JSON formátumba történik, melynek számos előnye van, például széleskörűen elterjedt és könnyű olvashatóság az ember számára.
+
+\subsection{Alakzat szerializációja}
+
+Az alakzatok menthetőek és betölthetőek. Olvasáskor az alkalmazásban nem csak séma validáció történik, hanem ellenőrzésre kerül az is, hogy a beolvasott alakzat helyes-e, rendelkezik-e legalább egy poligonnal és minden poligon legalább három csúccsal. Az alakzat JSON sémája a \ref{src:shape-json-schema}-os kódrészletben látható.
+
+\lstset{caption={Alakzat JSON sémája}, label=src:shape-json-schema}
+\begin{lstlisting}[language=C]
+	type Shape = {
+		outlines: Outline[]
+	}
+
+	type Outline = Point[]
+
+	type Point = {
+		x: number,
+		y: number
+	}
+\end{lstlisting}
+
+
+\subsection{Algoritmus kimenetének szerializációja}
+Az algoritmus kimenetét le lehet menteni a fájlrendszerbe JSON formátumban. Az algoritmus kimenetében az alakzat összes csúcspontja és éle is benne van, mivel annak raszterizálásban arra az információra is szükségünk van. Az algoritmus kimenetének JSON sémája a \ref{src:algorithm-output-json-schema}-es kódrészletben látható.
+
+\lstset{caption={Algoritmus kimenetének JSON sémája}, label=src:algorithm-output-json-schema}
+\begin{lstlisting}[language=C]
+	type AlgorithmOutput = {
+		edgeRegions: EdgeRegion[],
+		vertexRegions: VertexRegion[]
+	};
+
+	type EdgeRegion = {
+		bounds: Vertex[],
+		start: Vertex,
+		end: Vertex
+	}
+
+	type VertexRegion = {
+		bounds: Vertex[],
+		vertex: Vertex,
+		cornerSign: number
+	}
+
+	type Vertex = {
+		x: number,
+		y: number
+	}
+
+\end{lstlisting}
+
 
 \section{Tesztelés}
 

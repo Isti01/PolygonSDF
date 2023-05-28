@@ -451,7 +451,7 @@ A szerkesztői nézet két megjelenítőt tartalmaz, egy \textbf{FullScreenShape
 
 A GPU-val az alkalmazás a DirectX12 API segítségével kommunikál a Falcor keretrendszer \cite{falcor} által nyújtott magasabb szintű osztályokon keresztül. A shadereket Slang-ban \cite{slang} kell írni, amire tekinthetünk úgy, mint a HLSL egy kibővített verziója. A nyelv rendkívül jó fejlesztői élményt nyújt, a fordító tisztában van a fájlrendszerrel, ezért használhatjuk az \textit{\#include} makrót fájlok bemásolásához, támogatja a generikus típusokat és még sok más produktivitást növelő funkciót.
 
-A körvonal megjelenítéséhez az textbf{ShapeOutlineRenderer} az alakzat szakaszait primitívként feltölti a GPU-ra és a paraméterként átadott shaderrel kirajzolja, a felhasználó által beállított színben.
+A körvonal megjelenítéséhez a \textbf{ShapeOutlineRenderer} az alakzat szakaszait primitívként feltölti a GPU-ra és a paraméterként átadott shaderrel kirajzolja, a felhasználó által beállított színben.
 
 A távolság vizualizáció esetében egy háromszöget igazítunk a képernyőre úgy, hogy azt teljesen lefedje és a háromszögben megadott UV koordináták interpolációja után a képernyő bal alsó sarkában legyen a (0,0) pont és a jobb felső sarkában az (1,1), ez az érték képviseli a számításainkban a pont pozícióját, amihez a távolságot ki szeretnénk számolni. Az UV koordináták eltolásával és skálázásával pedig szimulálhatjuk az alakzat eltolását és méretezését a képernyőn.
 
@@ -473,13 +473,13 @@ A távolság értékét, ami egy lebegőpontos, negatív és pozitív értékeke
 		bool iShouldDisplayContours;
 		bool iShouldColorBetweenContours;
 	}
-	
+
 	struct DistanceDesc
 	{
 		float distance;
 		bool closerToVertex;
 	};
-	
+
 	float4 signedDistanceToColor(DistanceDesc desc)
 	{
 		float distance = desc.distance;
@@ -503,31 +503,31 @@ A távolság értékét, ami egy lebegőpontos, negatív és pozitív értékeke
 		}
 		return float4(col, 1);
 	}
-	
+
 \end{lstlisting}
 
 \subsection{Az alakzat háromdimenziós nézete}
 
 A háromdimenziós nézet három levélszintű megjelenítőt tartalmaz, egy \textbf{SdfAlgorithmEdgeRegionRenderer}-t, egy \textbf{SdfAlgorithmVertexRegionRenderer}-t és egy \textbf{ShapeOutlineRenderer}-t, melyeket egy \textbf{CompositeShapeRenderer} fog össze egy objektumba, amit egy \textbf{AspectRatioIndependentShapeRenderer} csomagol be, hogy a végeredmény ne függjön a képernyő oldalarányától.
 
-Annyi különlegesség van a megjelenítésében az algoritmus kimenetének a megjelenítésében, hogy a vertex shaderben \cite{vertexshader} a Z koordináta az előjeles távolság abszolút értéke lesz, csúcsrégiókhoz tartozó geometria esetében pedig a pixel shaderben is felülírjuk az interpolált mélységet a távolság abszolút értékével, a csúcsrégiók pixel shaderét \cite{pixelshader} (\textit{psMain}) a \ref{src:vertex-region-shader}-es kódrészletben láthatjuk. A \ref{src:edge-region-shader}-ös kódrészletben láthatjuk az élrégiók vertex shaderét (\textit{vsMain}) és pixel shaderét (\textit{psMain}).
+Annyi különlegesség van az algoritmus kimenetének a megjelenítésében, hogy a vertex shaderben \cite{vertexshader} a Z koordináta az előjeles távolság abszolút értéke lesz, csúcsrégiókhoz tartozó geometria esetében pedig a pixel shaderben is felülírjuk az interpolált mélységet a távolság abszolút értékével, a csúcsrégiók pixel shaderét \cite{pixelshader} (\textit{psMain}) a \ref{src:vertex-region-shader}-es kódrészletben láthatjuk. A \ref{src:edge-region-shader}-ös kódrészletben láthatjuk az élrégiók vertex shaderét (\textit{vsMain}) és pixel shaderét (\textit{psMain}).
 
 \lstset{caption={Csúcsrégiók raszterizálásának vertex és pixel shadere}, label=src:vertex-region-shader}
 \begin{lstlisting}[language=c]
 	#include "DistanceVisualization.slang"
-	
+
 	cbuffer Data
 	{
 		float4x4 iTransform;
 	}
-	
+
 	struct VsIn
 	{
 		float2 regionVertex : RV;
 		float2 vertexPos : POS;
 		float signedDistance : DST;
 	};
-	
+
 	struct VsOut
 	{
 		nointerpolation float2 regionVertex : RV;
@@ -535,13 +535,13 @@ Annyi különlegesség van a megjelenítésében az algoritmus kimenetének a me
 		float4 vertexPos : SV_POSITION;
 		float signedDistance : DST;
 	};
-	
+
 	struct PsOut
 	{
 		float4 color : SV_TARGET;
 		float depth : SV_DEPTH;
 	};
-	
+
 	VsOut vsMain(VsIn input)
 	{
 		VsOut vsOut;
@@ -552,7 +552,7 @@ Annyi különlegesség van a megjelenítésében az algoritmus kimenetének a me
 		vsOut.samplePos = input.vertexPos;
 		return vsOut;
 	}
-	
+
 	PsOut psMain(VsOut vsOut, uint triangleIndex : SV_PrimitiveID)
 	: SV_TARGET
 	{
@@ -560,7 +560,7 @@ Annyi különlegesség van a megjelenítésében az algoritmus kimenetének a me
 		float dst = distance(vsOut.regionVertex, vsOut.samplePos);
 		desc.distance = dst * sign(vsOut.signedDistance);
 		desc.closerToVertex = false;
-		
+
 		PsOut psOut;
 		psOut.color = signedDistanceToColor(desc);
 		psOut.depth = dst;
@@ -572,30 +572,30 @@ Annyi különlegesség van a megjelenítésében az algoritmus kimenetének a me
 \lstset{caption={Élrégiók raszterizálásának vertex és pixel shadere}, label=src:edge-region-shader}
 \begin{lstlisting}[language=c]
 	#include "DistanceVisualization.slang"
-	
+
 	cbuffer Data
 	{
 		float4x4 iTransform;
 	}
-	
+
 	struct VsIn
 	{
 		float2 vertexPos : POS;
 		float signedDistance : DST;
 	};
-	
+
 	struct VsOut
 	{
 		float4 vertexPos : SV_POSITION;
 		float signedDistance : DST;
 	};
-	
+
 	struct PsOut
 	{
 		float4 color : SV_TARGET;
 		float depth : SV_DEPTH;
 	};
-	
+
 	VsOut vsMain(VsIn input)
 	{
 		VsOut vsOut;
@@ -604,14 +604,14 @@ Annyi különlegesség van a megjelenítésében az algoritmus kimenetének a me
 		vsOut.signedDistance = input.signedDistance;
 		return vsOut;
 	}
-	
+
 	PsOut psMain(VsOut vsOut, uint triangleIndex : SV_PrimitiveID)
 	: SV_TARGET
 	{
 		DistanceDesc desc;
 		desc.closerToVertex = true;
 		desc.distance = vsOut.signedDistance;
-		
+
 		PsOut psOut;
 		psOut.color = signedDistanceToColor(desc);
 		psOut.depth = vsOut.signedDistance;
@@ -624,7 +624,7 @@ Annyi különlegesség van a megjelenítésében az algoritmus kimenetének a me
 
 Az alakzatok írhatóak és olvashatóak a fájlrendszerbből. Amennyiben a szerkesztő jelenlegi alakzatára végre van hajtva az algoritmus, az is lementhető.
 
-Minden adat szerializációja JSON formátumba történik, melynek számos előnye van, például széleskörűen elterjedt és könnyű olvashatóság az ember számára.
+Minden adat szerializációja JSON formátumba \cite{json} történik, melynek számos előnye van, például széleskörűen elterjedt és könnyű olvashatóság az ember számára.
 
 \subsection{Alakzat szerializációja}
 
@@ -635,9 +635,9 @@ Az alakzatok menthetőek és betölthetőek. Olvasáskor az alkalmazásban nem c
 	type Shape = {
 		outlines: Outline[]
 	}
-	
+
 	type Outline = Point[]
-	
+
 	type Point = {
 		x: number,
 		y: number
@@ -646,7 +646,7 @@ Az alakzatok menthetőek és betölthetőek. Olvasáskor az alkalmazásban nem c
 
 
 \subsection{Algoritmus kimenetének szerializációja}
-Az algoritmus kimenetét le lehet menteni a fájlrendszerbe JSON formátumban \cite{json}. Az algoritmus kimenetében az alakzat összes csúcspontja és éle is benne van, mivel annak raszterizáláshoz arra az információra is szükségünk van. Az algoritmus kimenetének JSON sémája a \ref{src:algorithm-output-json-schema}-es kódrészletben látható.
+Az algoritmus kimenetét le lehet menteni a fájlrendszerbe JSON formátumban. Az algoritmus kimenetében az alakzat összes csúcspontja és éle is benne van, mivel annak raszterizáláshoz arra az információra is szükségünk van. Az algoritmus kimenetének JSON sémája a \ref{src:algorithm-output-json-schema}-es kódrészletben látható.
 
 \lstset{caption={Algoritmus kimenetének JSON sémája}, label=src:algorithm-output-json-schema}
 \begin{lstlisting}[language=C]
@@ -654,19 +654,19 @@ Az algoritmus kimenetét le lehet menteni a fájlrendszerbe JSON formátumban \c
 		edgeRegions: EdgeRegion[],
 		vertexRegions: VertexRegion[]
 	}
-	
+
 	type EdgeRegion = {
 		bounds: Vertex[],
 		start: Vertex,
 		end: Vertex
 	}
-	
+
 	type VertexRegion = {
 		bounds: Vertex[],
 		vertex: Vertex,
 		cornerSign: number
 	}
-	
+
 	type Vertex = {
 		x: number,
 		y: number
@@ -733,8 +733,8 @@ A szerkesztő osztály teljes funkcionalitása tesztelésre került és minden a
 	\end{itemize}
 	\item \textbf{EditorEvent} implementációk
 	\begin{itemize}
-		\item \textbf{ConstraintViolationEvent} -- Kiváltódás sérülő megszorítás esetén
-		\item \textbf{NewStackCommandEvent} -- Kiváltódás sikeres átmenet esetén..
+		\item \textbf{ConstraintViolationEvent} -- Kiváltódás sérülő megszorítás esetén.
+		\item \textbf{NewStackCommandEvent} -- Kiváltódás sikeres átmenet esetén.
 		\item \textbf{StackTransformedEvent} -- Kiváltódás szerkesztői transzformáció végbemenetekor.
 		\item \textbf{DeleteOutlineStackCommand} -- Kiváltódás feldolgozhatatlan \textbf{EditorCommand} implementáció esetében.
 	\end{itemize}

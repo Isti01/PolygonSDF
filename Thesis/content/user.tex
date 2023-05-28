@@ -8,7 +8,7 @@ Az alkalmazásnak három fő célja van:
 \begin{enumerate}
     \item Biztosítani egy szerkesztőt, amivel bármilyen 2D-s sokszög elkészíthető.
     \item Lehetőséget adni arra, hogy az elkészített alakzatra lefuttassuk az algoritmust.
-    \item Személyreszabható és látványos módon vizualizáni a kiértékelt távolságfüggvényt
+    \item Személyre szabható és látványos módon vizualizáni a kiértékelt távolságfüggvényt
 \end{enumerate}
 
 
@@ -151,7 +151,7 @@ A \ref{fig:editor_actions-1}-es ábrán látható menüben általános szerkeszt
     \item[Undo] \textit{Visszalépés} -- Az utolsó lépés visszavonása, amennyiben lehetséges.
     \item[Clear history] \textit{Előzmények törlése} -- A szerkesztői előzmények törlése, a köztes állapotokra fenntartott memória felszabadításához.
     \item[Run Plane Slicing Algorithm] \textit{A vágásokat végző algoritmus futtatása} -- Ha az alakzat megfelel az algoritmus előfeltételének, tehát nincsenek egymást metsző vagy egymásba eső élek, akkor az alkalmazás végrehajtja. Ellenkező esetben egy felugró ablak jelzi, hogy a művelet sikertelen.
-    \item[Add Shape With Offset] \textit{Alazkat hozzáfűzése eltolással} -- A fájlrendszerből tölt be egy sokszöget a meglévőhöz hozzáfűzve azt, a megadott X és Y koordinátákkal eltolva. Amennyiben a megadott JSON file a megfelelő formátumban van, ellenkező esetben egy felugró ablakkal értesül a felhasználó, hogy a művelet sikertelen.
+    \item[Add Shape With Offset] \textit{Alakzat hozzáfűzése eltolással} -- A fájlrendszerből tölt be egy sokszöget a meglévőhöz hozzáfűzve azt, a megadott X és Y koordinátákkal eltolva. Amennyiben a megadott JSON fájl a megfelelő formátumban van, ellenkező esetben egy felugró ablakkal értesül a felhasználó, hogy a művelet sikertelen.
     \item[Save shape] \textit{Alakzat mentése} -- A szerkesztett alakzat jelenlegi állapotát a fájlrendszerbe menti JSON formátumban.
     \item[Save Algorithm Output] \textit{Algoritmuskimenet mentése} -- Az alakzathoz tartozó algoritmuskimenetet lementi a fájlrendszerbe menti JSON formátumban, ha az algoritmus végre lett hajtva, ellenkező esetben nem kerül megjelenítésre a gomb.
 \end{description}
@@ -203,7 +203,7 @@ A szerkesztés során számos esemény kerül kiváltásra különböző forrás
 \end{figure}
 
 
-\textbf{Elérhető funckionalitás}
+\textbf{Elérhető funkcionalitás}
 
 \begin{description}
     \item[Clear History] \textit{Napló törlése} Az összes bejegyzés törlése a naplóból.
@@ -225,7 +225,7 @@ A \ref{fig:user_guide-1}-ös ábrán látható felületen megtekinthetjük az ö
 
 A vizuális szerkesztő lehetőséget ad arra, hogy szabad kézzel szerkesszük a sokszögünket. Billentyűzet segítségével válthatunk módok (eszközök) között, majd az egérrel interakcióba léphetünk az alakzattal vagy a vászonnal. A vizuális szerkesztőn keresztül válthatunk a háromdimenziós nézetre is.
 
-\textbf{Elérhető funckionalitás}
+\textbf{Elérhető funkcionalitás}
 
 \begin{description}
     \item[Csúcspontok mozgatása (M billentyű)] Csúcspontok ,,Drag and drop" mozgatása. Egérgomb lenyomásakor a program kiválasztja a legközelebbi csúcspontot egy megadott távolságkorláton belül és mozgatás hatására frissíti a pozícióját.

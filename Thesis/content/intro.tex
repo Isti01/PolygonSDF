@@ -11,7 +11,7 @@ A szoftverben a szerkesztői felület segítségével elkészített poligonokon 
 
 A szerkesztőben két módon léphetünk interakcióba a szerkesztett sokszöggel: beviteli mezők és gombok segítségével, valamint billentyűkombinációkkal és egérkattintásokkal. Ezekkel a funkciókkal a felhasználó akár a csúcspontok szintjén is módosíthatja a poligont. Lehetséges a meglévő sokszögeket is betölteni a fájlrendszerből, így előre elkészített, magasabb szintű építőblokkokkal is dolgozhatunk.
 
-A szerkesztés közben valós időben megjeleníthetjük a távolságfüggvényt. A program számos beállítást kínál a felhasználó számára, amelyekkel testreszabhatjuk a megjelenítést. Lehetőség van a színezés, árnyékolás és kontúrvonalak kinézetének meghatározására. A távolság vizualizációját ki is kapcsolhatjuk, mivel nagy csúcspontszámú sokszögek esetén erőforrásigényes lehet. Ilyenkor csak a körvonal kerül megjelenítésre.
+A szerkesztés közben valós időben megjeleníthetjük a távolságfüggvényt. A program számos beállítást kínál a felhasználó számára, amelyekkel testre szabhatjuk a megjelenítést. Lehetőség van a színezés, árnyékolás és kontúrvonalak kinézetének meghatározására. A távolság vizualizációját ki is kapcsolhatjuk, mivel nagy csúcspontszámú sokszögek esetén erőforrásigényes lehet. Ilyenkor csak a körvonal kerül megjelenítésre.
 
 Az algoritmus a síkot régiókra osztja fel, amelyeken belül triviálisan meghatározható a távolság. Egy kétdimenziós sokszöghöz egy háromdimenziós alakzatot rendel, ahol a mélységi komponens az előjeles távolság abszolút értékéből származik. Az értékelés során ez a tulajdonság rendkívül fontos, mivel a régiók gyakran átfedésben vannak egymással, és a helyes távolságértéket a Z-puffer algoritmus segítségével kapjuk meg a rajzolás során.
 

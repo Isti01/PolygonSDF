@@ -57,7 +57,7 @@ Nyissuk meg Visual Studio-ban a \textit{Falcor/build/windows-vs2022-d3d12/Falcor
 \section{Algoritmus bemutatása}
 
 \begin{definition}
-	Egy ponthalmaz egy elemének a Voronoj-cellája\cite{voronoj} a sík egy olyan régiója, amiben minden pont a ponthalmazból a cellához tartozó ponthoz van legközelebb.
+	Egy ponthalmaz egy elemének a Voronoj-cellája~\cite{voronoj} a sík egy olyan régiója, amiben minden pont a ponthalmazból a cellához tartozó ponthoz van legközelebb.
 \end{definition}
 
 \begin{definition}
@@ -89,7 +89,7 @@ Nyissuk meg Visual Studio-ban a \textit{Falcor/build/windows-vs2022-d3d12/Falcor
 	\end{algorithmic}
 \end{algorithm}
 
-A szakdolgozat keretein belül egy olyan algoritmus\cite{sdfalgorithmpaper} került implementálásra, ami egy kétdimenziós sokszöget feloszt Voronoj-cellákra, a magas szintű lépései az \ref{alg:algorithm}.~algoritmus pszeudokódban láthatóak. Az algoritmus egy \textit{N} csúcsú alakzat esetén \textit{N} él- és \textit{N} csúcs régióra osztja fel a síkot, amivel azt teljesen lefedi. Mivel a megadott alakzat több egymásban elhelyezkedő poligonból is állhatnak, ezért az algoritmus futása előtt a pontok átrendezésre kerülnek, mert a megadási sorrend alapján kerül megállapításra a távolság előjele. A régiók véges csúcsszámú konvex poligonokkal vannak ábrázolva. Egy régiót úgy határozunk meg, hogy a kezdetben végtelenül nagy korlátokat vágásokkal az adott régióhoz tartozó Voronoj-cella korlátaihoz igazítjuk.
+A szakdolgozat keretein belül egy olyan algoritmus~\cite{sdfalgorithmpaper} került implementálásra, ami egy kétdimenziós sokszöget feloszt Voronoj-cellákra, a magas szintű lépései az \ref{alg:algorithm}.~algoritmus pszeudokódban láthatóak. Az algoritmus egy \textit{N} csúcsú alakzat esetén \textit{N} él- és \textit{N} csúcs régióra osztja fel a síkot, amivel azt teljesen lefedi. Mivel a megadott alakzat több egymásban elhelyezkedő poligonból is állhatnak, ezért az algoritmus futása előtt a pontok átrendezésre kerülnek, mert a megadási sorrend alapján kerül megállapításra a távolság előjele. A régiók véges csúcsszámú konvex poligonokkal vannak ábrázolva. Egy régiót úgy határozunk meg, hogy a kezdetben végtelenül nagy korlátokat vágásokkal az adott régióhoz tartozó Voronoj-cella korlátaihoz igazítjuk.
 
 \begin{figure}[H]
 	\centering
@@ -116,7 +116,7 @@ A régiók vágása több lépésen keresztül történik, először felhasznál
 	\label{fig:initial_segment_regions-1}
 \end{figure}
 
-Az algoritmus következő lépéseként minden régiót elvágunk az összes többi régióhoz tartozó csúccsal és szakasszal. Eredményül a sokszög Voronoj-diagramja egy közelítését kapjuk, ahol a régiók között némi átfedés van. Ezt az átfedést a raszterizáció\cite{rasterization} során a Z-puffer\cite{depthtest} algoritmus oldja fel és jeleníti meg a megfelelő régiót.
+Az algoritmus következő lépéseként minden régiót elvágunk az összes többi régióhoz tartozó csúccsal és szakasszal. Eredményül a sokszög Voronoj-diagramja egy közelítését kapjuk, ahol a régiók között némi átfedés van. Ezt az átfedést a raszterizáció~\cite{rasterization} során a Z-puffer~\cite{depthtest} algoritmus oldja fel és jeleníti meg a megfelelő régiót.
 
 \begin{figure}[H]
 	\centering
@@ -346,7 +346,7 @@ Az alkalmazásban \textbf{EditorConsumer} típusú objektumokat iratkoztathatunk
 
 Az alkalmazás felhasználói felülete szöveg, gombok és beviteli mezők csoportjaiból áll szerepkör szerint. Ami közös bennünk, hogy mindegyik adatforrása a szerkesztő magja, amihez példányosításkor referenciát kapnak, majd a referencián keresztül iratkoznak fel az eseményekre, parancsokat visznek be, esetleg küldenek üzeneteket más komponenseknek.
 
-A felületi elemek kirajzolásáért az ImGui könyvtár\cite{imgui} felel. A könyvtár funkcionalitása a Falcor keretrendszeren érhető el, Falcor-specifikus osztályokba becsomagolva.
+A felületi elemek kirajzolásáért az ImGui könyvtár~\cite{imgui} felel. A könyvtár funkcionalitása a Falcor keretrendszeren érhető el, Falcor-specifikus osztályokba becsomagolva.
 
 
 \begin{figure}[H]
@@ -450,15 +450,15 @@ Ez az absztrakt osztály függvényeket biztosít egy alakzat kirajzolására eg
 
 A szerkesztői nézet két megjelenítőt tartalmaz, egy \textbf{FullScreenShapeRenderer}-t és egy \textbf{ShapeOutlineRenderer}-t, melyeket egy \textbf{CompositeShapeRenderer} fog össze egy objektumba, amit egy \textbf{AspectRatioIndependentShapeRenderer} csomagol be, hogy a végeredmény ne függjön a képernyő oldalarányától.
 
-A GPU-val az alkalmazás a DirectX12 API segítségével kommunikál a Falcor keretrendszer\cite{falcor} által nyújtott magasabb szintű osztályokon keresztül. A shadereket Slang-ban\cite{slang} kell írni, amire tekinthetünk úgy, mint a HLSL egy kibővített verziója. A nyelv rendkívül jó fejlesztői élményt nyújt, a fordító tisztában van a fájlrendszerrel, ezért használhatjuk az \textit{\#include} makrót fájlok bemásolásához, támogatja a generikus típusokat és még sok más produktivitást növelő funkciót.
+A GPU-val az alkalmazás a DirectX12 API segítségével kommunikál a Falcor keretrendszer~\cite{falcor} által nyújtott magasabb szintű osztályokon keresztül. A shadereket Slang-ban~\cite{slang} kell írni, amire tekinthetünk úgy, mint a HLSL egy kibővített verziója. A nyelv rendkívül jó fejlesztői élményt nyújt, a fordító tisztában van a fájlrendszerrel, ezért használhatjuk az \textit{\#include} makrót fájlok bemásolásához, támogatja a generikus típusokat és még sok más produktivitást növelő funkciót.
 
 A körvonal megjelenítéséhez a \textbf{ShapeOutlineRenderer} az alakzat szakaszait primitívként feltölti a GPU-ra és a paraméterként átadott shaderrel kirajzolja, a felhasználó által beállított színben.
 
 A távolság vizualizáció esetében egy háromszöget igazítunk a képernyőre úgy, hogy azt teljesen lefedje és a háromszögben megadott UV koordináták interpolációja után a képernyő bal alsó sarkában legyen a (0,0) pont és a jobb felső sarkában az (1,1), ez az érték képviseli a számításainkban a pont pozícióját, amihez a távolságot ki szeretnénk számolni. Az UV koordináták eltolásával és skálázásával pedig szimulálhatjuk az alakzat eltolását és méretezését a képernyőn.
 
-A fejlesztői nézetben a távolságot a naiv\cite{inigoquilez2d}, lassú módszerrel vizualizáljuk, viszont az előnye az, hogy nagyon könnyen párhuzamosítható, ami fontos, ha a GPU-n egy shader formájában szeretnénk futtatni és az algoritmus működik olyan alakzatokra is amiben vannak önmetsző poligonok. Az utóbbit a szakdolgozatban implementált algoritmus nem tudja lekezelni.
+A fejlesztői nézetben a távolságot a naiv~\cite{inigoquilez2d}, lassú módszerrel vizualizáljuk, viszont az előnye az, hogy nagyon könnyen párhuzamosítható, ami fontos, ha a GPU-n egy shader formájában szeretnénk futtatni és az algoritmus működik olyan alakzatokra is amiben vannak önmetsző poligonok. Az utóbbit a szakdolgozatban implementált algoritmus nem tudja lekezelni.
 
-A távolság értékét, ami egy lebegőpontos, negatív és pozitív értékeket is felvehető szám átszámoljuk egy színné a képernyőn a~\ref{src:distance-visualization}-as kódrészlet segítségével\cite{inigoquilezshader}.
+A távolság értékét, ami egy lebegőpontos, negatív és pozitív értékeket is felvehető szám átszámoljuk egy színné a képernyőn a~\ref{src:distance-visualization}-as kódrészlet segítségével~\cite{inigoquilezshader}.
 
 \lstset{caption={Távolsági érték átszámítása színértékbe}, label=src:distance-visualization}
 \begin{lstlisting}[language=c]
@@ -511,7 +511,7 @@ A távolság értékét, ami egy lebegőpontos, negatív és pozitív értékeke
 
 A háromdimenziós nézet három levélszintű megjelenítőt tartalmaz, egy \textbf{SdfAlgorithmEdgeRegionRenderer}-t, egy \textbf{SdfAlgorithmVertexRegionRenderer}-t és egy \textbf{ShapeOutlineRenderer}-t, melyeket egy \textbf{CompositeShapeRenderer} fog össze egy objektumba, amit egy \textbf{AspectRatioIndependentShapeRenderer} csomagol be, hogy a végeredmény ne függjön a képernyő oldalarányától.
 
-Annyi különlegesség van az algoritmus kimenetének a megjelenítésében, hogy a vertex shaderben\cite{vertexshader} a Z koordináta az előjeles távolság abszolút értéke lesz, csúcsrégiókhoz tartozó geometria esetében pedig a pixel shaderben is felülírjuk az interpolált mélységet a távolság abszolút értékével, a csúcsrégiók pixel shaderét\cite{pixelshader} (\textit{psMain}) a~\ref{src:vertex-region-shader}-es kódrészletben láthatjuk. A~\ref{src:edge-region-shader}-ös kódrészletben láthatjuk az élrégiók vertex shaderét (\textit{vsMain}) és pixel shaderét (\textit{psMain}).
+Annyi különlegesség van az algoritmus kimenetének a megjelenítésében, hogy a vertex shaderben~\cite{vertexshader} a Z koordináta az előjeles távolság abszolút értéke lesz, csúcsrégiókhoz tartozó geometria esetében pedig a pixel shaderben is felülírjuk az interpolált mélységet a távolság abszolút értékével, a csúcsrégiók pixel shaderét~\cite{pixelshader} (\textit{psMain}) a~\ref{src:vertex-region-shader}-es kódrészletben láthatjuk. A~\ref{src:edge-region-shader}-ös kódrészletben láthatjuk az élrégiók vertex shaderét (\textit{vsMain}) és pixel shaderét (\textit{psMain}).
 
 \lstset{caption={Csúcsrégiók raszterizálásának vertex és pixel shadere}, label=src:vertex-region-shader}
 \begin{lstlisting}[language=c]

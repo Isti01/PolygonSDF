@@ -31,12 +31,12 @@ Az alkalmazásnak három fő célja van:
 
 \section{Telepítés és futtatás}
 
-A program nem rendelkezik telepítővel, a mellékelt állomány kicsomagolása után a \textit{,,PolygonSDF.exe"} futtatásával azonnal használható. A mellékelt fájlok és mappák (pl. \textit{Falcor.dll}, \textit{Shaders/}, \textit{Data/}, ...) szükségesek az alkalmazás megfelelő működéséhez.
+A program nem rendelkezik telepítővel, a mellékelt állomány kicsomagolása után a \textit{,,PolygonSDFApplication.exe"} futtatásával azonnal használható. A mellékelt fájlok és mappák (pl. \textit{Falcor.dll}, \textit{Shaders/}, \textit{Data/}, ...) szükségesek az alkalmazás megfelelő működéséhez. A program elérési útvonalában csak ASCII karakterek lehetnek.
 
 
 \section{Szerkesztői nézet}
 
-Az alkalmazás indítása után a felhasználót a szerkesztői nézet fogadja, amelyben egy előre meghatározott alakzat jelenik meg. Egy alakzat több poligonból áll, minden poligont annak csúcspontjaival adjuk meg, ahol a megadási sorrend határozza meg azt, hogy hogy kötjük őket össze. A távolság előjelét az határozza meg, hogy az adott pont páros vagy páratlan számú sokszögön belül van-e, ami páros esetén pozitív és páratlan esetén negatív távolságot eredményez.
+Az alkalmazás indítása után a felhasználót a szerkesztői nézet fogadja, amelyben egy előre meghatározott alakzat jelenik meg. Egy alakzat több poligonból áll, minden poligont annak csúcspontjaival adjuk meg, ahol a megadási sorrend határozza meg azt, hogy hogy kötjük őket össze. A távolság előjelét az határozza meg, hogy az adott pont páros vagy páratlan számú sokszögön belül van-e, ami páros esetén pozitív és páratlan esetén negatív távolságot eredményez, erre egy példa a \ref{fig:editor-1}-es ábrán látható, ahol a sárgás szín jelöli a pozitív, kékes pedig a negatív értékeket.
 
 A szerkesztőben lehetőségünk van poligonok felvételére, mozgatására és törlésére, valamint csúcspontjaik módosítására. Ezen műveleteket kétféle módon is elvégezhetjük, a vizuális szerkesztővel, a billentyűzet és egérmozdulatok segítségével, vagy a GUI-n elhelyezett beviteli mezőkkel és gombokkal. Amikor elkészültünk a szerkesztéssel, az algoritmust is ezen felületen keresztül futtathatjuk le.
 

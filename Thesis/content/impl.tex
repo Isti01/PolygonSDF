@@ -15,7 +15,7 @@
 
 \subsection{Környezet előkészítése}
 
-A program egy Falcor alkalmazás, ezért mindenek előtt szükségünk van a keretrendszer forráskódjára. A fejlesztéshez az 5.2-es verzióra van szükségünk, ezért át kell váltanunk az 5.2-es címkével ellátott állapotra.
+A program egy Falcor~\cite{falcor} alkalmazás, ezért mindenek előtt szükségünk van a keretrendszer forráskódjára. A fejlesztéshez az 5.2-es verzióra van szükségünk, ezért át kell váltanunk az 5.2-es címkével ellátott állapotra.
 
 \lstset{caption={Falcor 5.2 forráskód letöltése git segítségével}, label=src:falcor-clone}
 \begin{lstlisting}[language=bash]
@@ -31,12 +31,12 @@ Az alkalmazás a keretrendszer részeként egyszerűen lefordítható a keretren
 	add_subdirectory(PolygonSDF)
 \end{lstlisting}
 
-Miután kész a mappastruktúra a fejlesztéshez, a build rendszer segítségével le kell generálnunk a Visual Studio projektfájlokat. Szerencsére a keretrendszer készítői gondoskodtak arról, hogy ez a lépés a lehet legegyszerűbb legyen, a \textit{Falcor/setup\_vs2022.bat} batch fájl végrehajtásával minden előkészítésre kerül.
+Miután kész a mappastruktúra a fejlesztéshez, a build rendszer segítségével le kell generálnunk a Visual Studio projektfájlokat. Szerencsére a keretrendszer készítői gondoskodtak arról, hogy ez a lépés a lehet legegyszerűbb legyen, a \textit{Falcor/setup\_vs2022.bat} batch fájl végrehajtásával minden előkészítésre kerül. A forráskódot tartalmazó mappaszerkezet nevében csak ASCII karakterek lehetnek.
 
 
 \subsection{Az alkalmazás projektjei}
 
-Nyissuk meg Visual Studio-ban a \textit{Falcor/build/windows-vs2022-d3d12/Falcor.sln} fájlt! A szakdolgozat négy projektből áll, melyeket a \textit{Solution Explorer > [Project] > Set as Startup Project} beállítása után az indítás gombbal fordíthatunk:
+Nyissuk meg Visual Studio-ban a \textit{Falcor/build/windows-vs2022-d3d12/Falcor.sln} fájlt. A szakdolgozat négy projektből áll, melyeket a \textit{Solution Explorer > [Project] > Set as Startup Project} beállítása után az indítás gombbal fordíthatunk:
 
 \begin{figure}[H]
 	\centering
@@ -46,7 +46,8 @@ Nyissuk meg Visual Studio-ban a \textit{Falcor/build/windows-vs2022-d3d12/Falcor
 \end{figure}
 
 \begin{description}
-	\item[PolygonSDF] Tartalmazza algoritmus implementációt és a szerkesztői osztályokat. Ez a projekt nem futtatható, mert egy könyvtár a fordítási folyamat eredménye.
+    \item[Falcor] A keretrendszer, melyre az alkalmazás épül. A Falcor szolgáltatja az alkalmazásban használt könyvtárakat, shader compilert, segédosztályokat a GPU-val való kommunikációhoz, grafikai kontextust és az ablak kezelését is.
+    \item[PolygonSDF] Tartalmazza algoritmus implementációt és a szerkesztői osztályokat. Ez a projekt nem futtatható, mert egy könyvtár a fordítási folyamat eredménye.
 	\item[PolygonSDFApplication] A szerkesztői osztályokat egy alkalmazásba csomagolja, itt történik azon objektumok példányosítása, melyek az alkalmazás teljes élettartamán keresztül memóriában maradnak, mint például a központi szerkesztő objektum és a felhasználói felületei. Ez a réteg  kapja meg a felhasználói bemenetet és adja tovább a szerkesztő felé.
 	\item[PolygonSDFTest] Az algoritmus és szerkesztő tesztelésére szánt projekt.
 	\item[PolygonSDFBenchmark] Az algoritmus teljesítményének mérésére szánt projekt.
@@ -56,14 +57,12 @@ Nyissuk meg Visual Studio-ban a \textit{Falcor/build/windows-vs2022-d3d12/Falcor
 \section{Algoritmus bemutatása}
 
 \begin{definition}
-	Egy ponthalmaz egy elemének a Voronoj-cellája \cite{voronoj} a sík egy olyan régiója, amiben minden pont a ponthalmazból a cellához tartozó ponthoz van legközelebb.
+	Egy ponthalmaz egy elemének a Voronoj-cellája\cite{voronoj} a sík egy olyan régiója, amiben minden pont a ponthalmazból a cellához tartozó ponthoz van legközelebb.
 \end{definition}
 
 \begin{definition}
 	A Voronoj-diagram a sík egy olyan felosztása amiben egy ponthalmaz minden eleméhez egy Voronoj-cellát rendelünk.
 \end{definition}
-
-A szakdolgozat keretein belül egy olyan algoritmus \cite{sdfalgorithmpaper} került implementálásra, ami egy kétdimenziós sokszöget feloszt Voronoj-cellákra, a magas szintű lépései az \ref{alg:algorithm} algoritmus pszeudokódban láthatóak. Az algoritmus egy \textit{N} csúcsú alakzat esetén \textit{N} él- és \textit{N} csúcs régióra osztja fel a síkot, amivel azt teljesen lefedi. Mivel a megadott alakzat több egymásban elhelyezkedő poligonból is állhatnak, ezért az algoritmus futása előtt a pontok átrendezésre kerülnek, mert a megadási sorrend alapján kerül megállapításra a távolság előjele. A régiók véges csúcsszámú konvex poligonokkal vannak ábrázolva. Egy régiót úgy határozunk meg, hogy a kezdetben végtelenül nagy korlátokat vágásokkal az adott régióhoz tartozó Voronoj-cella korlátaihoz igazítjuk.
 
 \begin{algorithm}[H]
 	\caption{A vágásokat végző algoritmus pszeudokódja}
@@ -90,6 +89,8 @@ A szakdolgozat keretein belül egy olyan algoritmus \cite{sdfalgorithmpaper} ker
 	\end{algorithmic}
 \end{algorithm}
 
+A szakdolgozat keretein belül egy olyan algoritmus\cite{sdfalgorithmpaper} került implementálásra, ami egy kétdimenziós sokszöget feloszt Voronoj-cellákra, a magas szintű lépései az \ref{alg:algorithm}.~algoritmus pszeudokódban láthatóak. Az algoritmus egy \textit{N} csúcsú alakzat esetén \textit{N} él- és \textit{N} csúcs régióra osztja fel a síkot, amivel azt teljesen lefedi. Mivel a megadott alakzat több egymásban elhelyezkedő poligonból is állhatnak, ezért az algoritmus futása előtt a pontok átrendezésre kerülnek, mert a megadási sorrend alapján kerül megállapításra a távolság előjele. A régiók véges csúcsszámú konvex poligonokkal vannak ábrázolva. Egy régiót úgy határozunk meg, hogy a kezdetben végtelenül nagy korlátokat vágásokkal az adott régióhoz tartozó Voronoj-cella korlátaihoz igazítjuk.
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{images/class_algorithm.png}
@@ -104,18 +105,18 @@ A régiók vágása több lépésen keresztül történik, először felhasznál
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.6\linewidth]{images/initial_vertex_regions.png}
-	\caption{Csúcs régiók kezdeti határai}
+	\caption{Csúcsrégiók kezdeti határai}
 	\label{fig:initial_vertex_regions-1}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.6\linewidth]{images/initial_segment_regions.png}
-	\caption{él régiók kezdeti határai}
+	\caption{Élrégiók kezdeti határai}
 	\label{fig:initial_segment_regions-1}
 \end{figure}
 
-Az algoritmus következő lépéseként minden régiót elvágunk az összes többi régióhoz tartozó csúccsal és szakasszal. Eredményül a sokszög Voronoj-diagramja egy közelítését kapjuk, ahol a régiók között némi átfedés van. Ezt az átfedést a raszterizáció \cite{rasterization} során a Z-puffer \cite{depthtest} algoritmus oldja fel és jeleníti meg a megfelelő régiót.
+Az algoritmus következő lépéseként minden régiót elvágunk az összes többi régióhoz tartozó csúccsal és szakasszal. Eredményül a sokszög Voronoj-diagramja egy közelítését kapjuk, ahol a régiók között némi átfedés van. Ezt az átfedést a raszterizáció\cite{rasterization} során a Z-puffer\cite{depthtest} algoritmus oldja fel és jeleníti meg a megfelelő régiót.
 
 \begin{figure}[H]
 	\centering
@@ -133,53 +134,53 @@ Az algoritmus következő lépéseként minden régiót elvágunk az összes tö
 \subsection{Z-puffer algoritmus (Mélységi teszt)}
 A mélységi teszt egy módszer a raszterizálásban arra, hogy eldöntsük, hogy az egymást átfedő geometriák közül melyik kerüljön megjelenítésre. Az algoritmus a GPU-n hajtódik végre és úgy működik, hogy rajzoláskor nem csak a képernyő színpufferébe ír, hanem egy másodlagos pufferbe (mélységi puffer), ahol számon tartja, hogy minden egyes elemhez a színpufferben milyen mélység tartozik. Az alkalmazás esetében színpufferbe csak akkor írunk, ha az új szín mélysége alacsonyabb (közelebb van a kamerához) a mélységi pufferben tárolt jelenlegi értéknél.
 
-\subsection{Csúcs - csúcs vágások}
+\subsection{Csúcs--csúcs vágások}
 
-Azok a pontok, amelyek két pont között egyenlő távolságra helyezkednek el kollineárisak. Ebben a lépésben meghatározzuk azt az egyenest és annak a mentén végzünk egy vágást. Ez a művelet nem hagy átfedést a régióhatárok között. A \ref{fig:vertex_vertex_cut-1}-es ábrán láthatjuk a vágás eredményét.
+Azok a pontok, amelyek két pont között egyenlő távolságra helyezkednek el kollineárisak. Ebben a lépésben meghatározzuk azt az egyenest és annak a mentén végzünk egy vágást. Ez a művelet nem hagy átfedést a régióhatárok között. A~\ref{fig:vertex_vertex_cut-1}-es ábrán láthatjuk a vágás eredményét.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{images/vertex_vertex_cut.png}
-	\caption{Csúcs - csúcs vágás eredménye}
+	\caption{Csúcs--csúcs vágás eredménye}
 	\label{fig:vertex_vertex_cut-1}
 \end{figure}
 
-\subsection{Csúcs - él vágás} \label{vertex_segment_cut}
-Azok a pontok, amelyek egy ponttól és egy egyenestől azonos távolságra vannak, egy parabolán helyezkednek el, ahol a parabola fókuszpontja megegyezik a vágási régióhoz tartozó csúccsal. Ebben a lépésben konstans számú vágást hajtunk végre a parabola görbéje mentén a csúcs régión. Minél nagyobb a vágások száma, annál pontosabb közelítést kapunk a csúcs régió Voronoj-cellájához. A \ref{fig:vertex_segment_cut-1}-as ábrán láthatjuk a vágás eredményét.
+\subsection{Csúcs--él vágás} \label{vertex_segment_cut}
+Azok a pontok, amelyek egy ponttól és egy egyenestől azonos távolságra vannak, egy parabolán helyezkednek el, ahol a parabola fókuszpontja megegyezik a vágási régióhoz tartozó csúccsal. Ebben a lépésben konstans számú vágást hajtunk végre a parabola görbéje mentén a csúcs régión. Minél nagyobb a vágások száma, annál pontosabb közelítést kapunk a csúcs régió Voronoj-cellájához. A~\ref{fig:vertex_segment_cut-1}-as ábrán láthatjuk a vágás eredményét.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.55\linewidth]{images/vertex_segment_cut.png}
-	\caption{Csúcs - él vágás eredménye}
+	\caption{Csúcs--él vágás eredménye}
 	\label{fig:vertex_segment_cut-1}
 \end{figure}
 
-\subsection{Él - csúcs vágás}
-Az él és csúcs közötti Voronoj-cella határ a csúcs oldaláról konvex, az él oldaláról egy konkáv tartományt eredményez. A \ref{vertex_segment_cut}-es szekcióban meghatároztuk a parabolát, ami a csúcshoz tartozik. A számítások leegyszerűsítése érdekében az él esetében csak egy egyenes mentén vágunk úgy, hogy a csúcs régió paraboláját lefedjük, majd raszterizáláskor a Z-puffer algoritmus segítségével kerül feloldásra az átfedés. A lépés eredménye a \ref{fig:segment_vertex_cut-1}-es ábrán látható.
+\subsection{Él--csúcs vágás}
+Az él és csúcs közötti Voronoj-cella határ a csúcs oldaláról konvex, az él oldaláról egy konkáv tartományt eredményez. A~\ref{vertex_segment_cut}-es szekcióban meghatároztuk a parabolát, ami a csúcshoz tartozik. A számítások leegyszerűsítése érdekében az él esetében csak egy egyenes mentén vágunk úgy, hogy a csúcs régió paraboláját lefedjük, majd raszterizáláskor a Z-puffer algoritmus segítségével kerül feloldásra az átfedés. A lépés eredménye a~\ref{fig:segment_vertex_cut-1}-es ábrán látható.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.55\linewidth]{images/segment_vertex_cut.png}
-	\caption{Él - csúcs vágás eredménye}
+	\caption{Él--csúcs vágás eredménye}
 	\label{fig:segment_vertex_cut-1}
 \end{figure}
 
-\subsection{Él - él vágás}
-Él - él vágás esetén figyelembe kell vennünk azoknak relatív pozícióját. Két él közötti rész három tartományra osztható fel: Az a tartomány, ahol az élek belső tartománya vannak közelebb egymáshoz, itt egy egyenes mentén helyezkednek el az egyenlő távolságra lévő pontok, és két olyan tartomány, ahol az egyik élhez tartozó csúcshoz vagyunk közelebb, ahol a határ parabolikus. Ebben a lépésben egyetlen egyenes mentén vágunk élenként, az egyenesből és két parabolából álló összetett görbét lefedve. A vágással átfedések keletkeznek, amit a Z-puffer algoritmus old fel. A lépés eredménye a \ref{fig:segment_segment_cut-1}-es ábrán látható.
+\subsection{Él--él vágás}
+Él--él vágás esetén figyelembe kell vennünk azoknak relatív pozícióját. Két él közötti rész három tartományra osztható fel: Az a tartomány, ahol az élek belső tartománya vannak közelebb egymáshoz, itt egy egyenes mentén helyezkednek el az egyenlő távolságra lévő pontok, és két olyan tartomány, ahol az egyik élhez tartozó csúcshoz vagyunk közelebb, ahol a határ parabolikus. Ebben a lépésben egyetlen egyenes mentén vágunk élenként, az egyenesből és két parabolából álló összetett görbét lefedve. A vágással átfedések keletkeznek, amit a Z-puffer algoritmus old fel. A lépés eredménye a~\ref{fig:segment_segment_cut-1}-es ábrán látható.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.55\linewidth]{images/segment_segment_cut.png}
-	\caption{Él - él vágás eredménye}
+	\caption{Él--él vágás eredménye}
 	\label{fig:segment_segment_cut-1}
 \end{figure}
 
 \section{A szerkesztő megtervezése}
-A szerkesztő alapját az Autodesk Maya ,,construction history" funkciója inspirálta. Maya-ban a szerkesztett objektum az elvégzett műveletek sorozatából tevődik össze, ha egy köztes műveletet megváltoztatunk, akkor lehetőségünk van a rákövetkező műveleteket újra végrehajtani, közben egy teljesen eltérő eredményt kapva.
+A szerkesztő alapját az Autodesk Maya ,,construction history"~\cite{mayaconstructionhistory} funkciója inspirálta. Maya-ban a szerkesztett objektum az elvégzett műveletek sorozatából tevődik össze, ha egy köztes műveletet megváltoztatunk, akkor lehetőségünk van a rákövetkező műveleteket újra végrehajtani, közben egy teljesen eltérő eredményt kapva.
 
 \subsection{A szerkesztő magja}
 
-A szerkesztő tervezésében különös figyelmet kapott annak skálázhatósága bővíthetőség szempontjából, osztálydiagramját a \ref{fig:class_editor-1}-es ábrán láthatjuk. Az alakzaton parancsok kiváltásával módosíthatunk, amire válaszul a szerkesztő eseményeket vált ki, hogy az alkalmazás minden eleme értesüljön a változásról és reagálni tudjon rá. Ezen architektúra lehetővé teszi, hogy minden szerkesztőt használó modulban a szerkesztési adatok frissek legyenek még akkor is, ha számos forrásból kap bemenetet a szerkesztő.
+A szerkesztő tervezésében különös figyelmet kapott annak skálázhatósága bővíthetőség szempontjából, osztálydiagramját a~\ref{fig:class_editor-1}-es ábrán láthatjuk. Az alakzaton parancsok kiváltásával módosíthatunk, amire válaszul a szerkesztő eseményeket vált ki, hogy az alkalmazás minden eleme értesüljön a változásról és reagálni tudjon rá. Ezen architektúra lehetővé teszi, hogy minden szerkesztőt használó modulban a szerkesztési adatok frissek legyenek még akkor is, ha számos forrásból kap bemenetet a szerkesztő.
 
 A parancsokat felfoghatjuk állapot átmenetekként, ahol minden parancs után egy állapottal bővül a szerkesztő verme. A verem adatstruktúra természetéből adódóan a visszalépés triviális művelet, mivel csak el kell vetnünk a verem tetejéről a módosítást. Az alkalmazásban a teljesítményre való tekintettel a veremben az átmenet által készített új állapot is tárolásra kerül, így minimalizálva a potenciálisan nagy számításigényű műveletek túlzott számban való kiértékelését. \textit{Megjegyzés: A jelenlegi implementáció nem támogatja az előrelépés és a köztes műveletek módosítását.}
 
@@ -195,7 +196,7 @@ A parancsokat felfoghatjuk állapot átmenetekként, ahol minden parancs után e
 
 A szerkesztői parancs (\textbf{EditorCommand}) egy általános típus, egyetlen művelete annak nevének lekérése a szándék ezzel az interfésszel, hogy a szerkesztő eltérő hatáskörű parancsokat is le tudjon kezelni.
 
-A verem parancs (\textbf{StackCommand}) ennek egy olyan specializációja, ami egy alakzatból egy új alakzatot készít a \textit{perform} metódus segítségével. A definiált műveletnek szigorúan tisztának kell lennie. Az osztálydiagram az implementációkkal a \ref{fig:class_editor_command-1}-es ábrán láthatóak.
+A verem parancs (\textbf{StackCommand}) ennek egy olyan specializációja, ami egy alakzatból egy új alakzatot készít a \textit{perform} metódus segítségével. A definiált műveletnek szigorúan tisztának kell lennie. Az osztálydiagram az implementációkkal a~\ref{fig:class_editor_command-1}-es ábrán láthatóak.
 
 A verem parancsok egyesíthetőek, amennyiben az eredmény értelmezhető. Akkor hajthatjuk végre az egyesítést, ha a \textit{canMerge} metódus igazat ad vissza a parancsra, amivel meghívjuk, ekkor a \textit{merge} metódus végzi el az egyesítést. Az egyesítés rendelkezik alap implementációval, ami letiltja ezt a viselkedést. Erre a műveletre azért volt szükség, mert a vizuális szerkesztő esetében ugyanazt a csúcsot vagy poligont pár másodperc alatt akár ezerszer is elmozdíthatjuk, ami egyesítés nélkül 1000 új bejegyzést hozna létre a szerkesztői veremben.
 
@@ -223,7 +224,7 @@ A verem parancsok egyesíthetőek, amennyiben az eredmény értelmezhető. Akkor
 
 \subsection{Szerkesztő összesítő műveletek}
 
-Az alkalmazásban szükség van olyan műveletre, amik a szerkesztő vermének állapotát összesítik, például a tárolt műveletek számát megadják. Erre a célra lett létrehozva a \textbf{EditorAggregator} osztály, két absztrakt metódussal rendelkezik, egyik a művelet megnevezésére, a másik az összesítés végrehajtására és az eredmény visszaadására, ami a szerkesztő állapotán nem módosíthat. Minden összesítő osztály \textbf{EditorAggregationResult} típusú eredményt adhat vissza. A művelet osztálydiagramja a \ref{fig:class_editor_aggregator-1}-as ábrán látható.
+Az alkalmazásban szükség van olyan műveletre, amik a szerkesztő vermének állapotát összesítik, például a tárolt műveletek számát megadják. Erre a célra lett létrehozva a \textbf{EditorAggregator} osztály, két absztrakt metódussal rendelkezik, egyik a művelet megnevezésére, a másik az összesítés végrehajtására és az eredmény visszaadására, ami a szerkesztő állapotán nem módosíthat. Minden összesítő osztály \textbf{EditorAggregationResult} típusú eredményt adhat vissza. A művelet osztálydiagramja a~\ref{fig:class_editor_aggregator-1}-as ábrán látható.
 
 \begin{figure}[H]
 	\centering
@@ -345,7 +346,7 @@ Az alkalmazásban \textbf{EditorConsumer} típusú objektumokat iratkoztathatunk
 
 Az alkalmazás felhasználói felülete szöveg, gombok és beviteli mezők csoportjaiból áll szerepkör szerint. Ami közös bennünk, hogy mindegyik adatforrása a szerkesztő magja, amihez példányosításkor referenciát kapnak, majd a referencián keresztül iratkoznak fel az eseményekre, parancsokat visznek be, esetleg küldenek üzeneteket más komponenseknek.
 
-A felületi elemek kirajzolásáért az ImGui könyvtár \cite{imgui} felel. A könyvtár funkcionalitása a Falcor keretrendszeren érhető el, Falcor-specifikus osztályokba becsomagolva.
+A felületi elemek kirajzolásáért az ImGui könyvtár\cite{imgui} felel. A könyvtár funkcionalitása a Falcor keretrendszeren érhető el, Falcor-specifikus osztályokba becsomagolva.
 
 
 \begin{figure}[H]
@@ -404,7 +405,7 @@ Kettő absztrakt metódussal rendelkezik, egyik az egérhez fűződő bemenet fe
 
 \subsection{A Presenter osztály}
 
-Ez az osztály felel azért, hogy lefordítsa a felhasználói bemenetet transzformációkra az alakzat megjelenítésekor. A szerkesztői nézetben az egérrel mozgathatjuk a vásznon az alakzatot, a háromdimenziós nézetben pedig forgathatjuk. Mindkét nézetben a görgővel nagyíthatjuk és kicsinyíthetjük a megjelenített objektumot. Mivel a bemenet feldolgozása jelentősen eltér a két nézet esetében, ezért két implementációval rendelkezik ez az absztrakt osztály, melynek diagramját a \ref{fig:class_presenter-1}-es ábrán láthatjuk.
+Ez az osztály felel azért, hogy lefordítsa a felhasználói bemenetet transzformációkra az alakzat megjelenítésekor. A szerkesztői nézetben az egérrel mozgathatjuk a vásznon az alakzatot, a háromdimenziós nézetben pedig forgathatjuk. Mindkét nézetben a görgővel nagyíthatjuk és kicsinyíthetjük a megjelenített objektumot. Mivel a bemenet feldolgozása jelentősen eltér a két nézet esetében, ezért két implementációval rendelkezik ez az absztrakt osztály, melynek diagramját a~\ref{fig:class_presenter-1}-es ábrán láthatjuk.
 
 \begin{figure}[H]
 	\centering
@@ -422,7 +423,7 @@ Ez az osztály felel azért, hogy lefordítsa a felhasználói bemenetet transzf
 
 \subsection{A ShapeRenderer osztály}
 
-Ez az absztrakt osztály függvényeket biztosít egy alakzat kirajzolására egy FrameBufferbe. Az osztály implementációi lehetővé teszik, hogy több ShapeRenderer által nyújtott funkcionalitást (pl körvonal és távolságvizualizáció együttes megjelenítése) összekombináljunk a kompozit tervminta alapján. Ez mind úgy történik, hogy a felhasználó objektum nem tudja azt, hogy akár több \textbf{ShapeRenderer} is együttműködhet a háttérben akár teljesen eltérő rajzolási módszerekkel. Az összes implementáció diagramja a \ref{fig:class_shape_renderer-1}-as ábrán látható.
+Ez az absztrakt osztály függvényeket biztosít egy alakzat kirajzolására egy FrameBufferbe. Az osztály implementációi lehetővé teszik, hogy több ShapeRenderer által nyújtott funkcionalitást (pl körvonal és távolságvizualizáció együttes megjelenítése) összekombináljunk a kompozit tervminta alapján. Ez mind úgy történik, hogy a felhasználó objektum nem tudja azt, hogy akár több \textbf{ShapeRenderer} is együttműködhet a háttérben akár teljesen eltérő rajzolási módszerekkel. Az összes implementáció diagramja a~\ref{fig:class_shape_renderer-1}-as ábrán látható.
 
 \begin{figure}[H]
 	\centering
@@ -449,15 +450,15 @@ Ez az absztrakt osztály függvényeket biztosít egy alakzat kirajzolására eg
 
 A szerkesztői nézet két megjelenítőt tartalmaz, egy \textbf{FullScreenShapeRenderer}-t és egy \textbf{ShapeOutlineRenderer}-t, melyeket egy \textbf{CompositeShapeRenderer} fog össze egy objektumba, amit egy \textbf{AspectRatioIndependentShapeRenderer} csomagol be, hogy a végeredmény ne függjön a képernyő oldalarányától.
 
-A GPU-val az alkalmazás a DirectX12 API segítségével kommunikál a Falcor keretrendszer \cite{falcor} által nyújtott magasabb szintű osztályokon keresztül. A shadereket Slang-ban \cite{slang} kell írni, amire tekinthetünk úgy, mint a HLSL egy kibővített verziója. A nyelv rendkívül jó fejlesztői élményt nyújt, a fordító tisztában van a fájlrendszerrel, ezért használhatjuk az \textit{\#include} makrót fájlok bemásolásához, támogatja a generikus típusokat és még sok más produktivitást növelő funkciót.
+A GPU-val az alkalmazás a DirectX12 API segítségével kommunikál a Falcor keretrendszer\cite{falcor} által nyújtott magasabb szintű osztályokon keresztül. A shadereket Slang-ban\cite{slang} kell írni, amire tekinthetünk úgy, mint a HLSL egy kibővített verziója. A nyelv rendkívül jó fejlesztői élményt nyújt, a fordító tisztában van a fájlrendszerrel, ezért használhatjuk az \textit{\#include} makrót fájlok bemásolásához, támogatja a generikus típusokat és még sok más produktivitást növelő funkciót.
 
 A körvonal megjelenítéséhez a \textbf{ShapeOutlineRenderer} az alakzat szakaszait primitívként feltölti a GPU-ra és a paraméterként átadott shaderrel kirajzolja, a felhasználó által beállított színben.
 
 A távolság vizualizáció esetében egy háromszöget igazítunk a képernyőre úgy, hogy azt teljesen lefedje és a háromszögben megadott UV koordináták interpolációja után a képernyő bal alsó sarkában legyen a (0,0) pont és a jobb felső sarkában az (1,1), ez az érték képviseli a számításainkban a pont pozícióját, amihez a távolságot ki szeretnénk számolni. Az UV koordináták eltolásával és skálázásával pedig szimulálhatjuk az alakzat eltolását és méretezését a képernyőn.
 
-A fejlesztői nézetben a távolságot a naiv \cite{inigoquilez2d}, lassú módszerrel vizualizáljuk, viszont az előnye az, hogy nagyon könnyen párhuzamosítható, ami fontos, ha a GPU-n egy shader formájában szeretnénk futtatni és az algoritmus működik olyan alakzatokra is amiben vannak önmetsző poligonok. Az utóbbit a szakdolgozatban implementált algoritmus nem tudja lekezelni.
+A fejlesztői nézetben a távolságot a naiv\cite{inigoquilez2d}, lassú módszerrel vizualizáljuk, viszont az előnye az, hogy nagyon könnyen párhuzamosítható, ami fontos, ha a GPU-n egy shader formájában szeretnénk futtatni és az algoritmus működik olyan alakzatokra is amiben vannak önmetsző poligonok. Az utóbbit a szakdolgozatban implementált algoritmus nem tudja lekezelni.
 
-A távolság értékét, ami egy lebegőpontos, negatív és pozitív értékeket is felvehető szám átszámoljuk egy színné a képernyőn a \ref{src:distance-visualization}-as kódrészlet segítségével \cite{inigoquilezshader}.
+A távolság értékét, ami egy lebegőpontos, negatív és pozitív értékeket is felvehető szám átszámoljuk egy színné a képernyőn a~\ref{src:distance-visualization}-as kódrészlet segítségével\cite{inigoquilezshader}.
 
 \lstset{caption={Távolsági érték átszámítása színértékbe}, label=src:distance-visualization}
 \begin{lstlisting}[language=c]
@@ -510,7 +511,7 @@ A távolság értékét, ami egy lebegőpontos, negatív és pozitív értékeke
 
 A háromdimenziós nézet három levélszintű megjelenítőt tartalmaz, egy \textbf{SdfAlgorithmEdgeRegionRenderer}-t, egy \textbf{SdfAlgorithmVertexRegionRenderer}-t és egy \textbf{ShapeOutlineRenderer}-t, melyeket egy \textbf{CompositeShapeRenderer} fog össze egy objektumba, amit egy \textbf{AspectRatioIndependentShapeRenderer} csomagol be, hogy a végeredmény ne függjön a képernyő oldalarányától.
 
-Annyi különlegesség van az algoritmus kimenetének a megjelenítésében, hogy a vertex shaderben \cite{vertexshader} a Z koordináta az előjeles távolság abszolút értéke lesz, csúcsrégiókhoz tartozó geometria esetében pedig a pixel shaderben is felülírjuk az interpolált mélységet a távolság abszolút értékével, a csúcsrégiók pixel shaderét \cite{pixelshader} (\textit{psMain}) a \ref{src:vertex-region-shader}-es kódrészletben láthatjuk. A \ref{src:edge-region-shader}-ös kódrészletben láthatjuk az élrégiók vertex shaderét (\textit{vsMain}) és pixel shaderét (\textit{psMain}).
+Annyi különlegesség van az algoritmus kimenetének a megjelenítésében, hogy a vertex shaderben\cite{vertexshader} a Z koordináta az előjeles távolság abszolút értéke lesz, csúcsrégiókhoz tartozó geometria esetében pedig a pixel shaderben is felülírjuk az interpolált mélységet a távolság abszolút értékével, a csúcsrégiók pixel shaderét\cite{pixelshader} (\textit{psMain}) a~\ref{src:vertex-region-shader}-es kódrészletben láthatjuk. A~\ref{src:edge-region-shader}-ös kódrészletben láthatjuk az élrégiók vertex shaderét (\textit{vsMain}) és pixel shaderét (\textit{psMain}).
 
 \lstset{caption={Csúcsrégiók raszterizálásának vertex és pixel shadere}, label=src:vertex-region-shader}
 \begin{lstlisting}[language=c]
@@ -624,11 +625,11 @@ Annyi különlegesség van az algoritmus kimenetének a megjelenítésében, hog
 
 Az alakzatok írhatóak és olvashatóak a fájlrendszerbből. Amennyiben a szerkesztő jelenlegi alakzatára végre van hajtva az algoritmus, az is lementhető.
 
-Minden adat szerializációja JSON formátumba \cite{json} történik, melynek számos előnye van, például széleskörűen elterjedt és könnyű olvashatóság az ember számára.
+Minden adat szerializációja JSON formátumba~\cite{json} történik, melynek számos előnye van, például széleskörűen elterjedt és könnyű olvashatóság az ember számára.
 
 \subsection{Alakzat szerializációja}
 
-Az alakzatok menthetőek és betölthetőek. Olvasáskor az alkalmazásban nem csak séma validáció történik, hanem ellenőrzésre kerül az is, hogy a beolvasott alakzat helyes-e, rendelkezik-e legalább egy poligonnal és minden poligon rendelkezik-e legalább három csúccsal. Az alakzat JSON sémája a \ref{src:shape-json-schema}-os kódrészletben látható.
+Az alakzatok menthetőek és betölthetőek. Olvasáskor az alkalmazásban nem csak séma validáció történik, hanem ellenőrzésre kerül az is, hogy a beolvasott alakzat helyes-e, rendelkezik-e legalább egy poligonnal és minden poligon rendelkezik-e legalább három csúccsal. Az alakzat JSON sémája a~\ref{src:shape-json-schema}-os kódrészletben látható.
 
 \lstset{caption={Alakzat JSON sémája}, label=src:shape-json-schema}
 \begin{lstlisting}[language=C]
@@ -646,7 +647,7 @@ Az alakzatok menthetőek és betölthetőek. Olvasáskor az alkalmazásban nem c
 
 
 \subsection{Algoritmus kimenetének szerializációja}
-Az algoritmus kimenetét le lehet menteni a fájlrendszerbe JSON formátumban. Az algoritmus kimenetében az alakzat összes csúcspontja és éle is benne van, mivel annak raszterizáláshoz arra az információra is szükségünk van. Az algoritmus kimenetének JSON sémája a \ref{src:algorithm-output-json-schema}-es kódrészletben látható.
+Az algoritmus kimenetét le lehet menteni a fájlrendszerbe JSON formátumban. Az algoritmus kimenetében az alakzat összes csúcspontja és éle is benne van, mivel annak raszterizáláshoz arra az információra is szükségünk van. Az algoritmus kimenetének JSON sémája a~\ref{src:algorithm-output-json-schema}-es kódrészletben látható.
 
 \lstset{caption={Algoritmus kimenetének JSON sémája}, label=src:algorithm-output-json-schema}
 \begin{lstlisting}[language=C]
@@ -686,10 +687,10 @@ Az algoritmus tesztelése szinten történt, függvények szintjéről kiindulva
 \textbf{Tesztelt funkcionalitás}
 
 \begin{itemize}
-	\item Csúcs - csúcs vágás -- Régióhatárok kerültek ellenőrzésre
-	\item Csúcs - él vágás
-	\item Él - csúcs vágás
-	\item Él - él vágás
+	\item Csúcs--csúcs vágás -- Régióhatárok kerültek ellenőrzésre
+	\item Csúcs--él vágás
+	\item Él--csúcs vágás
+	\item Él--él vágás
 	\item Az algoritmus végrehajtása teljes alakzatra
 \end{itemize}
 

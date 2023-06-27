@@ -29,12 +29,17 @@ bool UpdateVertexStackCommand::canMerge(const StackCommand::SharedPtr &pCommand)
         return false;
     }
 
-    return updateCommand->getVertexIndex() == getVertexIndex();
+    return updateCommand->getOutlineIndex() == getOutlineIndex() && updateCommand->getVertexIndex() == getVertexIndex();
 }
 
 std::string UpdateVertexStackCommand::getName() const
 {
     return "UpdateVertexStackCommand";
+}
+
+size_t UpdateVertexStackCommand::getOutlineIndex() const
+{
+    return mOutlineIndex;
 }
 
 size_t UpdateVertexStackCommand::getVertexIndex() const

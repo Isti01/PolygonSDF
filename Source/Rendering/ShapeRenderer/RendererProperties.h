@@ -22,6 +22,8 @@ struct RendererProperties
     static constexpr const char *kShouldDisplayContoursProperty = "kShouldDisplayContoursProperty";
     static constexpr const char *kShouldColorBetweenContoursProperty = "kShouldColorBetweenContoursProperty";
     static constexpr const char *kAlgorithmVisualizationCuttingPointCount = "kAlgorithmVisualizationCuttingPointCount";
+    static constexpr const char *kUseCustomDepthCalculation = "kUseCustomDepthCalculation";
+    static constexpr const char *kDepthRangeScaling = "kDepthRangeScaling";
     static const std::vector<ShapeRendererProperty> kInitialProperties;
 
   private:

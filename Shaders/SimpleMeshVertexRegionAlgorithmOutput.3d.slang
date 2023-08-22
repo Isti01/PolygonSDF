@@ -3,6 +3,7 @@
 cbuffer Data
 {
     float4x4 iTransform;
+    float iDepthScaling;
 }
 
 struct VsIn
@@ -45,6 +46,6 @@ PsOut psMain(VsOut vsOut, uint triangleIndex : SV_PrimitiveID) : SV_TARGET
 
     PsOut psOut;
     psOut.color = signedDistanceToColor(desc);
-    psOut.depth = dst;
+    psOut.depth = dst / iDepthScaling;
     return psOut;
 }

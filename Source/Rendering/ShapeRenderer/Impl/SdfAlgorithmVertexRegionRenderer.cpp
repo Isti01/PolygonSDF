@@ -4,15 +4,17 @@
 using namespace Falcor;
 using namespace psdf;
 
-SdfAlgorithmVertexRegionRenderer::SdfAlgorithmVertexRegionRenderer(GraphicsState::SharedPtr pGraphicsState)
-    : SdfAlgorithmOutputRenderer(std::move(pGraphicsState))
+SdfAlgorithmVertexRegionRenderer::SdfAlgorithmVertexRegionRenderer(GraphicsState::SharedPtr pModifiedDepthState,
+                                                                   GraphicsState::SharedPtr pSimpleMeshState)
+    : SdfAlgorithmOutputRenderer(std::move(pModifiedDepthState), std::move(pSimpleMeshState))
 {
 }
 
 SdfAlgorithmVertexRegionRenderer::SharedPtr SdfAlgorithmVertexRegionRenderer::create(
-    GraphicsState::SharedPtr pGraphicsState)
+
+    GraphicsState::SharedPtr pModifiedDepthState, GraphicsState::SharedPtr pSimpleMeshState)
 {
-    return SharedPtr(new SdfAlgorithmVertexRegionRenderer(std::move(pGraphicsState)));
+    return SharedPtr(new SdfAlgorithmVertexRegionRenderer(std::move(pModifiedDepthState), std::move(pSimpleMeshState)));
 }
 
 static VertexLayout::SharedPtr getVertexLayout()

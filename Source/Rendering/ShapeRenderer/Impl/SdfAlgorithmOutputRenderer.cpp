@@ -6,14 +6,18 @@
 using namespace Falcor;
 using namespace psdf;
 
-SdfAlgorithmOutputRenderer::SdfAlgorithmOutputRenderer(GraphicsState::SharedPtr pGraphicsState)
-    : mpGraphicsState(std::move(pGraphicsState))
+SdfAlgorithmOutputRenderer::SdfAlgorithmOutputRenderer(GraphicsState::SharedPtr pModifiedDepthState,
+                                                       GraphicsState::SharedPtr pSimpleMeshState)
+    : mpModifiedDepthState(std::move(pModifiedDepthState)), mpSimpleMeshState(std::move(pSimpleMeshState))
 {
 }
 
 void SdfAlgorithmOutputRenderer::init()
 {
-    mpProgramVars = GraphicsVars::create(mpGraphicsState->getProgram().get());
+    mpModifiedDepthProgramVars = GraphicsVars::create(mpModifiedDepthState->getProgram().get());
+    mpSimpleMeshProgramVars = GraphicsVars::create(mpSimpleMeshState->getProgram().get());
+
+    setModifiedDepthProgramAsActive();
 }
 
 float4x4 SdfAlgorithmOutputRenderer::getTransform() const
@@ -36,96 +40,141 @@ void SdfAlgorithmOutputRenderer::setShape(const Shape::SharedPtr &pShape)
     ShapeRenderer::setShape(pShape);
 }
 
+void SdfAlgorithmOutputRenderer::setModifiedDepthProgramAsActive()
+{
+    mpActiveState = mpModifiedDepthState;
+    mpActiveProgramVars = mpModifiedDepthProgramVars;
+}
+
+void SdfAlgorithmOutputRenderer::setSimpleMeshProgramAsActive()
+{
+    mpActiveState = mpSimpleMeshState;
+    mpActiveProgramVars = mpSimpleMeshProgramVars;
+}
+
 void SdfAlgorithmOutputRenderer::transformImpl()
 {
-    FALCOR_ASSERT(mpProgramVars);
+    FALCOR_ASSERT(mpModifiedDepthProgramVars);
+    FALCOR_ASSERT(mpSimpleMeshProgramVars);
 
-    mpProgramVars["Data"]["iTransform"] = mTransform;
+    mpModifiedDepthProgramVars["Data"]["iTransform"] = mTransform;
+    mpSimpleMeshProgramVars["Data"]["iTransform"] = mTransform;
 }
 
 void SdfAlgorithmOutputRenderer::renderImpl(RenderContext *context)
 {
     FALCOR_ASSERT(context);
 
-    FALCOR_ASSERT(mpGraphicsState);
-    FALCOR_ASSERT(mpProgramVars);
+    FALCOR_ASSERT(mpActiveState);
+    FALCOR_ASSERT(mpModifiedDepthProgramVars);
+    FALCOR_ASSERT(mpSimpleMeshProgramVars);
     if (!mpRenderObject)
     {
         return;
     }
-    mpGraphicsState->setVao(mpRenderObject->pVao);
-    context->drawIndexed(mpGraphicsState.get(), mpProgramVars.get(), mpRenderObject->indexCount, 0, 0);
+    mpActiveState->setVao(mpRenderObject->pVao);
+    context->drawIndexed(mpActiveState.get(), mpActiveProgramVars.get(), mpRenderObject->indexCount, 0, 0);
 }
 
 void SdfAlgorithmOutputRenderer::setFbo(const Fbo::SharedPtr &pFbo)
 {
-    FALCOR_ASSERT(mpGraphicsState);
-    mpGraphicsState->setFbo(pFbo);
+    FALCOR_ASSERT(mpActiveState);
+    mpActiveState->setFbo(pFbo);
 }
-
 void SdfAlgorithmOutputRenderer::setPropertyImpl(const ShapeRendererProperty &rendererProperty)
 {
     if (rendererProperty.key == RendererProperties::kPositiveColorProperty)
     {
         if (auto *color = std::get_if<float3>(&rendererProperty.value))
         {
-            mpProgramVars["DistanceColoringSettings"]["iPositiveColor"] = *color;
+            mpModifiedDepthProgramVars["DistanceColoringSettings"]["iPositiveColor"] = *color;
+            mpSimpleMeshProgramVars["DistanceColoringSettings"]["iPositiveColor"] = *color;
         }
     }
     else if (rendererProperty.key == RendererProperties::kNegativeColorProperty)
     {
         if (auto *color = std::get_if<float3>(&rendererProperty.value))
         {
-            mpProgramVars["DistanceColoringSettings"]["iNegativeColor"] = *color;
+            mpModifiedDepthProgramVars["DistanceColoringSettings"]["iNegativeColor"] = *color;
+            mpSimpleMeshProgramVars["DistanceColoringSettings"]["iNegativeColor"] = *color;
         }
     }
     else if (rendererProperty.key == RendererProperties::kContourFrequencyProperty)
     {
         if (auto *frequency = std::get_if<float>(&rendererProperty.value))
         {
-            mpProgramVars["DistanceColoringSettings"]["iContourFrequency"] = *frequency;
+            mpModifiedDepthProgramVars["DistanceColoringSettings"]["iContourFrequency"] = *frequency;
+            mpSimpleMeshProgramVars["DistanceColoringSettings"]["iContourFrequency"] = *frequency;
         }
     }
     else if (rendererProperty.key == RendererProperties::kContourIntensityProperty)
     {
         if (auto *intensity = std::get_if<float>(&rendererProperty.value))
         {
-            mpProgramVars["DistanceColoringSettings"]["iContourIntensity"] = *intensity;
+            mpModifiedDepthProgramVars["DistanceColoringSettings"]["iContourIntensity"] = *intensity;
+            mpSimpleMeshProgramVars["DistanceColoringSettings"]["iContourIntensity"] = *intensity;
         }
     }
     else if (rendererProperty.key == RendererProperties::kDisplayShadowsProperty)
     {
         if (auto *display = std::get_if<bool>(&rendererProperty.value))
         {
-            mpProgramVars["DistanceColoringSettings"]["iDisplayShadows"] = *display;
+            mpModifiedDepthProgramVars["DistanceColoringSettings"]["iDisplayShadows"] = *display;
+            mpSimpleMeshProgramVars["DistanceColoringSettings"]["iDisplayShadows"] = *display;
         }
     }
     else if (rendererProperty.key == RendererProperties::kShadowsIntensityProperty)
     {
         if (auto *intensity = std::get_if<float>(&rendererProperty.value))
         {
-            mpProgramVars["DistanceColoringSettings"]["iShadowIntensity"] = *intensity;
+            mpModifiedDepthProgramVars["DistanceColoringSettings"]["iShadowIntensity"] = *intensity;
+            mpSimpleMeshProgramVars["DistanceColoringSettings"]["iShadowIntensity"] = *intensity;
         }
     }
     else if (rendererProperty.key == RendererProperties::kDisplayCloserToVertexProperty)
     {
         if (auto *shouldDisplay = std::get_if<bool>(&rendererProperty.value))
         {
-            mpProgramVars["DistanceColoringSettings"]["iDisplayCloserToVertex"] = *shouldDisplay;
+            mpModifiedDepthProgramVars["DistanceColoringSettings"]["iDisplayCloserToVertex"] = *shouldDisplay;
+            mpSimpleMeshProgramVars["DistanceColoringSettings"]["iDisplayCloserToVertex"] = *shouldDisplay;
         }
     }
     else if (rendererProperty.key == RendererProperties::kShouldDisplayContoursProperty)
     {
         if (auto *shouldDisplay = std::get_if<bool>(&rendererProperty.value))
         {
-            mpProgramVars["DistanceColoringSettings"]["iShouldDisplayContours"] = *shouldDisplay;
+            mpModifiedDepthProgramVars["DistanceColoringSettings"]["iShouldDisplayContours"] = *shouldDisplay;
+            mpSimpleMeshProgramVars["DistanceColoringSettings"]["iShouldDisplayContours"] = *shouldDisplay;
         }
     }
     else if (rendererProperty.key == RendererProperties::kShouldColorBetweenContoursProperty)
     {
         if (auto *shouldDisplay = std::get_if<bool>(&rendererProperty.value))
         {
-            mpProgramVars["DistanceColoringSettings"]["iShouldColorBetweenContours"] = *shouldDisplay;
+            mpModifiedDepthProgramVars["DistanceColoringSettings"]["iShouldColorBetweenContours"] = *shouldDisplay;
+            mpSimpleMeshProgramVars["DistanceColoringSettings"]["iShouldColorBetweenContours"] = *shouldDisplay;
+        }
+    }
+    else if (rendererProperty.key == RendererProperties::kDepthRangeScaling)
+    {
+        if (auto *depthScaling = std::get_if<float>(&rendererProperty.value))
+        {
+            mpModifiedDepthProgramVars["Data"]["iDepthScaling"] = *depthScaling;
+            mpSimpleMeshProgramVars["Data"]["iDepthScaling"] = *depthScaling;
+        }
+    }
+    else if (rendererProperty.key == RendererProperties::kUseCustomDepthCalculation)
+    {
+        if (auto *useCustomCalculation = std::get_if<bool>(&rendererProperty.value))
+        {
+            if (*useCustomCalculation)
+            {
+                setModifiedDepthProgramAsActive();
+            }
+            else
+            {
+                setSimpleMeshProgramAsActive();
+            }
         }
     }
     else if (rendererProperty.key == RendererProperties::kAlgorithmVisualizationCuttingPointCount)

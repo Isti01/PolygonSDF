@@ -73,9 +73,15 @@ ShapeRenderer::SharedPtr ShapeRendererFactory::getAlgorithmOutputRenderer()
 {
     auto combined = CompositeShapeRenderer::create({
         SdfAlgorithmEdgeRegionRenderer::create(
-            getGraphicsStateForAlgorithmOutputRenderer("PolygonSDF/Shaders/EdgeRegionAlgorithmOutput.3d.slang")),
+            getGraphicsStateForAlgorithmOutputRenderer(
+                "PolygonSDF/Shaders/ModifiedDepthEdgeRegionAlgorithmOutput.3d.slang"),
+            getGraphicsStateForAlgorithmOutputRenderer(
+                "PolygonSDF/Shaders/SimpleMeshEdgeRegionAlgorithmOutput.3d.slang")),
         SdfAlgorithmVertexRegionRenderer::create(
-            getGraphicsStateForAlgorithmOutputRenderer("PolygonSDF/Shaders/VertexRegionAlgorithmOutput.3d.slang")),
+            getGraphicsStateForAlgorithmOutputRenderer(
+                "PolygonSDF/Shaders/ModifiedDepthVertexRegionAlgorithmOutput.3d.slang"),
+            getGraphicsStateForAlgorithmOutputRenderer(
+                "PolygonSDF/Shaders/SimpleMeshVertexRegionAlgorithmOutput.3d.slang")),
         ShapeOutlineRenderer::create(getOutlineRendererGS()),
     });
     auto renderer = AspectRatioIndependentShapeRenderer::create(combined);

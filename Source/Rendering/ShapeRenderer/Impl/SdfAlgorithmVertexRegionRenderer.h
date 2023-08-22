@@ -15,10 +15,11 @@ class SdfAlgorithmVertexRegionRenderer : public SdfAlgorithmOutputRenderer
   public:
     using SharedPtr = std::shared_ptr<SdfAlgorithmVertexRegionRenderer>;
 
-    static SharedPtr create(GraphicsState::SharedPtr pGraphicsState);
+    static SharedPtr create(GraphicsState::SharedPtr pModifiedDepthState, GraphicsState::SharedPtr pSimpleMeshState);
 
   protected:
-    SdfAlgorithmVertexRegionRenderer(GraphicsState::SharedPtr pGraphicsState);
+    SdfAlgorithmVertexRegionRenderer(GraphicsState::SharedPtr pModifiedDepthState,
+                                     GraphicsState::SharedPtr pSimpleMeshState);
 
     void uploadShapeData() override;
 };

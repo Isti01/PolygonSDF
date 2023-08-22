@@ -16,4 +16,6 @@ const std::vector<ShapeRendererProperty> RendererProperties::kInitialProperties 
     {RendererProperties::kDisplayShadowsProperty, true},
     {RendererProperties::kShadowsIntensityProperty, 5.0f},
     {RendererProperties::kAlgorithmVisualizationCuttingPointCount, size_t(100)},
+    {RendererProperties::kUseCustomDepthCalculation, true},
+    {RendererProperties::kDepthRangeScaling, 100.0f},
 };

@@ -1,9 +1,11 @@
 add_library(PolygonSDF
         Shaders/DistanceVisualization.slang
-        Shaders/EdgeRegionAlgorithmOutput.3d.slang
+        Shaders/ModifiedDepthEdgeRegionAlgorithmOutput.3d.slang
+        Shaders/ModifiedDepthVertexRegionAlgorithmOutput.3d.slang
         Shaders/NaivePolygonDistance.3d.slang
+        Shaders/SimpleMeshEdgeRegionAlgorithmOutput.3d.slang
+        Shaders/SimpleMeshVertexRegionAlgorithmOutput.3d.slang
         Shaders/SolidColor.3d.slang
-        Shaders/VertexRegionAlgorithmOutput.3d.slang
 
         Source/Algorithm/Region/EdgeRegion.cpp
         Source/Algorithm/Region/EdgeRegion.h

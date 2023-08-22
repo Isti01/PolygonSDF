@@ -20,6 +20,8 @@ const std::map<std::string, std::string> GuiVisualizationSettingsMenu::kProperty
     {RendererProperties::kShouldDisplayContoursProperty, "Display distance contours"},
     {RendererProperties::kShouldColorBetweenContoursProperty, "Display coloring between contours"},
     {RendererProperties::kAlgorithmVisualizationCuttingPointCount, "Number of cutting points around output geometry"},
+    {RendererProperties::kDepthRangeScaling, "Distance scaling for depth calculation"},
+    {RendererProperties::kUseCustomDepthCalculation, "Use Custom Depth Calculation"},
 };
 
 GuiVisualizationSettingsMenu::SharedPtr GuiVisualizationSettingsMenu::create(Editor::SharedPtr pEditor)
